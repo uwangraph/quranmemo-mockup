@@ -1,0 +1,5449 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>QuranMemo — Mockup Lengkap</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        font-family: "Nunito", sans-serif;
+        background: #f0f0f0;
+        min-height: 100vh;
+        padding: 20px 0 40px;
+      }
+
+      /* ===================== SCREEN NAV SWITCHER ===================== */
+      .qm-app {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .snav {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-bottom: 14px;
+      }
+      .snb {
+        font-family: "Nunito", sans-serif;
+        font-size: 11px;
+        font-weight: 800;
+        padding: 6px 12px;
+        border-radius: 20px;
+        border: 2px solid #e5e5e5;
+        background: #fff;
+        cursor: pointer;
+        color: #afafaf;
+        transition: all 0.15s;
+      }
+      .snb.active {
+        background: #58cc02;
+        color: #fff;
+        border-color: #58cc02;
+      }
+
+      /* ===================== PHONE FRAME ===================== */
+      .phone {
+        width: 340px;
+        background: #fff;
+        border-radius: 36px;
+        border: 3px solid #d0d0d0;
+        overflow: hidden;
+        position: relative;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+      }
+      .statusbar {
+        background: #fff;
+        padding: 10px 20px 6px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 11px;
+        font-weight: 700;
+        color: #afafaf;
+      }
+      .screen {
+        display: none;
+        flex-direction: column;
+        min-height: 600px;
+      }
+      .screen.on {
+        display: flex;
+      }
+
+      /* ===================== COLOR TOKENS ===================== */
+      .duo-green {
+        color: #58cc02;
+      }
+      .duo-blue {
+        color: #1cb0f6;
+      }
+      .duo-red {
+        color: #ff4b4b;
+      }
+      .duo-gold {
+        color: #ffc800;
+      }
+      .duo-purple {
+        color: #ce82ff;
+      }
+      .duo-gray {
+        color: #afafaf;
+      }
+
+      /* ===================== BUTTONS ===================== */
+      .btn-duo {
+        display: block;
+        width: 100%;
+        padding: 14px;
+        border-radius: 16px;
+        font-family: "Nunito", sans-serif;
+        font-size: 15px;
+        font-weight: 800;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        border: none;
+        cursor: pointer;
+        text-align: center;
+        transition: all 0.1s;
+      }
+      .btn-green {
+        background: #58cc02;
+        color: #fff;
+        border-bottom: 4px solid #46a302;
+      }
+      .btn-green:active {
+        border-bottom: 2px solid #46a302;
+        transform: translateY(2px);
+      }
+      .btn-blue {
+        background: #1cb0f6;
+        color: #fff;
+        border-bottom: 4px solid #0898dc;
+      }
+      .btn-blue:active {
+        border-bottom: 2px solid #0898dc;
+        transform: translateY(2px);
+      }
+      .btn-purple {
+        background: #ce82ff;
+        color: #fff;
+        border-bottom: 4px solid #9c52e0;
+      }
+      .btn-outline {
+        background: #fff;
+        color: #1cb0f6;
+        border: 2px solid #e5e5e5;
+        border-bottom: 4px solid #e5e5e5;
+      }
+      .btn-outline-red {
+        background: #fff;
+        color: #ff4b4b;
+        border: 2px solid #e5e5e5;
+        border-bottom: 4px solid #e5e5e5;
+      }
+      .btn-disabled {
+        background: #e5e5e5;
+        color: #afafaf;
+        border-bottom: 4px solid #ccc;
+        cursor: not-allowed;
+      }
+
+      /* ===================== THEME OVERRIDES ===================== */
+      /* Musyrif Theme (Darker Green) */
+      .phone.theme-musyrif .btn-green {
+        background: #23a100;
+        border-bottom-color: #1a7a00;
+      }
+      .phone.theme-musyrif .prog-bar-fill {
+        background: #23a100;
+      }
+      .phone.theme-musyrif .statusbar {
+        background: #1a1a1a;
+        color: #fff;
+      }
+      .phone.theme-musyrif .topbar {
+        background: #1a1a1a;
+        color: #fff;
+      }
+      
+      /* Admin Theme (Indigo/Professional) */
+      .phone.theme-admin .btn-green {
+        background: #4f46e5;
+        border-bottom-color: #3730a3;
+      }
+      .phone.theme-admin .prog-bar-fill {
+        background: #4f46e5;
+      }
+      .phone.theme-admin .statusbar {
+        background: #1e293b;
+        color: #fff;
+      }
+      .phone.theme-admin .topbar {
+        background: #1e293b;
+        color: #fff;
+      }
+
+      /* ===================== TOP BAR ===================== */
+      .topbar {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 16px 8px;
+      }
+      .streak-pill {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 13px;
+        font-weight: 800;
+        color: #ff9600;
+      }
+      .xp-pill {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 13px;
+        font-weight: 800;
+        color: #1cb0f6;
+      }
+      .hearts-pill {
+        display: flex;
+        align-items: center;
+        gap: 3px;
+        font-size: 13px;
+        font-weight: 800;
+        color: #ff4b4b;
+      }
+      .gems-pill {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 13px;
+        font-weight: 800;
+        color: #ce82ff;
+      }
+
+      /* ===================== PROGRESS BAR ===================== */
+      .prog-wrap {
+        padding: 0 16px 10px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .prog-bar-bg {
+        flex: 1;
+        height: 16px;
+        background: #e5e5e5;
+        border-radius: 100px;
+        overflow: hidden;
+      }
+      .prog-bar-fill {
+        height: 100%;
+        background: #58cc02;
+        border-radius: 100px;
+        transition: width 0.4s;
+      }
+
+      /* ===================== ANSWER OPTIONS ===================== */
+      .option-card {
+        width: 100%;
+        padding: 12px 14px;
+        border-radius: 12px;
+        border: 2px solid #e5e5e5;
+        border-bottom: 4px solid #e5e5e5;
+        background: #fff;
+        font-family: "Nunito", sans-serif;
+        font-size: 14px;
+        font-weight: 700;
+        color: #3c3c3c;
+        cursor: pointer;
+        text-align: left;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 8px;
+        transition: all 0.1s;
+      }
+      .option-card:active {
+        border-bottom: 2px solid #e5e5e5;
+        transform: translateY(2px);
+      }
+      .option-card.selected-correct {
+        border-color: #58cc02;
+        border-bottom-color: #46a302;
+        background: #d7ffb2;
+        color: #46a302;
+      }
+      .option-card.selected-wrong {
+        border-color: #ff4b4b;
+        border-bottom-color: #cc0000;
+        background: #ffdfe0;
+        color: #cc0000;
+      }
+      .option-card.selected {
+        border-color: #1cb0f6;
+        border-bottom-color: #0898dc;
+        background: #ddf4ff;
+        color: #0898dc;
+      }
+      .opt-num {
+        width: 28px;
+        height: 28px;
+        border-radius: 8px;
+        border: 2px solid #e5e5e5;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        font-weight: 800;
+        color: #afafaf;
+        flex-shrink: 0;
+      }
+
+      /* ===================== WORD TOKENS ===================== */
+      .word-token {
+        display: inline-block;
+        padding: 8px 12px;
+        border-radius: 12px;
+        border: 2px solid #e5e5e5;
+        border-bottom: 3px solid #e5e5e5;
+        background: #fff;
+        font-family: "Nunito", sans-serif;
+        font-size: 13px;
+        font-weight: 700;
+        color: #3c3c3c;
+        cursor: pointer;
+        margin: 4px;
+        transition: all 0.1s;
+      }
+      .word-token.used {
+        background: #f0f0f0;
+        color: #ccc;
+        border-color: #eee;
+        cursor: default;
+      }
+      .word-token.placed {
+        border-color: #1cb0f6;
+        border-bottom-color: #0898dc;
+        background: #ddf4ff;
+        color: #1cb0f6;
+      }
+      .drop-zone {
+        min-height: 52px;
+        border-radius: 12px;
+        border: 2px dashed #d1d1d1;
+        padding: 8px;
+        display: flex;
+        flex-wrap: wrap;
+        margin: 0 0 10px;
+      }
+
+      /* ===================== FEEDBACK BARS ===================== */
+      .feedback-bar {
+        padding: 16px;
+        border-radius: 16px;
+        margin: 10px 0 0;
+      }
+      .feedback-correct {
+        background: #d7ffb2;
+      }
+      .feedback-wrong {
+        background: #ffdfe0;
+      }
+
+      /* ===================== LEAGUE ===================== */
+      .league-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 14px;
+        border-radius: 12px;
+        margin-bottom: 6px;
+      }
+      .league-row.me {
+        background: #ddf4ff;
+        border: 2px solid #1cb0f6;
+      }
+      .avatar-circle {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+        font-weight: 800;
+        flex-shrink: 0;
+      }
+
+      /* ===================== BOTTOM NAV ===================== */
+      .bottom-nav {
+        display: flex;
+        background: #fff;
+        border-top: 2px solid #e5e5e5;
+        padding: 8px 0 4px;
+        margin-top: auto;
+      }
+      .nav-item {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2px;
+        cursor: pointer;
+        padding: 4px 0;
+        border: none;
+        background: none;
+      }
+      .nav-item i {
+        font-size: 22px;
+        color: #afafaf;
+      }
+      .nav-item.active i {
+        color: #58cc02;
+      }
+      .nav-item span {
+        font-size: 9px;
+        font-weight: 700;
+        color: #afafaf;
+        font-family: "Nunito", sans-serif;
+      }
+      .nav-item.active span {
+        color: #58cc02;
+      }
+
+      /* ===================== MODAL ===================== */
+      .modal-bg {
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 600px;
+      }
+      .modal-card {
+        background: #fff;
+        border-radius: 24px;
+        padding: 24px 20px;
+        width: 280px;
+        text-align: center;
+      }
+
+      /* ===================== SECTION LABELS ===================== */
+      .section-label {
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: #afafaf;
+        padding: 0 16px;
+        margin: 10px 0 6px;
+      }
+
+      /* ===================== SKILL TREE ===================== */
+      .unit-header {
+        margin: 0 16px 10px;
+        border-radius: 14px;
+        padding: 12px 14px;
+      }
+      .unit-circle {
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        border-bottom: 4px solid rgba(0, 0, 0, 0.15);
+        cursor: pointer;
+        margin: 0 auto 8px;
+        border-style: solid;
+        border-width: 0 0 4px 0;
+        transition: transform 0.1s;
+      }
+      .unit-circle:active {
+        transform: scale(0.95);
+      }
+      .unit-circle.locked {
+        background: #e5e5e5;
+        border-color: #ccc;
+        cursor: not-allowed;
+      }
+      .unit-connector {
+        width: 4px;
+        height: 20px;
+        background: #e5e5e5;
+        margin: 0 auto;
+      }
+
+      /* ===================== FILL IN THE BLANK ===================== */
+      .blank-input {
+        border: none;
+        border-bottom: 3px solid #1cb0f6;
+        background: transparent;
+        font-family: "Nunito", sans-serif;
+        font-size: 18px;
+        font-weight: 700;
+        color: #3c3c3c;
+        text-align: center;
+        width: 120px;
+        outline: none;
+        padding: 4px 8px;
+        direction: rtl;
+      }
+      .blank-input::placeholder {
+        color: #d1d1d1;
+      }
+      .blank-input.correct {
+        border-bottom-color: #58cc02;
+        color: #46a302;
+      }
+      .blank-input.wrong {
+        border-bottom-color: #ff4b4b;
+        color: #cc0000;
+      }
+
+      /* ===================== VOICE EXERCISE ===================== */
+      .mic-btn {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: #ff4b4b;
+        border: 0 solid #cc0000;
+        border-bottom-width: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.15s;
+        margin: 0 auto;
+      }
+      .mic-btn:active {
+        border-bottom-width: 2px;
+        transform: translateY(3px);
+      }
+      .mic-btn.recording {
+        background: #ff4b4b;
+        animation: pulse 1s ease-in-out infinite;
+      }
+      @keyframes pulse {
+        0%,
+        100% {
+          box-shadow: 0 0 0 0 rgba(255, 75, 75, 0.4);
+        }
+        50% {
+          box-shadow: 0 0 0 16px rgba(255, 75, 75, 0);
+        }
+      }
+      .waveform {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 3px;
+        height: 40px;
+        margin: 12px 0;
+      }
+      .wave-bar {
+        width: 4px;
+        border-radius: 4px;
+        background: #1cb0f6;
+        animation: wave 1.2s ease-in-out infinite;
+      }
+      .wave-bar:nth-child(1) {
+        height: 16px;
+        animation-delay: 0s;
+      }
+      .wave-bar:nth-child(2) {
+        height: 28px;
+        animation-delay: 0.1s;
+      }
+      .wave-bar:nth-child(3) {
+        height: 36px;
+        animation-delay: 0.2s;
+      }
+      .wave-bar:nth-child(4) {
+        height: 24px;
+        animation-delay: 0.3s;
+      }
+      .wave-bar:nth-child(5) {
+        height: 40px;
+        animation-delay: 0.4s;
+      }
+      .wave-bar:nth-child(6) {
+        height: 28px;
+        animation-delay: 0.5s;
+      }
+      .wave-bar:nth-child(7) {
+        height: 16px;
+        animation-delay: 0.6s;
+      }
+      @keyframes wave {
+        0%,
+        100% {
+          transform: scaleY(0.5);
+        }
+        50% {
+          transform: scaleY(1.2);
+        }
+      }
+      .waveform.idle .wave-bar {
+        animation: none;
+        height: 4px;
+      }
+
+      /* ===================== PROFILE ===================== */
+      .achievement-badge {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+      }
+      .badge-icon {
+        width: 52px;
+        height: 52px;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        border-bottom: 3px solid rgba(0, 0, 0, 0.12);
+      }
+      .badge-locked .badge-icon {
+        background: #e5e5e5;
+        filter: grayscale(1);
+        opacity: 0.6;
+      }
+
+      /* ===================== SHOP ===================== */
+      .shop-item {
+        background: #fff;
+        border-radius: 14px;
+        border: 2px solid #e5e5e5;
+        border-bottom-width: 4px;
+        padding: 14px;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .shop-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        flex-shrink: 0;
+      }
+
+      /* ===================== TADABBUR ===================== */
+      .tadabbur-card {
+        background: #fff;
+        border-radius: 14px;
+        border: 2px solid #e5e5e5;
+        border-bottom-width: 4px;
+        padding: 14px;
+        margin-bottom: 10px;
+        cursor: pointer;
+        transition: transform 0.1s;
+      }
+      .tadabbur-card:active {
+        transform: scale(0.98);
+      }
+      .topic-chip {
+        display: inline-block;
+        padding: 3px 10px;
+        border-radius: 20px;
+        font-size: 10px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      /* ===================== NOTIFICATION / TOAST ===================== */
+      .achievement-toast {
+        position: absolute;
+        top: 70px;
+        left: 12px;
+        right: 12px;
+        background: #fff;
+        border-radius: 16px;
+        border: 2px solid #ffc800;
+        padding: 12px 14px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        z-index: 100;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+        animation: slideDown 0.4s ease-out;
+      }
+      @keyframes slideDown {
+        from {
+          opacity: 0;
+          transform: translateY(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* ===================== SCROLLABLE INNER ===================== */
+      .scroll-content {
+        flex: 1;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      /* ===================== LIVE MARKING ===================== */
+      .marking-word {
+        cursor: pointer;
+        border-radius: 4px;
+        transition: all 0.1s;
+        padding: 2px 4px;
+      }
+      .marking-word:hover {
+        background: rgba(88, 204, 2, 0.1);
+      }
+      .marking-word.err-lupa {
+        background: #ffdfe0;
+        color: #cc0000;
+        border-bottom: 2px solid #cc0000;
+      }
+      .marking-word.err-tajwid {
+        background: #fff7e6;
+        color: #cc7000;
+        border-bottom: 2px solid #cc7000;
+      }
+      .marking-word.err-makhraj {
+        background: #ddf4ff;
+        color: #0898dc;
+        border-bottom: 2px solid #0898dc;
+      }
+
+      @keyframes pulse-green {
+        0% {
+          box-shadow: 0 0 0 0 rgba(88, 204, 2, 0.4);
+        }
+        70% {
+          box-shadow: 0 0 0 10px rgba(88, 204, 2, 0);
+        }
+        100% {
+          box-shadow: 0 0 0 0 rgba(88, 204, 2, 0);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="qm-app">
+      <!-- Screen nav switcher -->
+      <div class="snav">
+        <div style="width: 100%; text-align: center; font-size: 10px; font-weight: 900; color: #afafaf; margin: 10px 0 5px; text-transform: uppercase; letter-spacing: 1px;">Category: User</div>
+        <button class="snb" onclick="go('onboarding')">✨ Onboarding</button>
+        <button class="snb" onclick="go('learn')">🏠 Belajar</button>
+        <button class="snb" onclick="go('lesson')">📖 Hafalan</button>
+        <button class="snb" onclick="go('tadabbur')">📚 Tadabbur</button>
+        <button class="snb" onclick="go('profile')">👤 Profil</button>
+        
+        <div style="width: 100%; text-align: center; font-size: 10px; font-weight: 900; color: #afafaf; margin: 15px 0 5px; text-transform: uppercase; letter-spacing: 1px;">Category: Musyrif</div>
+        <button class="snb" onclick="go('musyrif')">👳 Dashboard Musyrif</button>
+        <button class="snb" onclick="go('livemarking')">🔴 Live Marking</button>
+        
+        <div style="width: 100%; text-align: center; font-size: 10px; font-weight: 900; color: #afafaf; margin: 15px 0 5px; text-transform: uppercase; letter-spacing: 1px;">Category: Admin Dashboard</div>
+        <button class="snb" onclick="go('admin-users')">👥 Monitor User</button>
+        <button class="snb" onclick="go('admin-musyrif')">👨‍🏫 Monitor Musyrif</button>
+      </div>
+
+      <div class="phone" id="phone-frame">
+        <div class="statusbar">
+          <span>9:41</span
+          ><span style="display: flex; gap: 4px; align-items: center"
+            ><i class="ti ti-wifi" style="font-size: 13px"></i
+            ><i class="ti ti-battery" style="font-size: 13px"></i
+          ></span>
+        </div>
+
+        <!-- ================================================================ -->
+        <!-- SCREEN: ONBOARDING                                               -->
+        <!-- ================================================================ -->
+        <div id="s-onboarding" class="screen">
+          <div class="topbar">
+            <div class="prog-bar-bg" style="flex: 1">
+              <div
+                class="prog-bar-fill"
+                id="onboarding-prog"
+                style="width: 20%"
+              ></div>
+            </div>
+          </div>
+          <div
+            style="
+              padding: 20px 20px 0;
+              flex: 1;
+              display: flex;
+              flex-direction: column;
+            "
+            id="q-container"
+          ></div>
+          <div style="padding: 16px 20px 20px" id="onboarding-footer">
+            <button
+              class="btn-duo btn-disabled"
+              id="onboarding-next"
+              onclick="nextQuestion()"
+            >
+              LANJUT
+            </button>
+          </div>
+        </div>
+
+        <!-- ================================================================ -->
+        <!-- SCREEN: PLACEMENT TEST                                           -->
+        <!-- ================================================================ -->
+        <div id="s-placement" class="screen">
+          <div class="topbar">
+            <button
+              onclick="go('onboarding')"
+              style="background: none; border: none; cursor: pointer"
+            >
+              <i
+                class="ti ti-arrow-left"
+                style="font-size: 20px; color: #afafaf"
+              ></i>
+            </button>
+            <div
+              style="
+                flex: 1;
+                text-align: center;
+                font-size: 14px;
+                font-weight: 800;
+                color: #3c3c3c;
+              "
+            >
+              Tes Penempatan
+            </div>
+            <div style="width: 28px"></div>
+          </div>
+          <div
+            style="
+              padding: 20px 20px 0;
+              flex: 1;
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              justify-content: center;
+              text-align: center;
+            "
+          >
+            <div style="font-size: 64px; margin-bottom: 16px">🎯</div>
+            <div
+              style="
+                font-size: 20px;
+                font-weight: 900;
+                color: #3c3c3c;
+                margin-bottom: 8px;
+              "
+            >
+              Ukur Hafalanmu
+            </div>
+            <div
+              style="
+                font-size: 14px;
+                font-weight: 700;
+                color: #afafaf;
+                margin-bottom: 24px;
+              "
+            >
+              Sambung 3 potongan ayat dari Juz 30 untuk menentukan titik awalmu.
+            </div>
+            <div
+              style="
+                background: #f7f7f7;
+                border-radius: 16px;
+                padding: 20px;
+                width: 100%;
+                margin-bottom: 20px;
+              "
+            >
+              <div
+                style="
+                  font-size: 12px;
+                  font-weight: 800;
+                  color: #58cc02;
+                  margin-bottom: 10px;
+                "
+              >
+                PERTANYAAN 1/3
+              </div>
+              <div
+                style="
+                  font-size: 20px;
+                  font-family: serif;
+                  direction: rtl;
+                  line-height: 1.8;
+                  color: #3c3c3c;
+                "
+              >
+                عَمَّ يَتَسَآءَلُونَ...
+              </div>
+            </div>
+            <div style="width: 100%">
+              <button class="option-card" onclick="pickPlacement(this, true)">
+                <div class="opt-num">A</div>
+                <span style="direction: rtl; text-align: right; flex: 1"
+                  >عَنِ ٱلنَّبَإِ ٱلۡعَظِيمِ</span
+                >
+              </button>
+              <button class="option-card" onclick="pickPlacement(this, false)">
+                <div class="opt-num">B</div>
+                <span style="direction: rtl; text-align: right; flex: 1"
+                  >فِي جَنَّٰتٍ وَعُيُونٍ</span
+                >
+              </button>
+              <button class="option-card" onclick="pickPlacement(this, false)">
+                <div class="opt-num">C</div>
+                <span style="direction: rtl; text-align: right; flex: 1"
+                  >إِنَّ لِلۡمُتَّقِينَ مَفَازًا</span
+                >
+              </button>
+            </div>
+          </div>
+          <div style="padding: 16px 20px 20px">
+            <button
+              class="btn-duo btn-disabled"
+              id="placement-next"
+              onclick="finishPlacement()"
+            >
+              PERIKSA
+            </button>
+          </div>
+        </div>
+
+        <!-- ================================================================ -->
+        <!-- SCREEN: ADMIN — MONITOR USER                                     -->
+        <!-- ================================================================ -->
+        <div id="s-admin-users" class="screen">
+          <div class="topbar">
+            <div style="font-size: 15px; font-weight: 900;">Admin: Monitor User</div>
+          </div>
+          <div style="padding: 16px; flex: 1; overflow-y: auto;">
+            <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px; display: flex; justify-content: space-between; margin-bottom: 16px;">
+              <div style="text-align: center; flex: 1;">
+                <div style="font-size: 18px; font-weight: 900; color: #1e293b;">1.240</div>
+                <div style="font-size: 9px; font-weight: 800; color: #64748b; text-transform: uppercase;">Total User</div>
+              </div>
+              <div style="text-align: center; flex: 1; border-left: 1px solid #e2e8f0; border-right: 1px solid #e2e8f0;">
+                <div style="font-size: 18px; font-weight: 900; color: #23a100;">85</div>
+                <div style="font-size: 9px; font-weight: 800; color: #64748b; text-transform: uppercase;">Aktif Sekarang</div>
+              </div>
+              <div style="text-align: center; flex: 1;">
+                <div style="font-size: 18px; font-weight: 900; color: #4f46e5;">342</div>
+                <div style="font-size: 9px; font-weight: 800; color: #64748b; text-transform: uppercase;">Setoran Hari Ini</div>
+              </div>
+            </div>
+
+            <div class="section-label">User Perlu Perhatian (Low Activity)</div>
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+              <div style="background: #fff; border: 2px solid #e5e5e5; border-radius: 12px; padding: 12px; display: flex; align-items: center; gap: 10px;">
+                <div style="width: 36px; height: 36px; border-radius: 50%; background: #fee2e2; display: flex; align-items: center; justify-content: center; font-size: 18px;">📉</div>
+                <div style="flex: 1;">
+                  <div style="font-size: 13px; font-weight: 800;">Budi Santoso</div>
+                  <div style="font-size: 10px; color: #ef4444; font-weight: 700;">Streak putus 3 hari lalu</div>
+                </div>
+                <button class="btn-duo btn-green" style="width: auto; padding: 6px 12px; font-size: 10px;">HUBUNGI</button>
+              </div>
+              <div style="background: #fff; border: 2px solid #e5e5e5; border-radius: 12px; padding: 12px; display: flex; align-items: center; gap: 10px;">
+                <div style="width: 36px; height: 36px; border-radius: 50%; background: #fef9c3; display: flex; align-items: center; justify-content: center; font-size: 18px;">⏳</div>
+                <div style="flex: 1;">
+                  <div style="font-size: 13px; font-weight: 800;">Siti Aminah</div>
+                  <div style="font-size: 10px; color: #a16207; font-weight: 700;">Belum setor pekan ini</div>
+                </div>
+                <button class="btn-duo btn-green" style="width: auto; padding: 6px 12px; font-size: 10px;">REMIND</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ================================================================ -->
+        <!-- SCREEN: ADMIN — MONITOR MUSYRIF                                  -->
+        <!-- ================================================================ -->
+        <div id="s-admin-musyrif" class="screen">
+          <div class="topbar">
+            <div style="font-size: 15px; font-weight: 900;">Admin: Monitor Musyrif</div>
+          </div>
+          <div style="padding: 16px; flex: 1; overflow-y: auto;">
+             <div style="background: #1e293b; color: #fff; border-radius: 16px; padding: 16px; margin-bottom: 16px;">
+                <div style="font-size: 11px; font-weight: 800; opacity: 0.7; text-transform: uppercase;">Revenue Share System</div>
+                <div style="font-size: 24px; font-weight: 900; margin: 4px 0;">Rp 12.450.000</div>
+                <div style="font-size: 10px; font-weight: 700; color: #23a100;">+12% dari bulan lalu</div>
+             </div>
+
+             <div class="section-label">Musyrif Online (Ready)</div>
+             <div style="display: flex; flex-direction: column; gap: 8px;">
+                <div style="background: #fff; border: 2px solid #e5e5e5; border-radius: 12px; padding: 12px; display: flex; align-items: center; gap: 12px;">
+                   <div style="position: relative;">
+                      <div style="width: 40px; height: 40px; border-radius: 50%; background: #f1f5f9; display: flex; align-items: center; justify-content: center; font-size: 20px;">👳</div>
+                      <div style="position: absolute; right: 0; bottom: 0; width: 12px; height: 12px; background: #23a100; border: 2px solid #fff; border-radius: 50%;"></div>
+                   </div>
+                   <div style="flex: 1;">
+                      <div style="font-size: 13px; font-weight: 800;">Ust. Malik</div>
+                      <div style="font-size: 10px; color: #23a100; font-weight: 700;">Melayani: Ahmad H. (Al-Mulk:12)</div>
+                   </div>
+                   <div style="text-align: right;">
+                      <div style="font-size: 11px; font-weight: 800;">4.9 ★</div>
+                   </div>
+                </div>
+                <div style="background: #fff; border: 2px solid #e5e5e5; border-radius: 12px; padding: 12px; display: flex; align-items: center; gap: 12px;">
+                   <div style="position: relative;">
+                      <div style="width: 40px; height: 40px; border-radius: 50%; background: #f1f5f9; display: flex; align-items: center; justify-content: center; font-size: 20px;">👳</div>
+                      <div style="position: absolute; right: 0; bottom: 0; width: 12px; height: 12px; background: #23a100; border: 2px solid #fff; border-radius: 50%;"></div>
+                   </div>
+                   <div style="flex: 1;">
+                      <div style="font-size: 13px; font-weight: 800;">Ust. Hanafi</div>
+                      <div style="font-size: 10px; color: #64748b; font-weight: 700;">Idle — Menunggu setoran</div>
+                   </div>
+                   <div style="text-align: right;">
+                      <div style="font-size: 11px; font-weight: 800;">4.8 ★</div>
+                   </div>
+                </div>
+             </div>
+          </div>
+        </div>
+
+        <!-- ================================================================ -->
+        <!-- SCREEN: MUSYRIF DASHBOARD                                        -->
+        <!-- ================================================================ -->
+        <div id="s-musyrif" class="screen">
+          <div style="background: #3c3c3c; padding: 16px; color: #fff">
+            <div
+              style="
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+              "
+            >
+              <div style="display: flex; align-items: center; gap: 10px">
+                <div
+                  style="
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 50%;
+                    background: #58cc02;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 20px;
+                  "
+                >
+                  👳
+                </div>
+                <div>
+                  <div style="font-size: 14px; font-weight: 900">
+                    Ustadz Malik
+                  </div>
+                  <div
+                    style="font-size: 10px; font-weight: 700; color: #58cc02"
+                  >
+                    Mitra Bersanad (Tier 2)
+                  </div>
+                </div>
+              </div>
+              <div style="text-align: right">
+                <div style="font-size: 14px; font-weight: 900">Rp 840.000</div>
+                <div style="font-size: 10px; font-weight: 700; opacity: 0.6">
+                  Saldo Pendapatan
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style="padding: 16px; flex: 1; overflow-y: auto">
+            <div
+              style="
+                background: #f7f7f7;
+                border-radius: 16px;
+                padding: 16px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin-bottom: 16px;
+              "
+            >
+              <div>
+                <div style="font-size: 14px; font-weight: 800; color: #3c3c3c">
+                  Status Ketersediaan
+                </div>
+                <div style="font-size: 11px; font-weight: 700; color: #afafaf">
+                  Aktifkan untuk menerima setoran
+                </div>
+              </div>
+              <div
+                style="
+                  width: 48px;
+                  height: 26px;
+                  background: #58cc02;
+                  border-radius: 100px;
+                  position: relative;
+                  cursor: pointer;
+                "
+              >
+                <div
+                  style="
+                    width: 20px;
+                    height: 20px;
+                    background: #fff;
+                    border-radius: 50%;
+                    position: absolute;
+                    right: 3px;
+                    top: 3px;
+                  "
+                ></div>
+              </div>
+            </div>
+            <div class="section-label">Permintaan Setoran (Real-time)</div>
+            <div
+              style="
+                background: #fff;
+                border: 2px solid #58cc02;
+                border-bottom-width: 4px;
+                border-radius: 16px;
+                padding: 16px;
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                animation: pulse-green 2s infinite;
+              "
+            >
+              <div
+                style="
+                  width: 48px;
+                  height: 48px;
+                  border-radius: 50%;
+                  background: #d7ffb2;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  font-size: 24px;
+                "
+              >
+                🧑‍🎓
+              </div>
+              <div style="flex: 1">
+                <div style="font-size: 14px; font-weight: 900; color: #3c3c3c">
+                  Ahmad Hafidz
+                </div>
+                <div style="font-size: 11px; font-weight: 700; color: #58cc02">
+                  Setoran: Al-Mulk 12-16 (Tiket)
+                </div>
+              </div>
+              <button
+                class="btn-duo btn-green"
+                style="width: auto; padding: 10px 16px; font-size: 12px"
+                onclick="go('livemarking')"
+              >
+                TERIMA
+              </button>
+            </div>
+            <div class="section-label" style="margin-top: 16px">
+              Statistik Mengajar
+            </div>
+            <div
+              style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px"
+            >
+              <div
+                style="
+                  background: #fff;
+                  border: 2px solid #e5e5e5;
+                  border-bottom-width: 4px;
+                  border-radius: 14px;
+                  padding: 12px;
+                  text-align: center;
+                "
+              >
+                <div style="font-size: 20px; font-weight: 900; color: #3c3c3c">
+                  24
+                </div>
+                <div style="font-size: 10px; font-weight: 800; color: #afafaf">
+                  Sesi Minggu Ini
+                </div>
+              </div>
+              <div
+                style="
+                  background: #fff;
+                  border: 2px solid #e5e5e5;
+                  border-bottom-width: 4px;
+                  border-radius: 14px;
+                  padding: 12px;
+                  text-align: center;
+                "
+              >
+                <div style="font-size: 20px; font-weight: 900; color: #ffc800">
+                  4.9 ★
+                </div>
+                <div style="font-size: 10px; font-weight: 800; color: #afafaf">
+                  Rating Rata-rata
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ================================================================ -->
+        <!-- SCREEN: LIVE MARKING                                             -->
+        <!-- ================================================================ -->
+        <div id="s-livemarking" class="screen">
+          <div
+            style="
+              background: #3c3c3c;
+              padding: 12px 16px;
+              color: #fff;
+              display: flex;
+              align-items: center;
+              gap: 12px;
+            "
+          >
+            <button
+              onclick="go('musyrif')"
+              style="
+                background: none;
+                border: none;
+                cursor: pointer;
+                color: #fff;
+              "
+            >
+              <i class="ti ti-x" style="font-size: 20px"></i>
+            </button>
+            <div style="flex: 1">
+              <div style="font-size: 13px; font-weight: 900">Ahmad Hafidz</div>
+              <div style="font-size: 10px; font-weight: 700; color: #58cc02">
+                🔴 LIVE — Al-Mulk: 12
+              </div>
+            </div>
+            <div style="display: flex; gap: 6px">
+              <i class="ti ti-microphone" style="color: #58cc02"></i>
+              <i class="ti ti-video"></i>
+            </div>
+          </div>
+          <div
+            style="
+              padding: 20px;
+              flex: 1;
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              text-align: center;
+            "
+          >
+            <div
+              style="
+                font-size: 11px;
+                font-weight: 800;
+                color: #afafaf;
+                margin-bottom: 16px;
+                text-transform: uppercase;
+              "
+            >
+              Ketuk kata untuk memberi tanda koreksi
+            </div>
+            <div
+              style="
+                font-size: 24px;
+                font-family: serif;
+                direction: rtl;
+                line-height: 2.5;
+                color: #3c3c3c;
+                background: #fdfdfd;
+                padding: 20px;
+                border-radius: 16px;
+                box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
+                width: 100%;
+              "
+            >
+              إِنَّ الَّذِينَ
+              <span class="marking-word" onclick="mark(this, 'Lupa')"
+                >يَخۡشَوۡنَ</span
+              >
+              <span class="marking-word" onclick="mark(this, 'Tajwid')"
+                >رَبَّهُم</span
+              >
+              بِٱلۡغَيۡبِ لَهُم
+              <span class="marking-word" onclick="mark(this, 'Makhraj')"
+                >مَّغۡفِرَةٞ</span
+              >
+              وَأَجۡرٞ كَبِيرٞ
+            </div>
+            <div style="margin-top: 24px; width: 100%">
+              <div
+                style="
+                  font-size: 11px;
+                  font-weight: 800;
+                  color: #afafaf;
+                  margin-bottom: 10px;
+                  text-transform: uppercase;
+                "
+              >
+                Laporan Koreksi
+              </div>
+              <div
+                id="marking-log"
+                style="display: flex; flex-direction: column; gap: 6px"
+              >
+                <div style="font-size: 12px; font-weight: 700; color: #afafaf">
+                  Belum ada koreksi
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            style="
+              padding: 16px;
+              border-top: 2px solid #e5e5e5;
+              display: flex;
+              gap: 10px;
+            "
+          >
+            <button
+              class="btn-duo btn-outline"
+              style="flex: 1; font-size: 13px"
+            >
+              BERI FEEDBACK
+            </button>
+            <button
+              class="btn-duo btn-green"
+              style="flex: 1; font-size: 13px"
+              onclick="go('musyrif')"
+            >
+              SELESAI
+            </button>
+          </div>
+        </div>
+
+        <!-- ================================================================ -->
+        <!-- SCREEN: BELAJAR / HOME                                           -->
+        <!-- ================================================================ -->
+        <div id="s-learn" class="screen">
+          <div class="topbar">
+            <div class="streak-pill">
+              <i class="ti ti-flame" style="font-size: 18px"></i> 7
+            </div>
+            <div style="flex: 1; display: flex; justify-content: center">
+              <span
+                style="
+                  font-size: 16px;
+                  font-weight: 900;
+                  color: #58cc02;
+                  letter-spacing: -1px;
+                "
+                >QuranMemo</span
+              >
+            </div>
+            <div
+              class="gems-pill"
+              style="margin-right: 6px; cursor: pointer"
+              onclick="go('shop')"
+            >
+              <i class="ti ti-diamond" style="font-size: 16px"></i> 120
+            </div>
+            <div class="hearts-pill" style="color: #1cb0f6">
+              <i class="ti ti-bolt" style="font-size: 18px"></i> 3/5
+            </div>
+          </div>
+
+          <!-- Achievement toast -->
+          <div class="achievement-toast" id="toast-home" style="display: none">
+            <div style="font-size: 28px">🏅</div>
+            <div style="flex: 1">
+              <div style="font-size: 12px; font-weight: 900; color: #cc7000">
+                Badge Baru Terbuka!
+              </div>
+              <div style="font-size: 11px; font-weight: 700; color: #afafaf">
+                Hafidz Pemula — 10 ayat dihafal
+              </div>
+            </div>
+            <button
+              onclick="
+                document.getElementById('toast-home').style.display = 'none'
+              "
+              style="
+                background: none;
+                border: none;
+                cursor: pointer;
+                color: #afafaf;
+                font-size: 18px;
+              "
+            >
+              ✕
+            </button>
+          </div>
+
+          <div class="scroll-content">
+            <div class="section-label">Target Hari Ini</div>
+            <div
+              class="unit-header"
+              style="
+                background: #58cc02;
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+              "
+            >
+              <div
+                style="
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: flex-start;
+                "
+              >
+                <div>
+                  <div
+                    style="
+                      font-size: 11px;
+                      font-weight: 800;
+                      color: #23a100;
+                      text-transform: uppercase;
+                      letter-spacing: 1px;
+                    "
+                  >
+                    Fokus Utama
+                  </div>
+                  <div
+                    style="
+                      font-size: 18px;
+                      font-weight: 900;
+                      color: #fff;
+                      margin: 2px 0;
+                    "
+                  >
+                    Pelajaran Hari Ini
+                  </div>
+                </div>
+                <div
+                  style="
+                    background: rgba(0, 0, 0, 0.1);
+                    padding: 4px 8px;
+                    border-radius: 8px;
+                    font-size: 11px;
+                    font-weight: 800;
+                    color: #fff;
+                  "
+                >
+                  ⚡ 5 Menit
+                </div>
+              </div>
+              <div
+                style="
+                  background: rgba(255, 255, 255, 0.2);
+                  border-radius: 12px;
+                  padding: 10px;
+                  display: flex;
+                  align-items: center;
+                  gap: 10px;
+                "
+              >
+                <div style="font-size: 20px">🔄</div>
+                <div style="flex: 1">
+                  <div style="font-size: 12px; font-weight: 800; color: #fff">
+                    Murojaah: Al-Mulk 12-16
+                  </div>
+                  <div
+                    style="
+                      font-size: 10px;
+                      font-weight: 700;
+                      color: rgba(255, 255, 255, 0.8);
+                    "
+                  >
+                    Sistem mendeteksi hafalan mulai memudar
+                  </div>
+                </div>
+              </div>
+              <div
+                style="
+                  background: rgba(255, 255, 255, 0.2);
+                  border-radius: 12px;
+                  padding: 10px;
+                  display: flex;
+                  align-items: center;
+                  gap: 10px;
+                "
+              >
+                <div style="font-size: 20px">📖</div>
+                <div style="flex: 1">
+                  <div style="font-size: 12px; font-weight: 800; color: #fff">
+                    Ziyadah: Al-Mulk 17-18
+                  </div>
+                  <div
+                    style="
+                      font-size: 10px;
+                      font-weight: 700;
+                      color: rgba(255, 255, 255, 0.8);
+                    "
+                  >
+                    Materi baru untuk hari ini
+                  </div>
+                </div>
+              </div>
+              <button
+                class="btn-duo"
+                style="
+                  background: #fff;
+                  color: #58cc02;
+                  border-bottom: 4px solid #e5e5e5;
+                  padding: 14px;
+                  font-size: 15px;
+                  margin-top: 4px;
+                "
+                onclick="go('lesson')"
+              >
+                MULAI PELAJARAN
+              </button>
+            </div>
+
+            <div class="section-label">Misi Harian</div>
+            <div
+              style="
+                padding: 0 16px 10px;
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+              "
+            >
+              <div
+                style="
+                  background: #fff;
+                  border: 2px solid #e5e5e5;
+                  border-bottom-width: 4px;
+                  border-radius: 14px;
+                  padding: 12px;
+                  display: flex;
+                  align-items: center;
+                  gap: 12px;
+                "
+              >
+                <div style="font-size: 24px">🔄</div>
+                <div style="flex: 1">
+                  <div
+                    style="font-size: 13px; font-weight: 800; color: #3c3c3c"
+                  >
+                    Selesaikan 2 sesi Murojaah
+                  </div>
+                  <div
+                    style="
+                      height: 6px;
+                      background: #e5e5e5;
+                      border-radius: 100px;
+                      margin-top: 6px;
+                    "
+                  >
+                    <div
+                      style="
+                        width: 50%;
+                        height: 100%;
+                        background: #1cb0f6;
+                        border-radius: 100px;
+                      "
+                    ></div>
+                  </div>
+                </div>
+                <div style="font-size: 11px; font-weight: 800; color: #afafaf">
+                  1/2
+                </div>
+              </div>
+              <div
+                style="
+                  background: #fff;
+                  border: 2px solid #e5e5e5;
+                  border-bottom-width: 4px;
+                  border-radius: 14px;
+                  padding: 12px;
+                  display: flex;
+                  align-items: center;
+                  gap: 12px;
+                "
+              >
+                <div style="font-size: 24px">🎙️</div>
+                <div style="flex: 1">
+                  <div
+                    style="font-size: 13px; font-weight: 800; color: #3c3c3c"
+                  >
+                    Tes Suara 100% Akurasi
+                  </div>
+                  <div
+                    style="
+                      height: 6px;
+                      background: #e5e5e5;
+                      border-radius: 100px;
+                      margin-top: 6px;
+                    "
+                  >
+                    <div
+                      style="
+                        width: 0%;
+                        height: 100%;
+                        background: #58cc02;
+                        border-radius: 100px;
+                      "
+                    ></div>
+                  </div>
+                </div>
+                <div style="font-size: 11px; font-weight: 800; color: #afafaf">
+                  0/1
+                </div>
+              </div>
+            </div>
+
+            <div class="section-label">Peta Hafalan</div>
+            <div
+              style="
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                padding: 0 0 8px;
+              "
+            >
+              <div
+                class="unit-circle"
+                style="background: #58cc02"
+                onclick="go('lesson')"
+              >
+                📖
+              </div>
+              <div class="unit-connector"></div>
+              <div
+                class="unit-circle"
+                style="background: #58cc02"
+                onclick="go('fillin')"
+              >
+                ✍️
+              </div>
+              <div class="unit-connector"></div>
+              <div
+                class="unit-circle"
+                style="background: #58cc02"
+                onclick="go('dragdrop')"
+              >
+                🔀
+              </div>
+              <div class="unit-connector"></div>
+              <div
+                class="unit-circle"
+                style="background: #58cc02"
+                onclick="go('voice')"
+              >
+                🎙️
+              </div>
+              <div class="unit-connector"></div>
+              <div
+                class="unit-circle"
+                style="background: #1cb0f6; border-color: #0898dc"
+                onclick="go('lesson')"
+              >
+                ⭐
+              </div>
+              <div class="unit-connector"></div>
+              <div class="unit-circle locked">🔒</div>
+              <div class="unit-connector"></div>
+              <div class="unit-circle locked">🔒</div>
+            </div>
+
+            <div class="section-label" style="margin-top: 6px">
+              Unit 2 — An-Naba'
+            </div>
+            <div class="unit-header" style="background: #e5e5e5">
+              <div
+                style="
+                  font-size: 11px;
+                  font-weight: 800;
+                  color: #afafaf;
+                  text-transform: uppercase;
+                  letter-spacing: 1px;
+                "
+              >
+                Juz 30
+              </div>
+              <div
+                style="
+                  font-size: 15px;
+                  font-weight: 800;
+                  color: #afafaf;
+                  margin: 2px 0 8px;
+                "
+              >
+                Surat An-Naba'
+              </div>
+              <button
+                class="btn-duo btn-disabled"
+                style="font-size: 13px; padding: 10px"
+              >
+                TERKUNCI
+              </button>
+            </div>
+            <div style="height: 12px"></div>
+          </div>
+
+          <div class="bottom-nav">
+            <button class="nav-item active" onclick="go('learn')">
+              <i class="ti ti-home"></i><span>Belajar</span>
+            </button>
+            <button class="nav-item" onclick="go('murojaah')">
+              <i class="ti ti-refresh"></i><span>Murojaah</span>
+            </button>
+            <button class="nav-item" onclick="go('tadabbur')">
+              <i class="ti ti-book"></i><span>Tadabbur</span>
+            </button>
+            <button class="nav-item" onclick="go('league')">
+              <i class="ti ti-trophy"></i><span>Liga</span>
+            </button>
+            <button class="nav-item" onclick="go('profile')">
+              <i class="ti ti-user"></i><span>Profil</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- ================================================================ -->
+        <!-- SCREEN: LESSON — Pilihan Ganda Audio                            -->
+        <!-- ================================================================ -->
+        <div id="s-lesson" class="screen">
+          <div class="topbar">
+            <button
+              onclick="go('learn')"
+              style="background: none; border: none; cursor: pointer"
+            >
+              <i class="ti ti-x" style="font-size: 20px; color: #afafaf"></i>
+            </button>
+            <div class="prog-bar-bg" style="flex: 1">
+              <div class="prog-bar-fill" style="width: 35%"></div>
+            </div>
+            <div class="xp-pill">
+              <i class="ti ti-bolt" style="font-size: 16px"></i> 20
+            </div>
+            <div class="hearts-pill" style="color: #1cb0f6">
+              <i class="ti ti-bolt" style="font-size: 15px"></i> 3
+            </div>
+          </div>
+          <div style="padding: 12px 16px 0">
+            <div
+              style="
+                font-size: 11px;
+                font-weight: 800;
+                color: #afafaf;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                margin-bottom: 10px;
+              "
+            >
+              Pilihan Ganda Audio
+            </div>
+            <div
+              style="
+                background: #f7f7f7;
+                border-radius: 16px;
+                padding: 16px;
+                text-align: center;
+                margin-bottom: 16px;
+              "
+            >
+              <div
+                style="
+                  font-size: 13px;
+                  color: #afafaf;
+                  font-weight: 700;
+                  margin-bottom: 10px;
+                "
+              >
+                Dengarkan, lalu pilih kelanjutan ayat yang benar
+              </div>
+              <div style="display: flex; justify-content: center">
+                <button
+                  id="play-btn"
+                  onclick="togglePlay()"
+                  style="
+                    width: 64px;
+                    height: 64px;
+                    border-radius: 50%;
+                    background: #1cb0f6;
+                    border: 0 solid #0898dc;
+                    border-bottom-width: 4px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    cursor: pointer;
+                  "
+                >
+                  <i
+                    class="ti ti-player-play"
+                    style="font-size: 26px; color: #fff"
+                    id="play-icon"
+                  ></i>
+                </button>
+              </div>
+              <div
+                style="
+                  font-size: 19px;
+                  margin-top: 12px;
+                  font-family: serif;
+                  color: #3c3c3c;
+                  line-height: 1.8;
+                  direction: rtl;
+                "
+              >
+                إِنَّ الَّذِينَ يَخۡشَوۡنَ...
+              </div>
+              <div
+                style="
+                  font-size: 11px;
+                  color: #afafaf;
+                  font-weight: 700;
+                  margin-top: 4px;
+                "
+              >
+                Al-Mulk: 12
+              </div>
+            </div>
+            <div id="opts">
+              <button class="option-card" onclick="pick(this, false)">
+                <div class="opt-num">A</div>
+                <span style="direction: rtl; text-align: right; flex: 1"
+                  >رَبَّهُم بِٱلۡغَيۡبِ لَهُم مَّغۡفِرَةٞ</span
+                >
+              </button>
+              <button class="option-card" onclick="pick(this, true)">
+                <div class="opt-num">B</div>
+                <span style="direction: rtl; text-align: right; flex: 1"
+                  >رَبَّهُم بِٱلۡغَيۡبِ لَهُم مَّغۡفِرَةٞ وَأَجۡرٞ كَبِيرٞ</span
+                >
+              </button>
+              <button class="option-card" onclick="pick(this, false)">
+                <div class="opt-num">C</div>
+                <span style="direction: rtl; text-align: right; flex: 1"
+                  >رَبَّهُم سِرٗا وَعَلَانِيَةٗ</span
+                >
+              </button>
+              <button class="option-card" onclick="pick(this, false)">
+                <div class="opt-num">D</div>
+                <span style="direction: rtl; text-align: right; flex: 1"
+                  >رَبَّهُم لَهُم أَجۡرٞ غَيۡرُ مَمۡنُونٍ</span
+                >
+              </button>
+            </div>
+            <div id="feedback-area"></div>
+          </div>
+          <div style="flex: 1"></div>
+          <div style="padding: 12px 16px 16px">
+            <button
+              id="check-btn"
+              class="btn-duo btn-disabled"
+              onclick="checkAnswer()"
+            >
+              PERIKSA
+            </button>
+          </div>
+        </div>
+
+        <!-- ================================================================ -->
+        <!-- SCREEN: FILL IN THE BLANK                                        -->
+        <!-- ================================================================ -->
+        <div id="s-fillin" class="screen">
+          <div class="topbar">
+            <button
+              onclick="go('learn')"
+              style="background: none; border: none; cursor: pointer"
+            >
+              <i class="ti ti-x" style="font-size: 20px; color: #afafaf"></i>
+            </button>
+            <div class="prog-bar-bg" style="flex: 1">
+              <div class="prog-bar-fill" style="width: 50%"></div>
+            </div>
+            <div class="xp-pill">
+              <i class="ti ti-bolt" style="font-size: 16px"></i> 25
+            </div>
+            <div class="hearts-pill" style="color: #1cb0f6">
+              <i class="ti ti-bolt" style="font-size: 15px"></i> 3
+            </div>
+          </div>
+          <div style="padding: 12px 16px 0">
+            <div
+              style="
+                font-size: 11px;
+                font-weight: 800;
+                color: #afafaf;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                margin-bottom: 6px;
+              "
+            >
+              Lengkapi Ayat
+            </div>
+            <div
+              style="
+                font-size: 16px;
+                font-weight: 800;
+                color: #3c3c3c;
+                margin-bottom: 14px;
+              "
+            >
+              Isi bagian ayat yang hilang
+            </div>
+            <div
+              style="
+                background: #f7f7f7;
+                border-radius: 16px;
+                padding: 16px;
+                text-align: center;
+                margin-bottom: 16px;
+              "
+            >
+              <div
+                style="
+                  font-size: 11px;
+                  font-weight: 700;
+                  color: #afafaf;
+                  margin-bottom: 12px;
+                "
+              >
+                Al-Mulk: Ayat 12
+              </div>
+              <div
+                style="
+                  font-size: 18px;
+                  font-family: serif;
+                  direction: rtl;
+                  line-height: 2.8;
+                  color: #3c3c3c;
+                "
+              >
+                إِنَّ الَّذِينَ يَخۡشَوۡنَ رَبَّهُم بِٱلۡغَيۡبِ لَهُم
+                <input
+                  class="blank-input"
+                  id="fillin-input"
+                  placeholder="___"
+                  dir="rtl"
+                  oninput="checkFillinReady()"
+                />
+                وَأَجۡرٞ كَبِيرٞ
+              </div>
+              <div
+                id="fillin-hint"
+                style="
+                  margin-top: 8px;
+                  font-size: 12px;
+                  font-weight: 700;
+                  color: #afafaf;
+                "
+              >
+                Petunjuk: kata ini bermakna "ampunan"
+              </div>
+            </div>
+            <div
+              style="
+                font-size: 11px;
+                font-weight: 800;
+                color: #afafaf;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                margin-bottom: 8px;
+              "
+            >
+              Pilih atau ketik sendiri
+            </div>
+            <div
+              style="
+                display: flex;
+                flex-wrap: wrap;
+                gap: 6px;
+                margin-bottom: 14px;
+              "
+            >
+              <button class="word-token" onclick="fillWord('مَّغۡفِرَةٞ')">
+                مَّغۡفِرَةٞ
+              </button>
+              <button class="word-token" onclick="fillWord('رَحۡمَةٞ')">
+                رَحۡمَةٞ
+              </button>
+              <button class="word-token" onclick="fillWord('نِعۡمَةٞ')">
+                نِعۡمَةٞ
+              </button>
+              <button class="word-token" onclick="fillWord('جَنَّةٞ')">
+                جَنَّةٞ
+              </button>
+            </div>
+            <div id="fillin-feedback"></div>
+          </div>
+          <div style="flex: 1"></div>
+          <div style="padding: 12px 16px 16px">
+            <button
+              id="fillin-btn"
+              class="btn-duo btn-disabled"
+              onclick="checkFillin()"
+            >
+              PERIKSA
+            </button>
+          </div>
+        </div>
+
+        <!-- ================================================================ -->
+        <!-- SCREEN: VOICE — Ucapkan Ayat                                    -->
+        <!-- ================================================================ -->
+        <div id="s-voice" class="screen">
+          <div class="topbar">
+            <button
+              onclick="go('learn')"
+              style="background: none; border: none; cursor: pointer"
+            >
+              <i class="ti ti-x" style="font-size: 20px; color: #afafaf"></i>
+            </button>
+            <div class="prog-bar-bg" style="flex: 1">
+              <div class="prog-bar-fill" style="width: 65%"></div>
+            </div>
+            <div class="xp-pill">
+              <i class="ti ti-bolt" style="font-size: 16px"></i> 30
+            </div>
+            <div class="hearts-pill" style="color: #1cb0f6">
+              <i class="ti ti-bolt" style="font-size: 15px"></i> 3
+            </div>
+          </div>
+          <div
+            style="
+              padding: 12px 16px 0;
+              flex: 1;
+              display: flex;
+              flex-direction: column;
+            "
+          >
+            <div
+              style="
+                font-size: 11px;
+                font-weight: 800;
+                color: #afafaf;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                margin-bottom: 6px;
+              "
+            >
+              Ucapkan Ayat
+            </div>
+            <div
+              style="
+                font-size: 16px;
+                font-weight: 800;
+                color: #3c3c3c;
+                margin-bottom: 16px;
+              "
+            >
+              Bacakan ayat berikut dengan tartil
+            </div>
+            <div
+              style="
+                background: #f7f7f7;
+                border-radius: 16px;
+                padding: 16px;
+                text-align: center;
+                margin-bottom: 16px;
+              "
+            >
+              <div
+                style="
+                  font-size: 11px;
+                  font-weight: 700;
+                  color: #afafaf;
+                  margin-bottom: 10px;
+                "
+              >
+                Al-Mulk: Ayat 1
+              </div>
+              <div
+                style="
+                  font-size: 22px;
+                  font-family: serif;
+                  direction: rtl;
+                  line-height: 2;
+                  color: #3c3c3c;
+                "
+              >
+                تَبَٰرَكَ ٱلَّذِي بِيَدِهِ ٱلۡمُلۡكُ وَهُوَ عَلَىٰ كُلِّ شَيۡءٖ
+                قَدِيرٌ
+              </div>
+              <div
+                style="
+                  font-size: 11px;
+                  color: #1cb0f6;
+                  font-weight: 800;
+                  margin-top: 4px;
+                "
+              >
+                tabāraka-llażī biyadihil-mulku wa huwa 'alā kulli syai'in qadīr
+              </div>
+              <div
+                style="
+                  margin-top: 12px;
+                  font-size: 13px;
+                  color: #afafaf;
+                  font-weight: 700;
+                  font-style: italic;
+                "
+              >
+                "Mahasuci Allah yang di tangan-Nya-lah segala kerajaan..."
+              </div>
+              <button
+                onclick="toggleVoicePlay()"
+                style="
+                  margin-top: 12px;
+                  display: inline-flex;
+                  align-items: center;
+                  gap: 6px;
+                  background: #fff;
+                  border: 2px solid #e5e5e5;
+                  border-bottom: 3px solid #e5e5e5;
+                  border-radius: 12px;
+                  padding: 8px 14px;
+                  cursor: pointer;
+                  font-family: &quot;Nunito&quot;, sans-serif;
+                  font-size: 12px;
+                  font-weight: 800;
+                  color: #1cb0f6;
+                "
+              >
+                <i
+                  class="ti ti-player-play"
+                  id="voice-play-icon"
+                  style="font-size: 16px"
+                ></i>
+                Dengar Contoh
+              </button>
+            </div>
+
+            <!-- state: idle -->
+            <div
+              id="voice-state-idle"
+              style="
+                text-align: center;
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 12px;
+              "
+            >
+              <div class="waveform idle">
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+              </div>
+              <div class="mic-btn" onclick="startRecording()">
+                <i
+                  class="ti ti-microphone"
+                  style="font-size: 36px; color: #fff"
+                ></i>
+              </div>
+              <div style="font-size: 13px; font-weight: 700; color: #afafaf">
+                Ketuk untuk merekam
+              </div>
+            </div>
+
+            <!-- state: recording -->
+            <div
+              id="voice-state-recording"
+              style="
+                text-align: center;
+                flex: 1;
+                display: none;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 12px;
+              "
+            >
+              <div class="waveform">
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+              </div>
+              <div
+                style="font-size: 13px; font-weight: 800; color: #ff4b4b"
+                id="rec-timer"
+              >
+                Merekam... 0:00
+              </div>
+              <div class="mic-btn recording" onclick="stopRecording()">
+                <i
+                  class="ti ti-player-stop"
+                  style="font-size: 32px; color: #fff"
+                ></i>
+              </div>
+              <div style="font-size: 13px; font-weight: 700; color: #afafaf">
+                Ketuk untuk berhenti
+              </div>
+            </div>
+
+            <!-- state: result -->
+            <div
+              id="voice-state-result"
+              style="
+                text-align: center;
+                flex: 1;
+                display: none;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 10px;
+                padding: 0 8px;
+              "
+            >
+              <div style="font-size: 40px">🎯</div>
+              <div style="font-size: 20px; font-weight: 900; color: #58cc02">
+                Tajwid Baik!
+              </div>
+              <div
+                style="
+                  width: 100%;
+                  background: #f7f7f7;
+                  border-radius: 14px;
+                  padding: 14px;
+                "
+              >
+                <div
+                  style="
+                    font-size: 11px;
+                    font-weight: 800;
+                    color: #afafaf;
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                    margin-bottom: 10px;
+                  "
+                >
+                  Analisis Bacaan
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 8px">
+                  <div style="display: flex; align-items: center; gap: 8px">
+                    <div
+                      style="
+                        font-size: 12px;
+                        font-weight: 700;
+                        color: #3c3c3c;
+                        width: 80px;
+                        flex-shrink: 0;
+                      "
+                    >
+                      Makhraj
+                    </div>
+                    <div
+                      style="
+                        flex: 1;
+                        height: 10px;
+                        background: #e5e5e5;
+                        border-radius: 100px;
+                        overflow: hidden;
+                      "
+                    >
+                      <div
+                        style="
+                          width: 88%;
+                          height: 100%;
+                          background: #58cc02;
+                          border-radius: 100px;
+                        "
+                      ></div>
+                    </div>
+                    <div
+                      style="
+                        font-size: 12px;
+                        font-weight: 800;
+                        color: #58cc02;
+                        width: 32px;
+                        text-align: right;
+                      "
+                    >
+                      88%
+                    </div>
+                  </div>
+                  <div style="display: flex; align-items: center; gap: 8px">
+                    <div
+                      style="
+                        font-size: 12px;
+                        font-weight: 700;
+                        color: #3c3c3c;
+                        width: 80px;
+                        flex-shrink: 0;
+                      "
+                    >
+                      Panjang
+                    </div>
+                    <div
+                      style="
+                        flex: 1;
+                        height: 10px;
+                        background: #e5e5e5;
+                        border-radius: 100px;
+                        overflow: hidden;
+                      "
+                    >
+                      <div
+                        style="
+                          width: 72%;
+                          height: 100%;
+                          background: #ffc800;
+                          border-radius: 100px;
+                        "
+                      ></div>
+                    </div>
+                    <div
+                      style="
+                        font-size: 12px;
+                        font-weight: 800;
+                        color: #ffc800;
+                        width: 32px;
+                        text-align: right;
+                      "
+                    >
+                      72%
+                    </div>
+                  </div>
+                  <div style="display: flex; align-items: center; gap: 8px">
+                    <div
+                      style="
+                        font-size: 12px;
+                        font-weight: 700;
+                        color: #3c3c3c;
+                        width: 80px;
+                        flex-shrink: 0;
+                      "
+                    >
+                      Waqaf
+                    </div>
+                    <div
+                      style="
+                        flex: 1;
+                        height: 10px;
+                        background: #e5e5e5;
+                        border-radius: 100px;
+                        overflow: hidden;
+                      "
+                    >
+                      <div
+                        style="
+                          width: 95%;
+                          height: 100%;
+                          background: #58cc02;
+                          border-radius: 100px;
+                        "
+                      ></div>
+                    </div>
+                    <div
+                      style="
+                        font-size: 12px;
+                        font-weight: 800;
+                        color: #58cc02;
+                        width: 32px;
+                        text-align: right;
+                      "
+                    >
+                      95%
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <button
+                class="btn-duo btn-outline"
+                style="font-size: 13px"
+                onclick="resetRecording()"
+              >
+                COBA LAGI
+              </button>
+            </div>
+          </div>
+          <div style="padding: 12px 16px 16px">
+            <button
+              class="btn-duo btn-green"
+              onclick="go('result')"
+              id="voice-next"
+              style="display: none"
+            >
+              LANJUT
+            </button>
+          </div>
+        </div>
+
+        <!-- ================================================================ -->
+        <!-- SCREEN: DRAG DROP — Susun Kata                                  -->
+        <!-- ================================================================ -->
+        <div id="s-dragdrop" class="screen">
+          <div class="topbar">
+            <button
+              onclick="go('learn')"
+              style="background: none; border: none; cursor: pointer"
+            >
+              <i class="ti ti-x" style="font-size: 20px; color: #afafaf"></i>
+            </button>
+            <div class="prog-bar-bg" style="flex: 1">
+              <div class="prog-bar-fill" style="width: 55%"></div>
+            </div>
+            <div class="xp-pill">
+              <i class="ti ti-bolt" style="font-size: 16px"></i> 30
+            </div>
+            <div class="hearts-pill" style="color: #1cb0f6">
+              <i class="ti ti-bolt" style="font-size: 15px"></i> 3
+            </div>
+          </div>
+          <div style="padding: 12px 16px 0">
+            <div
+              style="
+                font-size: 11px;
+                font-weight: 800;
+                color: #afafaf;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                margin-bottom: 10px;
+              "
+            >
+              Susun Kata
+            </div>
+            <div
+              style="
+                font-size: 17px;
+                font-weight: 800;
+                color: #3c3c3c;
+                margin-bottom: 4px;
+              "
+            >
+              Susun potongan ayat dengan benar
+            </div>
+            <div
+              style="
+                font-size: 13px;
+                color: #afafaf;
+                font-weight: 700;
+                margin-bottom: 14px;
+              "
+            >
+              Al-Mulk: Ayat 12
+            </div>
+            <div class="drop-zone" id="drop-zone">
+              <span
+                style="
+                  font-size: 12px;
+                  color: #d1d1d1;
+                  align-self: center;
+                  padding: 4px 8px;
+                  font-weight: 700;
+                "
+                >Ketuk kata untuk menaruh di sini</span
+              >
+            </div>
+            <div
+              style="
+                border-top: 1.5px solid #e5e5e5;
+                padding-top: 12px;
+                display: flex;
+                flex-wrap: wrap;
+              "
+              id="word-bank"
+            >
+              <span class="word-token" onclick="placeWord(this, 'إِنَّ')"
+                >إِنَّ</span
+              >
+              <span class="word-token" onclick="placeWord(this, 'الَّذِينَ')"
+                >الَّذِينَ</span
+              >
+              <span class="word-token" onclick="placeWord(this, 'يَخۡشَوۡنَ')"
+                >يَخۡشَوۡنَ</span
+              >
+              <span class="word-token" onclick="placeWord(this, 'رَبَّهُم')"
+                >رَبَّهُم</span
+              >
+              <span class="word-token" onclick="placeWord(this, 'بِٱلۡغَيۡبِ')"
+                >بِٱلۡغَيۡبِ</span
+              >
+              <span class="word-token" onclick="placeWord(this, 'لَهُم')"
+                >لَهُم</span
+              >
+              <span class="word-token" onclick="placeWord(this, 'مَّغۡفِرَةٞ')"
+                >مَّغۡفِرَةٞ</span
+              >
+            </div>
+            <div id="dd-feedback"></div>
+          </div>
+          <div style="flex: 1"></div>
+          <div style="padding: 12px 16px 16px; display: flex; gap: 8px">
+            <button
+              class="btn-duo btn-outline"
+              style="width: auto; padding: 14px 16px; font-size: 13px"
+              onclick="clearWords()"
+            >
+              HAPUS
+            </button>
+            <button
+              class="btn-duo btn-green"
+              style="flex: 1; font-size: 13px"
+              onclick="checkDrag()"
+            >
+              PERIKSA
+            </button>
+          </div>
+        </div>
+
+        <!-- ================================================================ -->
+        <!-- SCREEN: RESULT                                                   -->
+        <!-- ================================================================ -->
+        <div id="s-result" class="screen">
+          <div
+            style="
+              flex: 1;
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              justify-content: center;
+              padding: 24px 20px;
+              gap: 16px;
+            "
+          >
+            <div style="font-size: 64px">🎉</div>
+            <div
+              style="
+                font-size: 24px;
+                font-weight: 900;
+                color: #58cc02;
+                text-align: center;
+              "
+            >
+              Luar biasa!
+            </div>
+            <div
+              style="
+                font-size: 14px;
+                font-weight: 700;
+                color: #afafaf;
+                text-align: center;
+              "
+            >
+              Kamu menyelesaikan pelajaran hari ini!
+            </div>
+            <div style="display: flex; gap: 12px; width: 100%">
+              <div
+                style="
+                  flex: 1;
+                  background: #fff7e6;
+                  border-radius: 16px;
+                  border: 2px solid #ffc800;
+                  border-bottom-width: 4px;
+                  padding: 14px;
+                  text-align: center;
+                "
+              >
+                <div
+                  style="
+                    font-size: 11px;
+                    font-weight: 800;
+                    color: #afafaf;
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                  "
+                >
+                  XP diraih
+                </div>
+                <div style="font-size: 28px; font-weight: 900; color: #ffc800">
+                  +47
+                </div>
+              </div>
+              <div
+                style="
+                  flex: 1;
+                  background: #fff0f0;
+                  border-radius: 16px;
+                  border: 2px solid #ff4b4b;
+                  border-bottom-width: 4px;
+                  padding: 14px;
+                  text-align: center;
+                "
+              >
+                <div
+                  style="
+                    font-size: 11px;
+                    font-weight: 800;
+                    color: #afafaf;
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                  "
+                >
+                  Akurasi
+                </div>
+                <div style="font-size: 28px; font-weight: 900; color: #ff4b4b">
+                  92%
+                </div>
+              </div>
+              <div
+                style="
+                  flex: 1;
+                  background: #f0fff0;
+                  border-radius: 16px;
+                  border: 2px solid #58cc02;
+                  border-bottom-width: 4px;
+                  padding: 14px;
+                  text-align: center;
+                "
+              >
+                <div
+                  style="
+                    font-size: 11px;
+                    font-weight: 800;
+                    color: #afafaf;
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                  "
+                >
+                  Streak
+                </div>
+                <div style="font-size: 28px; font-weight: 900; color: #ff9600">
+                  🔥8
+                </div>
+              </div>
+            </div>
+            <div
+              style="
+                width: 100%;
+                background: linear-gradient(135deg, #f4e6ff, #ede0ff);
+                border-radius: 16px;
+                border: 2px solid #ce82ff;
+                border-bottom-width: 4px;
+                padding: 14px;
+                display: flex;
+                align-items: center;
+                gap: 12px;
+              "
+            >
+              <div style="font-size: 28px">💎</div>
+              <div style="flex: 1">
+                <div style="font-size: 13px; font-weight: 900; color: #7c3aed">
+                  +10 Gems diraih!
+                </div>
+                <div style="font-size: 11px; font-weight: 700; color: #9c52e0">
+                  Bonus akurasi tinggi
+                </div>
+              </div>
+            </div>
+            <div
+              style="
+                background: #f7f7f7;
+                border-radius: 16px;
+                padding: 14px;
+                width: 100%;
+              "
+            >
+              <div
+                style="
+                  font-size: 11px;
+                  font-weight: 800;
+                  color: #afafaf;
+                  text-transform: uppercase;
+                  letter-spacing: 1px;
+                  margin-bottom: 8px;
+                "
+              >
+                Ayat perlu perhatian
+              </div>
+              <div
+                style="
+                  font-size: 13px;
+                  font-weight: 700;
+                  color: #3c3c3c;
+                  font-family: serif;
+                  text-align: right;
+                  line-height: 2;
+                  direction: rtl;
+                "
+              >
+                وَلَقَدۡ زَيَّنَّا ٱلسَّمَآءَ ٱلدُّنۡيَا
+              </div>
+              <div
+                style="
+                  font-size: 11px;
+                  color: #afafaf;
+                  font-weight: 700;
+                  margin-top: 4px;
+                "
+              >
+                Al-Mulk: 5 — Salah 2x
+              </div>
+            </div>
+            <div
+              style="
+                width: 100%;
+                background: #f7f7f7;
+                border-radius: 16px;
+                padding: 12px;
+                border: 1px dashed #afafaf;
+                margin-top: 8px;
+              "
+            >
+              <div
+                style="
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+                  margin-bottom: 8px;
+                "
+              >
+                <span
+                  style="
+                    font-size: 9px;
+                    font-weight: 800;
+                    color: #afafaf;
+                    text-transform: uppercase;
+                  "
+                  >Promosi Halal</span
+                >
+                <span style="font-size: 8px; color: #afafaf">AD</span>
+              </div>
+              <div style="display: flex; gap: 10px; align-items: center">
+                <div
+                  style="
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 8px;
+                    background: #fff;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 20px;
+                  "
+                >
+                  📦
+                </div>
+                <div style="flex: 1">
+                  <div
+                    style="font-size: 12px; font-weight: 800; color: #3c3c3c"
+                  >
+                    Wakaf Al-Quran Pelosok
+                  </div>
+                  <div
+                    style="font-size: 10px; font-weight: 700; color: #afafaf"
+                  >
+                    Salurkan keberkahan hari ini
+                  </div>
+                </div>
+                <button
+                  class="btn-duo btn-blue"
+                  style="width: auto; padding: 6px 12px; font-size: 10px"
+                  onclick="alert('Membuka donasi...')"
+                >
+                  WAKAF
+                </button>
+              </div>
+            </div>
+            <div style="display: flex; gap: 8px; width: 100%; margin-top: 8px">
+              <button
+                class="btn-duo btn-outline"
+                style="font-size: 12px; padding: 12px"
+                onclick="alert('Berbagi hasil...')"
+              >
+                <i class="ti ti-share" style="font-size: 14px"></i> BAGIKAN
+              </button>
+              <button
+                class="btn-duo btn-green"
+                style="flex: 1"
+                onclick="go('learn')"
+              >
+                LANJUT
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ================================================================ -->
+        <!-- SCREEN: MUROJAAH                                                 -->
+        <!-- ================================================================ -->
+        <div id="s-murojaah" class="screen">
+          <div class="topbar">
+            <button
+              onclick="go('learn')"
+              style="background: none; border: none; cursor: pointer"
+            >
+              <i
+                class="ti ti-arrow-left"
+                style="font-size: 20px; color: #afafaf"
+              ></i>
+            </button>
+            <span
+              style="
+                font-size: 15px;
+                font-weight: 800;
+                color: #3c3c3c;
+                flex: 1;
+                text-align: center;
+              "
+              >Murojaah</span
+            >
+            <div style="width: 28px"></div>
+          </div>
+          <div style="padding: 12px 16px; flex: 1; overflow-y: auto">
+            <div
+              style="
+                background: #fff0cd;
+                border-radius: 16px;
+                padding: 14px;
+                margin-bottom: 12px;
+                display: flex;
+                gap: 10px;
+                align-items: center;
+              "
+            >
+              <div style="font-size: 28px">⚡</div>
+              <div>
+                <div style="font-size: 13px; font-weight: 800; color: #cc7000">
+                  Butuh murojaah hari ini
+                </div>
+                <div style="font-size: 12px; color: #cc7000; font-weight: 700">
+                  12 ayat terdeteksi mulai memudar
+                </div>
+              </div>
+            </div>
+            <div class="section-label" style="padding: 0; margin: 0 0 8px">
+              Jadwal otomatis (Spaced Repetition)
+            </div>
+            <div
+              style="
+                background: #fff;
+                border-radius: 14px;
+                border: 2px solid #e5e5e5;
+                border-bottom-width: 4px;
+                overflow: hidden;
+                margin-bottom: 10px;
+              "
+            >
+              <div
+                style="
+                  padding: 12px 14px;
+                  display: flex;
+                  align-items: center;
+                  gap: 10px;
+                "
+              >
+                <div
+                  style="
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 10px;
+                    background: #ffdfe0;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 18px;
+                    flex-shrink: 0;
+                  "
+                >
+                  🔴
+                </div>
+                <div style="flex: 1">
+                  <div
+                    style="font-size: 13px; font-weight: 800; color: #3c3c3c"
+                  >
+                    Pemanasan — Al-Mulk 12–16
+                  </div>
+                  <div
+                    style="font-size: 11px; font-weight: 700; color: #ff4b4b"
+                  >
+                    Terakhir 3 hari lalu · Urgent
+                  </div>
+                </div>
+                <div style="font-size: 11px; font-weight: 800; color: #afafaf">
+                  5 ayat
+                </div>
+              </div>
+              <div style="padding: 0 14px 12px">
+                <button
+                  class="btn-duo btn-green"
+                  style="padding: 10px; font-size: 12px"
+                  onclick="go('lesson')"
+                >
+                  MULAI SEKARANG
+                </button>
+              </div>
+            </div>
+            <div
+              style="
+                background: #fff;
+                border-radius: 14px;
+                border: 2px solid #e5e5e5;
+                border-bottom-width: 4px;
+                overflow: hidden;
+                margin-bottom: 10px;
+              "
+            >
+              <div
+                style="
+                  padding: 12px 14px;
+                  display: flex;
+                  align-items: center;
+                  gap: 10px;
+                "
+              >
+                <div
+                  style="
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 10px;
+                    background: #fff7e6;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 18px;
+                    flex-shrink: 0;
+                  "
+                >
+                  🟡
+                </div>
+                <div style="flex: 1">
+                  <div
+                    style="font-size: 13px; font-weight: 800; color: #3c3c3c"
+                  >
+                    An-Naba' 1–20
+                  </div>
+                  <div
+                    style="font-size: 11px; font-weight: 700; color: #ff9600"
+                  >
+                    Terakhir 7 hari lalu
+                  </div>
+                </div>
+                <div style="font-size: 11px; font-weight: 800; color: #afafaf">
+                  20 ayat
+                </div>
+              </div>
+            </div>
+            <div
+              style="
+                background: #fff;
+                border-radius: 14px;
+                border: 2px solid #e5e5e5;
+                border-bottom-width: 4px;
+                overflow: hidden;
+                margin-bottom: 10px;
+              "
+            >
+              <div
+                style="
+                  padding: 12px 14px;
+                  display: flex;
+                  align-items: center;
+                  gap: 10px;
+                "
+              >
+                <div
+                  style="
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 10px;
+                    background: #d7ffb2;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 18px;
+                    flex-shrink: 0;
+                  "
+                >
+                  🟢
+                </div>
+                <div style="flex: 1">
+                  <div
+                    style="font-size: 13px; font-weight: 800; color: #3c3c3c"
+                  >
+                    An-Nas s/d Al-Ikhlas
+                  </div>
+                  <div
+                    style="font-size: 11px; font-weight: 700; color: #58cc02"
+                  >
+                    Hafalan kuat
+                  </div>
+                </div>
+                <div style="font-size: 11px; font-weight: 800; color: #afafaf">
+                  7 ayat
+                </div>
+              </div>
+            </div>
+            <div
+              style="
+                background: #f7f7f7;
+                border-radius: 14px;
+                padding: 12px;
+                margin-top: 4px;
+              "
+            >
+              <div
+                style="
+                  font-size: 11px;
+                  font-weight: 800;
+                  color: #afafaf;
+                  text-transform: uppercase;
+                  letter-spacing: 1px;
+                  margin-bottom: 10px;
+                "
+              >
+                Statistik Memori
+              </div>
+              <div style="display: flex; gap: 8px">
+                <div
+                  style="
+                    flex: 1;
+                    text-align: center;
+                    background: #fff;
+                    border-radius: 10px;
+                    padding: 10px;
+                    border: 1.5px solid #e5e5e5;
+                  "
+                >
+                  <div
+                    style="font-size: 22px; font-weight: 900; color: #58cc02"
+                  >
+                    47
+                  </div>
+                  <div
+                    style="font-size: 10px; font-weight: 800; color: #afafaf"
+                  >
+                    Kuat
+                  </div>
+                </div>
+                <div
+                  style="
+                    flex: 1;
+                    text-align: center;
+                    background: #fff;
+                    border-radius: 10px;
+                    padding: 10px;
+                    border: 1.5px solid #e5e5e5;
+                  "
+                >
+                  <div
+                    style="font-size: 22px; font-weight: 900; color: #ffc800"
+                  >
+                    12
+                  </div>
+                  <div
+                    style="font-size: 10px; font-weight: 800; color: #afafaf"
+                  >
+                    Review
+                  </div>
+                </div>
+                <div
+                  style="
+                    flex: 1;
+                    text-align: center;
+                    background: #fff;
+                    border-radius: 10px;
+                    padding: 10px;
+                    border: 1.5px solid #e5e5e5;
+                  "
+                >
+                  <div
+                    style="font-size: 22px; font-weight: 900; color: #ff4b4b"
+                  >
+                    5
+                  </div>
+                  <div
+                    style="font-size: 10px; font-weight: 800; color: #afafaf"
+                  >
+                    Urgent
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="bottom-nav">
+            <button class="nav-item" onclick="go('learn')">
+              <i class="ti ti-home"></i><span>Belajar</span>
+            </button>
+            <button class="nav-item active">
+              <i class="ti ti-refresh"></i><span>Murojaah</span>
+            </button>
+            <button class="nav-item" onclick="go('tadabbur')">
+              <i class="ti ti-book"></i><span>Tadabbur</span>
+            </button>
+            <button class="nav-item" onclick="go('league')">
+              <i class="ti ti-trophy"></i><span>Liga</span>
+            </button>
+            <button class="nav-item" onclick="go('profile')">
+              <i class="ti ti-user"></i><span>Profil</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- ================================================================ -->
+        <!-- SCREEN: LEAGUE                                                   -->
+        <!-- ================================================================ -->
+        <div id="s-league" class="screen">
+          <div style="background: #ffc800; padding: 16px 16px 20px">
+            <div
+              style="
+                font-size: 11px;
+                font-weight: 800;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                color: #cc9a00;
+                margin-bottom: 4px;
+              "
+            >
+              Liga Emas
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px">
+              <div style="font-size: 36px">🏆</div>
+              <div>
+                <div style="font-size: 18px; font-weight: 900; color: #fff">
+                  Fastabiqul Khairat
+                </div>
+                <div style="font-size: 12px; font-weight: 700; color: #fff9e0">
+                  Pekan ini · 30 hafidz · berakhir 4 hari lagi
+                </div>
+              </div>
+            </div>
+            <div
+              style="
+                background: rgba(255, 255, 255, 0.25);
+                border-radius: 10px;
+                padding: 8px 12px;
+                margin-top: 10px;
+                display: flex;
+                justify-content: space-between;
+              "
+            >
+              <div style="text-align: center">
+                <div style="font-size: 18px; font-weight: 900; color: #fff">
+                  #4
+                </div>
+                <div style="font-size: 10px; font-weight: 800; color: #fff9e0">
+                  Posisiku
+                </div>
+              </div>
+              <div style="text-align: center">
+                <div style="font-size: 18px; font-weight: 900; color: #fff">
+                  1.240
+                </div>
+                <div style="font-size: 10px; font-weight: 800; color: #fff9e0">
+                  XP ku
+                </div>
+              </div>
+              <div style="text-align: center">
+                <div style="font-size: 18px; font-weight: 900; color: #fff">
+                  +50
+                </div>
+                <div style="font-size: 10px; font-weight: 800; color: #fff9e0">
+                  Naik #3
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style="padding: 12px 14px; flex: 1; overflow-y: auto">
+            <div
+              style="
+                background: #fff0cd;
+                border-radius: 12px;
+                padding: 8px 12px;
+                margin-bottom: 10px;
+                display: flex;
+                gap: 6px;
+                align-items: center;
+              "
+            >
+              <i
+                class="ti ti-info-circle"
+                style="font-size: 16px; color: #cc7000"
+              ></i>
+              <span style="font-size: 11px; font-weight: 700; color: #cc7000"
+                >Top 10 naik ke Liga Berlian minggu depan!</span
+              >
+            </div>
+            <div class="league-row" style="background: #fff7e6">
+              <span style="font-size: 20px; min-width: 28px; text-align: center"
+                >🥇</span
+              >
+              <div
+                class="avatar-circle"
+                style="background: #ffc800; color: #412402"
+              >
+                FA
+              </div>
+              <div style="flex: 1">
+                <div style="font-size: 13px; font-weight: 800; color: #3c3c3c">
+                  Fatimah A.
+                </div>
+                <div style="font-size: 11px; font-weight: 700; color: #afafaf">
+                  2.100 XP
+                </div>
+              </div>
+            </div>
+            <div class="league-row">
+              <span style="font-size: 20px; min-width: 28px; text-align: center"
+                >🥈</span
+              >
+              <div
+                class="avatar-circle"
+                style="background: #e5e5e5; color: #5f5e5a"
+              >
+                US
+              </div>
+              <div style="flex: 1">
+                <div style="font-size: 13px; font-weight: 800; color: #3c3c3c">
+                  Umar S.
+                </div>
+                <div style="font-size: 11px; font-weight: 700; color: #afafaf">
+                  1.890 XP
+                </div>
+              </div>
+            </div>
+            <div class="league-row">
+              <span style="font-size: 20px; min-width: 28px; text-align: center"
+                >🥉</span
+              >
+              <div
+                class="avatar-circle"
+                style="background: #f0997b; color: #4a1b0c"
+              >
+                KM
+              </div>
+              <div style="flex: 1">
+                <div style="font-size: 13px; font-weight: 800; color: #3c3c3c">
+                  Khadijah M.
+                </div>
+                <div style="font-size: 11px; font-weight: 700; color: #afafaf">
+                  1.540 XP
+                </div>
+              </div>
+            </div>
+            <div class="league-row me">
+              <span
+                style="
+                  font-size: 16px;
+                  font-weight: 900;
+                  color: #1cb0f6;
+                  min-width: 28px;
+                  text-align: center;
+                "
+                >4</span
+              >
+              <div
+                class="avatar-circle"
+                style="background: #ddf4ff; color: #0898dc"
+              >
+                AH
+              </div>
+              <div style="flex: 1">
+                <div style="font-size: 13px; font-weight: 800; color: #1cb0f6">
+                  Ahmad (Kamu)
+                </div>
+                <div style="font-size: 11px; font-weight: 700; color: #1cb0f6">
+                  1.240 XP · +50 untuk naik
+                </div>
+              </div>
+            </div>
+            <div class="league-row">
+              <span
+                style="
+                  font-size: 16px;
+                  font-weight: 800;
+                  color: #afafaf;
+                  min-width: 28px;
+                  text-align: center;
+                "
+                >5</span
+              >
+              <div
+                class="avatar-circle"
+                style="background: #afa9ec; color: #26215c"
+              >
+                BT
+              </div>
+              <div style="flex: 1">
+                <div style="font-size: 13px; font-weight: 800; color: #3c3c3c">
+                  Bilal T.
+                </div>
+                <div style="font-size: 11px; font-weight: 700; color: #afafaf">
+                  1.100 XP
+                </div>
+              </div>
+            </div>
+            <div class="league-row">
+              <span
+                style="
+                  font-size: 16px;
+                  font-weight: 800;
+                  color: #afafaf;
+                  min-width: 28px;
+                  text-align: center;
+                "
+                >6</span
+              >
+              <div
+                class="avatar-circle"
+                style="background: #9fe1cb; color: #04342c"
+              >
+                SR
+              </div>
+              <div style="flex: 1">
+                <div style="font-size: 13px; font-weight: 800; color: #3c3c3c">
+                  Sarah R.
+                </div>
+                <div style="font-size: 11px; font-weight: 700; color: #afafaf">
+                  980 XP
+                </div>
+              </div>
+            </div>
+            <div class="league-row">
+              <span
+                style="
+                  font-size: 16px;
+                  font-weight: 800;
+                  color: #afafaf;
+                  min-width: 28px;
+                  text-align: center;
+                "
+                >7</span
+              >
+              <div
+                class="avatar-circle"
+                style="background: #f5c4b3; color: #4a1b0c"
+              >
+                YK
+              </div>
+              <div style="flex: 1">
+                <div style="font-size: 13px; font-weight: 800; color: #3c3c3c">
+                  Yusuf K.
+                </div>
+                <div style="font-size: 11px; font-weight: 700; color: #afafaf">
+                  870 XP
+                </div>
+              </div>
+            </div>
+            <div
+              style="
+                border-top: 2px dashed #e5e5e5;
+                margin: 8px 0;
+                padding-top: 8px;
+              "
+            >
+              <div
+                style="
+                  font-size: 11px;
+                  font-weight: 800;
+                  color: #ff4b4b;
+                  text-align: center;
+                  text-transform: uppercase;
+                  letter-spacing: 0.5px;
+                "
+              >
+                Zona Degradasi — Turun liga
+              </div>
+            </div>
+            <div class="league-row" style="opacity: 0.6">
+              <span
+                style="
+                  font-size: 16px;
+                  font-weight: 800;
+                  color: #afafaf;
+                  min-width: 28px;
+                  text-align: center;
+                "
+                >28</span
+              >
+              <div
+                class="avatar-circle"
+                style="background: #f7f7f7; color: #afafaf"
+              >
+                ...
+              </div>
+              <div style="flex: 1">
+                <div style="font-size: 13px; font-weight: 800; color: #afafaf">
+                  Hafidz 28
+                </div>
+                <div style="font-size: 11px; font-weight: 700; color: #afafaf">
+                  120 XP
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="bottom-nav">
+            <button class="nav-item" onclick="go('learn')">
+              <i class="ti ti-home"></i><span>Belajar</span>
+            </button>
+            <button class="nav-item" onclick="go('murojaah')">
+              <i class="ti ti-refresh"></i><span>Murojaah</span>
+            </button>
+            <button class="nav-item" onclick="go('tadabbur')">
+              <i class="ti ti-book"></i><span>Tadabbur</span>
+            </button>
+            <button class="nav-item active">
+              <i class="ti ti-trophy"></i><span>Liga</span>
+            </button>
+            <button class="nav-item" onclick="go('profile')">
+              <i class="ti ti-user"></i><span>Profil</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- ================================================================ -->
+        <!-- SCREEN: STREAK MODAL                                             -->
+        <!-- ================================================================ -->
+        <div id="s-streak" class="screen">
+          <div class="modal-bg">
+            <div class="modal-card">
+              <div style="font-size: 56px; margin-bottom: 8px">🔥</div>
+              <div
+                style="
+                  font-size: 22px;
+                  font-weight: 900;
+                  color: #ff9600;
+                  margin-bottom: 4px;
+                "
+              >
+                7 Hari Beruntun!
+              </div>
+              <div
+                style="
+                  font-size: 13px;
+                  font-weight: 700;
+                  color: #afafaf;
+                  margin-bottom: 18px;
+                "
+              >
+                Subhanallah! Kamu konsisten selama seminggu penuh!
+              </div>
+              <div
+                style="
+                  display: flex;
+                  justify-content: space-around;
+                  margin-bottom: 18px;
+                "
+              >
+                <div style="text-align: center">
+                  <div
+                    style="
+                      width: 36px;
+                      height: 36px;
+                      border-radius: 50%;
+                      background: #ff9600;
+                      margin: 0 auto 4px;
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                    "
+                  >
+                    <span style="font-size: 14px; color: #fff; font-weight: 900"
+                      >S</span
+                    >
+                  </div>
+                  <span
+                    style="font-size: 10px; font-weight: 800; color: #ff9600"
+                    >Sen</span
+                  >
+                </div>
+                <div style="text-align: center">
+                  <div
+                    style="
+                      width: 36px;
+                      height: 36px;
+                      border-radius: 50%;
+                      background: #ff9600;
+                      margin: 0 auto 4px;
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                    "
+                  >
+                    <span style="font-size: 14px; color: #fff; font-weight: 900"
+                      >S</span
+                    >
+                  </div>
+                  <span
+                    style="font-size: 10px; font-weight: 800; color: #ff9600"
+                    >Sel</span
+                  >
+                </div>
+                <div style="text-align: center">
+                  <div
+                    style="
+                      width: 36px;
+                      height: 36px;
+                      border-radius: 50%;
+                      background: #ff9600;
+                      margin: 0 auto 4px;
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                    "
+                  >
+                    <span style="font-size: 14px; color: #fff; font-weight: 900"
+                      >R</span
+                    >
+                  </div>
+                  <span
+                    style="font-size: 10px; font-weight: 800; color: #ff9600"
+                    >Rab</span
+                  >
+                </div>
+                <div style="text-align: center">
+                  <div
+                    style="
+                      width: 36px;
+                      height: 36px;
+                      border-radius: 50%;
+                      background: #ff9600;
+                      margin: 0 auto 4px;
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                    "
+                  >
+                    <span style="font-size: 14px; color: #fff; font-weight: 900"
+                      >K</span
+                    >
+                  </div>
+                  <span
+                    style="font-size: 10px; font-weight: 800; color: #ff9600"
+                    >Kam</span
+                  >
+                </div>
+                <div style="text-align: center">
+                  <div
+                    style="
+                      width: 36px;
+                      height: 36px;
+                      border-radius: 50%;
+                      background: #ff9600;
+                      margin: 0 auto 4px;
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                    "
+                  >
+                    <span style="font-size: 14px; color: #fff; font-weight: 900"
+                      >J</span
+                    >
+                  </div>
+                  <span
+                    style="font-size: 10px; font-weight: 800; color: #ff9600"
+                    >Jum</span
+                  >
+                </div>
+                <div style="text-align: center">
+                  <div
+                    style="
+                      width: 36px;
+                      height: 36px;
+                      border-radius: 50%;
+                      background: #ff9600;
+                      margin: 0 auto 4px;
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                    "
+                  >
+                    <span style="font-size: 14px; color: #fff; font-weight: 900"
+                      >S</span
+                    >
+                  </div>
+                  <span
+                    style="font-size: 10px; font-weight: 800; color: #ff9600"
+                    >Sab</span
+                  >
+                </div>
+                <div style="text-align: center">
+                  <div
+                    style="
+                      width: 36px;
+                      height: 36px;
+                      border-radius: 50%;
+                      background: #58cc02;
+                      border: 3px solid #46a302;
+                      margin: 0 auto 4px;
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                    "
+                  >
+                    <span style="font-size: 18px">✓</span>
+                  </div>
+                  <span
+                    style="font-size: 10px; font-weight: 800; color: #58cc02"
+                    >Min</span
+                  >
+                </div>
+              </div>
+              <button
+                class="btn-duo btn-green"
+                style="margin-bottom: 8px"
+                onclick="go('learn')"
+              >
+                ALHAMDULILLAH!
+              </button>
+              <button
+                class="btn-duo btn-outline"
+                style="font-size: 12px"
+                onclick="go('shop')"
+              >
+                Gunakan Streak Freeze 💎
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ================================================================ -->
+        <!-- SCREEN: TADABBUR                                                 -->
+        <!-- ================================================================ -->
+        <div id="s-tadabbur" class="screen">
+          <div class="topbar">
+            <button
+              onclick="go('learn')"
+              style="background: none; border: none; cursor: pointer"
+            >
+              <i
+                class="ti ti-arrow-left"
+                style="font-size: 20px; color: #afafaf"
+              ></i>
+            </button>
+            <span
+              style="
+                font-size: 15px;
+                font-weight: 800;
+                color: #3c3c3c;
+                flex: 1;
+                text-align: center;
+              "
+              >Tadabbur</span
+            >
+            <div style="width: 28px"></div>
+          </div>
+          <div
+            style="
+              padding: 0 16px;
+              margin-bottom: 12px;
+              display: flex;
+              gap: 8px;
+            "
+          >
+            <button
+              class="btn-duo btn-green"
+              style="
+                flex: 1;
+                padding: 10px;
+                font-size: 11px;
+                border-radius: 12px;
+              "
+              onclick="renderTadabburStep(0)"
+            >
+              GUIDED MODE
+            </button>
+            <button
+              class="btn-duo btn-outline"
+              style="
+                flex: 1;
+                padding: 10px;
+                font-size: 11px;
+                border-radius: 12px;
+                color: #afafaf;
+                border-color: #eee;
+              "
+            >
+              FREE MODE 🔒
+            </button>
+          </div>
+          <div
+            style="padding: 0 16px 8px; flex: 1; overflow-y: auto"
+            id="tadabbur-content"
+          >
+            <div
+              style="
+                background: linear-gradient(135deg, #1a6b3c, #2ea65c);
+                border-radius: 16px;
+                padding: 16px;
+                margin-bottom: 14px;
+              "
+            >
+              <div
+                style="
+                  font-size: 10px;
+                  font-weight: 800;
+                  text-transform: uppercase;
+                  letter-spacing: 1px;
+                  color: rgba(255, 255, 255, 0.7);
+                  margin-bottom: 6px;
+                "
+              >
+                Ayat Renungan Hari Ini
+              </div>
+              <div
+                style="
+                  font-size: 18px;
+                  font-family: serif;
+                  direction: rtl;
+                  line-height: 2;
+                  color: #fff;
+                  margin-bottom: 8px;
+                "
+              >
+                تَبَٰرَكَ ٱلَّذِي بِيَدِهِ ٱلۡمُلۡكُ
+              </div>
+              <div
+                style="
+                  font-size: 12px;
+                  font-weight: 700;
+                  color: rgba(255, 255, 255, 0.85);
+                "
+              >
+                "Mahasuci Allah yang di tangan-Nya segala kerajaan"
+              </div>
+              <div
+                style="
+                  font-size: 10px;
+                  font-weight: 700;
+                  color: rgba(255, 255, 255, 0.6);
+                  margin-top: 4px;
+                "
+              >
+                Al-Mulk: 1
+              </div>
+            </div>
+            <div class="section-label" style="padding: 0; margin: 0 0 10px">
+              Pilih Topik
+            </div>
+            <div
+              style="
+                display: flex;
+                gap: 8px;
+                flex-wrap: wrap;
+                margin-bottom: 14px;
+              "
+            >
+              <button
+                class="topic-chip"
+                style="background: #ddf4ff; color: #0898dc"
+              >
+                Tauhid
+              </button>
+              <button
+                class="topic-chip"
+                style="background: #d7ffb2; color: #46a302"
+              >
+                Alam Semesta
+              </button>
+              <button
+                class="topic-chip"
+                style="background: #fff7e6; color: #cc7000"
+              >
+                Akhirat
+              </button>
+              <button
+                class="topic-chip"
+                style="background: #ffdfe0; color: #cc0000"
+              >
+                Peringatan
+              </button>
+            </div>
+            <div class="section-label" style="padding: 0; margin: 0 0 10px">
+              Renungan Terbaru
+            </div>
+            <div class="tadabbur-card" onclick="renderTadabburStep(0)">
+              <div
+                style="
+                  display: flex;
+                  align-items: center;
+                  gap: 10px;
+                  margin-bottom: 8px;
+                "
+              >
+                <span
+                  class="topic-chip"
+                  style="background: #ddf4ff; color: #0898dc"
+                  >Tauhid</span
+                >
+                <span style="font-size: 10px; font-weight: 700; color: #afafaf"
+                  >7 Langkah Guided</span
+                >
+              </div>
+              <div
+                style="
+                  font-size: 14px;
+                  font-weight: 800;
+                  color: #3c3c3c;
+                  margin-bottom: 4px;
+                "
+              >
+                Al-Mulk: Ayat Penyelamat dari Azab Kubur
+              </div>
+              <div style="font-size: 11px; font-weight: 800; color: #58cc02">
+                MULAI TADABBUR →
+              </div>
+            </div>
+          </div>
+          <div class="bottom-nav">
+            <button class="nav-item" onclick="go('learn')">
+              <i class="ti ti-home"></i><span>Belajar</span>
+            </button>
+            <button class="nav-item" onclick="go('murojaah')">
+              <i class="ti ti-refresh"></i><span>Murojaah</span>
+            </button>
+            <button class="nav-item active">
+              <i class="ti ti-book"></i><span>Tadabbur</span>
+            </button>
+            <button class="nav-item" onclick="go('league')">
+              <i class="ti ti-trophy"></i><span>Liga</span>
+            </button>
+            <button class="nav-item" onclick="go('profile')">
+              <i class="ti ti-user"></i><span>Profil</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- ================================================================ -->
+        <!-- SCREEN: SHOP                                                     -->
+        <!-- ================================================================ -->
+        <div id="s-shop" class="screen">
+          <div class="topbar">
+            <button
+              onclick="go('learn')"
+              style="background: none; border: none; cursor: pointer"
+            >
+              <i
+                class="ti ti-arrow-left"
+                style="font-size: 20px; color: #afafaf"
+              ></i>
+            </button>
+            <span
+              style="
+                font-size: 15px;
+                font-weight: 800;
+                color: #3c3c3c;
+                flex: 1;
+                text-align: center;
+              "
+              >Toko</span
+            >
+            <div class="gems-pill">
+              <i class="ti ti-diamond" style="font-size: 16px"></i> 120
+            </div>
+          </div>
+          <div style="padding: 0 16px 12px; flex: 1; overflow-y: auto">
+            <div
+              style="
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+                margin-bottom: 16px;
+              "
+            >
+              <div
+                style="
+                  background: linear-gradient(135deg, #ede0ff, #ddd0ff);
+                  border-radius: 16px;
+                  padding: 14px;
+                  text-align: center;
+                  border: 2px solid #ce82ff;
+                  border-bottom-width: 4px;
+                "
+              >
+                <div style="font-size: 24px; margin-bottom: 4px">💎</div>
+                <div style="font-size: 14px; font-weight: 900; color: #7c3aed">
+                  120 Koin
+                </div>
+                <div style="font-size: 10px; font-weight: 700; color: #9c52e0">
+                  Saldo On-Demand
+                </div>
+              </div>
+              <div
+                style="
+                  background: linear-gradient(135deg, #ddf4ff, #ccebff);
+                  border-radius: 16px;
+                  padding: 14px;
+                  text-align: center;
+                  border: 2px solid #1cb0f6;
+                  border-bottom-width: 4px;
+                "
+              >
+                <div style="font-size: 24px; margin-bottom: 4px">🎟️</div>
+                <div style="font-size: 14px; font-weight: 900; color: #0898dc">
+                  4 Tiket
+                </div>
+                <div style="font-size: 10px; font-weight: 700; color: #1cb0f6">
+                  Jatah Premium
+                </div>
+              </div>
+            </div>
+            <div class="section-label" style="padding: 0; margin: 0 0 8px">
+              Langganan Premium
+            </div>
+            <div
+              style="
+                background: #3c3c3c;
+                border-radius: 16px;
+                padding: 16px;
+                color: #fff;
+                margin-bottom: 16px;
+                position: relative;
+                overflow: hidden;
+              "
+            >
+              <div
+                style="
+                  position: absolute;
+                  right: -20px;
+                  top: -10px;
+                  font-size: 80px;
+                  opacity: 0.1;
+                "
+              >
+                ⭐️
+              </div>
+              <div
+                style="font-size: 16px; font-weight: 900; margin-bottom: 4px"
+              >
+                Hifz Premium
+              </div>
+              <div
+                style="
+                  font-size: 12px;
+                  font-weight: 700;
+                  opacity: 0.8;
+                  margin-bottom: 12px;
+                "
+              >
+                4 Tiket Setoran Live/bulan + Tanpa Iklan + Analitik AI
+              </div>
+              <button
+                class="btn-duo"
+                style="
+                  background: #58cc02;
+                  border-bottom: 4px solid #23a100;
+                  color: #fff;
+                  padding: 10px;
+                  font-size: 13px;
+                "
+                onclick="alert('Berlangganan...')"
+              >
+                UPGRADE — Rp 25rb/bln
+              </button>
+            </div>
+            <div class="section-label" style="padding: 0; margin: 0 0 8px">
+              Power-Ups
+            </div>
+            <div class="shop-item">
+              <div class="shop-icon" style="background: #fff0cd">❄️</div>
+              <div style="flex: 1">
+                <div style="font-size: 14px; font-weight: 800; color: #3c3c3c">
+                  Streak Freeze
+                </div>
+                <div style="font-size: 11px; font-weight: 700; color: #afafaf">
+                  Jaga streak kamu saat tidak bisa belajar 1 hari
+                </div>
+              </div>
+              <button
+                class="btn-duo btn-purple"
+                style="
+                  width: auto;
+                  padding: 10px 14px;
+                  font-size: 12px;
+                  border-bottom: 3px solid #9c52e0;
+                "
+                onclick="alert('Dibeli! ❄️')"
+              >
+                <i class="ti ti-diamond" style="font-size: 12px"></i> 10
+              </button>
+            </div>
+            <div class="shop-item">
+              <div class="shop-icon" style="background: #ffdfe0">❤️</div>
+              <div style="flex: 1">
+                <div style="font-size: 14px; font-weight: 800; color: #3c3c3c">
+                  Isi Ulang Hati
+                </div>
+                <div style="font-size: 11px; font-weight: 700; color: #afafaf">
+                  Pulihkan semua hati yang hilang sekarang
+                </div>
+              </div>
+              <button
+                class="btn-duo btn-purple"
+                style="
+                  width: auto;
+                  padding: 10px 14px;
+                  font-size: 12px;
+                  border-bottom: 3px solid #9c52e0;
+                "
+                onclick="alert('Dibeli! ❤️')"
+              >
+                <i class="ti ti-diamond" style="font-size: 12px"></i> 20
+              </button>
+            </div>
+            <div class="shop-item">
+              <div class="shop-icon" style="background: #d7ffb2">🚀</div>
+              <div style="flex: 1">
+                <div style="font-size: 14px; font-weight: 800; color: #3c3c3c">
+                  XP Booster 2×
+                </div>
+                <div style="font-size: 11px; font-weight: 700; color: #afafaf">
+                  Dapatkan 2× XP untuk 1 sesi belajar
+                </div>
+              </div>
+              <button
+                class="btn-duo btn-purple"
+                style="
+                  width: auto;
+                  padding: 10px 14px;
+                  font-size: 12px;
+                  border-bottom: 3px solid #9c52e0;
+                "
+                onclick="alert('Dibeli! 🚀')"
+              >
+                <i class="ti ti-diamond" style="font-size: 12px"></i> 30
+              </button>
+            </div>
+            <div class="section-label" style="padding: 0; margin: 10px 0 8px">
+              Koleksi Sadaqah
+            </div>
+            <div
+              style="
+                background: #fff;
+                border-radius: 16px;
+                border: 2px solid #e5e5e5;
+                border-bottom-width: 4px;
+                padding: 16px;
+              "
+            >
+              <div
+                style="
+                  display: flex;
+                  align-items: center;
+                  gap: 12px;
+                  margin-bottom: 12px;
+                "
+              >
+                <div style="font-size: 32px">🕌</div>
+                <div style="flex: 1">
+                  <div
+                    style="font-size: 14px; font-weight: 800; color: #3c3c3c"
+                  >
+                    Bangun Mushaf Pelosok
+                  </div>
+                  <div
+                    style="
+                      height: 8px;
+                      background: #e5e5e5;
+                      border-radius: 100px;
+                      margin-top: 6px;
+                    "
+                  >
+                    <div
+                      style="
+                        width: 75%;
+                        height: 100%;
+                        background: #ce82ff;
+                        border-radius: 100px;
+                      "
+                    ></div>
+                  </div>
+                </div>
+                <div style="font-size: 11px; font-weight: 800; color: #ce82ff">
+                  75%
+                </div>
+              </div>
+              <div
+                style="
+                  font-size: 11px;
+                  font-weight: 700;
+                  color: #afafaf;
+                  line-height: 1.4;
+                  margin-bottom: 12px;
+                "
+              >
+                Kumpulkan Gems untuk ditukar menjadi Mushaf nyata yang akan
+                dikirim ke daerah terpencil.
+              </div>
+              <button
+                class="btn-duo btn-purple"
+                style="font-size: 12px; padding: 10px"
+                onclick="alert('Donasi 100 Gems Terkirim! Syukran.')"
+              >
+                TUKAR 100 GEMS 💎
+              </button>
+            </div>
+            <div class="section-label" style="padding: 0; margin: 10px 0 8px">
+              Beli Koin
+            </div>
+            <div
+              style="
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+                margin-bottom: 8px;
+              "
+            >
+              <div
+                style="
+                  background: #fff;
+                  border-radius: 14px;
+                  border: 2px solid #e5e5e5;
+                  border-bottom-width: 4px;
+                  padding: 12px;
+                  text-align: center;
+                  cursor: pointer;
+                "
+                onclick="alert('Buka pembayaran...')"
+              >
+                <div style="font-size: 24px; margin-bottom: 4px">💎</div>
+                <div style="font-size: 14px; font-weight: 900; color: #7c3aed">
+                  50 Gems
+                </div>
+                <div
+                  style="
+                    font-size: 12px;
+                    font-weight: 800;
+                    color: #3c3c3c;
+                    margin-top: 6px;
+                  "
+                >
+                  Rp 9.999
+                </div>
+              </div>
+              <div
+                style="
+                  background: #fff;
+                  border-radius: 14px;
+                  border: 2px solid #ce82ff;
+                  border-bottom-width: 4px;
+                  padding: 12px;
+                  text-align: center;
+                  cursor: pointer;
+                  position: relative;
+                "
+                onclick="alert('Buka pembayaran...')"
+              >
+                <div
+                  style="
+                    position: absolute;
+                    top: -8px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    background: #58cc02;
+                    color: #fff;
+                    font-size: 9px;
+                    font-weight: 800;
+                    padding: 2px 8px;
+                    border-radius: 10px;
+                    text-transform: uppercase;
+                    white-space: nowrap;
+                  "
+                >
+                  Terlaris
+                </div>
+                <div style="font-size: 24px; margin-bottom: 4px">💎💎</div>
+                <div style="font-size: 14px; font-weight: 900; color: #7c3aed">
+                  150 Gems
+                </div>
+                <div
+                  style="
+                    font-size: 12px;
+                    font-weight: 800;
+                    color: #3c3c3c;
+                    margin-top: 6px;
+                  "
+                >
+                  Rp 24.999
+                </div>
+              </div>
+              <div
+                style="
+                  background: #fff;
+                  border-radius: 14px;
+                  border: 2px solid #e5e5e5;
+                  border-bottom-width: 4px;
+                  padding: 12px;
+                  text-align: center;
+                  cursor: pointer;
+                "
+                onclick="alert('Buka pembayaran...')"
+              >
+                <div style="font-size: 24px; margin-bottom: 4px">💎💎💎</div>
+                <div style="font-size: 14px; font-weight: 900; color: #7c3aed">
+                  400 Gems
+                </div>
+                <div
+                  style="
+                    font-size: 12px;
+                    font-weight: 800;
+                    color: #3c3c3c;
+                    margin-top: 6px;
+                  "
+                >
+                  Rp 59.999
+                </div>
+              </div>
+              <div
+                style="
+                  background: #fff;
+                  border-radius: 14px;
+                  border: 2px solid #e5e5e5;
+                  border-bottom-width: 4px;
+                  padding: 12px;
+                  text-align: center;
+                  cursor: pointer;
+                "
+                onclick="alert('Buka pembayaran...')"
+              >
+                <div style="font-size: 24px; margin-bottom: 4px">💎✨</div>
+                <div style="font-size: 14px; font-weight: 900; color: #7c3aed">
+                  1000 Gems
+                </div>
+                <div
+                  style="
+                    font-size: 12px;
+                    font-weight: 800;
+                    color: #3c3c3c;
+                    margin-top: 6px;
+                  "
+                >
+                  Rp 129.999
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ================================================================ -->
+        <!-- SCREEN: PROFILE                                                  -->
+        <!-- ================================================================ -->
+        <div id="s-profile" class="screen">
+          <div
+            style="
+              background: linear-gradient(180deg, #58cc02 0%, #46a302 100%);
+              padding: 20px 16px 28px;
+            "
+          >
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                gap: 14px;
+                margin-bottom: 16px;
+              "
+            >
+              <div
+                style="
+                  width: 60px;
+                  height: 60px;
+                  border-radius: 50%;
+                  background: #fff;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  font-size: 26px;
+                  border: 3px solid #23a100;
+                "
+              >
+                🧑‍🎓
+              </div>
+              <div>
+                <div style="font-size: 18px; font-weight: 900; color: #fff">
+                  Ahmad Hafidz
+                </div>
+                <div
+                  style="
+                    font-size: 12px;
+                    font-weight: 700;
+                    color: rgba(255, 255, 255, 0.8);
+                  "
+                >
+                  Bergabung sejak Januari 2025
+                </div>
+              </div>
+              <button
+                onclick="alert('Edit Profil')"
+                style="
+                  margin-left: auto;
+                  background: rgba(255, 255, 255, 0.2);
+                  border: none;
+                  border-radius: 10px;
+                  padding: 6px 10px;
+                  cursor: pointer;
+                  font-size: 12px;
+                  font-weight: 700;
+                  color: #fff;
+                  font-family: &quot;Nunito&quot;, sans-serif;
+                "
+              >
+                Edit
+              </button>
+            </div>
+            <div
+              style="
+                display: grid;
+                grid-template-columns: 1fr 1fr 1fr;
+                gap: 8px;
+              "
+            >
+              <div
+                style="
+                  background: rgba(255, 255, 255, 0.2);
+                  border-radius: 12px;
+                  padding: 10px;
+                  text-align: center;
+                "
+              >
+                <div style="font-size: 20px; font-weight: 900; color: #fff">
+                  🔥 7
+                </div>
+                <div
+                  style="
+                    font-size: 10px;
+                    font-weight: 800;
+                    color: rgba(255, 255, 255, 0.8);
+                  "
+                >
+                  Streak
+                </div>
+              </div>
+              <div
+                style="
+                  background: rgba(255, 255, 255, 0.2);
+                  border-radius: 12px;
+                  padding: 10px;
+                  text-align: center;
+                "
+              >
+                <div style="font-size: 20px; font-weight: 900; color: #fff">
+                  64
+                </div>
+                <div
+                  style="
+                    font-size: 10px;
+                    font-weight: 800;
+                    color: rgba(255, 255, 255, 0.8);
+                  "
+                >
+                  Ayat Hafal
+                </div>
+              </div>
+              <div
+                style="
+                  background: rgba(255, 255, 255, 0.2);
+                  border-radius: 12px;
+                  padding: 10px;
+                  text-align: center;
+                "
+              >
+                <div style="font-size: 20px; font-weight: 900; color: #fff">
+                  1.2K
+                </div>
+                <div
+                  style="
+                    font-size: 10px;
+                    font-weight: 800;
+                    color: rgba(255, 255, 255, 0.8);
+                  "
+                >
+                  XP Total
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style="padding: 14px 16px; flex: 1; overflow-y: auto">
+            <div
+              style="
+                background: #fff7e6;
+                border-radius: 14px;
+                border: 2px solid #ffc800;
+                border-bottom-width: 4px;
+                padding: 12px 14px;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                margin-bottom: 14px;
+                cursor: pointer;
+              "
+              onclick="go('league')"
+            >
+              <div style="font-size: 28px">🏆</div>
+              <div style="flex: 1">
+                <div style="font-size: 13px; font-weight: 800; color: #cc7000">
+                  Liga Emas
+                </div>
+                <div style="font-size: 11px; font-weight: 700; color: #afafaf">
+                  Peringkat #4 minggu ini · 1.240 XP
+                </div>
+              </div>
+              <i
+                class="ti ti-chevron-right"
+                style="font-size: 16px; color: #afafaf"
+              ></i>
+            </div>
+            <div class="section-label" style="padding: 0; margin: 0 0 10px">
+              Pencapaian
+            </div>
+            <div
+              style="
+                background: #fff;
+                border-radius: 14px;
+                border: 2px solid #e5e5e5;
+                border-bottom-width: 4px;
+                padding: 12px;
+                margin-bottom: 14px;
+              "
+            >
+              <div
+                style="
+                  display: grid;
+                  grid-template-columns: repeat(4, 1fr);
+                  gap: 10px;
+                "
+              >
+                <div class="achievement-badge">
+                  <div
+                    class="badge-icon"
+                    style="background: #fff7e6; border-color: #ffc800"
+                  >
+                    🏅
+                  </div>
+                  <div
+                    style="
+                      font-size: 9px;
+                      font-weight: 800;
+                      color: #cc7000;
+                      text-align: center;
+                    "
+                  >
+                    Hafidz Pemula
+                  </div>
+                </div>
+                <div class="achievement-badge">
+                  <div
+                    class="badge-icon"
+                    style="background: #d7ffb2; border-color: #46a302"
+                  >
+                    🔥
+                  </div>
+                  <div
+                    style="
+                      font-size: 9px;
+                      font-weight: 800;
+                      color: #46a302;
+                      text-align: center;
+                    "
+                  >
+                    7 Hari Streak
+                  </div>
+                </div>
+                <div class="achievement-badge">
+                  <div
+                    class="badge-icon"
+                    style="background: #ddf4ff; border-color: #0898dc"
+                  >
+                    ⭐
+                  </div>
+                  <div
+                    style="
+                      font-size: 9px;
+                      font-weight: 800;
+                      color: #0898dc;
+                      text-align: center;
+                    "
+                  >
+                    Bintang 100%
+                  </div>
+                </div>
+                <div class="achievement-badge badge-locked">
+                  <div class="badge-icon">🎓</div>
+                  <div
+                    style="
+                      font-size: 9px;
+                      font-weight: 800;
+                      color: #afafaf;
+                      text-align: center;
+                    "
+                  >
+                    Juz 30 Selesai
+                  </div>
+                </div>
+                <div class="achievement-badge badge-locked">
+                  <div class="badge-icon">🕌</div>
+                  <div
+                    style="
+                      font-size: 9px;
+                      font-weight: 800;
+                      color: #afafaf;
+                      text-align: center;
+                    "
+                  >
+                    30 Hari Streak
+                  </div>
+                </div>
+                <div class="achievement-badge badge-locked">
+                  <div class="badge-icon">🌟</div>
+                  <div
+                    style="
+                      font-size: 9px;
+                      font-weight: 800;
+                      color: #afafaf;
+                      text-align: center;
+                    "
+                  >
+                    Liga Berlian
+                  </div>
+                </div>
+                <div class="achievement-badge badge-locked">
+                  <div class="badge-icon">📖</div>
+                  <div
+                    style="
+                      font-size: 9px;
+                      font-weight: 800;
+                      color: #afafaf;
+                      text-align: center;
+                    "
+                  >
+                    500 Ayat
+                  </div>
+                </div>
+                <div class="achievement-badge badge-locked">
+                  <div class="badge-icon">💎</div>
+                  <div
+                    style="
+                      font-size: 9px;
+                      font-weight: 800;
+                      color: #afafaf;
+                      text-align: center;
+                    "
+                  >
+                    Kolektor Gems
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="section-label" style="padding: 0; margin: 0 0 10px">
+              Aktivitas Minggu Ini
+            </div>
+            <div
+              style="
+                background: #fff;
+                border-radius: 14px;
+                border: 2px solid #e5e5e5;
+                border-bottom-width: 4px;
+                padding: 14px;
+                margin-bottom: 14px;
+              "
+            >
+              <div
+                style="
+                  display: flex;
+                  align-items: flex-end;
+                  gap: 6px;
+                  height: 60px;
+                  margin-bottom: 8px;
+                "
+                id="chart-bars"
+              >
+                <div
+                  style="
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    gap: 4px;
+                    flex: 1;
+                  "
+                >
+                  <div
+                    style="
+                      background: #58cc02;
+                      width: 100%;
+                      border-radius: 4px 4px 0 0;
+                    "
+                    data-h="70"
+                  ></div>
+                  <span style="font-size: 8px; font-weight: 800; color: #afafaf"
+                    >Sen</span
+                  >
+                </div>
+                <div
+                  style="
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    gap: 4px;
+                    flex: 1;
+                  "
+                >
+                  <div
+                    style="
+                      background: #58cc02;
+                      width: 100%;
+                      border-radius: 4px 4px 0 0;
+                    "
+                    data-h="45"
+                  ></div>
+                  <span style="font-size: 8px; font-weight: 800; color: #afafaf"
+                    >Sel</span
+                  >
+                </div>
+                <div
+                  style="
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    gap: 4px;
+                    flex: 1;
+                  "
+                >
+                  <div
+                    style="
+                      background: #58cc02;
+                      width: 100%;
+                      border-radius: 4px 4px 0 0;
+                    "
+                    data-h="90"
+                  ></div>
+                  <span style="font-size: 8px; font-weight: 800; color: #afafaf"
+                    >Rab</span
+                  >
+                </div>
+                <div
+                  style="
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    gap: 4px;
+                    flex: 1;
+                  "
+                >
+                  <div
+                    style="
+                      background: #58cc02;
+                      width: 100%;
+                      border-radius: 4px 4px 0 0;
+                    "
+                    data-h="60"
+                  ></div>
+                  <span style="font-size: 8px; font-weight: 800; color: #afafaf"
+                    >Kam</span
+                  >
+                </div>
+                <div
+                  style="
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    gap: 4px;
+                    flex: 1;
+                  "
+                >
+                  <div
+                    style="
+                      background: #58cc02;
+                      width: 100%;
+                      border-radius: 4px 4px 0 0;
+                    "
+                    data-h="100"
+                  ></div>
+                  <span style="font-size: 8px; font-weight: 800; color: #afafaf"
+                    >Jum</span
+                  >
+                </div>
+                <div
+                  style="
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    gap: 4px;
+                    flex: 1;
+                  "
+                >
+                  <div
+                    style="
+                      background: #58cc02;
+                      width: 100%;
+                      border-radius: 4px 4px 0 0;
+                    "
+                    data-h="30"
+                  ></div>
+                  <span style="font-size: 8px; font-weight: 800; color: #afafaf"
+                    >Sab</span
+                  >
+                </div>
+                <div
+                  style="
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    gap: 4px;
+                    flex: 1;
+                  "
+                >
+                  <div
+                    style="
+                      background: #1cb0f6;
+                      width: 100%;
+                      border-radius: 4px 4px 0 0;
+                    "
+                    data-h="55"
+                  ></div>
+                  <span style="font-size: 8px; font-weight: 800; color: #1cb0f6"
+                    >Min</span
+                  >
+                </div>
+              </div>
+              <div
+                style="
+                  font-size: 11px;
+                  font-weight: 700;
+                  color: #afafaf;
+                  text-align: center;
+                "
+              >
+                Total: 1.240 XP minggu ini
+              </div>
+            </div>
+            <div class="section-label" style="padding: 0; margin: 0 0 8px">
+              Pengaturan
+            </div>
+            <div
+              style="
+                background: #fff;
+                border-radius: 14px;
+                border: 2px solid #e5e5e5;
+                border-bottom-width: 4px;
+                overflow: hidden;
+                margin-bottom: 14px;
+              "
+            >
+              <div
+                style="
+                  padding: 12px 14px;
+                  display: flex;
+                  align-items: center;
+                  gap: 10px;
+                  border-bottom: 1px solid #f0f0f0;
+                  cursor: pointer;
+                "
+              >
+                <i
+                  class="ti ti-target"
+                  style="font-size: 18px; color: #58cc02"
+                ></i>
+                <div
+                  style="
+                    flex: 1;
+                    font-size: 13px;
+                    font-weight: 700;
+                    color: #3c3c3c;
+                  "
+                >
+                  Target Harian
+                </div>
+                <span style="font-size: 12px; font-weight: 800; color: #afafaf"
+                  >10 menit</span
+                >
+                <i
+                  class="ti ti-chevron-right"
+                  style="font-size: 14px; color: #afafaf"
+                ></i>
+              </div>
+              <div
+                style="
+                  padding: 12px 14px;
+                  display: flex;
+                  align-items: center;
+                  gap: 10px;
+                  border-bottom: 1px solid #f0f0f0;
+                  cursor: pointer;
+                "
+              >
+                <i
+                  class="ti ti-bell"
+                  style="font-size: 18px; color: #1cb0f6"
+                ></i>
+                <div
+                  style="
+                    flex: 1;
+                    font-size: 13px;
+                    font-weight: 700;
+                    color: #3c3c3c;
+                  "
+                >
+                  Pengingat Belajar
+                </div>
+                <span style="font-size: 12px; font-weight: 800; color: #afafaf"
+                  >18:00</span
+                >
+                <i
+                  class="ti ti-chevron-right"
+                  style="font-size: 14px; color: #afafaf"
+                ></i>
+              </div>
+              <div
+                style="
+                  padding: 12px 14px;
+                  display: flex;
+                  align-items: center;
+                  gap: 10px;
+                  cursor: pointer;
+                "
+              >
+                <i
+                  class="ti ti-volume"
+                  style="font-size: 18px; color: #ce82ff"
+                ></i>
+                <div
+                  style="
+                    flex: 1;
+                    font-size: 13px;
+                    font-weight: 700;
+                    color: #3c3c3c;
+                  "
+                >
+                  Suara & Efek
+                </div>
+                <div
+                  style="
+                    width: 36px;
+                    height: 20px;
+                    background: #58cc02;
+                    border-radius: 10px;
+                    position: relative;
+                    cursor: pointer;
+                  "
+                >
+                  <div
+                    style="
+                      width: 16px;
+                      height: 16px;
+                      background: #fff;
+                      border-radius: 50%;
+                      position: absolute;
+                      right: 2px;
+                      top: 2px;
+                    "
+                  ></div>
+                </div>
+              </div>
+            </div>
+            <button
+              class="btn-duo btn-outline-red"
+              style="font-size: 13px; margin-bottom: 8px"
+              onclick="alert('Keluar...')"
+            >
+              <i class="ti ti-logout" style="font-size: 14px"></i> Keluar Akun
+            </button>
+            <div style="height: 8px"></div>
+          </div>
+          <div class="bottom-nav">
+            <button class="nav-item" onclick="go('learn')">
+              <i class="ti ti-home"></i><span>Belajar</span>
+            </button>
+            <button class="nav-item" onclick="go('murojaah')">
+              <i class="ti ti-refresh"></i><span>Murojaah</span>
+            </button>
+            <button class="nav-item" onclick="go('tadabbur')">
+              <i class="ti ti-book"></i><span>Tadabbur</span>
+            </button>
+            <button class="nav-item" onclick="go('league')">
+              <i class="ti ti-trophy"></i><span>Liga</span>
+            </button>
+            <button class="nav-item active">
+              <i class="ti ti-user"></i><span>Profil</span>
+            </button>
+          </div>
+        </div>
+      </div>
+      <!-- /phone -->
+    </div>
+    <!-- /qm-app -->
+
+    <script>
+      /* ===================== ONBOARDING LOGIC ===================== */
+      const questions = [
+        {
+          q: "Apa motivasi utamamu menghafal Al-Quran?",
+          opts: [
+            { t: "Sholat lebih khusyuk", i: "🕌" },
+            { t: "Target khatam / sanad", i: "🎓" },
+            { t: "Teladan keluarga", i: "👨‍👩‍👧‍👦" },
+            { t: "Ketenangan hati", i: "🍃" },
+          ],
+        },
+        {
+          q: "Sejauh mana pengalamanmu menghafal?",
+          opts: [
+            { t: "Baru mulai dari nol", i: "🌱", action: "skip_placement" },
+            { t: "Hafal surah pendek", i: "📖" },
+            { t: "Hafal 1 - 3 Juz", i: "📚" },
+            { t: "Hafal > 3 Juz", i: "🏆" },
+          ],
+        },
+        {
+          q: "Bagaimana kemampuan membaca (Tahsin) kamu?",
+          opts: [
+            { t: "Masih mengeja huruf", i: "🅰️" },
+            { t: "Lancar tanpa tajwid", i: "🗣️" },
+            { t: "Lancar & paham tajwid", i: "✨" },
+            { t: "Sangat fasih / Qari", i: "💎" },
+          ],
+        },
+        {
+          q: "Berapa target waktu belajarmu per hari?",
+          opts: [
+            { t: "Santai (5 menit)", i: "☕" },
+            { t: "Reguler (10 menit)", i: "⏰" },
+            { t: "Fokus (15 menit)", i: "🎯" },
+            { t: "Intensif (30+ menit)", i: "🔥" },
+          ],
+        },
+        {
+          q: "Kapan waktu favoritmu berinteraksi?",
+          opts: [
+            { t: "Ba'da Subuh / Pagi", i: "🌅" },
+            { t: "Istirahat Siang", i: "☀️" },
+            { t: "Sore Hari", i: "🌇" },
+            { t: "Malam Sebelum Tidur", i: "🌙" },
+          ],
+        },
+      ];
+
+      let currentQ = 0;
+      let selectedOpt = null;
+      let specialAction = null;
+
+      function renderQuestion() {
+        const q = questions[currentQ];
+        const container = document.getElementById("q-container");
+        container.innerHTML = `
+    <div style="font-size:13px;font-weight:800;color:#afafaf;margin-bottom:10px;text-transform:uppercase;">Langkah ${currentQ + 1} dari 5</div>
+    <div style="font-size:22px;font-weight:900;color:#3c3c3c;margin-bottom:24px;">${q.q}</div>
+    <div style="display:grid;grid-template-columns:1fr;gap:12px;">
+      ${q.opts
+        .map(
+          (o, i) => `
+        <button class="option-card" onclick="selectOnboarding(${i}, '${o.action || ""}')">
+          <div style="font-size:24px;width:40px;text-align:center;">${o.i}</div>
+          <div style="font-size:15px;font-weight:800;">${o.t}</div>
+        </button>
+      `,
+        )
+        .join("")}
+    </div>
+  `;
+        document.getElementById("onboarding-prog").style.width =
+          (currentQ + 1) * 20 + "%";
+        // Reset button state
+        const btn = document.getElementById("onboarding-next");
+        btn.className = "btn-duo btn-disabled";
+        selectedOpt = null;
+        specialAction = null;
+      }
+
+      function selectOnboarding(idx, action) {
+        document
+          .querySelectorAll("#q-container .option-card")
+          .forEach((el, i) => {
+            el.className = i === idx ? "option-card selected" : "option-card";
+          });
+        selectedOpt = idx;
+        specialAction = action;
+        document.getElementById("onboarding-next").className =
+          "btn-duo btn-green";
+      }
+
+      function nextQuestion() {
+        if (selectedOpt === null) return;
+
+        // Q2 (index 1): unless "Baru mulai" is chosen, show placement test
+        if (currentQ === 1 && specialAction !== "skip_placement") {
+          go("placement");
+          return;
+        }
+
+        currentQ++;
+        if (currentQ < questions.length) {
+          renderQuestion();
+        } else {
+          go("learn");
+        }
+      }
+
+      /* ===================== PLACEMENT LOGIC ===================== */
+      function pickPlacement(el, correct) {
+        document
+          .querySelectorAll("#s-placement .option-card")
+          .forEach((o) =>
+            o.classList.remove(
+              "selected",
+              "selected-correct",
+              "selected-wrong",
+            ),
+          );
+        el.classList.add("selected");
+        document.getElementById("placement-next").className =
+          "btn-duo btn-green";
+      }
+
+      function finishPlacement() {
+        alert(
+          "MasyaAllah! Kamu ditempatkan di Jalur Lanjutan (Surat Al-Mulk).",
+        );
+        currentQ++; // advance past Q2
+        if (currentQ < questions.length) {
+          renderQuestion();
+        }
+        go("onboarding");
+      }
+
+      /* ===================== GUIDED TADABBUR LOGIC ===================== */
+      const tadabburSteps = [
+        {
+          t: "Tilawah",
+          d: "Baca ayat secara berulang dengan tartil.",
+          i: "📖",
+        },
+        {
+          t: "Tafsir",
+          d: "Pahami makna dari Ibnu Katsir & As-Sa'di.",
+          i: "📚",
+        },
+        { t: "Ulama", d: "Simak pendapat para ulama terdahulu.", i: "👳" },
+        {
+          t: "Aktual",
+          d: "Hubungkan dengan kejadian nyata hari ini.",
+          i: "🌐",
+        },
+        {
+          t: "Personal",
+          d: "Apa hubungannya dengan hidupmu saat ini?",
+          i: "👤",
+        },
+        {
+          t: "Prinsip",
+          d: "Simpulkan menjadi satu kalimat powerful.",
+          i: "✨",
+        },
+        { t: "Amal", d: "Tentukan satu aksi nyata hari ini.", i: "✅" },
+      ];
+
+      function renderTadabburStep(idx) {
+        const step = tadabburSteps[idx];
+        const container = document.getElementById("tadabbur-content");
+        container.innerHTML = `
+    <div style="padding-top:10px;">
+      <div style="font-size:11px;font-weight:800;color:#afafaf;margin-bottom:6px;text-transform:uppercase;">Langkah ${idx + 1} dari 7: ${step.t}</div>
+      <div style="background:#fff;border:2px solid #e5e5e5;border-bottom-width:4px;border-radius:20px;padding:24px;text-align:center;margin-bottom:20px;">
+        <div style="font-size:48px;margin-bottom:16px;">${step.i}</div>
+        <div style="font-size:20px;font-weight:900;color:#3c3c3c;margin-bottom:12px;">${step.t}</div>
+        <div style="font-size:14px;font-weight:700;color:#afafaf;line-height:1.6;">${step.d}</div>
+        ${idx === 4 ? `<textarea placeholder="Tulis refleksimu di sini..." style="width:100%;height:80px;border-radius:12px;border:2px solid #e5e5e5;padding:12px;margin-top:16px;font-family:inherit;outline:none;resize:none;"></textarea>` : ""}
+        ${
+          idx === 6
+            ? `<div style="display:flex;flex-direction:column;gap:8px;margin-top:16px;">
+          <button class="option-card" onclick="this.classList.toggle('selected')">Sedekah hari ini</button>
+          <button class="option-card" onclick="this.classList.toggle('selected')">Sholat tepat waktu</button>
+          <button class="option-card" onclick="this.classList.toggle('selected')">Berbuat baik ke ortu</button>
+        </div>`
+            : ""
+        }
+      </div>
+      <div style="display:flex;gap:10px;">
+        ${idx > 0 ? `<button class="btn-duo btn-outline" style="flex:1;" onclick="renderTadabburStep(${idx - 1})">KEMBALI</button>` : ""}
+        <button class="btn-duo btn-green" style="flex:2;" onclick="${idx < 6 ? `renderTadabburStep(${idx + 1})` : `alert('Alhamdulillah! Tadabbur selesai.');go('learn')`}">${idx < 6 ? "LANJUT" : "SIMPAN AMAL"}</button>
+      </div>
+    </div>
+  `;
+      }
+
+      /* ===================== LIVE MARKING LOGIC ===================== */
+      function mark(el, type) {
+        const classMap = {
+          Lupa: "err-lupa",
+          Tajwid: "err-tajwid",
+          Makhraj: "err-makhraj",
+        };
+        const colorMap = {
+          Lupa: "#cc0000",
+          Tajwid: "#cc7000",
+          Makhraj: "#0898dc",
+        };
+        el.className = "marking-word " + classMap[type];
+        const log = document.getElementById("marking-log");
+        // Clear placeholder
+        if (
+          log.children.length === 1 &&
+          log.children[0].innerText.includes("Belum")
+        ) {
+          log.innerHTML = "";
+        }
+        const entry = document.createElement("div");
+        entry.style.cssText = `background:#fff;border:1px solid #e5e5e5;padding:8px 12px;border-radius:10px;font-size:12px;font-weight:800;color:${colorMap[type]};display:flex;justify-content:space-between;align-items:center;`;
+        entry.innerHTML = `<span>${type}: "${el.innerText}"</span><span style="cursor:pointer;" onclick="this.parentElement.remove()">✕</span>`;
+        log.prepend(entry);
+      }
+
+      /* ===================== SCREEN SWITCHING ===================== */
+      const screenLabels = {
+        onboarding: "✨ Onboarding",
+        learn: "🏠 Belajar",
+        musyrif: "👳 Musyrif",
+        livemarking: "👳 Musyrif",
+        lesson: "📖 Hafalan",
+        fillin: "✍️ Isi Ayat",
+        voice: "🎙️ Ucapkan",
+        dragdrop: "🔀 Susun Kata",
+        result: "🏆 Hasil",
+        murojaah: "🔄 Murojaah",
+        league: "⚔️ Liga",
+        streak: "🔥 Streak",
+        tadabbur: "📚 Tadabbur",
+        shop: "💎 Toko",
+        profile: "👤 Profil",
+      };
+
+      function go(id) {
+        // Hide all screens
+        document
+          .querySelectorAll(".screen")
+          .forEach((s) => s.classList.remove("on"));
+        const screen = document.getElementById("s-" + id);
+        if (screen) screen.classList.add("on");
+
+        // Update nav buttons
+        document.querySelectorAll(".snb").forEach((btn) => {
+          btn.classList.remove("active");
+          if (btn.textContent.trim() === screenLabels[id])
+            btn.classList.add("active");
+        });
+
+        // Screen-specific init
+        if (id === "onboarding") {
+          renderQuestion();
+        }
+
+        if (id === "learn") {
+          setTimeout(() => {
+            const t = document.getElementById("toast-home");
+            if (t) {
+              t.style.display = "flex";
+              setTimeout(() => (t.style.display = "none"), 4000);
+            }
+          }, 600);
+        }
+
+        // Reset lesson state when entering lesson screen
+        if (id === "lesson") {
+          resetLesson();
+        }
+
+        // Reset voice state when entering voice screen
+        if (id === "voice") {
+          resetRecording();
+        }
+
+        // Reset dragdrop when entering
+        if (id === "dragdrop") {
+          clearWords();
+        }
+
+        // Reset fillin when entering
+        if (id === "fillin") {
+          const inp = document.getElementById("fillin-input");
+          if (inp) {
+            inp.value = "";
+            inp.className = "blank-input";
+          }
+          const fb = document.getElementById("fillin-feedback");
+          if (fb) fb.innerHTML = "";
+          const btn = document.getElementById("fillin-btn");
+          if (btn) {
+            btn.className = "btn-duo btn-disabled";
+            btn.textContent = "PERIKSA";
+            btn.onclick = checkFillin;
+          }
+          const hint = document.getElementById("fillin-hint");
+          if (hint) hint.style.color = "#afafaf";
+        }
+      }
+
+      /* ===================== LESSON — PILIHAN GANDA ===================== */
+      let chosen = null;
+
+      function resetLesson() {
+        chosen = null;
+        const opts = document.querySelectorAll("#opts .option-card");
+        opts.forEach((o) => (o.className = "option-card"));
+        const fb = document.getElementById("feedback-area");
+        if (fb) fb.innerHTML = "";
+        const btn = document.getElementById("check-btn");
+        if (btn) {
+          btn.className = "btn-duo btn-disabled";
+          btn.textContent = "PERIKSA";
+          btn.onclick = checkAnswer;
+        }
+      }
+
+      function pick(el, correct) {
+        document
+          .querySelectorAll("#opts .option-card")
+          .forEach((o) => (o.className = "option-card"));
+        el.classList.add("selected");
+        chosen = correct;
+        const btn = document.getElementById("check-btn");
+        btn.className = "btn-duo btn-green";
+      }
+
+      function checkAnswer() {
+        if (chosen === null) return;
+        const fb = document.getElementById("feedback-area");
+        const btn = document.getElementById("check-btn");
+
+        document.querySelectorAll("#opts .option-card").forEach((o) => {
+          if (o.classList.contains("selected")) {
+            o.classList.remove("selected");
+            o.classList.add(chosen ? "selected-correct" : "selected-wrong");
+          }
+        });
+
+        if (chosen) {
+          fb.innerHTML =
+            '<div class="feedback-bar feedback-correct"><div style="font-size:14px;font-weight:800;color:#46a302;">✓ Benar! MasyaAllah! 🎉</div><div style="font-size:12px;font-weight:700;color:#46a302;margin-top:4px;">+10 XP diraih</div></div>';
+          btn.className = "btn-duo btn-green";
+          btn.textContent = "LANJUT";
+          btn.onclick = () => go("fillin");
+        } else {
+          fb.innerHTML =
+            '<div class="feedback-bar feedback-wrong"><div style="font-size:14px;font-weight:800;color:#cc0000;">✗ Hampir benar! ❤️ -1</div><div style="font-size:12px;font-weight:700;color:#cc0000;margin-top:4px;">Jawaban yang benar adalah B</div></div>';
+          btn.style.cssText = "";
+          btn.className = "btn-duo";
+          btn.style.background = "#ff4b4b";
+          btn.style.color = "#fff";
+          btn.style.borderBottom = "4px solid #cc0000";
+          btn.textContent = "COBA LAGI";
+          btn.onclick = () => {
+            document
+              .querySelectorAll("#opts .option-card")
+              .forEach((o) => (o.className = "option-card"));
+            fb.innerHTML = "";
+            chosen = null;
+            btn.style.cssText = "";
+            btn.className = "btn-duo btn-disabled";
+            btn.textContent = "PERIKSA";
+            btn.onclick = checkAnswer;
+          };
+        }
+      }
+
+      /* ===================== AUDIO PLAY TOGGLE ===================== */
+      let isPlaying = false;
+      let playTimer = null;
+
+      function togglePlay() {
+        isPlaying = !isPlaying;
+        const ico = document.getElementById("play-icon");
+        if (ico)
+          ico.className = isPlaying
+            ? "ti ti-player-pause"
+            : "ti ti-player-play";
+        clearTimeout(playTimer);
+        if (isPlaying) {
+          playTimer = setTimeout(() => {
+            isPlaying = false;
+            if (ico) ico.className = "ti ti-player-play";
+          }, 3000);
+        }
+      }
+
+      // Separate toggle for voice screen (doesn't interfere with lesson's play-icon)
+      let isVoicePlaying = false;
+      let voicePlayTimer = null;
+
+      function toggleVoicePlay() {
+        isVoicePlaying = !isVoicePlaying;
+        const ico = document.getElementById("voice-play-icon");
+        if (ico)
+          ico.className = isVoicePlaying
+            ? "ti ti-player-pause"
+            : "ti ti-player-play";
+        clearTimeout(voicePlayTimer);
+        if (isVoicePlaying) {
+          voicePlayTimer = setTimeout(() => {
+            isVoicePlaying = false;
+            if (ico) ico.className = "ti ti-player-play";
+          }, 3000);
+        }
+      }
+
+      /* ===================== FILL IN THE BLANK ===================== */
+      function checkFillinReady() {
+        const v = document.getElementById("fillin-input").value.trim();
+        const btn = document.getElementById("fillin-btn");
+        btn.className = v ? "btn-duo btn-green" : "btn-duo btn-disabled";
+      }
+
+      function fillWord(w) {
+        const inp = document.getElementById("fillin-input");
+        inp.value = w;
+        inp.className = "blank-input";
+        checkFillinReady();
+      }
+
+      function checkFillin() {
+        const v = document.getElementById("fillin-input").value.trim();
+        const correct = "مَّغۡفِرَةٞ";
+        const inp = document.getElementById("fillin-input");
+        const fb = document.getElementById("fillin-feedback");
+        const btn = document.getElementById("fillin-btn");
+
+        if (v === correct) {
+          inp.classList.add("correct");
+          inp.classList.remove("wrong");
+          fb.innerHTML =
+            '<div class="feedback-bar feedback-correct"><div style="font-size:14px;font-weight:800;color:#46a302;">✓ Benar! Artinya: Ampunan 🎉</div><div style="font-size:12px;font-weight:700;color:#46a302;margin-top:4px;">+10 XP diraih</div></div>';
+          btn.className = "btn-duo btn-green";
+          btn.textContent = "LANJUT";
+          btn.onclick = () => go("voice");
+        } else {
+          inp.classList.add("wrong");
+          inp.classList.remove("correct");
+          fb.innerHTML =
+            '<div class="feedback-bar feedback-wrong"><div style="font-size:14px;font-weight:800;color:#cc0000;">✗ Belum tepat ❤️ -1</div><div style="font-size:12px;font-weight:700;color:#cc0000;margin-top:4px;">Petunjuk: dimulai huruf م</div></div>';
+          const hint = document.getElementById("fillin-hint");
+          if (hint) hint.style.color = "#ff9600";
+          setTimeout(() => {
+            inp.classList.remove("wrong");
+            inp.value = "";
+            fb.innerHTML = "";
+            btn.className = "btn-duo btn-disabled";
+            btn.textContent = "PERIKSA";
+            btn.onclick = checkFillin;
+          }, 1500);
+        }
+      }
+
+      /* ===================== VOICE / MIC ===================== */
+      let recInterval = null;
+      let recSec = 0;
+
+      function startRecording() {
+        document.getElementById("voice-state-idle").style.display = "none";
+        document.getElementById("voice-state-recording").style.display = "flex";
+        recSec = 0;
+        clearInterval(recInterval);
+        recInterval = setInterval(() => {
+          recSec++;
+          const m = Math.floor(recSec / 60);
+          const s = String(recSec % 60).padStart(2, "0");
+          const timer = document.getElementById("rec-timer");
+          if (timer) timer.textContent = "Merekam... " + m + ":" + s;
+          if (recSec >= 5) stopRecording();
+        }, 1000);
+      }
+
+      function stopRecording() {
+        clearInterval(recInterval);
+        document.getElementById("voice-state-recording").style.display = "none";
+        document.getElementById("voice-state-result").style.display = "flex";
+        const nb = document.getElementById("voice-next");
+        if (nb) nb.style.display = "block";
+      }
+
+      function resetRecording() {
+        clearInterval(recInterval);
+        recSec = 0;
+        const idle = document.getElementById("voice-state-idle");
+        const recording = document.getElementById("voice-state-recording");
+        const result = document.getElementById("voice-state-result");
+        const nb = document.getElementById("voice-next");
+        if (idle) idle.style.display = "flex";
+        if (recording) recording.style.display = "none";
+        if (result) result.style.display = "none";
+        if (nb) nb.style.display = "none";
+      }
+
+      /* ===================== DRAG DROP ===================== */
+      let placed = [];
+
+      function placeWord(el, word) {
+        if (el.classList.contains("used")) return;
+        el.classList.add("used");
+        placed.push({ el, word });
+        const dz = document.getElementById("drop-zone");
+        // Remove placeholder
+        const placeholder = dz.querySelector("span");
+        if (placeholder) dz.removeChild(placeholder);
+        const tok = document.createElement("span");
+        tok.className = "word-token placed";
+        tok.textContent = word;
+        tok.onclick = () => removeWord(tok, el, word);
+        dz.appendChild(tok);
+      }
+
+      function removeWord(tok, srcEl, word) {
+        tok.remove();
+        srcEl.classList.remove("used");
+        placed = placed.filter((p) => p.word !== word || p.el !== srcEl);
+        const dz = document.getElementById("drop-zone");
+        if (!dz.children.length) {
+          dz.innerHTML =
+            '<span style="font-size:12px;color:#d1d1d1;align-self:center;padding:4px 8px;font-weight:700;">Ketuk kata untuk menaruh di sini</span>';
+        }
+      }
+
+      function clearWords() {
+        placed.forEach((p) => p.el.classList.remove("used"));
+        placed = [];
+        document.getElementById("drop-zone").innerHTML =
+          '<span style="font-size:12px;color:#d1d1d1;align-self:center;padding:4px 8px;font-weight:700;">Ketuk kata untuk menaruh di sini</span>';
+        const fb = document.getElementById("dd-feedback");
+        if (fb) fb.innerHTML = "";
+      }
+
+      function checkDrag() {
+        const correct = [
+          "إِنَّ",
+          "الَّذِينَ",
+          "يَخۡشَوۡنَ",
+          "رَبَّهُم",
+          "بِٱلۡغَيۡبِ",
+          "لَهُم",
+          "مَّغۡفِرَةٞ",
+        ];
+        const ans = placed.map((p) => p.word);
+        const ok = JSON.stringify(ans) === JSON.stringify(correct);
+        const fb = document.getElementById("dd-feedback");
+        if (ok) {
+          fb.innerHTML =
+            '<div class="feedback-bar feedback-correct" style="margin:10px 0 0;"><div style="font-size:14px;font-weight:800;color:#46a302;">✓ Sempurna! MasyaAllah! 🎉</div></div>';
+          setTimeout(() => go("result"), 900);
+        } else {
+          fb.innerHTML =
+            '<div class="feedback-bar feedback-wrong" style="margin:10px 0 0;"><div style="font-size:14px;font-weight:800;color:#cc0000;">✗ Urutan belum tepat, coba lagi</div></div>';
+        }
+      }
+
+      /* ===================== CHART BARS (PROFILE) ===================== */
+      function initChartBars() {
+        document.querySelectorAll("[data-h]").forEach((bar) => {
+          bar.style.height = parseInt(bar.dataset.h) * 0.6 + "px";
+        });
+      }
+
+      /* ===================== INIT ===================== */
+      window.addEventListener("DOMContentLoaded", () => {
+        initChartBars();
+        go("onboarding");
+      });
+    </script>
+  </body>
+</html>

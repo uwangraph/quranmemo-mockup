@@ -1,0 +1,180 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
+
+:root {
+  --duo-green: #58cc02;
+  --duo-blue: #1cb0f6;
+  --duo-red: #ff4b4b;
+  --duo-gold: #ffc800;
+  --duo-purple: #ce82ff;
+  --duo-gray: #afafaf;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Nunito", sans-serif;
+  background: #f0f0f0;
+  min-height: 100vh;
+  padding: 20px 0 40px;
+}
+
+.qm-app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ===================== PHONE FRAME ===================== */
+.phone {
+  width: 340px;
+  background: #fff;
+  border-radius: 36px;
+  border: 3px solid #d0d0d0;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  display: flex;
+  flex-direction: column;
+  min-height: 600px;
+}
+
+.statusbar {
+  background: #fff;
+  padding: 10px 20px 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: #afafaf;
+}
+
+.screen {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  width: 100%;
+}
+
+/* ===================== BUTTONS ===================== */
+.btn-duo {
+  display: block;
+  width: 100%;
+  padding: 14px;
+  border-radius: 16px;
+  font-family: "Nunito", sans-serif;
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  border: none;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.1s;
+}
+
+.btn-green {
+  background: #58cc02;
+  color: #fff;
+  border-bottom: 4px solid #46a302;
+}
+
+.btn-green:active {
+  border-bottom: 2px solid #46a302;
+  transform: translateY(2px);
+}
+
+.btn-blue {
+  background: #1cb0f6;
+  color: #fff;
+  border-bottom: 4px solid #0898dc;
+}
+
+.btn-blue:active {
+  border-bottom: 2px solid #0898dc;
+  transform: translateY(2px);
+}
+
+.btn-outline {
+  background: #fff;
+  color: #1cb0f6;
+  border: 2px solid #e5e5e5;
+  border-bottom: 4px solid #e5e5e5;
+}
+
+.btn-disabled {
+  background: #e5e5e5;
+  color: #afafaf;
+  border-bottom: 4px solid #ccc;
+  cursor: not-allowed;
+}
+
+/* ===================== THEME OVERRIDES ===================== */
+.phone.theme-musyrif .btn-green {
+  background: #23a100;
+  border-bottom-color: #1a7a00;
+}
+.phone.theme-musyrif .statusbar {
+  background: #1a1a1a;
+  color: #fff;
+}
+.phone.theme-musyrif .topbar {
+  background: #1a1a1a;
+  color: #fff;
+}
+
+.phone.theme-admin .btn-green {
+  background: #4f46e5;
+  border-bottom-color: #3730a3;
+}
+.phone.theme-admin .statusbar {
+  background: #1e293b;
+  color: #fff;
+}
+.phone.theme-admin .topbar {
+  background: #1e293b;
+  color: #fff;
+}
+
+/* ===================== COMMON UI ===================== */
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px 8px;
+}
+
+.prog-bar-bg {
+  flex: 1;
+  height: 16px;
+  background: #e5e5e5;
+  border-radius: 100px;
+  overflow: hidden;
+}
+
+.prog-bar-fill {
+  height: 100%;
+  background: #58cc02;
+  border-radius: 100px;
+  transition: width 0.4s;
+}
+
+.section-label {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #afafaf;
+  padding: 0 16px;
+  margin: 10px 0 6px;
+}
+
+.scroll-content {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
