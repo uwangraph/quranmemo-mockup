@@ -15,6 +15,8 @@
         { id: "fading", t: "Latihan Parsial (Fading)", d: "Membaca teks yang disensor sebagian untuk melatih memori.", i: "🧩" },
         { id: "uji", t: "Uji Mandiri", d: "Tes rekam suara dan bandingkan dengan bacaan asli.", i: "🏆" },
     ];
+
+    const step = $derived(lessonSteps[currentStep]);
     
     const fadingOptions = [
         { id: 'A', text: "رَبَّهُم بِٱلۡغَيۡبِ لَهُم مَّغۡفِرَةٞ", correct: false },
@@ -71,7 +73,6 @@
     </div>
 
     <div class="scroll-content" style="padding: 12px 16px 0">
-        {@const step = lessonSteps[currentStep]}
         <div class="instruction-label">Langkah {currentStep + 1}: {step.t}</div>
         
         <div class="exercise-box" class:full-page={currentStep < 2}>

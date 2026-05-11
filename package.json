@@ -1,5 +1,5 @@
 {
-	"name": "tmp-svelte",
+	"name": "quranmemo-mockup",
 	"private": true,
 	"version": "0.0.1",
 	"type": "module",
@@ -10,7 +10,7 @@
 		"prepare": "svelte-kit sync || echo ''"
 	},
 	"devDependencies": {
-		"@sveltejs/adapter-auto": "^7.0.1",
+		"@sveltejs/adapter-cloudflare": "^5.0.1",
 		"@sveltejs/kit": "^2.57.0",
 		"@sveltejs/vite-plugin-svelte": "^7.0.0",
 		"svelte": "^5.55.2",

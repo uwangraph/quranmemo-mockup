@@ -12,6 +12,8 @@
         { t: "Al-Amalu", d: "Tentukan satu aksi konkret hari ini.", i: "✅", hasOptions: true },
     ];
 
+    const step = $derived(tadabburSteps[currentStep]);
+
     const themes = [
         { t: "Iman & Tauhid", c: "blue" },
         { t: "Ibadah", c: "green" },
@@ -75,7 +77,6 @@
             </div>
         </div>
     {:else}
-        {@const step = tadabburSteps[currentStep]}
         <div class="scroll-content" style="padding: 10px 16px;">
             <div style="font-size:11px;font-weight:800;color:#afafaf;margin-bottom:6px;text-transform:uppercase;">
                 Langkah {currentStep + 1} dari 7: {step.t}
