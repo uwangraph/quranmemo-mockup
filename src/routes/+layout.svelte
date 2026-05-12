@@ -335,8 +335,29 @@
 	}
 
 	.phone {
+		width: 390px;
+		height: 844px;
+		border-radius: 48px;
+		border: 12px solid #1a1a1a;
 		margin: 0 auto;
-		transition: all 0.3s ease;
+		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+		background: #fff;
+		position: relative;
+		overflow: hidden;
+	}
+
+	.phone::after {
+		content: '';
+		position: absolute;
+		bottom: 8px;
+		left: 50%;
+		transform: translateX(-50%);
+		width: 120px;
+		height: 5px;
+		background: #000;
+		border-radius: 10px;
+		opacity: 0.2;
+		z-index: 1000;
 	}
 
 	.role-indicator {
@@ -360,41 +381,38 @@
 	/* Mobile full-screen only for small devices */
 	@media (max-width: 500px) {
 		.mobile-topbar {
-			display: flex;
+			display: flex !important;
 		}
 		.snav {
-			transform: translateX(-100%);
-			z-index: 1001;
-			box-shadow: 10px 0 30px rgba(0,0,0,0.1);
+			transform: translateX(-100%) !important;
+			z-index: 1001 !important;
 		}
 		.snav.open {
-			transform: translateX(0);
-		}
-		.close-menu-btn {
-			display: block;
+			transform: translateX(0) !important;
 		}
 		.main-container {
-			margin-left: 0;
-			padding-top: 60px;
-			padding-bottom: 0;
-			display: block;
-			min-height: 100vh;
+			margin-left: 0 !important;
+			padding: 60px 0 0 !important;
+			display: block !important;
+			min-height: 100vh !important;
+			background: #1a1a1a !important; /* Black background to show the 'phone' */
 		}
 		.phone {
-			width: 100%;
-			max-width: 100%;
-			height: calc(100vh - 60px);
-			border-radius: 0;
-			border: none;
-			box-shadow: none;
-			transform: none;
-			margin: 0;
+			width: 100% !important;
+			max-width: 100% !important;
+			height: calc(100vh - 60px) !important;
+			border-radius: 24px 24px 0 0 !important; /* Rounded top for phone look */
+			border-width: 4px 4px 0 4px !important;
+			border-style: solid !important;
+			border-color: #1a1a1a !important;
+			margin: 0 !important;
 		}
 		.phone::after {
-			display: none;
+			display: block !important; /* Show home indicator on mobile */
+			bottom: 12px !important;
 		}
 		.sidebar-toggle-btn {
-			display: none;
+			display: none !important;
 		}
 	}
 
