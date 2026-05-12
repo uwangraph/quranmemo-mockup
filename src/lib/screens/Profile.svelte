@@ -26,18 +26,20 @@
             </div>
         </div>
 
-        <div class="section-label">{i18n.t('settings.language')}</div>
-        <div style="display:flex; gap:10px; padding:0 16px; overflow-x:auto;" class="no-scrollbar">
-            {#each locales as l}
-                <button 
-                    class="lang-btn" 
-                    class:active={i18n.locale === l.code}
-                    onclick={() => i18n.locale = l.code}
-                >
-                    <span style="font-size: 24px;">{l.flag}</span>
-                    <span style="font-size: 10px; font-weight: 800;">{l.label}</span>
-                </button>
-            {/each}
+        <div class="section-label">Pengaturan</div>
+        <div style="padding: 0 16px;">
+            <button 
+                class="settings-btn"
+                onclick={() => appState.go('language')}
+            >
+                <div class="s-icon"><i class="ti ti-world"></i></div>
+                <div style="flex: 1; text-align: left; font-size: 14px; font-weight: 800; color: #3c3c3c;">
+                    {i18n.t('settings.language')}
+                </div>
+                <div style="font-size: 14px; font-weight: 800; color: #afafaf;">
+                    {locales.find(l => l.code === i18n.locale)?.label} <i class="ti ti-chevron-right"></i>
+                </div>
+            </button>
         </div>
 
         <div class="stats-grid">
@@ -87,24 +89,31 @@
 </div>
 
 <style>
-    .lang-btn {
+    .settings-btn {
+        width: 100%;
         display: flex;
-        flex-direction: column;
         align-items: center;
-        gap: 4px;
-        padding: 8px 12px;
-        border-radius: 12px;
+        gap: 12px;
+        padding: 12px 16px;
+        border-radius: 16px;
         border: 2px solid #e5e5e5;
         background: #fff;
-        color: #afafaf;
         cursor: pointer;
-        min-width: 70px;
         transition: all 0.2s;
     }
-    .lang-btn.active {
-        border-color: #1cb0f6;
-        background: #ddf4ff;
-        color: #0898dc;
+    .settings-btn:active {
+        transform: translateY(2px);
+    }
+    .s-icon {
+        width: 32px;
+        height: 32px;
+        border-radius: 10px;
+        background: #f7f7f7;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        color: #1cb0f6;
     }
     .profile-header {
         display: flex;

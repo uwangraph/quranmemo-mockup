@@ -5,6 +5,7 @@
     import Marketplace from '$lib/screens/Marketplace.svelte';
     import League from '$lib/screens/League.svelte';
     import Profile from '$lib/screens/Profile.svelte';
+    import Language from '$lib/screens/Language.svelte';
     import MusyrifDashboard from '$lib/screens/MusyrifDashboard.svelte';
     import LiveMarking from '$lib/screens/LiveMarking.svelte';
     import AdminUsers from '$lib/screens/AdminUsers.svelte';
@@ -24,6 +25,8 @@
         <League />
     {:else if appState.currentScreen === 'profile'}
         <Profile />
+    {:else if appState.currentScreen === 'language'}
+        <Language />
     {:else if appState.currentScreen === 'lesson'}
         <Lesson />
     {:else if appState.currentScreen === 'tadabbur'}

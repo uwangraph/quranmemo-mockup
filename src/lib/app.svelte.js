@@ -13,6 +13,7 @@ export function createAppState() {
         lesson: "📖 Hafalan",
         tadabbur: "📚 Tadabbur",
         profile: "👤 Profil",
+        language: "🌍 Ganti Bahasa",
         "admin-users": "👥 Monitor User",
         "admin-musyrif": "👨‍🏫 Monitor Musyrif",
     };

@@ -7,7 +7,7 @@
 	const categories = [
 		{
 			name: 'User',
-			screens: ['onboarding', 'learn', 'murojaah', 'tadabbur', 'league', 'lesson', 'profile']
+			screens: ['onboarding', 'learn', 'murojaah', 'tadabbur', 'league', 'lesson', 'profile', 'language']
 		},
 		{
 			name: 'Musyrif',
