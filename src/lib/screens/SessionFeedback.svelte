@@ -24,19 +24,20 @@
 </script>
 
 <div class="screen no-scrollbar" style="background: #fafafa;">
-    <div class="feedback-header">
-        <div class="success-icon">✨</div>
-        <h1 style="font-size: 24px; font-weight: 900; color: #3c3c3c; margin: 16px 0 4px;">{i18n.t('feedback.title')}</h1>
-        <p style="font-size: 14px; font-weight: 700; color: #afafaf;">Al-Mulk: 12-16</p>
-    </div>
-
-    <div class="scroll-content no-scrollbar" style="padding: 20px;">
-        <!-- Musyrif Info -->
-        <div class="musyrif-card">
-            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Malik" alt="Ustadz" class="avatar" />
-            <div style="font-size: 16px; font-weight: 900; color: #3c3c3c;">Ustadz Malik</div>
-            <div style="font-size: 11px; font-weight: 800; color: #ff9600; text-transform: uppercase;">Certified Musyrif</div>
+    <div class="scroll-content no-scrollbar" style="padding: 0 0 20px;">
+        <div class="feedback-header">
+            <div class="success-icon">✨</div>
+            <h1 style="font-size: 26px; font-weight: 900; color: #fff; margin: 16px 0 4px;">{i18n.t('feedback.title')}</h1>
+            <p style="font-size: 14px; font-weight: 700; color: rgba(255,255,255,0.8);">Al-Mulk: 12-16</p>
         </div>
+
+        <div style="padding: 0 20px;">
+            <!-- Musyrif Info -->
+            <div class="musyrif-card">
+                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Malik" alt="Ustadz" class="avatar" />
+                <div style="font-size: 18px; font-weight: 900; color: #3c3c3c;">Ustadz Malik</div>
+                <div style="font-size: 11px; font-weight: 800; color: #ff9600; text-transform: uppercase;">{i18n.t('musyrif.partner_tier')}</div>
+            </div>
 
         <!-- Rating Section -->
         <div class="section">
@@ -96,6 +97,7 @@
                 {/if}
             </div>
         {/if}
+        </div>
     </div>
 
     <!-- Bottom Action -->
@@ -114,39 +116,43 @@
 <style>
     .feedback-header {
         text-align: center;
-        padding: 40px 20px 20px;
-        background: #fff;
-        border-bottom: 2px solid #f0f0f0;
+        padding: 50px 20px 90px;
+        background: linear-gradient(135deg, #58cc02, #46a302);
+        position: relative;
     }
     .success-icon {
         font-size: 64px;
         line-height: 1;
-        animation: bounce 1s infinite alternate;
+        animation: bounce 1.5s infinite ease-in-out alternate;
+        text-shadow: 0 10px 20px rgba(0,0,0,0.1);
     }
     @keyframes bounce {
-        from { transform: translateY(0); }
-        to { transform: translateY(-10px); }
+        from { transform: translateY(0) scale(1); }
+        to { transform: translateY(-10px) scale(1.05); }
     }
 
     .musyrif-card {
         background: #fff;
-        border: 2px solid #e5e5e5;
         border-radius: 24px;
-        padding: 20px;
+        padding: 0 20px 24px;
         text-align: center;
-        margin-top: -40px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-        margin-bottom: 24px;
+        margin-top: -30px;
+        box-shadow: 0 16px 32px rgba(0,0,0,0.08);
+        margin-bottom: 32px;
+        position: relative;
+        z-index: 10;
+        border: 1px solid rgba(255,255,255,0.5);
     }
     .avatar {
-        width: 80px;
-        height: 80px;
+        width: 86px;
+        height: 86px;
         border-radius: 50%;
         background: #f0f0f0;
         border: 4px solid #fff;
-        margin-top: -40px;
+        margin-top: -43px;
         margin-bottom: 12px;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+        object-fit: cover;
     }
 
     .section {
@@ -163,19 +169,21 @@
     .stars-container {
         display: flex;
         justify-content: center;
-        gap: 8px;
+        gap: 12px;
     }
     .star-btn {
         background: none;
         border: none;
-        font-size: 40px;
+        font-size: 44px;
         color: #e5e5e5;
         cursor: pointer;
-        transition: all 0.2s;
+        transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        -webkit-tap-highlight-color: transparent;
     }
     .star-btn.active {
         color: #ffc800;
-        transform: scale(1.1);
+        transform: scale(1.15);
+        text-shadow: 0 4px 12px rgba(255, 200, 0, 0.4);
     }
 
     .tags-container {
