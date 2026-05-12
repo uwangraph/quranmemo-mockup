@@ -41,6 +41,7 @@
 			accent: '#ede8ff',
 			icon: '🛡️',
 			screens: [
+				{ id: 'admin-dashboard', icon: '📊' },
 				{ id: 'admin-users', icon: '👥' },
 				{ id: 'admin-musyrif', icon: '👨‍🏫' }
 			]

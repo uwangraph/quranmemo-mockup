@@ -23,7 +23,7 @@
     }
 </script>
 
-<div class="screen no-scrollbar" style="background: #fafafa;">
+<div class="screen no-scrollbar" style="background: #46a302;">
     <div class="scroll-content no-scrollbar" style="padding: 0 0 20px;">
         <div class="feedback-header">
             <div class="success-icon">✨</div>

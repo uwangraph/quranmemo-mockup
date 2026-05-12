@@ -95,9 +95,11 @@
                 <div class="quran-text-container">
                     <div class="quran-text">
                         {#each words as word}
+                            {@const correction = corrections.find(c => c.word === word)}
                             <button 
                                 class="marking-word" 
-                                class:has-mistake={corrections.some(c => c.word === word)}
+                                class:has-mistake={!!correction}
+                                style={correction ? `background: ${correction.color}22; color: ${correction.color}; border-bottom-color: ${correction.color};` : ''}
                                 onclick={() => openSelector(word)}
                             >
                                 {word}
@@ -421,9 +423,6 @@
     }
     .marking-word:hover { background: #f7f7f7; }
     .marking-word.has-mistake {
-        background: #fff0f0;
-        color: #ff4b4b;
-        border-bottom-color: #ff4b4b;
         font-weight: bold;
     }
     

@@ -14,6 +14,7 @@
     import Tadabbur from '$lib/screens/Tadabbur.svelte';
     import MusyrifEarnings from '$lib/screens/MusyrifEarnings.svelte';
     import SessionFeedback from '$lib/screens/SessionFeedback.svelte';
+    import AdminDashboard from '$lib/screens/AdminDashboard.svelte';
 </script>
 
 {#if appState.currentScreen === 'onboarding'}
@@ -41,6 +42,8 @@
         <LiveMarking />
     {:else if appState.currentScreen === 'musyrif-earnings'}
         <MusyrifEarnings />
+    {:else if appState.currentScreen === 'admin-dashboard'}
+        <AdminDashboard />
     {:else if appState.currentScreen === 'admin-users'}
         <AdminUsers />
     {:else if appState.currentScreen === 'admin-musyrif'}
