@@ -18,11 +18,14 @@
     </div>
 
     <div class="scroll-content no-scrollbar">
-        <div class="profile-header">
-            <div class="avatar-large">👤</div>
-            <div style="text-align: center; margin-top: 12px;">
-                <div style="font-size: 20px; font-weight: 900; color: #3c3c3c;">Abdullah Irfan</div>
-                <div style="font-size: 13px; font-weight: 700; color: #afafaf;">{i18n.t('profile.joined')}</div>
+        <div class="profile-hero">
+            <div class="avatar-container">
+                <div class="avatar-large">👤</div>
+                <button class="edit-avatar-btn"><i class="ti ti-camera"></i></button>
+            </div>
+            <div style="text-align: center; margin-top: 16px;">
+                <div style="font-size: 22px; font-weight: 900; color: #3c3c3c;">Abdullah Irfan</div>
+                <div style="font-size: 13px; font-weight: 700; color: #afafaf;">{i18n.t('profile.joined')} 2024</div>
             </div>
         </div>
 
@@ -115,23 +118,42 @@
         font-size: 18px;
         color: #1cb0f6;
     }
-    .profile-header {
+    .profile-hero {
         display: flex;
         flex-direction: column;
         align-items: center;
-        padding: 30px 20px;
+        padding: 40px 20px 30px;
         background: #fff;
+    }
+    .avatar-container {
+        position: relative;
     }
     .avatar-large {
         width: 100px;
         height: 100px;
         background: #f7f7f7;
-        border: 4px solid #e5e5e5;
-        border-radius: 50%;
+        border: 4px solid var(--border-main);
+        border-radius: 30px;
         display: flex;
         align-items: center;
         justify-content: center;
         font-size: 50px;
+    }
+    .edit-avatar-btn {
+        position: absolute;
+        bottom: -4px;
+        right: -4px;
+        width: 32px;
+        height: 32px;
+        background: var(--duo-blue);
+        color: #fff;
+        border: 2px solid #fff;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        cursor: pointer;
     }
     .stats-grid {
         display: grid;

@@ -58,9 +58,12 @@
 
     <div class="scroll-content no-scrollbar" style="background: #fff;">
         <div class="unit-banner">
-            <div style="font-size: 12px; font-weight: 800; color: rgba(255,255,255,0.7); text-transform: uppercase;">{i18n.t('learn.unit')}</div>
-            <div style="font-size: 20px; font-weight: 900; color: #fff;">Surah Al-Mulk</div>
+            <div class="unit-badge">{i18n.t('learn.unit')} 1</div>
+            <div style="font-size: 22px; font-weight: 900; color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.1);">Surah Al-Mulk</div>
             <div style="font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.9); margin-top: 4px;">{i18n.t('learn.surah_desc')}</div>
+            <div class="unit-guide-btn">
+                <i class="ti ti-notebook"></i> {i18n.t('learn.guide') || 'GUIDE'}
+            </div>
         </div>
 
         <div class="path-container">
@@ -101,11 +104,44 @@
 
 <style>
     .unit-banner {
-        background: #58cc02;
+        background: linear-gradient(135deg, #58cc02, #46a302);
         padding: 24px 20px;
-        margin: 10px 16px;
-        border-radius: 16px;
-        box-shadow: 0 4px 0 #46a302;
+        margin: 10px 16px 20px;
+        border-radius: 20px;
+        box-shadow: 0 6px 0 #3d8c02;
+        position: relative;
+        overflow: hidden;
+    }
+    .unit-banner::after {
+        content: '';
+        position: absolute;
+        right: -20px;
+        top: -20px;
+        width: 100px;
+        height: 100px;
+        background: rgba(255,255,255,0.1);
+        border-radius: 50%;
+    }
+    .unit-badge {
+        font-size: 11px;
+        font-weight: 900;
+        color: rgba(255,255,255,0.7);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 4px;
+    }
+    .unit-guide-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: rgba(0,0,0,0.15);
+        color: #fff;
+        padding: 6px 12px;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: 800;
+        margin-top: 12px;
+        cursor: pointer;
     }
     .path-container {
         display: flex;

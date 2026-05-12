@@ -6,23 +6,23 @@
 </script>
 
 <div class="screen">
-    <div style="background: #3c3c3c; padding: 16px; color: #fff">
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-            <div style="display: flex; align-items: center; gap: 10px">
-                <div style="width: 40px; height: 40px; border-radius: 50%; background: #58cc02; display: flex; align-items: center; justify-content: center; font-size: 20px;">👳</div>
+    <div class="musyrif-profile-header">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; width: 100%;">
+            <div style="display: flex; align-items: center; gap: 16px">
+                <div class="m-avatar-large">👳</div>
                 <div>
-                    <div style="font-size: 14px; font-weight: 900">Ustadz Malik</div>
-                    <div style="font-size: 10px; font-weight: 700; color: #58cc02">{i18n.t('musyrif.partner_tier')}</div>
+                    <div style="font-size: 18px; font-weight: 900">Ustadz Malik</div>
+                    <div class="tier-badge-gold">{i18n.t('musyrif.partner_tier')}</div>
                 </div>
             </div>
-            <div style="text-align: right">
+            <div class="earnings-pill-mini" onclick={() => appState.go('musyrif-earnings')}>
                 <div style="font-size: 14px; font-weight: 900">Rp 840.000</div>
-                <div style="font-size: 10px; font-weight: 700; opacity: 0.6">{i18n.t('musyrif.balance')}</div>
+                <div style="font-size: 9px; font-weight: 800; opacity: 0.7; text-transform: uppercase;">{i18n.t('musyrif.balance')}</div>
             </div>
         </div>
     </div>
 
-    <div style="padding: 16px; flex: 1; overflow-y: auto">
+    <div class="scroll-content no-scrollbar" style="padding: 16px;">
         <div class="availability-card">
             <div>
                 <div style="font-size: 14px; font-weight: 800; color: #3c3c3c">{i18n.t('musyrif.availability')}</div>
@@ -73,60 +73,95 @@
 </div>
 
 <style>
-    .availability-card {
-        background: #f7f7f7;
+    .musyrif-profile-header {
+        background: #1a1a1a;
+        padding: 30px 20px 20px;
+        color: #fff;
+        border-bottom-left-radius: 30px;
+        border-bottom-right-radius: 30px;
+    }
+    .m-avatar-large {
+        width: 60px;
+        height: 60px;
+        border-radius: 20px;
+        background: var(--duo-green);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 32px;
+        box-shadow: 0 4px 12px rgba(88, 204, 2, 0.3);
+    }
+    .tier-badge-gold {
+        font-size: 10px;
+        font-weight: 900;
+        color: var(--duo-gold);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    .earnings-pill-mini {
+        background: rgba(255,255,255,0.1);
+        padding: 10px 14px;
         border-radius: 16px;
-        padding: 16px;
+        text-align: right;
+        cursor: pointer;
+        border: 1px solid rgba(255,255,255,0.1);
+    }
+    .availability-card {
+        background: #f1f5f9;
+        border-radius: 20px;
+        padding: 20px;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        margin-bottom: 16px;
+        margin-bottom: 24px;
+        border: 1px solid #e2e8f0;
     }
     .toggle-switch {
-        width: 48px;
-        height: 26px;
-        background: #e5e5e5;
+        width: 52px;
+        height: 28px;
+        background: #cbd5e1;
         border-radius: 100px;
         position: relative;
         cursor: pointer;
         border: none;
-        transition: background 0.3s;
+        transition: all 0.3s;
     }
-    .toggle-switch.active { background: #58cc02; }
+    .toggle-switch.active { background: var(--duo-green); box-shadow: 0 0 15px rgba(88, 204, 2, 0.4); }
     .toggle-circle {
-        width: 20px;
-        height: 20px;
+        width: 22px;
+        height: 22px;
         background: #fff;
         border-radius: 50%;
         position: absolute;
         left: 3px;
         top: 3px;
-        transition: transform 0.3s;
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
-    .toggle-switch.active .toggle-circle { transform: translateX(22px); }
+    .toggle-switch.active .toggle-circle { transform: translateX(24px); }
 
     .request-card {
         background: #fff;
-        border: 2px solid #58cc02;
-        border-bottom-width: 4px;
-        border-radius: 16px;
-        padding: 16px;
+        border: 2px solid var(--duo-green);
+        border-bottom-width: 5px;
+        border-radius: 20px;
+        padding: 20px;
         display: flex;
         align-items: center;
-        gap: 12px;
+        gap: 16px;
         animation: pulse-green 2s infinite;
     }
     @keyframes pulse-green {
         0% { box-shadow: 0 0 0 0 rgba(88, 204, 2, 0.4); }
-        70% { box-shadow: 0 0 0 10px rgba(88, 204, 2, 0); }
+        70% { box-shadow: 0 0 0 12px rgba(88, 204, 2, 0); }
         100% { box-shadow: 0 0 0 0 rgba(88, 204, 2, 0); }
     }
     .stat-card {
         background: #fff;
-        border: 2px solid #e5e5e5;
+        border: 2px solid var(--border-main);
         border-bottom-width: 4px;
-        border-radius: 14px;
-        padding: 12px;
+        border-radius: 18px;
+        padding: 16px;
         text-align: center;
     }
 </style>

@@ -11,19 +11,18 @@
 </script>
 
 <div class="screen">
-    <div class="topbar">
-        <div style="flex:1">
-            <div style="font-size:10px; font-weight:800; color:#afafaf; text-transform:uppercase;">{i18n.t('market.wallet')}</div>
-            <div style="display:flex; gap:12px; align-items:center; margin-top:2px;">
-                <div style="display:flex; gap:4px; align-items:center; font-size:14px; font-weight:900; color:#1cb0f6;">
-                    <i class="ti ti-ticket"></i> 4 {i18n.t('market.tickets')}
-                </div>
-                <div style="display:flex; gap:4px; align-items:center; font-size:14px; font-weight:900; color:#ce82ff;">
-                    <i class="ti ti-coins"></i> 120 {i18n.t('market.coins')}
-                </div>
+    <div class="topbar wallet-header">
+        <div class="wallet-pills">
+            <div class="pill ticket-pill">
+                <i class="ti ti-ticket"></i> <span>4</span>
+            </div>
+            <div class="pill coin-pill">
+                <i class="ti ti-coins"></i> <span>120</span>
             </div>
         </div>
-        <button class="btn-duo btn-outline small-btn" style="padding:6px 12px; font-size:11px;">{i18n.t('market.topup')}</button>
+        <button class="topup-btn">
+            <i class="ti ti-plus"></i>
+        </button>
     </div>
 
     <div class="scroll-content" style="padding: 0 16px;">
@@ -69,51 +68,93 @@
 </div>
 
 <style>
+    .wallet-header {
+        background: #fff;
+        border-bottom: 2px solid var(--border-main);
+        justify-content: space-between;
+        padding: 12px 20px;
+    }
+    .wallet-pills {
+        display: flex;
+        gap: 8px;
+    }
+    .pill {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 12px;
+        border-radius: 100px;
+        font-weight: 900;
+        font-size: 14px;
+        border: 2px solid var(--border-main);
+    }
+    .ticket-pill { color: var(--duo-blue); border-color: #e1f5fe; background: #f1faff; }
+    .coin-pill { color: var(--duo-purple); border-color: #f3e5f5; background: #faf5ff; }
+    
+    .topup-btn {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        border: 2px solid var(--border-main);
+        background: #fff;
+        color: var(--duo-blue);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        font-size: 18px;
+    }
+
     .hero-card {
         background: linear-gradient(135deg, #1cb0f6, #0898dc);
-        padding: 20px;
-        border-radius: 16px;
+        padding: 24px;
+        border-radius: 24px;
         margin-top: 16px;
         margin-bottom: 24px;
         display: flex;
-        align-items: center;
-        gap: 12px;
-        box-shadow: 0 4px 15px rgba(28, 176, 246, 0.3);
+        flex-direction: column;
+        gap: 16px;
+        box-shadow: 0 10px 20px rgba(28, 176, 246, 0.2);
+        color: #fff;
     }
     .section-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 12px;
+        margin-bottom: 16px;
     }
     .musyrif-card {
         background: #fff;
-        border: 2px solid #e5e5e5;
+        border: 2px solid var(--border-main);
         border-bottom-width: 4px;
-        border-radius: 16px;
-        padding: 14px;
+        border-radius: 20px;
+        padding: 16px;
         display: flex;
         align-items: center;
-        gap: 12px;
+        gap: 16px;
+        transition: transform 0.1s;
     }
-    .musyrif-card.offline { opacity: 0.6; }
+    .musyrif-card:active { transform: translateY(2px); border-bottom-width: 2px; }
+    .musyrif-card.offline { opacity: 0.6; grayscale: 0.5; }
     .m-avatar {
-        width: 50px;
-        height: 50px;
+        width: 56px;
+        height: 56px;
         background: #f7f7f7;
-        border-radius: 12px;
+        border-radius: 16px;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 28px;
+        font-size: 32px;
+        border: 2px solid var(--border-main);
     }
     .tier-badge {
         font-size: 9px;
-        font-weight: 800;
-        padding: 2px 6px;
-        border-radius: 4px;
+        font-weight: 900;
+        padding: 2px 8px;
+        border-radius: 6px;
         text-transform: uppercase;
+        letter-spacing: 0.5px;
     }
     .tier-badge.bersanad { background: #fff7e6; color: #cc7000; border: 1px solid #ffe4b3; }
-    .tier-badge.reguler { background: #f0f0f0; color: #777; border: 1px solid #ddd; }
+    .tier-badge.reguler { background: #f1f5f9; color: #64748b; border: 1px solid #e2e8f0; }
 </style>
