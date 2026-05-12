@@ -4,20 +4,20 @@ export function createAppState() {
     let theme = $state('user'); // user, musyrif, admin
     
     const screenLabels = {
-        onboarding: "✨ Onboarding",
-        learn: "🏠 Learn",
-        murojaah: "🤝 Marketplace",
-        feedback: "⭐ Session Feedback",
-        league: "🏆 League",
-        musyrif: "👳 Musyrif Dashboard",
-        livemarking: "🔴 Live Marking",
-        "musyrif-earnings": "💰 Earnings & Analytics",
-        lesson: "📖 Lesson",
-        tadabbur: "📚 Tadabbur",
-        profile: "👤 Profile",
-        language: "🌍 Language",
-        "admin-users": "👥 Monitor Users",
-        "admin-musyrif": "👨‍🏫 Monitor Musyrif",
+        onboarding: "Onboarding",
+        learn: "Learn",
+        murojaah: "Marketplace",
+        feedback: "Session Feedback",
+        league: "League",
+        musyrif: "Musyrif Dashboard",
+        livemarking: "Live Marking",
+        "musyrif-earnings": "Earnings & Analytics",
+        lesson: "Lesson",
+        tadabbur: "Tadabbur",
+        profile: "Profile",
+        language: "Language",
+        "admin-users": "Monitor Users",
+        "admin-musyrif": "Monitor Musyrif",
     };
 
     function go(id) {

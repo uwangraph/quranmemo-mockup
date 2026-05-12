@@ -15,13 +15,13 @@
 			screens: [
 				{ id: 'onboarding', icon: '✨' },
 				{ id: 'learn', icon: '🏠' },
-				{ id: 'murojaah', icon: '🔄' },
+				{ id: 'murojaah', icon: '🤝' },
 				{ id: 'feedback', icon: '⭐' },
-				{ id: 'tadabbur', icon: '📖' },
+				{ id: 'tadabbur', icon: '📚' },
 				{ id: 'league', icon: '🏆' },
-				{ id: 'lesson', icon: '📚' },
+				{ id: 'lesson', icon: '📖' },
 				{ id: 'profile', icon: '👤' },
-				{ id: 'language', icon: '🌐' }
+				{ id: 'language', icon: '🌍' }
 			]
 		},
 		{
@@ -30,7 +30,7 @@
 			accent: '#fff4e0',
 			icon: '👳',
 			screens: [
-				{ id: 'musyrif', icon: '👴' },
+				{ id: 'musyrif', icon: '👳' },
 				{ id: 'livemarking', icon: '🔴' },
 				{ id: 'musyrif-earnings', icon: '💰' }
 			]
@@ -42,7 +42,7 @@
 			icon: '🛡️',
 			screens: [
 				{ id: 'admin-users', icon: '👥' },
-				{ id: 'admin-musyrif', icon: '👳' }
+				{ id: 'admin-musyrif', icon: '👨‍🏫' }
 			]
 		}
 	];
@@ -391,6 +391,9 @@
 			margin: 0;
 		}
 		.phone::after {
+			display: none;
+		}
+		.sidebar-toggle-btn {
 			display: none;
 		}
 	}
