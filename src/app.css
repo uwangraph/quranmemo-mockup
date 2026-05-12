@@ -30,7 +30,8 @@ body {
 
 /* ===================== PHONE FRAME ===================== */
 .phone {
-  width: 340px;
+  width: 100%;
+  max-width: 360px;
   background: #fff;
   border-radius: 36px;
   border: 3px solid #d0d0d0;
@@ -39,7 +40,8 @@ body {
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
   display: flex;
   flex-direction: column;
-  min-height: 600px;
+  min-height: 640px;
+  height: 844px;
 }
 
 .statusbar {
