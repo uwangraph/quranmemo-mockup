@@ -1,5 +1,6 @@
 <script>
     import { appState } from '$lib/app.svelte.js';
+    import { i18n, locales } from '$lib/i18n.svelte.js';
     import BottomNav from '../components/BottomNav.svelte';
 
     const stats = [
@@ -12,7 +13,7 @@
 
 <div class="screen">
     <div class="topbar">
-        <span style="font-size: 16px; font-weight: 900; color: #3c3c3c; flex: 1; text-align: center;">Profil</span>
+        <span style="font-size: 16px; font-weight: 900; color: #3c3c3c; flex: 1; text-align: center;">{i18n.t('profile.title')}</span>
         <button style="background:none; border:none; color:#afafaf;"><i class="ti ti-settings" style="font-size:20px;"></i></button>
     </div>
 
@@ -23,6 +24,20 @@
                 <div style="font-size: 20px; font-weight: 900; color: #3c3c3c;">Abdullah Irfan</div>
                 <div style="font-size: 13px; font-weight: 700; color: #afafaf;">Bergabung sejak Syawal 1446 H</div>
             </div>
+        </div>
+
+        <div class="section-label">{i18n.t('settings.language')}</div>
+        <div style="display:flex; gap:10px; padding:0 16px; overflow-x:auto;" class="no-scrollbar">
+            {#each locales as l}
+                <button 
+                    class="lang-btn" 
+                    class:active={i18n.locale === l.code}
+                    onclick={() => i18n.locale = l.code}
+                >
+                    <span style="font-size: 24px;">{l.flag}</span>
+                    <span style="font-size: 10px; font-weight: 800;">{l.label}</span>
+                </button>
+            {/each}
         </div>
 
         <div class="stats-grid">
@@ -72,6 +87,25 @@
 </div>
 
 <style>
+    .lang-btn {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        padding: 8px 12px;
+        border-radius: 12px;
+        border: 2px solid #e5e5e5;
+        background: #fff;
+        color: #afafaf;
+        cursor: pointer;
+        min-width: 70px;
+        transition: all 0.2s;
+    }
+    .lang-btn.active {
+        border-color: #1cb0f6;
+        background: #ddf4ff;
+        color: #0898dc;
+    }
     .profile-header {
         display: flex;
         flex-direction: column;

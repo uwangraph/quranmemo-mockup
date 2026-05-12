@@ -1,5 +1,6 @@
 <script>
     import { appState } from '$lib/app.svelte.js';
+    import { i18n } from '$lib/i18n.svelte.js';
     import BottomNav from '../components/BottomNav.svelte';
     
     let showToast = $state(false);
@@ -32,7 +33,7 @@
             <i class="ti ti-flame"></i> 7
         </div>
         <div style="flex: 1; display: flex; justify-content: center">
-            <span style="font-size: 18px; font-weight: 900; color: #58cc02; letter-spacing: -1px;">QuranMemo</span>
+            <span style="font-size: 18px; font-weight: 900; color: #58cc02; letter-spacing: -1px;">{i18n.t('learn.title')}</span>
         </div>
         <div class="gems-pill" onclick={() => appState.go('shop')}>
             <i class="ti ti-diamond"></i> 120
@@ -52,7 +53,7 @@
 
     <div class="scroll-content no-scrollbar" style="background: #fff;">
         <div class="unit-banner">
-            <div style="font-size: 12px; font-weight: 800; color: rgba(255,255,255,0.7); text-transform: uppercase;">Unit 1</div>
+            <div style="font-size: 12px; font-weight: 800; color: rgba(255,255,255,0.7); text-transform: uppercase;">{i18n.t('learn.unit')}</div>
             <div style="font-size: 20px; font-weight: 900; color: #fff;">Surah Al-Mulk</div>
             <div style="font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.9); margin-top: 4px;">Kekuasaan Allah yang Maha Luas</div>
         </div>
@@ -75,7 +76,7 @@
                         {/if}
 
                         {#if node.status === 'current'}
-                            <div class="node-popover">MULAI</div>
+                            <div class="node-popover">{i18n.t('learn.start')}</div>
                         {/if}
                     </button>
                     <div class="node-title">{node.title}</div>

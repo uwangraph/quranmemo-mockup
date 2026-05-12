@@ -1,6 +1,7 @@
 <script>
 	import '../app.css';
 	import { appState } from '$lib/app.svelte.js';
+	import { i18n } from '$lib/i18n.svelte.js';
 	let { children } = $props();
 
 	const categories = [
@@ -47,8 +48,8 @@
 	</div>
 
 	<!-- Phone Frame -->
-	<div class="phone theme-{appState.theme}" id="phone-frame" style="margin-left: 220px;">
-		<div class="statusbar">
+	<div class="phone theme-{appState.theme}" id="phone-frame" style="margin-left: 220px;" dir={i18n.getDir()}>
+		<div class="statusbar" dir="ltr">
 			<span>9:41</span>
 			<span style="display: flex; gap: 4px; align-items: center">
 				<i class="ti ti-wifi" style="font-size: 13px"></i>

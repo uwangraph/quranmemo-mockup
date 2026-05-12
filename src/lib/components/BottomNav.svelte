@@ -1,15 +1,18 @@
 <script>
     import { appState } from '$lib/app.svelte.js';
+    import { i18n } from '$lib/i18n.svelte.js';
     let { active = 'learn' } = $props();
 
-    const items = [
-        { id: 'learn', icon: 'ti-home', label: 'Belajar' },
-        { id: 'murojaah', icon: 'ti-refresh', label: 'Murojaah' },
-        { id: 'tadabbur', icon: 'ti-book', label: 'Tadabbur' },
-        { id: 'league', icon: 'ti-trophy', label: 'Liga' },
-        { id: 'profile', icon: 'ti-user', label: 'Profil' }
-    ];
+    // Make items reactive so they update when language changes
+    const items = $derived([
+        { id: 'learn', icon: 'ti-home', label: i18n.t('nav.learn') },
+        { id: 'murojaah', icon: 'ti-refresh', label: i18n.t('nav.murojaah') },
+        { id: 'tadabbur', icon: 'ti-book', label: i18n.t('nav.tadabbur') },
+        { id: 'league', icon: 'ti-trophy', label: i18n.t('nav.league') },
+        { id: 'profile', icon: 'ti-user', label: i18n.t('nav.profile') }
+    ]);
 </script>
+
 
 <div class="bottom-nav">
     {#each items as item}
