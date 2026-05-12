@@ -14,6 +14,7 @@ const id = {
     "learn.surah_desc": "Kekuasaan Allah yang Maha Luas",
     "learn.streak_days": "Streak 7 Hari!", "learn.streak_msg": "Pertahankan cahaya hafalanmu.",
     "learn.murojaah": "Murojaah", "learn.ziyadah": "Ziyadah", "learn.checkpoint": "Ujian Halaman",
+    "learn.node_review": "Murojaah", "learn.node_new": "Ziyadah", "learn.node_checkpoint": "Ujian Halaman",
     "profile.title": "Profil", "profile.total_xp": "Total XP", "profile.streak": "Streak",
     "profile.hafalan": "Hafalan", "profile.liga": "Liga", "profile.settings": "Pengaturan",
     "profile.wallet": "Dompet Hibrida", "profile.tickets": "Tiket Setoran",
@@ -40,6 +41,8 @@ const id = {
     "lesson.wrong": "✗ Kurang tepat. Coba perhatikan lagi.",
     "lesson.check": "PERIKSA", "lesson.next": "LANJUT", "lesson.retry": "COBA LAGI",
     "lesson.understand": "MENGERTI & LANJUT",
+    "lesson.verse_trans": "Sesungguhnya orang-orang yang takut kepada Tuhannya yang tidak terlihat oleh mereka, mereka memperoleh ampunan dan pahala yang besar.",
+    "lesson.mushaf_trans": "Mahasuci Allah yang menguasai (segala) kerajaan, dan Dia Mahakuasa atas segala sesuatu. Yang menciptakan mati dan hidup, untuk menguji kamu...",
     "market.wallet": "Saldo Dompet", "market.tickets": "Tiket", "market.coins": "Koin",
     "market.topup": "ISI SALDO", "market.instant": "Setoran Instan",
     "market.instant_d": "Terhubung dengan Musyrif dalam detik",
@@ -67,10 +70,8 @@ const id = {
     "tadabbur.a1": "Sedekah hari ini", "tadabbur.a2": "Sholat tepat waktu",
     "tadabbur.a3": "Berbuat baik ke orang tua",
     "tadabbur.verse_trans": "Mahasuci Allah yang di tangan-Nya segala kerajaan",
-    "learn.node_review": "Review", "learn.node_new": "New Verses",
-    "learn.node_checkpoint": "Page Test",
-    "lesson.verse_trans": "Sesungguhnya orang-orang yang takut kepada Tuhannya yang tidak terlihat oleh mereka, mereka memperoleh ampunan dan pahala yang besar.",
-    "lesson.mushaf_trans": "Mahasuci Allah yang menguasai (segala) kerajaan, dan Dia Mahakuasa atas segala sesuatu. Yang menciptakan mati dan hidup, untuk menguji kamu...",
+    "tier.bersanad": "Bersanad", "tier.reguler": "Reguler",
+    "status.online": "Online", "status.offline": "Offline",
     "onboarding.next": "LANJUT", "onboarding.step": "Langkah", "onboarding.step_of": "dari 5",
     "onboarding.q1": "Apa motivasi utamamu menghafal Al-Quran?",
     "onboarding.q1o1": "Sholat lebih khusyuk", "onboarding.q1o2": "Target khatam / sanad",
@@ -87,8 +88,6 @@ const id = {
     "onboarding.q5": "Kapan waktu favoritmu berinteraksi?",
     "onboarding.q5o1": "Ba'da Subuh / Pagi", "onboarding.q5o2": "Istirahat Siang",
     "onboarding.q5o3": "Sore Hari", "onboarding.q5o4": "Malam Sebelum Tidur",
-    "tier.bersanad": "Bersanad", "tier.reguler": "Reguler",
-    "status.online": "Online", "status.offline": "Offline",
     "admin.monitor_musyrif": "Admin: Monitor Musyrif", "admin.revenue": "Sistem Bagi Hasil",
     "admin.from_last_month": "dari bulan lalu", "admin.musyrif_ready": "Musyrif Online (Siap)",
     "admin.idle_waiting": "Idle — Menunggu setoran", "admin.serving": "Melayani",
@@ -108,7 +107,14 @@ const id = {
     "marking.type_forget": "Lupa", "marking.type_tajwid": "Tajwid", "marking.type_makhraj": "Makhraj",
     "marking.session_report": "Laporan Sesi", "marking.summary": "Ringkasan Performa",
     "marking.total_mistakes": "Total Kesalahan", "marking.duration": "Durasi Sesi",
-    "marking.back_to_dashboard": "KEMBALI KE DASHBOARD", "marking.minutes": "menit"
+    "marking.back_to_dashboard": "KEMBALI KE DASHBOARD", "marking.minutes": "menit",
+    "earnings.title": "Pendapatan & Analitik", "earnings.total_balance": "Total Saldo",
+    "earnings.withdraw": "TARIK SALDO", "earnings.monthly": "Pendapatan Bulan Ini",
+    "earnings.sessions": "Total Sesi", "earnings.rating": "Rating Kepuasan",
+    "earnings.history": "Riwayat Transaksi", "earnings.empty_history": "Belum ada transaksi",
+    "earnings.breakdown": "Rincian Pendapatan", "earnings.commission": "Komisi Platform (10%)",
+    "earnings.net": "Pendapatan Bersih", "earnings.growth": "Pertumbuhan dari bulan lalu",
+    "earnings.performance": "Tren Mengajar (Mingguan)"
 };
 
 const en = {
@@ -118,6 +124,7 @@ const en = {
     "learn.surah_desc": "The Vast Dominion of Allah",
     "learn.streak_days": "7-Day Streak!", "learn.streak_msg": "Keep shining your memorization light.",
     "learn.murojaah": "Review", "learn.ziyadah": "New Verses", "learn.checkpoint": "Page Test",
+    "learn.node_review": "Review", "learn.node_new": "New Verses", "learn.node_checkpoint": "Page Test",
     "profile.title": "Profile", "profile.total_xp": "Total XP", "profile.streak": "Streak",
     "profile.hafalan": "Memorized", "profile.liga": "League", "profile.settings": "Settings",
     "profile.wallet": "Hybrid Wallet", "profile.tickets": "Session Tickets",
@@ -144,6 +151,8 @@ const en = {
     "lesson.wrong": "✗ Not quite right. Try again.",
     "lesson.check": "CHECK", "lesson.next": "CONTINUE", "lesson.retry": "TRY AGAIN",
     "lesson.understand": "UNDERSTOOD & NEXT",
+    "lesson.verse_trans": "Indeed, those who fear their Lord unseen will have forgiveness and great reward.",
+    "lesson.mushaf_trans": "Blessed is He in whose hand is dominion, and He is over all things competent. He who created death and life to test you...",
     "market.wallet": "Wallet Balance", "market.tickets": "Tickets", "market.coins": "Coins",
     "market.topup": "TOP UP", "market.instant": "Instant Recitation",
     "market.instant_d": "Connect with a Musyrif in seconds",
@@ -171,10 +180,8 @@ const en = {
     "tadabbur.a1": "Give charity today", "tadabbur.a2": "Pray on time",
     "tadabbur.a3": "Be kind to parents",
     "tadabbur.verse_trans": "Blessed is He in whose hand is dominion",
-    "learn.node_review": "Review", "learn.node_new": "New Verses",
-    "learn.node_checkpoint": "Page Test",
-    "lesson.verse_trans": "Indeed, those who fear their Lord unseen will have forgiveness and great reward.",
-    "lesson.mushaf_trans": "Blessed is He in whose hand is dominion, and He is over all things competent. He who created death and life to test you...",
+    "tier.bersanad": "Certified", "tier.reguler": "Regular",
+    "status.online": "Online", "status.offline": "Offline",
     "onboarding.next": "NEXT", "onboarding.step": "Step", "onboarding.step_of": "of 5",
     "onboarding.q1": "What is your main motivation for memorizing the Quran?",
     "onboarding.q1o1": "More focused prayer", "onboarding.q1o2": "Complete memorization / Sanad",
@@ -191,8 +198,6 @@ const en = {
     "onboarding.q5": "When is your favorite time to interact?",
     "onboarding.q5o1": "After Fajr / Morning", "onboarding.q5o2": "Lunch Break",
     "onboarding.q5o3": "Afternoon", "onboarding.q5o4": "Night Before Sleep",
-    "tier.bersanad": "Certified", "tier.reguler": "Regular",
-    "status.online": "Online", "status.offline": "Offline",
     "admin.monitor_musyrif": "Admin: Monitor Musyrif", "admin.revenue": "Revenue Share System",
     "admin.from_last_month": "from last month", "admin.musyrif_ready": "Musyrif Online (Ready)",
     "admin.idle_waiting": "Idle — Waiting for recitation", "admin.serving": "Serving",
@@ -212,77 +217,20 @@ const en = {
     "marking.type_forget": "Forgot", "marking.type_tajwid": "Tajwid", "marking.type_makhraj": "Makhraj",
     "marking.session_report": "Session Report", "marking.summary": "Performance Summary",
     "marking.total_mistakes": "Total Mistakes", "marking.duration": "Session Duration",
-    "marking.back_to_dashboard": "BACK TO DASHBOARD", "marking.minutes": "minutes"
+    "marking.back_to_dashboard": "BACK TO DASHBOARD", "marking.minutes": "minutes",
+    "earnings.title": "Earnings & Analytics", "earnings.total_balance": "Total Balance",
+    "earnings.withdraw": "WITHDRAW", "earnings.monthly": "Monthly Earnings",
+    "earnings.sessions": "Total Sessions", "earnings.rating": "Satisfaction Rating",
+    "earnings.history": "Transaction History", "earnings.empty_history": "No transactions yet",
+    "earnings.breakdown": "Earnings Breakdown", "earnings.commission": "Platform Commission (10%)",
+    "earnings.net": "Net Earnings", "earnings.growth": "Growth from last month",
+    "earnings.performance": "Teaching Trend (Weekly)"
 };
 
-const ms = {
-    ...id,
-    "nav.learn": "Belajar", "nav.murojaah": "Ulangkaji", "nav.tadabbur": "Tadabbur",
-    "nav.league": "Liga", "nav.profile": "Profil",
-    "learn.start": "MULA", "learn.surah_desc": "Kekuasaan Allah Yang Maha Luas",
-    "learn.streak_days": "Rantaian 7 Hari!", "learn.streak_msg": "Kekalkan cahaya hafalan anda.",
-    "profile.total_xp": "Jumlah XP", "profile.streak": "Rantaian",
-    "profile.hafalan": "Hafalan", "profile.settings": "Tetapan",
-    "settings.language": "Bahasa Aplikasi",
-    "lesson.understand": "FAHAM & TERUSKAN", "lesson.check": "SEMAK",
-    "lesson.next": "TERUSKAN", "lesson.retry": "CUBA LAGI",
-    "market.topup": "ISI BAKI", "market.find": "CARI SEKARANG",
-    "league.title": "Liga Fastabiqul Khairat", "league.you": "Anda",
-    "onboarding.next": "TERUSKAN"
-};
-
-const ha = {
-    ...id,
-    "nav.learn": "Koya", "nav.murojaah": "Bita", "nav.tadabbur": "Tadabbur",
-    "nav.league": "Gasar", "nav.profile": "Bayani",
-    "learn.start": "FARA", "learn.surah_desc": "Ikon Allah Mai Girma",
-    "learn.streak_days": "Jere kwana 7!", "learn.streak_msg": "Ka ci gaba da haske.",
-    "profile.title": "Bayani", "profile.total_xp": "Jimlar XP", "profile.streak": "Jere",
-    "profile.hafalan": "Haddace", "profile.settings": "Saituna",
-    "settings.language": "Harshen Manhaja",
-    "lesson.understand": "NA GANE & CI GABA", "lesson.check": "DUBA",
-    "lesson.next": "CI GABA", "lesson.retry": "SAKE GWADAWA",
-    "market.topup": "CIKA KUDI", "market.find": "NEMO YANZU",
-    "league.title": "Gasar Fastabiqul Khairat", "league.you": "Kai",
-    "onboarding.next": "CI GABA"
-};
-
-const fr = {
-    ...id,
-    "nav.learn": "Apprendre", "nav.murojaah": "Réviser", "nav.tadabbur": "Méditer",
-    "nav.league": "Ligue", "nav.profile": "Profil",
-    "learn.start": "COMMENCER", "learn.surah_desc": "La Souveraineté d'Allah",
-    "learn.streak_days": "Série de 7 jours!", "learn.streak_msg": "Gardez la lumière allumée.",
-    "profile.title": "Profil", "profile.total_xp": "XP Total", "profile.streak": "Série",
-    "profile.hafalan": "Mémorisé", "profile.settings": "Paramètres",
-    "settings.language": "Langue de l'application",
-    "lesson.understand": "COMPRIS & SUIVANT", "lesson.check": "VÉRIFIER",
-    "lesson.next": "CONTINUER", "lesson.retry": "RÉESSAYER",
-    "market.topup": "RECHARGER", "market.find": "CHERCHER",
-    "league.title": "Ligue Fastabiqul Khairat", "league.you": "Vous",
-    "onboarding.next": "SUIVANT"
-};
-
-const ar = {
-    ...id,
-    "nav.learn": "تَعَلَّم", "nav.murojaah": "مراجعة", "nav.tadabbur": "تدبر",
-    "nav.league": "دوري", "nav.profile": "حسابي",
-    "learn.title": "قرآن ميمو", "learn.unit": "الوحدة ١", "learn.start": "ابدأ",
-    "learn.surah_desc": "سلطان الله الواسع",
-    "learn.streak_days": "سلسلة ٧ أيام!", "learn.streak_msg": "حافظ على نور حفظك.",
-    "profile.title": "حسابي", "profile.total_xp": "مجموع النقاط",
-    "profile.streak": "أيام متتالية", "profile.hafalan": "محفوظ",
-    "profile.liga": "الدوري", "profile.settings": "الإعدادات",
-    "profile.wallet": "المحفظة", "profile.tickets": "تذاكر التسميع",
-    "profile.coins": "عملات ميمو", "profile.buy": "شراء",
-    "profile.achievements": "الإنجازات",
-    "settings.language": "لغة التطبيق",
-    "lesson.step": "خطوة", "lesson.understand": "فهمت، التالي",
-    "lesson.check": "تحقق", "lesson.next": "التالي", "lesson.retry": "أعد المحاولة",
-    "market.topup": "شحن", "market.find": "ابحث الآن",
-    "league.title": "دوري فاستبقوا الخيرات", "league.you": "أنت",
-    "onboarding.next": "التالي"
-};
+const ms = { ...id, "nav.murojaah": "Ulangkaji", "learn.start": "MULA", "onboarding.next": "TERUSKAN" };
+const ha = { ...id, "nav.learn": "Koya", "nav.murojaah": "Bita", "nav.league": "Gasar", "nav.profile": "Bayani", "learn.start": "FARA", "onboarding.next": "CI GABA" };
+const fr = { ...id, "nav.learn": "Apprendre", "nav.murojaah": "Réviser", "nav.tadabbur": "Méditer", "nav.league": "Ligue", "learn.start": "COMMENCER", "onboarding.next": "SUIVANT" };
+const ar = { ...id, "nav.learn": "تَعَلَّم", "nav.murojaah": "مراجعة", "nav.tadabbur": "تدبر", "nav.league": "دوري", "nav.profile": "حسابي", "learn.title": "قرآن ميمو", "learn.unit": "الوحدة ١", "learn.start": "ابدأ", "onboarding.next": "التالي" };
 
 const dicts = { id, en, ms, ha, fr, ar };
 

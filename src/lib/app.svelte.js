@@ -5,16 +5,17 @@ export function createAppState() {
     
     const screenLabels = {
         onboarding: "✨ Onboarding",
-        learn: "🏠 Belajar",
-        murojaah: "🤝 Marketplace Musyrif",
-        league: "🏆 Liga Fastabiqul",
-        musyrif: "👳 Dashboard Musyrif",
+        learn: "🏠 Learn",
+        murojaah: "🤝 Marketplace",
+        league: "🏆 League",
+        musyrif: "👳 Musyrif Dashboard",
         livemarking: "🔴 Live Marking",
-        lesson: "📖 Hafalan",
+        "musyrif-earnings": "💰 Earnings & Analytics",
+        lesson: "📖 Lesson",
         tadabbur: "📚 Tadabbur",
-        profile: "👤 Profil",
-        language: "🌍 Ganti Bahasa",
-        "admin-users": "👥 Monitor User",
+        profile: "👤 Profile",
+        language: "🌍 Language",
+        "admin-users": "👥 Monitor Users",
         "admin-musyrif": "👨‍🏫 Monitor Musyrif",
     };
 
@@ -22,7 +23,7 @@ export function createAppState() {
         currentScreen = id;
         
         // Theme switching logic
-        if (id === 'musyrif' || id === 'livemarking') {
+        if (id === 'musyrif' || id === 'livemarking' || id === 'musyrif-earnings') {
             theme = 'musyrif';
         } else if (id.startsWith('admin-')) {
             theme = 'admin';

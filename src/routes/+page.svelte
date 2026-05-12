@@ -12,6 +12,7 @@
     import AdminMusyrif from '$lib/screens/AdminMusyrif.svelte';
     import Lesson from '$lib/screens/Lesson.svelte';
     import Tadabbur from '$lib/screens/Tadabbur.svelte';
+    import MusyrifEarnings from '$lib/screens/MusyrifEarnings.svelte';
 </script>
 
 {#if appState.currentScreen === 'onboarding'}
@@ -35,6 +36,8 @@
         <MusyrifDashboard />
     {:else if appState.currentScreen === 'livemarking'}
         <LiveMarking />
+    {:else if appState.currentScreen === 'musyrif-earnings'}
+        <MusyrifEarnings />
     {:else if appState.currentScreen === 'admin-users'}
         <AdminUsers />
     {:else if appState.currentScreen === 'admin-musyrif'}
