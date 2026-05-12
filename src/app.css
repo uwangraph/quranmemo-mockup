@@ -19,9 +19,11 @@
 :root {
   --duo-green: #58cc02;
   --duo-blue: #1cb0f6;
+  --duo-orange: #ff9600;
   --duo-red: #ff4b4b;
   --duo-gold: #ffc800;
   --duo-purple: #ce82ff;
+  --admin-purple: #7c5cfc;
   --duo-gray: #afafaf;
   --bg-light: #f7f7f7;
   --border-main: #e5e5e5;

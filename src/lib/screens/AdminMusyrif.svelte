@@ -46,11 +46,12 @@
 
 <style>
     .revenue-card {
-        background: #1e293b;
+        background: var(--admin-purple);
         color: #fff;
         border-radius: 16px;
         padding: 16px;
         margin-bottom: 16px;
+        box-shadow: 0 10px 20px rgba(124, 92, 252, 0.2);
     }
     .musyrif-list {
         display: flex;
@@ -73,7 +74,7 @@
         width: 40px;
         height: 40px;
         border-radius: 50%;
-        background: #f1f5f9;
+        background: #ede8ff;
         display: flex;
         align-items: center;
         justify-content: center;

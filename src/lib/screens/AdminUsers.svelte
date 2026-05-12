@@ -19,7 +19,7 @@
                 <div class="stat-label">{i18n.t('admin.active_now')}</div>
             </div>
             <div class="stat-item">
-                <div class="stat-val" style="color: #4f46e5;">342</div>
+                <div class="stat-val" style="color: var(--admin-purple);">342</div>
                 <div class="stat-label">{i18n.t('admin.submission_today')}</div>
             </div>
         </div>
@@ -27,21 +27,21 @@
         <div class="section-label">{i18n.t('admin.user_attention')}</div>
         <div class="user-list">
             <div class="user-card warning">
-                <div class="user-icon" style="background: #fee2e2;">📉</div>
+                <div class="user-icon" style="background: #ede8ff;">📉</div>
                 <div style="flex: 1;">
                     <div class="user-name">Budi Santoso</div>
                     <div class="user-status" style="color: #ef4444;">{i18n.t('admin.streak_broken')}</div>
                 </div>
-                <button class="btn-duo btn-green small-btn">{i18n.t('admin.contact')}</button>
+                <button class="btn-duo btn-purple small-btn">{i18n.t('admin.contact')}</button>
             </div>
             
             <div class="user-card warning">
-                <div class="user-icon" style="background: #fef9c3;">⏳</div>
+                <div class="user-icon" style="background: #ede8ff;">⏳</div>
                 <div style="flex: 1;">
                     <div class="user-name">Siti Aminah</div>
                     <div class="user-status" style="color: #a16207;">{i18n.t('admin.no_submission_week')}</div>
                 </div>
-                <button class="btn-duo btn-green small-btn">{i18n.t('admin.remind')}</button>
+                <button class="btn-duo btn-purple small-btn">{i18n.t('admin.remind')}</button>
             </div>
         </div>
     </div>
@@ -60,6 +60,15 @@
     .stat-item {
         text-align: center;
         flex: 1;
+    }
+    .btn-purple {
+        background: var(--admin-purple);
+        color: #fff;
+        border-bottom: 4px solid #5d42cc;
+    }
+    .btn-purple:active {
+        border-bottom: 0;
+        transform: translateY(4px);
     }
     .border-x {
         border-left: 1px solid #e2e8f0;

@@ -16,17 +16,20 @@
 
 <div class="screen no-scrollbar" style="background: #fafafa;">
     <!-- Header -->
-    <div class="earnings-header">
-        <button onclick={() => appState.go('musyrif')} class="back-btn">
-            <i class="ti ti-chevron-left"></i>
-        </button>
-        <h1 style="font-size: 16px; font-weight: 900; color: #3c3c3c; margin: 0;">{i18n.t('earnings.title')}</h1>
-        <div style="width: 32px"></div>
-    </div>
+    <div class="marking-header" style="background: #fff4e0; border-bottom-color: #ffe0b2;">
+            <button onclick={() => appState.go('musyrif')} class="close-btn">
+                <i class="ti ti-arrow-left"></i>
+            </button>
+            <div style="flex: 1">
+                <div style="font-size: 14px; font-weight: 900">Ahmad Hafidz</div>
+                <div style="font-size: 10px; font-weight: 700; color: #ff9600">🔴 {i18n.t('marking.live')}</div>
+            </div>
+            <div class="timer-bubble" style="background: #ff9600; color: #fff;">04:20</div>
+        </div>
 
     <div class="scroll-content no-scrollbar" style="padding: 20px;">
         <!-- Balance Card -->
-        <div class="balance-card">
+        <div class="balance-card" style="background: var(--duo-orange); box-shadow: 0 10px 20px rgba(255, 150, 0, 0.2);">
             <div class="balance-info">
                 <div style="font-size: 11px; font-weight: 800; color: #ffffff; opacity: 0.8; text-transform: uppercase;">{i18n.t('earnings.total_balance')}</div>
                 <div style="font-size: 28px; font-weight: 900; color: #ffffff; margin: 4px 0;">Rp 840.000</div>
@@ -35,7 +38,7 @@
                     <span style="opacity: 0.8;">{i18n.t('earnings.growth')}</span>
                 </div>
             </div>
-            <button class="withdraw-btn">
+            <button class="withdraw-btn" style="color: #ff9600;">
                 <i class="ti ti-wallet" style="font-size: 18px;"></i>
                 <span>{i18n.t('earnings.withdraw')}</span>
             </button>
@@ -63,7 +66,7 @@
         <div class="card chart-card">
             <div class="card-header">
                 <div style="font-size: 13px; font-weight: 900; color: #3c3c3c;">{i18n.t('earnings.performance')}</div>
-                <div style="font-size: 11px; font-weight: 700; color: #58cc02;">+24 {i18n.t('marking.minutes')}</div>
+                <div style="font-size: 11px; font-weight: 700; color: #ff9600;">+24 {i18n.t('marking.minutes')}</div>
             </div>
             <div class="chart-container">
                 <svg viewBox="0 0 100 40" class="chart">

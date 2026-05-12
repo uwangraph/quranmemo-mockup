@@ -41,12 +41,12 @@
         
         {#if isAvailable}
             <div class="request-card">
-                <div style="width: 48px; height: 48px; border-radius: 50%; background: #d7ffb2; display: flex; align-items: center; justify-content: center; font-size: 24px;">🧑‍🎓</div>
+                <div style="width: 48px; height: 48px; border-radius: 50%; background: #fff4e0; display: flex; align-items: center; justify-content: center; font-size: 24px;">🧑‍🎓</div>
                 <div style="flex: 1">
                     <div style="font-size: 14px; font-weight: 900; color: #3c3c3c">Ahmad Hafidz</div>
-                    <div style="font-size: 11px; font-weight: 700; color: #58cc02">{i18n.t('admin.serving')}: Al-Mulk 12-16 ({i18n.t('market.tickets')})</div>
+                    <div style="font-size: 11px; font-weight: 700; color: #ff9600">{i18n.t('admin.serving')}: Al-Mulk 12-16 ({i18n.t('market.tickets')})</div>
                 </div>
-                <button class="btn-duo btn-green" style="width: auto; padding: 10px 16px; font-size: 12px" onclick={() => appState.go('livemarking')}>
+                <button class="btn-duo btn-orange" style="width: auto; padding: 10px 16px; font-size: 12px" onclick={() => appState.go('livemarking')}>
                     {i18n.t('musyrif.accept')}
                 </button>
             </div>
@@ -84,12 +84,12 @@
         width: 60px;
         height: 60px;
         border-radius: 20px;
-        background: var(--duo-green);
+        background: var(--duo-orange);
         display: flex;
         align-items: center;
         justify-content: center;
         font-size: 32px;
-        box-shadow: 0 4px 12px rgba(88, 204, 2, 0.3);
+        box-shadow: 0 4px 12px rgba(255, 150, 0, 0.3);
     }
     .tier-badge-gold {
         font-size: 10px;
@@ -126,7 +126,11 @@
         border: none;
         transition: all 0.3s;
     }
-    .toggle-switch.active { background: var(--duo-green); box-shadow: 0 0 15px rgba(88, 204, 2, 0.4); }
+    .toggle-switch.active {
+        background: var(--duo-orange);
+        border-color: var(--duo-orange);
+        box-shadow: 0 0 15px rgba(255, 150, 0, 0.4);
+    }
     .toggle-circle {
         width: 22px;
         height: 22px;
@@ -142,14 +146,13 @@
 
     .request-card {
         background: #fff;
-        border: 2px solid var(--duo-green);
+        border: 2px solid var(--duo-orange);
         border-bottom-width: 5px;
         border-radius: 20px;
         padding: 20px;
         display: flex;
         align-items: center;
         gap: 16px;
-        animation: pulse-green 2s infinite;
     }
     @keyframes pulse-green {
         0% { box-shadow: 0 0 0 0 rgba(88, 204, 2, 0.4); }
