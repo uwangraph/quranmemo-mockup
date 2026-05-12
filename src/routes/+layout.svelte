@@ -392,24 +392,11 @@
 		}
 		.main-container {
 			margin-left: 0 !important;
-			padding: 60px 0 0 !important;
-			display: block !important;
+			padding: 80px 20px 40px !important; /* Space for mobile topbar */
+			display: flex !important;
+			justify-content: center !important;
+			align-items: flex-start !important;
 			min-height: 100vh !important;
-			background: #1a1a1a !important; /* Black background to show the 'phone' */
-		}
-		.phone {
-			width: 100% !important;
-			max-width: 100% !important;
-			height: calc(100vh - 60px) !important;
-			border-radius: 24px 24px 0 0 !important; /* Rounded top for phone look */
-			border-width: 4px 4px 0 4px !important;
-			border-style: solid !important;
-			border-color: #1a1a1a !important;
-			margin: 0 !important;
-		}
-		.phone::after {
-			display: block !important; /* Show home indicator on mobile */
-			bottom: 12px !important;
 		}
 		.sidebar-toggle-btn {
 			display: none !important;

@@ -89,6 +89,8 @@ body {
   width: 100%;
   background: #fff;
   position: relative;
+  min-height: 0; /* Crucial for flex child scrolling */
+  overflow: hidden; /* Ensure content doesn't break out */
 }
 
 .card-premium {
