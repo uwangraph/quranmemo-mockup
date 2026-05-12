@@ -7,6 +7,7 @@ export function createAppState() {
         onboarding: "✨ Onboarding",
         learn: "🏠 Learn",
         murojaah: "🤝 Marketplace",
+        feedback: "⭐ Session Feedback",
         league: "🏆 League",
         musyrif: "👳 Musyrif Dashboard",
         livemarking: "🔴 Live Marking",

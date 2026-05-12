@@ -113,8 +113,12 @@ const id = {
     "earnings.sessions": "Total Sesi", "earnings.rating": "Rating Kepuasan",
     "earnings.history": "Riwayat Transaksi", "earnings.empty_history": "Belum ada transaksi",
     "earnings.breakdown": "Rincian Pendapatan", "earnings.commission": "Komisi Platform (10%)",
-    "earnings.net": "Pendapatan Bersih", "earnings.growth": "Pertumbuhan dari bulan lalu",
-    "earnings.performance": "Tren Mengajar (Mingguan)"
+    "earnings.performance": "Tren Mengajar (Mingguan)",
+    "feedback.title": "Sesi Selesai!", "feedback.rate": "Beri rating untuk Ustadz",
+    "feedback.tags": "Apa yang paling berkesan?", "feedback.tag_clear": "Sangat Jelas",
+    "feedback.tag_patient": "Penyabar", "feedback.tag_detail": "Teliti (Tajwid)",
+    "feedback.tip": "Tip Halal (Bisyaroh)", "feedback.tip_desc": "Berikan tip untuk Ustadz sebagai tanda terima kasih (100% untuk Ustadz)",
+    "feedback.submit": "KIRIM FEEDBACK"
 };
 
 const en = {
@@ -223,8 +227,12 @@ const en = {
     "earnings.sessions": "Total Sessions", "earnings.rating": "Satisfaction Rating",
     "earnings.history": "Transaction History", "earnings.empty_history": "No transactions yet",
     "earnings.breakdown": "Earnings Breakdown", "earnings.commission": "Platform Commission (10%)",
-    "earnings.net": "Net Earnings", "earnings.growth": "Growth from last month",
-    "earnings.performance": "Teaching Trend (Weekly)"
+    "earnings.performance": "Teaching Trend (Weekly)",
+    "feedback.title": "Session Complete!", "feedback.rate": "Rate your Ustadz",
+    "feedback.tags": "What stood out?", "feedback.tag_clear": "Very Clear",
+    "feedback.tag_patient": "Patient", "feedback.tag_detail": "Detailed (Tajwid)",
+    "feedback.tip": "Halal Tip (Bisyaroh)", "feedback.tip_desc": "Give a tip to your Ustadz as a token of appreciation (100% goes to the Ustadz)",
+    "feedback.submit": "SUBMIT FEEDBACK"
 };
 
 const ms = { ...id, "nav.murojaah": "Ulangkaji", "learn.start": "MULA", "onboarding.next": "TERUSKAN" };

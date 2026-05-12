@@ -35,8 +35,13 @@
         <div style="flex: 1; display: flex; justify-content: center">
             <span style="font-size: 18px; font-weight: 900; color: #58cc02; letter-spacing: -1px;">{i18n.t('learn.title')}</span>
         </div>
-        <div class="gems-pill" onclick={() => appState.go('shop')}>
-            <i class="ti ti-diamond"></i> 120
+        <div style="display: flex; gap: 12px;">
+            <div class="energy-pill">
+                <i class="ti ti-bolt"></i> 3
+            </div>
+            <div class="gems-pill" onclick={() => appState.go('shop')}>
+                <i class="ti ti-diamond"></i> 120
+            </div>
         </div>
     </div>
 
@@ -215,5 +220,6 @@
     }
     .close-toast { background: none; border: none; cursor: pointer; color: #afafaf; font-size: 18px; }
     .streak-pill { display: flex; align-items: center; gap: 4px; font-size: 14px; font-weight: 800; color: #ff9600; }
+    .energy-pill { display: flex; align-items: center; gap: 4px; font-size: 14px; font-weight: 800; color: #1cb0f6; }
     .gems-pill { display: flex; align-items: center; gap: 4px; font-size: 14px; font-weight: 800; color: #ce82ff; cursor: pointer; }
 </style>

@@ -11,7 +11,7 @@
 			color: '#58cc02',
 			accent: '#e6f9d4',
 			icon: '👤',
-			screens: ['onboarding', 'learn', 'murojaah', 'tadabbur', 'league', 'lesson', 'profile', 'language']
+			screens: ['onboarding', 'learn', 'murojaah', 'feedback', 'tadabbur', 'league', 'lesson', 'profile', 'language']
 		},
 		{
 			name: 'Musyrif',

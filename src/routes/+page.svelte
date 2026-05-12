@@ -13,6 +13,7 @@
     import Lesson from '$lib/screens/Lesson.svelte';
     import Tadabbur from '$lib/screens/Tadabbur.svelte';
     import MusyrifEarnings from '$lib/screens/MusyrifEarnings.svelte';
+    import SessionFeedback from '$lib/screens/SessionFeedback.svelte';
 </script>
 
 {#if appState.currentScreen === 'onboarding'}
@@ -22,6 +23,8 @@
         <Learn />
     {:else if appState.currentScreen === 'murojaah'}
         <Marketplace />
+    {:else if appState.currentScreen === 'feedback'}
+        <SessionFeedback />
     {:else if appState.currentScreen === 'league'}
         <League />
     {:else if appState.currentScreen === 'profile'}
