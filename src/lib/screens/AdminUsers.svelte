@@ -1,46 +1,47 @@
 <script>
     import { appState } from '$lib/app.svelte.js';
+    import { i18n } from '$lib/i18n.svelte.js';
 </script>
 
 <div class="screen">
     <div class="topbar">
-        <div style="font-size: 15px; font-weight: 900;">Admin: Monitor User</div>
+        <div style="font-size: 15px; font-weight: 900;">{i18n.t('admin.monitor_user')}</div>
     </div>
     
     <div class="scroll-content" style="padding: 16px;">
         <div class="stats-overview">
             <div class="stat-item">
                 <div class="stat-val">1.240</div>
-                <div class="stat-label">Total User</div>
+                <div class="stat-label">{i18n.t('admin.total_user')}</div>
             </div>
             <div class="stat-item border-x">
                 <div class="stat-val" style="color: #23a100;">85</div>
-                <div class="stat-label">Aktif Sekarang</div>
+                <div class="stat-label">{i18n.t('admin.active_now')}</div>
             </div>
             <div class="stat-item">
                 <div class="stat-val" style="color: #4f46e5;">342</div>
-                <div class="stat-label">Setoran Hari Ini</div>
+                <div class="stat-label">{i18n.t('admin.submission_today')}</div>
             </div>
         </div>
 
-        <div class="section-label">User Perlu Perhatian (Low Activity)</div>
+        <div class="section-label">{i18n.t('admin.user_attention')}</div>
         <div class="user-list">
             <div class="user-card warning">
                 <div class="user-icon" style="background: #fee2e2;">📉</div>
                 <div style="flex: 1;">
                     <div class="user-name">Budi Santoso</div>
-                    <div class="user-status" style="color: #ef4444;">Streak putus 3 hari lalu</div>
+                    <div class="user-status" style="color: #ef4444;">{i18n.t('admin.streak_broken')}</div>
                 </div>
-                <button class="btn-duo btn-green small-btn">HUBUNGI</button>
+                <button class="btn-duo btn-green small-btn">{i18n.t('admin.contact')}</button>
             </div>
             
             <div class="user-card warning">
                 <div class="user-icon" style="background: #fef9c3;">⏳</div>
                 <div style="flex: 1;">
                     <div class="user-name">Siti Aminah</div>
-                    <div class="user-status" style="color: #a16207;">Belum setor pekan ini</div>
+                    <div class="user-status" style="color: #a16207;">{i18n.t('admin.no_submission_week')}</div>
                 </div>
-                <button class="btn-duo btn-green small-btn">REMIND</button>
+                <button class="btn-duo btn-green small-btn">{i18n.t('admin.remind')}</button>
             </div>
         </div>
     </div>

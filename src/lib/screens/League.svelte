@@ -1,9 +1,10 @@
 <script>
     import { appState } from '$lib/app.svelte.js';
+    import { i18n } from '$lib/i18n.svelte.js';
     import BottomNav from '../components/BottomNav.svelte';
 
     const rankings = [
-        { name: "Anda", xp: 1250, rank: 3, isMe: true, avatar: "👤" },
+        { name: "league.you", xp: 1250, rank: 3, isMe: true, avatar: "👤", nameKey: true },
         { name: "Siti Nurhaliza", xp: 1420, rank: 1, avatar: "🧕" },
         { name: "Ahmad Dani", xp: 1380, rank: 2, avatar: "🧔" },
         { name: "Budi Utomo", xp: 1100, rank: 4, avatar: "👨" },
@@ -14,20 +15,20 @@
 
 <div class="screen">
     <div class="topbar">
-        <span style="font-size: 16px; font-weight: 900; color: #3c3c3c; flex: 1; text-align: center;">Liga Fastabiqul Khairat</span>
+        <span style="font-size: 16px; font-weight: 900; color: #3c3c3c; flex: 1; text-align: center;">{i18n.t('league.title')}</span>
     </div>
 
     <div class="scroll-content no-scrollbar">
         <div class="league-header">
             <div class="league-icon">🏆</div>
             <div style="text-align: center; margin-top: 10px;">
-                <div style="font-size: 18px; font-weight: 900; color: #3c3c3c;">Liga Safir</div>
-                <div style="font-size: 12px; font-weight: 700; color: #afafaf;">Berakhir dalam 2 hari 4 jam</div>
+                <div style="font-size: 18px; font-weight: 900; color: #3c3c3c;">{i18n.t('league.sapphire')}</div>
+                <div style="font-size: 12px; font-weight: 700; color: #afafaf;">{i18n.t('league.ends')}</div>
             </div>
             
             <div class="promotion-zone">
-                <div style="font-size: 10px; font-weight: 900; color: #58cc02; text-transform: uppercase;">Zona Promosi</div>
-                <div style="font-size: 11px; font-weight: 700; color: #afafaf;">Top 5 naik ke Liga Berlian</div>
+                <div style="font-size: 10px; font-weight: 900; color: #58cc02; text-transform: uppercase;">{i18n.t('league.promo')}</div>
+                <div style="font-size: 11px; font-weight: 700; color: #afafaf;">{i18n.t('league.promo_d')}</div>
             </div>
         </div>
 
@@ -37,9 +38,9 @@
                     <div class="rank-num">{r.rank}</div>
                     <div class="rank-avatar">{r.avatar}</div>
                     <div style="flex: 1">
-                        <div style="font-size: 14px; font-weight: 800; color: #3c3c3c;">{r.name}</div>
+                        <div style="font-size: 14px; font-weight: 800; color: #3c3c3c;">{r.nameKey ? i18n.t(r.name) : r.name}</div>
                         {#if r.isMe}
-                            <div style="font-size: 10px; font-weight: 800; color: #58cc02;">ZONA PROMOSI</div>
+                            <div style="font-size: 10px; font-weight: 800; color: #58cc02;">{i18n.t('league.promo').toUpperCase()}</div>
                         {/if}
                     </div>
                     <div style="text-align: right">

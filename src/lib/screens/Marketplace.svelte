@@ -1,63 +1,64 @@
 <script>
     import { appState } from '$lib/app.svelte.js';
+    import { i18n } from '$lib/i18n.svelte.js';
     import BottomNav from '../components/BottomNav.svelte';
 
-    const musyrifs = [
-        { name: "Ust. Ahmad Fauzi", rating: 4.9, status: "Online", price: 35, tier: "Bersanad", icon: "👳" },
-        { name: "Ust. Ridwan Hakim", rating: 4.8, status: "Online", price: 25, tier: "Reguler", icon: "👨‍🏫" },
-        { name: "Ustadzah Siti Aminah", rating: 5.0, status: "Offline", price: 35, tier: "Bersanad", icon: "🧕" },
-    ];
+    const musyrifs = $derived([
+        { name: "Ust. Ahmad Fauzi", rating: 4.9, status: "online", price: 35, tier: "bersanad", icon: "👳" },
+        { name: "Ust. Ridwan Hakim", rating: 4.8, status: "online", price: 25, tier: "reguler", icon: "👨‍🏫" },
+        { name: "Ustadzah Siti Aminah", rating: 5.0, status: "offline", price: 35, tier: "bersanad", icon: "🧕" },
+    ]);
 </script>
 
 <div class="screen">
     <div class="topbar">
         <div style="flex:1">
-            <div style="font-size:10px; font-weight:800; color:#afafaf; text-transform:uppercase;">Saldo Dompet</div>
+            <div style="font-size:10px; font-weight:800; color:#afafaf; text-transform:uppercase;">{i18n.t('market.wallet')}</div>
             <div style="display:flex; gap:12px; align-items:center; margin-top:2px;">
                 <div style="display:flex; gap:4px; align-items:center; font-size:14px; font-weight:900; color:#1cb0f6;">
-                    <i class="ti ti-ticket"></i> 4 Tiket
+                    <i class="ti ti-ticket"></i> 4 {i18n.t('market.tickets')}
                 </div>
                 <div style="display:flex; gap:4px; align-items:center; font-size:14px; font-weight:900; color:#ce82ff;">
-                    <i class="ti ti-coins"></i> 120 Koin
+                    <i class="ti ti-coins"></i> 120 {i18n.t('market.coins')}
                 </div>
             </div>
         </div>
-        <button class="btn-duo btn-outline small-btn" style="padding:6px 12px; font-size:11px;">ISI SALDO</button>
+        <button class="btn-duo btn-outline small-btn" style="padding:6px 12px; font-size:11px;">{i18n.t('market.topup')}</button>
     </div>
 
     <div class="scroll-content" style="padding: 0 16px;">
         <div class="hero-card">
             <div style="flex:1">
-                <div style="font-size:18px; font-weight:900; color:#fff;">Setoran Instan</div>
-                <div style="font-size:12px; font-weight:700; color:rgba(255,255,255,0.8); margin-top:4px;">Terhubung dengan Musyrif dalam detik</div>
+                <div style="font-size:18px; font-weight:900; color:#fff;">{i18n.t('market.instant')}</div>
+                <div style="font-size:12px; font-weight:700; color:rgba(255,255,255,0.8); margin-top:4px;">{i18n.t('market.instant_d')}</div>
             </div>
-            <button class="btn-duo" style="background:#fff; color:#1cb0f6; font-size:14px; padding:12px 20px;">CARI SEKARANG</button>
+            <button class="btn-duo" style="background:#fff; color:#1cb0f6; font-size:14px; padding:12px 20px;">{i18n.t('market.find')}</button>
         </div>
 
         <div class="section-header">
-            <span class="section-label" style="padding:0">Musyrif Tersedia</span>
-            <button style="background:none; border:none; color:#1cb0f6; font-size:12px; font-weight:800;">Filter</button>
+            <span class="section-label" style="padding:0">{i18n.t('market.available')}</span>
+            <button style="background:none; border:none; color:#1cb0f6; font-size:12px; font-weight:800;">{i18n.t('market.filter')}</button>
         </div>
 
         <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:20px;">
             {#each musyrifs as m}
-                <div class="musyrif-card" class:offline={m.status === 'Offline'}>
+                <div class="musyrif-card" class:offline={m.status === 'offline'}>
                     <div class="m-avatar">{m.icon}</div>
                     <div style="flex:1">
                         <div style="display:flex; align-items:center; gap:6px;">
                             <span style="font-size:14px; font-weight:800; color:#3c3c3c;">{m.name}</span>
-                            <span class="tier-badge {m.tier.toLowerCase()}">{m.tier}</span>
+                            <span class="tier-badge {m.tier}">{i18n.t(`tier.${m.tier}`)}</span>
                         </div>
                         <div style="display:flex; align-items:center; gap:10px; margin-top:4px;">
                             <div style="font-size:12px; font-weight:800; color:#ff9600; display:flex; align-items:center; gap:2px;">
                                 <i class="ti ti-star-filled"></i> {m.rating}
                             </div>
-                            <div style="font-size:12px; font-weight:700; color:#afafaf;">{m.status}</div>
+                             <div style="font-size:12px; font-weight:700; color:#afafaf;">{i18n.t(`status.${m.status}`)}</div>
                         </div>
                     </div>
                     <div style="text-align:right;">
                         <div style="font-size:14px; font-weight:900; color:#3c3c3c;">{m.price}k</div>
-                        <div style="font-size:10px; font-weight:700; color:#afafaf;">per sesi</div>
+                        <div style="font-size:10px; font-weight:700; color:#afafaf;">{i18n.t('market.per_session')}</div>
                     </div>
                 </div>
             {/each}

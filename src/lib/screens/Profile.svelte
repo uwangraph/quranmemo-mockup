@@ -3,12 +3,12 @@
     import { i18n, locales } from '$lib/i18n.svelte.js';
     import BottomNav from '../components/BottomNav.svelte';
 
-    const stats = [
-        { label: "Total XP", val: "12,450", icon: "⚡", color: "#ff9600" },
-        { label: "Hafalan", val: "2 Juz", icon: "📖", color: "#58cc02" },
-        { label: "Streak", val: "7 Hari", icon: "🔥", color: "#ff4b4b" },
-        { label: "Liga", val: "Safir", icon: "🏆", color: "#1cb0f6" },
-    ];
+    const stats = $derived([
+        { label: i18n.t('profile.total_xp'), val: "12,450", icon: "⚡", color: "#ff9600" },
+        { label: i18n.t('profile.hafalan'), val: "2 Juz", icon: "📖", color: "#58cc02" },
+        { label: i18n.t('profile.streak'), val: "7", icon: "🔥", color: "#ff4b4b" },
+        { label: i18n.t('profile.liga'), val: "Safir", icon: "🏆", color: "#1cb0f6" },
+    ]);
 </script>
 
 <div class="screen">
@@ -22,11 +22,11 @@
             <div class="avatar-large">👤</div>
             <div style="text-align: center; margin-top: 12px;">
                 <div style="font-size: 20px; font-weight: 900; color: #3c3c3c;">Abdullah Irfan</div>
-                <div style="font-size: 13px; font-weight: 700; color: #afafaf;">Bergabung sejak Syawal 1446 H</div>
+                <div style="font-size: 13px; font-weight: 700; color: #afafaf;">{i18n.t('profile.joined')}</div>
             </div>
         </div>
 
-        <div class="section-label">Pengaturan</div>
+        <div class="section-label">{i18n.t('profile.settings')}</div>
         <div style="padding: 0 16px;">
             <button 
                 class="settings-btn"
@@ -54,13 +54,13 @@
             {/each}
         </div>
 
-        <div class="section-label">Dompet Hibrida</div>
+        <div class="section-label">{i18n.t('profile.wallet')}</div>
         <div class="wallet-section">
             <div class="wallet-card tickets">
                 <div style="font-size: 24px;">🎟️</div>
                 <div style="flex: 1">
-                    <div style="font-size: 14px; font-weight: 900; color: #3c3c3c;">4 Tiket Setoran</div>
-                    <div style="font-size: 11px; font-weight: 700; color: #afafaf;">Berlaku hingga 30 Mei 2026</div>
+                    <div style="font-size: 14px; font-weight: 900; color: #3c3c3c;">4 {i18n.t('profile.tickets')}</div>
+                    <div style="font-size: 11px; font-weight: 700; color: #afafaf;">{i18n.t('profile.valid_until')}</div>
                 </div>
                 <div style="font-size: 11px; font-weight: 800; color: #1cb0f6;">PREMIUM</div>
             </div>
@@ -68,14 +68,14 @@
             <div class="wallet-card coins">
                 <div style="font-size: 24px;">💎</div>
                 <div style="flex: 1">
-                    <div style="font-size: 14px; font-weight: 900; color: #3c3c3c;">120 Koin Memo</div>
-                    <div style="font-size: 11px; font-weight: 700; color: #afafaf;">Gunakan untuk setoran on-demand</div>
+                    <div style="font-size: 14px; font-weight: 900; color: #3c3c3c;">120 {i18n.t('profile.coins')}</div>
+                    <div style="font-size: 11px; font-weight: 700; color: #afafaf;">{i18n.t('profile.coins_desc')}</div>
                 </div>
-                <button class="buy-btn">BELI</button>
+                <button class="buy-btn">{i18n.t('profile.buy')}</button>
             </div>
         </div>
 
-        <div class="section-label">Pencapaian</div>
+        <div class="section-label">{i18n.t('profile.achievements')}</div>
         <div style="display:flex; gap:12px; padding:0 16px 20px; overflow-x:auto;" class="no-scrollbar">
             <div class="badge-icon">🎖️</div>
             <div class="badge-icon">🌟</div>

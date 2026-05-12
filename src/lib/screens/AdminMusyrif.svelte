@@ -1,20 +1,21 @@
 <script>
     import { appState } from '$lib/app.svelte.js';
+    import { i18n } from '$lib/i18n.svelte.js';
 </script>
 
 <div class="screen">
     <div class="topbar">
-        <div style="font-size: 15px; font-weight: 900;">Admin: Monitor Musyrif</div>
+        <div style="font-size: 15px; font-weight: 900;">{i18n.t('admin.monitor_musyrif')}</div>
     </div>
     
     <div class="scroll-content" style="padding: 16px;">
         <div class="revenue-card">
-            <div style="font-size: 11px; font-weight: 800; opacity: 0.7; text-transform: uppercase;">Revenue Share System</div>
+            <div style="font-size: 11px; font-weight: 800; opacity: 0.7; text-transform: uppercase;">{i18n.t('admin.revenue')}</div>
             <div style="font-size: 24px; font-weight: 900; margin: 4px 0;">Rp 12.450.000</div>
-            <div style="font-size: 10px; font-weight: 700; color: #23a100;">+12% dari bulan lalu</div>
+            <div style="font-size: 10px; font-weight: 700; color: #23a100;">+12% {i18n.t('admin.from_last_month')}</div>
         </div>
 
-        <div class="section-label">Musyrif Online (Ready)</div>
+        <div class="section-label">{i18n.t('admin.musyrif_ready')}</div>
         <div class="musyrif-list">
             <div class="musyrif-card">
                 <div class="avatar-wrap">
@@ -23,7 +24,7 @@
                 </div>
                 <div style="flex: 1;">
                     <div class="musyrif-name">Ust. Malik</div>
-                    <div class="musyrif-activity">Melayani: Ahmad H. (Al-Mulk:12)</div>
+                    <div class="musyrif-activity">{i18n.t('admin.serving')}: Ahmad H. (Al-Mulk:12)</div>
                 </div>
                 <div class="rating">4.9 ★</div>
             </div>
@@ -35,7 +36,7 @@
                 </div>
                 <div style="flex: 1;">
                     <div class="musyrif-name">Ust. Hanafi</div>
-                    <div class="musyrif-activity" style="color: #64748b;">Idle — Menunggu setoran</div>
+                    <div class="musyrif-activity" style="color: #64748b;">{i18n.t('admin.idle_waiting')}</div>
                 </div>
                 <div class="rating">4.8 ★</div>
             </div>

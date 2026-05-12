@@ -9,14 +9,14 @@
         { id: 1, title: "Surah Al-Mulk", description: "Mulai perjalanan hafalanmu", color: "#58cc02" }
     ];
 
-    const nodes = [
-        { id: 1, type: "review", status: "completed", title: "Murojaah 1-5" },
-        { id: 2, type: "review", status: "completed", title: "Murojaah 6-10" },
-        { id: 3, type: "lesson", status: "current", title: "Ziyadah 11-15" },
+    const nodes = $derived([
+        { id: 1, type: "review", status: "completed", title: `${i18n.t('learn.node_review')} 1-5` },
+        { id: 2, type: "review", status: "completed", title: `${i18n.t('learn.node_review')} 6-10` },
+        { id: 3, type: "lesson", status: "current", title: `${i18n.t('learn.node_new')} 11-15` },
         { id: 4, type: "tadabbur", status: "locked", title: "Tadabbur 11-15" },
-        { id: 5, type: "checkpoint", status: "locked", title: "Ujian Halaman 1" },
-        { id: 6, type: "lesson", status: "locked", title: "Ziyadah 16-20" },
-    ];
+        { id: 5, type: "checkpoint", status: "locked", title: `${i18n.t('learn.node_checkpoint')} 1` },
+        { id: 6, type: "lesson", status: "locked", title: `${i18n.t('learn.node_new')} 16-20` },
+    ]);
 
     $effect(() => {
         const timer = setTimeout(() => {
@@ -44,8 +44,8 @@
         <div class="achievement-toast">
             <div style="font-size: 28px">🥇</div>
             <div style="flex: 1">
-                <div style="font-size: 12px; font-weight: 900; color: #cc7000">Streak 7 Hari!</div>
-                <div style="font-size: 11px; font-weight: 700; color: #afafaf">Pertahankan cahaya hafalanmu.</div>
+                <div style="font-size: 12px; font-weight: 900; color: #cc7000">{i18n.t('learn.streak_days')}</div>
+                <div style="font-size: 11px; font-weight: 700; color: #afafaf">{i18n.t('learn.streak_msg')}</div>
             </div>
             <button onclick={() => showToast = false} class="close-toast">✕</button>
         </div>
@@ -55,7 +55,7 @@
         <div class="unit-banner">
             <div style="font-size: 12px; font-weight: 800; color: rgba(255,255,255,0.7); text-transform: uppercase;">{i18n.t('learn.unit')}</div>
             <div style="font-size: 20px; font-weight: 900; color: #fff;">Surah Al-Mulk</div>
-            <div style="font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.9); margin-top: 4px;">Kekuasaan Allah yang Maha Luas</div>
+            <div style="font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.9); margin-top: 4px;">{i18n.t('learn.surah_desc')}</div>
         </div>
 
         <div class="path-container">

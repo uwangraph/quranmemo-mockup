@@ -1,53 +1,54 @@
 <script>
     import { appState } from '$lib/app.svelte.js';
+    import { i18n } from '$lib/i18n.svelte.js';
 
-    const questions = [
+    const questions = $derived([
         {
-            q: "Apa motivasi utamamu menghafal Al-Quran?",
+            q: i18n.t('onboarding.q1'),
             opts: [
-                { t: "Sholat lebih khusyuk", i: "🕌" },
-                { t: "Target khatam / sanad", i: "🎓" },
-                { t: "Teladan keluarga", i: "👨‍👩‍👧‍👦" },
-                { t: "Ketenangan hati", i: "🍃" },
+                { t: i18n.t('onboarding.q1o1'), i: "🕌" },
+                { t: i18n.t('onboarding.q1o2'), i: "🎓" },
+                { t: i18n.t('onboarding.q1o3'), i: "👨‍👩‍👧‍👦" },
+                { t: i18n.t('onboarding.q1o4'), i: "🍃" },
             ],
         },
         {
-            q: "Sejauh mana pengalamanmu menghafal?",
+            q: i18n.t('onboarding.q2'),
             opts: [
-                { t: "Baru mulai dari nol", i: "🌱", action: "skip_placement" },
-                { t: "Hafal surah pendek", i: "📖" },
-                { t: "Hafal 1 - 3 Juz", i: "📚" },
-                { t: "Hafal > 3 Juz", i: "🏆" },
+                { t: i18n.t('onboarding.q2o1'), i: "🌱", action: "skip_placement" },
+                { t: i18n.t('onboarding.q2o2'), i: "📖" },
+                { t: i18n.t('onboarding.q2o3'), i: "📚" },
+                { t: i18n.t('onboarding.q2o4'), i: "🏆" },
             ],
         },
         {
-            q: "Bagaimana kemampuan membaca (Tahsin) kamu?",
+            q: i18n.t('onboarding.q3'),
             opts: [
-                { t: "Masih mengeja huruf", i: "🅰️" },
-                { t: "Lancar tanpa tajwid", i: "🗣️" },
-                { t: "Lancar & paham tajwid", i: "✨" },
-                { t: "Sangat fasih / Qari", i: "💎" },
+                { t: i18n.t('onboarding.q3o1'), i: "🅰️" },
+                { t: i18n.t('onboarding.q3o2'), i: "🗣️" },
+                { t: i18n.t('onboarding.q3o3'), i: "✨" },
+                { t: i18n.t('onboarding.q3o4'), i: "💎" },
             ],
         },
         {
-            q: "Berapa target waktu belajarmu per hari?",
+            q: i18n.t('onboarding.q4'),
             opts: [
-                { t: "Santai (5 menit)", i: "☕" },
-                { t: "Reguler (10 menit)", i: "⏰" },
-                { t: "Fokus (15 menit)", i: "🎯" },
-                { t: "Intensif (30+ menit)", i: "🔥" },
+                { t: i18n.t('onboarding.q4o1'), i: "☕" },
+                { t: i18n.t('onboarding.q4o2'), i: "⏰" },
+                { t: i18n.t('onboarding.q4o3'), i: "🎯" },
+                { t: i18n.t('onboarding.q4o4'), i: "🔥" },
             ],
         },
         {
-            q: "Kapan waktu favoritmu berinteraksi?",
+            q: i18n.t('onboarding.q5'),
             opts: [
-                { t: "Ba'da Subuh / Pagi", i: "🌅" },
-                { t: "Istirahat Siang", i: "☀️" },
-                { t: "Sore Hari", i: "🌇" },
-                { t: "Malam Sebelum Tidur", i: "🌙" },
+                { t: i18n.t('onboarding.q5o1'), i: "🌅" },
+                { t: i18n.t('onboarding.q5o2'), i: "☀️" },
+                { t: i18n.t('onboarding.q5o3'), i: "🌇" },
+                { t: i18n.t('onboarding.q5o4'), i: "🌙" },
             ],
         },
-    ];
+    ]);
 
     let currentQ = $state(0);
     let selectedOpt = $state(null);
@@ -64,12 +65,7 @@
     function nextQuestion() {
         if (selectedOpt === null) return;
 
-        // Special logic for Q2: unless "Baru mulai" is chosen, show placement test
-        // (For this mockup, we'll just go to 'learn' if finished, 
-        // but we can add a 'placement' screen later if needed)
         if (currentQ === 1 && specialAction !== "skip_placement") {
-            // go('placement');
-            // For now, let's just proceed or trigger alert
             console.log("Should show placement test");
         }
 
@@ -92,7 +88,7 @@
 
     <div class="content scroll-content" style="padding: 20px 20px 0;">
         <div style="font-size:13px;font-weight:800;color:#afafaf;margin-bottom:10px;text-transform:uppercase;">
-            Langkah {currentQ + 1} dari 5
+            {i18n.t('onboarding.step')} {currentQ + 1} {i18n.t('onboarding.step_of')}
         </div>
         <div style="font-size:22px;font-weight:900;color:#3c3c3c;margin-bottom:24px;">
             {q.q}
@@ -119,7 +115,7 @@
             class:btn-disabled={selectedOpt === null}
             onclick={nextQuestion}
         >
-            LANJUT
+            {i18n.t('onboarding.next')}
         </button>
     </div>
 </div>

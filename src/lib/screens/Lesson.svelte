@@ -1,5 +1,6 @@
 <script>
     import { appState } from '$lib/app.svelte.js';
+    import { i18n } from '$lib/i18n.svelte.js';
     
     let currentStep = $state(0);
     let isPlaying = $state(false);
@@ -7,14 +8,14 @@
     let isChecked = $state(false);
     let isCorrect = $state(false);
 
-    const lessonSteps = [
-        { id: "visual", t: "Pemetaan Visual", d: "Melihat satu halaman penuh mushaf tanpa terjemah secara berulang.", i: "🖼️" },
-        { id: "konteks", t: "Pemahaman Konteks", d: "Membaca halaman penuh beserta terjemahannya secara mendalam.", i: "📖" },
-        { id: "audio-visual", t: "Fokus Audio-Visual", d: "Membaca target ayat sambil mendengarkan lantunan Qari.", i: "🎙️" },
-        { id: "penyatuan", t: "Penyatuan Makna", d: "Membaca target ayat, makna, dan audio secara bersamaan.", i: "✨" },
-        { id: "fading", t: "Latihan Parsial (Fading)", d: "Membaca teks yang disensor sebagian untuk melatih memori.", i: "🧩" },
-        { id: "uji", t: "Uji Mandiri", d: "Tes rekam suara dan bandingkan dengan bacaan asli.", i: "🏆" },
-    ];
+    const lessonSteps = $derived([
+        { id: "visual", t: i18n.t('lesson.visual'), d: i18n.t('lesson.visual_d'), i: "🖼️" },
+        { id: "konteks", t: i18n.t('lesson.context'), d: i18n.t('lesson.context_d'), i: "📖" },
+        { id: "audio-visual", t: i18n.t('lesson.audio'), d: i18n.t('lesson.audio_d'), i: "🎙️" },
+        { id: "penyatuan", t: i18n.t('lesson.merge'), d: i18n.t('lesson.merge_d'), i: "✨" },
+        { id: "fading", t: i18n.t('lesson.fading'), d: i18n.t('lesson.fading_d'), i: "🧩" },
+        { id: "uji", t: i18n.t('lesson.test'), d: i18n.t('lesson.test_d'), i: "🏆" },
+    ]);
 
     const step = $derived(lessonSteps[currentStep]);
     
@@ -73,7 +74,7 @@
     </div>
 
     <div class="scroll-content" style="padding: 12px 16px 0">
-        <div class="instruction-label">Langkah {currentStep + 1}: {step.t}</div>
+        <div class="instruction-label">{i18n.t('lesson.step')} {currentStep + 1}: {step.t}</div>
         
         <div class="exercise-box" class:full-page={currentStep < 2}>
             {#if currentStep < 2}
@@ -85,7 +86,7 @@
                     </div>
                     {#if currentStep === 1}
                         <div class="page-translation">
-                            "Mahasuci Allah yang menguasai (segala) kerajaan, dan Dia Mahakuasa atas segala sesuatu. Yang menciptakan mati dan hidup, untuk menguji kamu..."
+                            "{i18n.t('lesson.mushaf_trans')}"
                         </div>
                     {/if}
                 </div>
@@ -98,10 +99,10 @@
                 </div>
                 <div class="quran-prompt">إِنَّ الَّذِينَ يَخۡشَوۡنَ رَبَّهُم بِٱلۡغَيۡبِ لَهُم مَّغۡفِرَةٞ وَأَجۡرٞ كَبِيرٞ</div>
                 {#if currentStep === 3}
-                    <div class="translation-hint">"Sesungguhnya orang-orang yang takut kepada Tuhannya yang tidak terlihat oleh mereka, mereka memperoleh ampunan dan pahala yang besar."</div>
+                    <div class="translation-hint">"{i18n.t('lesson.verse_trans')}"</div>
                 {/if}
             {:else if currentStep === 4}
-                <div class="sub-instruction">Lengkapi potongan ayat yang hilang:</div>
+                <div class="sub-instruction">{i18n.t('lesson.complete_verse')}</div>
                 <div class="quran-prompt fading">إِنَّ الَّذِينَ يَخۡشَوۡنَ ...</div>
                 <div class="options-list" style="margin-top: 20px;">
                     {#each fadingOptions as opt, i}
@@ -118,7 +119,7 @@
                     {/each}
                 </div>
             {:else}
-                <div class="sub-instruction">Rekam hafalanmu untuk ayat ini:</div>
+                <div class="sub-instruction">{i18n.t('lesson.record')}</div>
                 <div class="quran-prompt">إِنَّ الَّذِينَ يَخۡشَوۡنَ رَبَّهُم بِٱلۡغَيۡبِ لَهُم مَّغۡفِرَةٞ وَأَجۡرٞ كَبِيرٞ</div>
                 <div style="display: flex; justify-content: center; margin-top: 40px;">
                     <button class="mic-btn" onclick={nextStep}>
@@ -126,7 +127,7 @@
                     </button>
                 </div>
                 <div style="text-align: center; font-size: 12px; font-weight: 800; color: #1cb0f6; margin-top: 10px;">
-                    TEKAN UNTUK MULAI TASMI' AI
+                    {i18n.t('lesson.start_tasmi')}
                 </div>
             {/if}
         </div>
@@ -134,9 +135,9 @@
         {#if isChecked && currentStep === 4}
             <div class="feedback-bar" class:feedback-correct={isCorrect} class:feedback-wrong={!isCorrect}>
                 {#if isCorrect}
-                    <div style="font-size:14px;font-weight:800;color:#46a302;">✓ Benar! Memori Anda tajam! 🎉</div>
+                    <div style="font-size:14px;font-weight:800;color:#46a302;">{i18n.t('lesson.correct')}</div>
                 {:else}
-                    <div style="font-size:14px;font-weight:800;color:#cc0000;">✗ Kurang tepat. Coba perhatikan lagi.</div>
+                    <div style="font-size:14px;font-weight:800;color:#cc0000;">{i18n.t('lesson.wrong')}</div>
                 {/if}
             </div>
         {/if}
@@ -151,11 +152,11 @@
                 class:btn-disabled={selectedIdx === null}
                 onclick={checkAnswer}
             >
-                {isChecked ? (isCorrect ? 'LANJUT' : 'COBA LAGI') : 'PERIKSA'}
+                {isChecked ? (isCorrect ? i18n.t('lesson.next') : i18n.t('lesson.retry')) : i18n.t('lesson.check')}
             </button>
         {:else if currentStep !== 5}
             <button class="btn-duo btn-green" onclick={nextStep}>
-                MENGERTI & LANJUT
+                {i18n.t('lesson.understand')}
             </button>
         {/if}
     </div>

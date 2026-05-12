@@ -1,5 +1,6 @@
 <script>
     import { appState } from '$lib/app.svelte.js';
+    import { i18n } from '$lib/i18n.svelte.js';
     
     let isAvailable = $state(true);
 </script>
@@ -11,12 +12,12 @@
                 <div style="width: 40px; height: 40px; border-radius: 50%; background: #58cc02; display: flex; align-items: center; justify-content: center; font-size: 20px;">👳</div>
                 <div>
                     <div style="font-size: 14px; font-weight: 900">Ustadz Malik</div>
-                    <div style="font-size: 10px; font-weight: 700; color: #58cc02">Mitra Bersanad (Tier 2)</div>
+                    <div style="font-size: 10px; font-weight: 700; color: #58cc02">{i18n.t('musyrif.partner_tier')}</div>
                 </div>
             </div>
             <div style="text-align: right">
                 <div style="font-size: 14px; font-weight: 900">Rp 840.000</div>
-                <div style="font-size: 10px; font-weight: 700; opacity: 0.6">Saldo Pendapatan</div>
+                <div style="font-size: 10px; font-weight: 700; opacity: 0.6">{i18n.t('musyrif.balance')}</div>
             </div>
         </div>
     </div>
@@ -24,8 +25,8 @@
     <div style="padding: 16px; flex: 1; overflow-y: auto">
         <div class="availability-card">
             <div>
-                <div style="font-size: 14px; font-weight: 800; color: #3c3c3c">Status Ketersediaan</div>
-                <div style="font-size: 11px; font-weight: 700; color: #afafaf">Aktifkan untuk menerima setoran</div>
+                <div style="font-size: 14px; font-weight: 800; color: #3c3c3c">{i18n.t('musyrif.availability')}</div>
+                <div style="font-size: 11px; font-weight: 700; color: #afafaf">{i18n.t('musyrif.availability_d')}</div>
             </div>
             <button 
                 class="toggle-switch" 
@@ -36,36 +37,36 @@
             </button>
         </div>
 
-        <div class="section-label">Permintaan Setoran (Real-time)</div>
+        <div class="section-label">{i18n.t('musyrif.requests')}</div>
         
         {#if isAvailable}
             <div class="request-card">
                 <div style="width: 48px; height: 48px; border-radius: 50%; background: #d7ffb2; display: flex; align-items: center; justify-content: center; font-size: 24px;">🧑‍🎓</div>
                 <div style="flex: 1">
                     <div style="font-size: 14px; font-weight: 900; color: #3c3c3c">Ahmad Hafidz</div>
-                    <div style="font-size: 11px; font-weight: 700; color: #58cc02">Setoran: Al-Mulk 12-16 (Tiket)</div>
+                    <div style="font-size: 11px; font-weight: 700; color: #58cc02">{i18n.t('admin.serving')}: Al-Mulk 12-16 ({i18n.t('market.tickets')})</div>
                 </div>
                 <button class="btn-duo btn-green" style="width: auto; padding: 10px 16px; font-size: 12px" onclick={() => appState.go('livemarking')}>
-                    TERIMA
+                    {i18n.t('musyrif.accept')}
                 </button>
             </div>
         {:else}
             <div style="text-align: center; padding: 40px 20px; color: #afafaf;">
                 <div style="font-size: 32px; margin-bottom: 12px;">😴</div>
-                <div style="font-size: 13px; font-weight: 800;">Status Offline</div>
-                <div style="font-size: 11px; font-weight: 700;">Aktifkan status untuk mulai mengajar</div>
+                <div style="font-size: 13px; font-weight: 800;">{i18n.t('status.offline')}</div>
+                <div style="font-size: 11px; font-weight: 700;">{i18n.t('musyrif.offline_msg')}</div>
             </div>
         {/if}
 
-        <div class="section-label" style="margin-top: 16px">Statistik Mengajar</div>
+        <div class="section-label" style="margin-top: 16px">{i18n.t('musyrif.stats')}</div>
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px">
             <div class="stat-card">
                 <div style="font-size: 20px; font-weight: 900; color: #3c3c3c">24</div>
-                <div style="font-size: 10px; font-weight: 800; color: #afafaf">Sesi Minggu Ini</div>
+                <div style="font-size: 10px; font-weight: 800; color: #afafaf">{i18n.t('musyrif.sessions_week')}</div>
             </div>
             <div class="stat-card">
                 <div style="font-size: 20px; font-weight: 900; color: #ffc800">4.9 ★</div>
-                <div style="font-size: 10px; font-weight: 800; color: #afafaf">Rating Rata-rata</div>
+                <div style="font-size: 10px; font-weight: 800; color: #afafaf">{i18n.t('musyrif.avg_rating')}</div>
             </div>
         </div>
     </div>
