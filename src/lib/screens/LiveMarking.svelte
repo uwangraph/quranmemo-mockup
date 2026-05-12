@@ -130,24 +130,20 @@
                         <button class="type-btn forget" onclick={() => mark('forget')}>
                             <div class="type-icon">❓</div>
                             <div style="flex: 1">{i18n.t('marking.type_forget')}</div>
-                            <div class="shortcut-dot"></div>
                         </button>
                         <button class="type-btn tajwid" onclick={() => mark('tajwid')}>
                             <div class="type-icon">📏</div>
                             <div style="flex: 1">{i18n.t('marking.type_tajwid')}</div>
-                            <div class="shortcut-dot"></div>
                         </button>
                         <button class="type-btn makhraj" onclick={() => mark('makhraj')}>
                             <div class="type-icon">🗣️</div>
                             <div style="flex: 1">{i18n.t('marking.type_makhraj')}</div>
-                            <div class="shortcut-dot"></div>
                         </button>
                     </div>
                 </div>
             </div>
         {/if}
     {:else}
-        <!-- Analytics View stays the same as before -->
         <div class="analytics-view">
             <div class="analytics-header">
                 <div class="success-icon">🏆</div>
@@ -198,6 +194,10 @@
 </div>
 
 <style>
+    .screen {
+        position: relative;
+        overflow: hidden;
+    }
     .marking-header {
         background: #fff;
         padding: 12px 20px;
@@ -379,7 +379,7 @@
     }
 
     .modal-overlay {
-        position: fixed;
+        position: absolute;
         top: 0;
         left: 0;
         right: 0;
@@ -430,7 +430,7 @@
     .type-btn.tajwid { border-color: #ff9600; color: #ff9600; }
     .type-btn.makhraj { border-color: #1cb0f6; color: #1cb0f6; }
 
-    /* Analytics styles same as before */
+    /* Analytics styles */
     .analytics-view { padding: 40px 24px; display: flex; flex-direction: column; height: 100%; text-align: center; }
     .analytics-header { margin-bottom: 32px; }
     .success-icon { font-size: 80px; margin-bottom: 8px; }
