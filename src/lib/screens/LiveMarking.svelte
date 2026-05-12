@@ -66,14 +66,14 @@
                 <div class="glass-hud-top">
                     <div class="status-pill-modern">
                         <span class="indicator"></span>
-                        <span style="color: #fff; font-size: 11px; font-weight: 900; letter-spacing: 0.5px;">LIVE TASMI' AI</span>
+                        <span style="color: #fff; font-size: 11px; font-weight: 900; letter-spacing: 0.5px;">{i18n.t('marking.live_tasmi')}</span>
                     </div>
                 </div>
 
                 <div class="participant-dock">
                     <div class="dock-item">
                         <img src="/musyrif.png" alt="you" />
-                        <div class="label">You</div>
+                        <div class="label">{i18n.t('marking.you')}</div>
                     </div>
                 </div>
 

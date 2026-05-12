@@ -112,11 +112,11 @@
 						class:active={appState.currentScreen === screen.id}
 						onclick={() => handleNavigate(screen.id)}
 						style={appState.currentScreen === screen.id ? `background: ${cat.color}; border-color: ${cat.color}; color: #fff;` : ''}
-						title={appState.screenLabels[screen.id]}
+						title={i18n.t('screen.' + screen.id)}
 					>
 						<span class="snb-icon">{screen.icon}</span>
 						{#if isSidebarExpanded}
-							<span class="snb-text">{appState.screenLabels[screen.id]}</span>
+							<span class="snb-text">{i18n.t('screen.' + screen.id)}</span>
 						{/if}
 					</button>
 				{/each}
@@ -150,7 +150,7 @@
 
 			<!-- Role indicator at bottom of phone -->
 			<div class="role-indicator" style="background: {currentCategory.accent}; color: {currentCategory.color}; padding-bottom: 20px;">
-				{currentCategory.icon} {currentCategory.name} Mode
+				{currentCategory.icon} {i18n.t('nav.' + currentCategory.name.toLowerCase()) || currentCategory.name} Mode
 			</div>
 		</div>
 	</div>

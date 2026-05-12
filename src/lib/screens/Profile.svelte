@@ -7,7 +7,7 @@
         { label: i18n.t('profile.total_xp'), val: "12,450", icon: "⚡", color: "#ff9600" },
         { label: i18n.t('profile.hafalan'), val: "2 Juz", icon: "📖", color: "#58cc02" },
         { label: i18n.t('profile.streak'), val: "7", icon: "🔥", color: "#ff4b4b" },
-        { label: i18n.t('profile.liga'), val: "Safir", icon: "🏆", color: "#1cb0f6" },
+        { label: i18n.t('profile.liga'), val: i18n.t('league.sapphire'), icon: "🏆", color: "#1cb0f6" },
     ]);
 </script>
 

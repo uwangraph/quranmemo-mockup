@@ -16,16 +16,13 @@
 
 <div class="screen no-scrollbar" style="background: #fafafa;">
     <!-- Header -->
-    <div class="marking-header" style="background: #fff4e0; border-bottom-color: #ffe0b2;">
-            <button onclick={() => appState.go('musyrif')} class="close-btn">
-                <i class="ti ti-arrow-left"></i>
-            </button>
-            <div style="flex: 1">
-                <div style="font-size: 14px; font-weight: 900">Ahmad Hafidz</div>
-                <div style="font-size: 10px; font-weight: 700; color: #ff9600">🔴 {i18n.t('marking.live')}</div>
-            </div>
-            <div class="timer-bubble" style="background: #ff9600; color: #fff;">04:20</div>
-        </div>
+    <div class="earnings-header">
+        <button onclick={() => appState.go('musyrif')} class="back-btn">
+            <i class="ti ti-arrow-left"></i>
+        </button>
+        <div style="font-size: 16px; font-weight: 900; color: #3c3c3c">{i18n.t('earnings.title')}</div>
+        <div style="width: 20px"></div>
+    </div>
 
     <div class="scroll-content no-scrollbar" style="padding: 20px;">
         <!-- Balance Card -->
