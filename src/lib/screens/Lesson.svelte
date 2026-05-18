@@ -435,7 +435,36 @@
                 navigator.vibrate(25);
             }
 
-            const utterance = new SpeechSynthesisUtterance(wordText);
+            // Peta pengucapan non-waqaf (agar vokal akhiran diucapkan lengkap tanpa waqaf)
+            const phoneticMap = {
+                "أَلَمْ": "أَلَمْ",
+                "نَشْرَحْ": "نَشْرَحْ",
+                "لَكَ": "لَكَا",
+                "صَدْرَكَ": "صَدْرَكَا",
+                "وَوَضَعْنَا": "وَوَضَعْنَا",
+                "عَنكَ": "عَنْكَا",
+                "وِزْرَكَ": "وِزْرَكَا",
+                "ٱلَّذِىٓ": "ٱلَّذِي",
+                "أَنقَضَ": "أَنْقَضَا",
+                "ظَهْرَكَ": "ظَهْرَكَا",
+                "وَرَفَعْنَا": "وَرَفَعْنَا",
+                "ذِكْرَكَ": "ذِكْرَكَا",
+                "فَإِنَّ": "فَإِنَّ",
+                "إِنَّ": "إِنَّ",
+                "مَعَ": "مَعَا",
+                "ٱلْعُسْرِ": "ٱلْعُسْرِي",
+                "يُسْرًا": "يُسْرَنْ",
+                "فَإِذَا": "فَإِذَا",
+                "فَرَغْتَ": "فَرَغْتَا",
+                "فَٱنصَبْ": "فَانْصَبْ",
+                "وَإِلَىٰ": "وَإِلَى",
+                "رَبِّكَ": "رَبِّكَا",
+                "فَٱرْغَبْ": "فَارْغَبْ"
+            };
+
+            const ttsText = phoneticMap[wordText] || wordText;
+
+            const utterance = new SpeechSynthesisUtterance(ttsText);
             utterance.lang = 'ar-SA';
             utterance.rate = 0.55; // Kecepatan pelan agar pelafalan huruf & makhraj sangat presisi
             utterance.pitch = 1.0;
