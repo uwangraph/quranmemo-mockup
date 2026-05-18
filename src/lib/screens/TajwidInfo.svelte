@@ -292,7 +292,7 @@
 
                 <!-- Category Items (shown when expanded) -->
                 {#if openCategory === catIdx}
-                    <div class="card-body" transition:slide={{duration: 250}}>
+                    <div class="card-body">
                         {#each cat.items as item, itemIdx}
                             {@const itemKey = `${catIdx}-${itemIdx}`}
                             <div class="list-item-wrapper">
@@ -311,7 +311,7 @@
 
                                 <!-- Item Detail (shown when expanded) -->
                                 {#if openItem === itemKey}
-                                    <div class="item-detail" transition:slide={{duration: 220}} style="border-left: 3px solid {cat.bgColor};">
+                                    <div class="item-detail" style="border-left: 3px solid {cat.bgColor};">
                                         <p class="detail-description">{item.description}</p>
 
                                         <div class="detail-meta">
