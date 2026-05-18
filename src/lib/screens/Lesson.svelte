@@ -1980,19 +1980,19 @@
         transform: scale(1.18) translateY(-3px);
         font-weight: 800;
     }
-    .tajweed-qalqalah {
+    :global(.tajweed-qalqalah) {
         color: #2563eb !important; /* Royal Blue */
         font-weight: bold;
     }
-    .tajweed-ikhfa {
+    :global(.tajweed-ikhfa) {
         color: #db2777 !important; /* Deep Pink */
         font-weight: bold;
     }
-    .tajweed-ghunnah {
+    :global(.tajweed-ghunnah) {
         color: #dc2626 !important; /* Red */
         font-weight: bold;
     }
-    .tajweed-mad {
+    :global(.tajweed-mad) {
         color: #16a34a !important; /* Emerald Green */
         font-weight: bold;
     }
