@@ -35,9 +35,9 @@
             </span>
         {:else if recordState === 'recorded'}
             <div class="transcription-box">
-                <div class="trans-pill-tag">TRANSKRIPSI AI</div>
+                <div class="trans-pill-tag" style="background: #00978a;">BACAAN MUSHAF</div>
                 <div class="arabic-transcription Amiri">{activeVerse.arabic}</div>
-                <span class="action-helper-txt text-success">✓ 100% Sesuai dengan Mushaf!</span>
+                <span class="action-helper-txt text-success">Silakan bandingkan rekaman Anda dengan bacaan Qari!</span>
             </div>
 
             <!-- Dual Audio Comparison -->

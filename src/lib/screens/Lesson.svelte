@@ -460,6 +460,16 @@
             screenShaking = false;
             feedbackAnimClass = '';
         }, 600);
+
+        // Play full ayat as learning support when answer is wrong, as requested in docs/FEEDBACK.md
+        const quizTypes = ['fill_front', 'fill_back', 'puzzle_one', 'puzzle_two', 'audio_scramble', 'puzzle_total'];
+        if (quizTypes.includes(currentStepConfig?.type) && audio) {
+            setTimeout(() => {
+                audio.currentTime = 0;
+                audio.playbackRate = 1.0;
+                audio.play();
+            }, 600);
+        }
     }
 
     // === LOOPER & PER-WORD AUDIO STATE ===
@@ -1103,6 +1113,8 @@
                             {isChecked}
                             {selectedVerseIndex}
                             {startSimulatedRecording}
+                            {playWordAudio}
+                            {getTajweedHTML}
                         />
 
                     <!-- ==================== STEP 1: LIHAT & DENGAR ==================== -->
@@ -1160,6 +1172,8 @@
                             {activeVerse}
                             bind:selectedOptionIdx
                             {isChecked}
+                            {isCorrect}
+                            {getTajweedHTML}
                             {playWordAudio}
                         />
 
@@ -1170,6 +1184,8 @@
                             {activeVerse}
                             bind:selectedOptionIdx
                             {isChecked}
+                            {isCorrect}
+                            {getTajweedHTML}
                             {playWordAudio}
                         />
 
@@ -1190,6 +1206,7 @@
                             {togglePlaySlow}
                             {toggleWordSelection}
                             {playWordAudio}
+                            {getTajweedHTML}
                         />
 
                     <!-- ==================== STEP 7: PUZZLE 1 KATA HILANG ==================== -->
@@ -1199,6 +1216,8 @@
                             {activeVerse}
                             bind:selectedOptionIdx
                             {isChecked}
+                            {isCorrect}
+                            {getTajweedHTML}
                             {playWordAudio}
                         />
 
@@ -1217,6 +1236,7 @@
                             {togglePlaySlow}
                             {toggleWordSelection}
                             {playWordAudio}
+                            {getTajweedHTML}
                         />
 
                     <!-- ==================== STEP 9: PUZZLE TOTAL (SEMUA ACAK) ==================== -->
@@ -1234,6 +1254,7 @@
                             {togglePlaySlow}
                             {toggleWordSelection}
                             {playWordAudio}
+                            {getTajweedHTML}
                         />
 
                     <!-- ==================== STEP 10: SETOR FULL AYAT ==================== -->
@@ -1341,6 +1362,21 @@
                         <button class="btn-duo btn-green" onclick={checkAnswer}>
                             SAYA SUDAH HAFAL & PAHAM
                         </button>
+                    {:else if (currentStepConfig.type === 'setor_full' || currentStepConfig.type === 'recall_level1' || currentStepConfig.type === 'recall_level2') && recordState === 'recorded'}
+                        {#if !isChecked}
+                            <div style="display: flex; gap: 12px; width: 100%;">
+                                <button class="btn-duo" style="background: #fee2e2; border-color: #fca5a5; color: #b91c1c; border-bottom-width: 4px;" onclick={() => { recordState = 'idle'; isPlayingRecorded = false; if (audio) audio.pause(); isPlaying = false; }}>
+                                    🎤 ULANG REKAM
+                                </button>
+                                <button class="btn-duo btn-green" style="flex: 1;" onclick={() => { isCorrect = true; checkAnswer(); }}>
+                                    👍 CUKUP & LANJUT
+                                </button>
+                            </div>
+                        {:else}
+                            <button class="btn-duo btn-green" onclick={checkAnswer}>
+                                LANJUTKAN
+                            </button>
+                        {/if}
                     {:else}
                         <button 
                             class="btn-duo" 
