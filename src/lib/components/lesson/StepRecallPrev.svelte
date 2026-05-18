@@ -8,7 +8,9 @@
         recallSelectedOptionIdx = $bindable(), 
         isChecked, 
         selectedVerseIndex,
-        startSimulatedRecording 
+        startSimulatedRecording,
+        playWordAudio,
+        getTajweedHTML
     } = $props();
 </script>
 
@@ -68,7 +70,15 @@
     {:else}
         <!-- Mushaf Segmentasi mode -->
         <div class="arabic-focus-text Amiri segment-blank">
-            {previousVerse.frontBlank}
+            {#if recallSelectedOptionIdx !== null}
+                {@const filledText = isChecked ? previousVerse.frontChoices[0] : previousVerse.frontChoices[recallSelectedOptionIdx]}
+                <span class="filled-text" class:revealed-correct={isChecked && recallSelectedOptionIdx !== 0} class:correct-filled={isChecked && recallSelectedOptionIdx === 0}>
+                    {@html getTajweedHTML ? getTajweedHTML(filledText) : filledText}
+                </span>
+                {previousVerse.frontBlank.split('___').pop()}
+            {:else}
+                {previousVerse.frontBlank}
+            {/if}
         </div>
         <p class="mushaf-instruction-text">
             Lengkapi potongan ayat di atas dengan memilih jawaban yang benar:
@@ -82,8 +92,29 @@
                     class:wrong={isChecked && recallSelectedOptionIdx === i && i !== 0}
                     onclick={() => { if (!isChecked) recallSelectedOptionIdx = i; }}
                     disabled={isChecked}
+                    style="display: flex; align-items: center; justify-content: space-between; padding: 14px 20px;"
                 >
-                    {choice}
+                    <span class="option-index-badge" style="font-size: 12px; font-weight: 900; background: #e2e8f0; color: #475569; width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">{i + 1}</span>
+                    <span class="option-text Amiri" style="flex: 1; text-align: center;">{@html getTajweedHTML ? getTajweedHTML(choice) : choice}</span>
+                    <span 
+                        class="audio-mini-btn" 
+                        role="button" 
+                        tabindex="0" 
+                        onclick={(e) => { 
+                            e.stopPropagation(); 
+                            playWordAudio(choice.split(' ')[0]); 
+                        }} 
+                        onkeydown={(e) => { 
+                            if (e.key === 'Enter') { 
+                                e.stopPropagation(); 
+                                playWordAudio(choice.split(' ')[0]); 
+                            }
+                        }} 
+                        title="Dengar"
+                        style="color: #94a3b8; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; background: #f1f5f9; transition: all 0.2s;"
+                    >
+                        <i class="ti ti-volume"></i>
+                    </span>
                 </button>
             {/each}
         </div>
@@ -273,6 +304,28 @@
     }
     .Amiri {
         font-family: 'Amiri', serif;
+    }
+    .filled-text {
+        color: #00978a; 
+        border-bottom: 2px dashed #00978a;
+        transition: all 0.3s ease;
+    }
+    .filled-text.revealed-correct {
+        color: #22c55e;
+        border-bottom: 2px solid #22c55e;
+        background: rgba(34, 197, 94, 0.1);
+        padding: 2px 8px;
+        border-radius: 6px;
+        font-weight: 800;
+    }
+    .filled-text.correct-filled {
+        color: #22c55e;
+        border-bottom: 2px solid #22c55e;
+    }
+    .audio-mini-btn:hover {
+        background: #e2e8f0 !important;
+        color: #00978a !important;
+        transform: scale(1.05);
     }
     @keyframes pulseAnimation {
         0% { opacity: 0.6; }
