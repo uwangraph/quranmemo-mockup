@@ -197,6 +197,109 @@
     let lessonEarnedXP = $state(0);
     let lessonEarnedCoins = $state(0);
 
+    // === ANIMASI & SOUND EFFECTS ===
+    let showConfetti = $state(false);
+    let confettiParticles = $state([]);
+    let feedbackAnimClass = $state(''); // 'anim-correct' | 'anim-wrong'
+    let screenShaking = $state(false);
+
+    // Web Audio API - generate suara tanpa file MP3 eksternal
+    function playCorrectSound() {
+        try {
+            const ctx = new (window.AudioContext || window.webkitAudioContext)();
+            // Nada C5 -> E5 -> G5 (chord arpeggio ceria)
+            const notes = [523.25, 659.25, 783.99];
+            notes.forEach((freq, i) => {
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.type = 'sine';
+                osc.frequency.value = freq;
+                gain.gain.setValueAtTime(0, ctx.currentTime + i * 0.12);
+                gain.gain.linearRampToValueAtTime(0.35, ctx.currentTime + i * 0.12 + 0.04);
+                gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + i * 0.12 + 0.4);
+                osc.start(ctx.currentTime + i * 0.12);
+                osc.stop(ctx.currentTime + i * 0.12 + 0.5);
+            });
+            // Tambahan shimmer high note
+            const shimmer = ctx.createOscillator();
+            const shimmerGain = ctx.createGain();
+            shimmer.connect(shimmerGain);
+            shimmerGain.connect(ctx.destination);
+            shimmer.type = 'triangle';
+            shimmer.frequency.value = 1567.98;
+            shimmerGain.gain.setValueAtTime(0, ctx.currentTime + 0.36);
+            shimmerGain.gain.linearRampToValueAtTime(0.2, ctx.currentTime + 0.4);
+            shimmerGain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.7);
+            shimmer.start(ctx.currentTime + 0.36);
+            shimmer.stop(ctx.currentTime + 0.8);
+        } catch(e) {}
+    }
+
+    function playWrongSound() {
+        try {
+            const ctx = new (window.AudioContext || window.webkitAudioContext)();
+            // Nada turun sedih: E4 -> D4 -> C4
+            const notes = [329.63, 293.66, 261.63];
+            notes.forEach((freq, i) => {
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.type = 'sawtooth';
+                osc.frequency.value = freq;
+                gain.gain.setValueAtTime(0, ctx.currentTime + i * 0.15);
+                gain.gain.linearRampToValueAtTime(0.25, ctx.currentTime + i * 0.15 + 0.03);
+                gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + i * 0.15 + 0.3);
+                osc.start(ctx.currentTime + i * 0.15);
+                osc.stop(ctx.currentTime + i * 0.15 + 0.4);
+            });
+        } catch(e) {}
+    }
+
+    function spawnConfetti() {
+        const colors = ['#00978A', '#10B981', '#FFD700', '#FF6B6B', '#A78BFA', '#38BDF8', '#FB923C', '#F472B6'];
+        const shapes = ['circle', 'square', 'triangle', 'star'];
+        const particles = Array.from({ length: 60 }, (_, i) => ({
+            id: i,
+            x: Math.random() * 100,
+            y: -10 - Math.random() * 20,
+            size: 6 + Math.random() * 10,
+            color: colors[Math.floor(Math.random() * colors.length)],
+            shape: shapes[Math.floor(Math.random() * shapes.length)],
+            rotation: Math.random() * 360,
+            speedX: (Math.random() - 0.5) * 3,
+            speedY: 2 + Math.random() * 4,
+            rotSpeed: (Math.random() - 0.5) * 8,
+            opacity: 1
+        }));
+        confettiParticles = particles;
+        showConfetti = true;
+        // Auto-clear setelah 2.5 detik
+        setTimeout(() => {
+            showConfetti = false;
+            confettiParticles = [];
+        }, 2500);
+    }
+
+    function triggerCorrect() {
+        playCorrectSound();
+        spawnConfetti();
+        feedbackAnimClass = 'anim-correct';
+        setTimeout(() => feedbackAnimClass = '', 800);
+    }
+
+    function triggerWrong() {
+        playWrongSound();
+        feedbackAnimClass = 'anim-wrong';
+        screenShaking = true;
+        setTimeout(() => {
+            screenShaking = false;
+            feedbackAnimClass = '';
+        }, 600);
+    }
+
     // New Recall states
     let recallMethod = $state('voice'); // 'voice' or 'mushaf'
     let recallSelectedOptionIdx = $state(null);
@@ -596,7 +699,7 @@
         const type = currentStepConfig.type;
         if (type === 'recall_prev') {
             if (recallMethod === 'mushaf') {
-                isCorrect = recallSelectedOptionIdx === 0; // First choice is correct
+                isCorrect = recallSelectedOptionIdx === 0;
             } else {
                 isCorrect = recordState === 'recorded';
             }
@@ -615,26 +718,24 @@
             isChecked = true;
         }
         else if (type === 'fill_front') {
-            isCorrect = selectedOptionIdx === 0; // First choice is correct
+            isCorrect = selectedOptionIdx === 0;
             isChecked = true;
         }
         else if (type === 'fill_back') {
-            isCorrect = selectedOptionIdx === 1; // Second choice is correct
+            isCorrect = selectedOptionIdx === 1;
             isChecked = true;
         }
         else if (type === 'puzzle_one') {
-            isCorrect = selectedOptionIdx === 1; // Second choice is correct
+            isCorrect = selectedOptionIdx === 1;
             isChecked = true;
         }
         else if (type === 'puzzle_two') {
-            // Need two words selected in correct order
             isCorrect = selectedWords.length === 2 && 
                         selectedWords[0].text === activeVerse.twoCorrect[0] &&
                         selectedWords[1].text === activeVerse.twoCorrect[1];
             isChecked = true;
         }
         else if (type === 'audio_scramble' || type === 'puzzle_total') {
-            // Reconstructed matches the verse words order perfectly
             isCorrect = selectedWords.length === activeVerse.words.length &&
                         selectedWords.every((w, i) => w.text === activeVerse.words[i]);
             isChecked = true;
@@ -642,6 +743,15 @@
         else if (type === 'setor_full') {
             isCorrect = recordState === 'recorded';
             isChecked = true;
+        }
+
+        // Trigger animasi & sound setelah isChecked & isCorrect ditentukan
+        if (isChecked) {
+            if (isCorrect) {
+                triggerCorrect();
+            } else {
+                triggerWrong();
+            }
         }
     }
 
@@ -653,7 +763,7 @@
 
 </script>
 
-<div class="screen theme-user">
+<div class="screen theme-user" class:shake={screenShaking}>
     <!-- Topbar Header -->
     <div class="topbar">
         <button onclick={exitLesson} style="background: none; border: none; cursor: pointer; display: flex; align-items: center;" title="Kembali ke Dashboard">
@@ -1153,13 +1263,36 @@
                     
                 </div>
                 
+                <!-- Confetti Overlay -->
+                {#if showConfetti}
+                    <div class="confetti-overlay" aria-hidden="true">
+                        {#each confettiParticles as p (p.id)}
+                            <div
+                                class="confetti-particle shape-{p.shape}"
+                                style="
+                                    left: {p.x}%;
+                                    top: {p.y}%;
+                                    width: {p.size}px;
+                                    height: {p.size}px;
+                                    background: {p.color};
+                                    --speed-x: {p.speedX};
+                                    --speed-y: {p.speedY};
+                                    --rot-speed: {p.rotSpeed}deg;
+                                    animation: confettiFall 2.5s ease-in forwards;
+                                    animation-delay: {Math.random() * 0.3}s;
+                                "
+                            ></div>
+                        {/each}
+                    </div>
+                {/if}
+
                 <!-- Bottom Slided DUOLINGO Feedback Panel Sheet -->
                 {#if isChecked}
-                    <div class="sliding-feedback-panel" class:correct={isCorrect} class:wrong={!isCorrect}>
+                    <div class="sliding-feedback-panel {feedbackAnimClass}" class:correct={isCorrect} class:wrong={!isCorrect}>
                         <div class="feedback-inner-content">
                             <div class="feedback-badge" class:correct={isCorrect} class:wrong={!isCorrect}>
                                 <i class="ti {isCorrect ? 'ti-check' : 'ti-alert-circle'}"></i>
-                                {isCorrect ? 'SANGAT BAGUS!' : 'KURANG TEPAT'}
+                                {isCorrect ? 'SANGAT BAGUS! 🌟' : 'KURANG TEPAT 💪'}
                             </div>
                             <p class="feedback-msg">
                                 {isCorrect 
@@ -1857,6 +1990,113 @@
         to { transform: translateY(0); }
     }
 
+    /* ============================================
+       ANIMASI CORRECT - Confetti + Glow + Bounce
+    ============================================ */
+    .sliding-feedback-panel.anim-correct {
+        animation: slideUp 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+                   correctFlash 0.6s ease-out;
+    }
+    .sliding-feedback-panel.anim-correct .feedback-badge {
+        animation: badgeBounce 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    @keyframes correctFlash {
+        0%   { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+        30%  { box-shadow: 0 0 0 12px rgba(34, 197, 94, 0.35); }
+        60%  { box-shadow: 0 0 0 24px rgba(34, 197, 94, 0.15); }
+        100% { box-shadow: 0 0 0 32px rgba(34, 197, 94, 0); }
+    }
+
+    @keyframes badgeBounce {
+        0%   { transform: scale(0.3) translateY(8px); opacity: 0; }
+        50%  { transform: scale(1.3) translateY(-4px); opacity: 1; }
+        75%  { transform: scale(0.9) translateY(2px); }
+        100% { transform: scale(1) translateY(0); }
+    }
+
+    /* ============================================
+       ANIMASI WRONG - Screen Shake + Red Pulse
+    ============================================ */
+    .sliding-feedback-panel.anim-wrong {
+        animation: slideUp 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+                   wrongPulse 0.5s ease-out;
+    }
+    .sliding-feedback-panel.anim-wrong .feedback-badge {
+        animation: badgeWobble 0.5s ease-out;
+    }
+
+    @keyframes wrongPulse {
+        0%   { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        30%  { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0.4); }
+        70%  { box-shadow: 0 0 0 20px rgba(239, 68, 68, 0.15); }
+        100% { box-shadow: 0 0 0 28px rgba(239, 68, 68, 0); }
+    }
+
+    @keyframes badgeWobble {
+        0%   { transform: translateX(0); }
+        15%  { transform: translateX(-8px) rotate(-3deg); }
+        30%  { transform: translateX(7px) rotate(3deg); }
+        45%  { transform: translateX(-6px) rotate(-2deg); }
+        60%  { transform: translateX(5px) rotate(2deg); }
+        75%  { transform: translateX(-3px); }
+        100% { transform: translateX(0); }
+    }
+
+    /* ============================================
+       CONFETTI OVERLAY
+    ============================================ */
+    .confetti-overlay {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        overflow: hidden;
+        z-index: 200;
+    }
+
+    .confetti-particle {
+        position: absolute;
+        border-radius: 2px;
+        opacity: 0;
+    }
+
+    .confetti-particle.shape-circle {
+        border-radius: 50%;
+    }
+
+    .confetti-particle.shape-triangle {
+        background: transparent !important;
+        width: 0 !important;
+        height: 0 !important;
+        border-left: 5px solid transparent;
+        border-right: 5px solid transparent;
+        border-bottom: 10px solid var(--particle-color, #00978A);
+    }
+
+    .confetti-particle.shape-star {
+        clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+    }
+
+    @keyframes confettiFall {
+        0% {
+            opacity: 1;
+            transform: translateY(0) translateX(0) rotate(0deg);
+        }
+        20% {
+            opacity: 1;
+        }
+        80% {
+            opacity: 0.7;
+        }
+        100% {
+            opacity: 0;
+            transform:
+                translateY(calc(var(--speed-y) * 120px))
+                translateX(calc(var(--speed-x) * 80px))
+                rotate(calc(var(--rot-speed) * 15));
+        }
+    }
+
     /* Lesson Footer */
     .lesson-footer-actions {
         border-top: 2px solid #f1f5f9;
@@ -1908,5 +2148,20 @@
         max-width: 800px;
         margin: 0 auto;
         width: 100%;
+    }
+
+    /* Screen shake animation */
+    .screen.shake {
+        animation: screenShake 0.4s cubic-bezier(.36,.07,.19,.97) both;
+        transform: translate3d(0, 0, 0);
+        backface-visibility: hidden;
+        perspective: 1000px;
+    }
+
+    @keyframes screenShake {
+        10%, 90% { transform: translate3d(-2px, 0, 0); }
+        20%, 80% { transform: translate3d(4px, 0, 0); }
+        30%, 50%, 70% { transform: translate3d(-6px, 0, 0); }
+        40%, 60% { transform: translate3d(6px, 0, 0); }
     }
 </style>
