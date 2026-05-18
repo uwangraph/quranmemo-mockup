@@ -10,15 +10,15 @@
     ];
 
     const nodes = $derived([
-        { id: 1, type: "lesson", verseIndex: 0, status: "completed", title: "Ayat 1: أَلَمْ نَشْرَحْ" },
-        { id: 2, type: "lesson", verseIndex: 1, status: "completed", title: "Ayat 2: وَوَضَعْنَا عَنكَ" },
-        { id: 3, type: "lesson", verseIndex: 2, status: "current", title: "Ayat 3: ٱلَّذِىٓ أَنقَضَ" },
+        { id: 1, type: "lesson", verseIndex: 0, status: "completed", title: "Ayat 1" },
+        { id: 2, type: "lesson", verseIndex: 1, status: "completed", title: "Ayat 2" },
+        { id: 3, type: "lesson", verseIndex: 2, status: "current", title: "Ayat 3" },
         { id: 4, type: "tadabbur", status: "locked", title: "Tadabbur 1-3" },
-        { id: 5, type: "lesson", verseIndex: 3, status: "locked", title: "Ayat 4: وَرَفَعْنَا لَكَ" },
-        { id: 6, type: "lesson", verseIndex: 4, status: "locked", title: "Ayat 5: فَإِنَّ مَعَ" },
-        { id: 7, type: "lesson", verseIndex: 5, status: "locked", title: "Ayat 6: إِنَّ مَعَ" },
-        { id: 8, type: "lesson", verseIndex: 6, status: "locked", title: "Ayat 7: فَإِذَا فَرَغْتَ" },
-        { id: 9, type: "lesson", verseIndex: 7, status: "locked", title: "Ayat 8: وَإِلَىٰ رَبِّكَ" },
+        { id: 5, type: "lesson", verseIndex: 3, status: "locked", title: "Ayat 4" },
+        { id: 6, type: "lesson", verseIndex: 4, status: "locked", title: "Ayat 5" },
+        { id: 7, type: "lesson", verseIndex: 5, status: "locked", title: "Ayat 6" },
+        { id: 8, type: "lesson", verseIndex: 6, status: "locked", title: "Ayat 7" },
+        { id: 9, type: "lesson", verseIndex: 7, status: "locked", title: "Ayat 8" },
         { id: 10, type: "checkpoint", status: "locked", title: "Setor 1 Surah Penuh" }
     ]);
 
