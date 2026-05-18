@@ -102,12 +102,12 @@
                         tabindex="0" 
                         onclick={(e) => { 
                             e.stopPropagation(); 
-                            playWordAudio(choice.split(' ')[0]); 
+                            playWordAudio(choice); 
                         }} 
                         onkeydown={(e) => { 
                             if (e.key === 'Enter') { 
                                 e.stopPropagation(); 
-                                playWordAudio(choice.split(' ')[0]); 
+                                playWordAudio(choice); 
                             }
                         }} 
                         title="Dengar"
