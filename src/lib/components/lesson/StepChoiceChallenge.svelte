@@ -66,29 +66,16 @@
                 class:selected={selectedOptionIdx === idx}
                 class:correct={isChecked && idx === correctIdx}
                 class:wrong={isChecked && selectedOptionIdx === idx && idx !== correctIdx}
-                onclick={() => !isChecked && (selectedOptionIdx = idx)}
+                onclick={() => {
+                    if (!isChecked) {
+                        selectedOptionIdx = idx;
+                        playWordAudio(choice);
+                    }
+                }}
                 disabled={isChecked}
             >
                 <span class="choice-index-circle">{idx + 1}</span>
                 <span class="choice-text Amiri">{@html getTajweedHTML ? getTajweedHTML(choice) : choice}</span>
-                <span 
-                    class="audio-mini-btn" 
-                    role="button" 
-                    tabindex="0" 
-                    onclick={(e) => { 
-                        e.stopPropagation(); 
-                        playWordAudio(choice); 
-                    }} 
-                    onkeydown={(e) => { 
-                        if (e.key === 'Enter') { 
-                            e.stopPropagation(); 
-                            playWordAudio(choice); 
-                        }
-                    }} 
-                    title="Dengar"
-                >
-                    <i class="ti ti-volume"></i>
-                </span>
             </button>
         {/each}
     </div>
@@ -204,28 +191,7 @@
         text-align: right;
         direction: rtl;
     }
-    .audio-mini-btn {
-        margin-left: auto;
-        background: #f1f5f9;
-        border: none;
-        border-radius: 50%;
-        width: 30px;
-        height: 30px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        color: #64748b;
-        transition: all 0.15s;
-        flex-shrink: 0;
-    }
-    .audio-mini-btn:hover {
-        background: #e0f5f3;
-        color: #00978a;
-    }
-    .audio-mini-btn:active {
-        transform: scale(0.9);
-    }
+
     .Amiri {
         font-family: 'Amiri', serif;
     }
