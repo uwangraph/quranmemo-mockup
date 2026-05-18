@@ -3,14 +3,14 @@
     import { i18n } from '$lib/i18n.svelte.js';
     import BottomNav from '../components/BottomNav.svelte';
 
-    const rankings = [
-        { name: "league.you", xp: 1250, rank: 3, isMe: true, avatar: "👤", nameKey: true },
+    const rankings = $derived([
+        { name: "league.you", xp: appState.user.xp, rank: 3, isMe: true, avatar: "👤", nameKey: true },
         { name: "Siti Nurhaliza", xp: 1420, rank: 1, avatar: "🧕" },
         { name: "Ahmad Dani", xp: 1380, rank: 2, avatar: "🧔" },
         { name: "Budi Utomo", xp: 1100, rank: 4, avatar: "👨" },
         { name: "Sarah Wijayanto", xp: 950, rank: 5, avatar: "👩" },
         { name: "Rizky Billar", xp: 800, rank: 6, avatar: "👦" },
-    ].sort((a, b) => b.xp - a.xp).map((item, i) => ({ ...item, rank: i + 1 }));
+    ].sort((a, b) => b.xp - a.xp).map((item, i) => ({ ...item, rank: i + 1 })));
 </script>
 
 <div class="screen">

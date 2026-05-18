@@ -9,18 +9,23 @@
         { id: 1, title: "Surah Al-Insyirah", description: "Kelapangan hati & kemudahan", color: "#00978A" }
     ];
 
-    const nodes = $derived([
-        { id: 1, type: "lesson", verseIndex: 0, status: "completed", title: "Ayat 1" },
-        { id: 2, type: "lesson", verseIndex: 1, status: "completed", title: "Ayat 2" },
-        { id: 3, type: "lesson", verseIndex: 2, status: "current", title: "Ayat 3" },
-        { id: 4, type: "tadabbur", status: "locked", title: "Tadabbur 1-3" },
-        { id: 5, type: "lesson", verseIndex: 3, status: "locked", title: "Ayat 4" },
-        { id: 6, type: "lesson", verseIndex: 4, status: "locked", title: "Ayat 5" },
-        { id: 7, type: "lesson", verseIndex: 5, status: "locked", title: "Ayat 6" },
-        { id: 8, type: "lesson", verseIndex: 6, status: "locked", title: "Ayat 7" },
-        { id: 9, type: "lesson", verseIndex: 7, status: "locked", title: "Ayat 8" },
-        { id: 10, type: "checkpoint", status: "locked", title: "Setor 1 Surah Penuh" }
-    ]);
+    const nodes = $derived.by(() => {
+        const progress = appState.user.progress.surah_094;
+        const getStatus = (idx) => progress > idx ? "completed" : (progress === idx ? "current" : "locked");
+        
+        return [
+            { id: 1, type: "lesson", verseIndex: 0, status: getStatus(0), title: "Ayat 1" },
+            { id: 2, type: "lesson", verseIndex: 1, status: getStatus(1), title: "Ayat 2" },
+            { id: 3, type: "lesson", verseIndex: 2, status: getStatus(2), title: "Ayat 3" },
+            { id: 4, type: "tadabbur", status: progress >= 3 ? "completed" : "locked", title: "Tadabbur 1-3" },
+            { id: 5, type: "lesson", verseIndex: 3, status: getStatus(3), title: "Ayat 4" },
+            { id: 6, type: "lesson", verseIndex: 4, status: getStatus(4), title: "Ayat 5" },
+            { id: 7, type: "lesson", verseIndex: 5, status: getStatus(5), title: "Ayat 6" },
+            { id: 8, type: "lesson", verseIndex: 6, status: getStatus(6), title: "Ayat 7" },
+            { id: 9, type: "lesson", verseIndex: 7, status: getStatus(7), title: "Ayat 8" },
+            { id: 10, type: "checkpoint", status: progress >= 8 ? "current" : "locked", title: "Setor 1 Surah Penuh" }
+        ];
+    });
 
     $effect(() => {
         const timer = setTimeout(() => {
@@ -29,19 +34,25 @@
         }, 800);
         return () => clearTimeout(timer);
     });
+
+    const leagueRankings = $derived([
+        { name: "Anda", xp: appState.user.xp, isMe: true, avatar: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png" },
+        { name: "Ust. Ridwan", xp: 1420, avatar: "https://cdn-icons-png.flaticon.com/512/3996/3996562.png" },
+        { name: "Aisyah", xp: 1380, avatar: "https://cdn-icons-png.flaticon.com/512/3996/3996570.png" },
+    ].sort((a, b) => b.xp - a.xp).map((item, i) => ({ ...item, rank: i + 1 })));
 </script>
 
 <div class="screen">
     <div class="topbar">
         <div class="streak-pill">
-            <i class="ti ti-flame"></i> 7
+            <i class="ti ti-flame"></i> {appState.user.streak}
         </div>
         <div style="flex: 1; display: flex; justify-content: center">
             <span style="font-size: 18px; font-weight: 900; color: var(--duo-green); letter-spacing: -1px;">{i18n.t('learn.title')}</span>
         </div>
         <div style="display: flex; gap: 12px;">
             <div class="points-pill" onclick={() => appState.go('murojaah')}>
-                <i class="ti ti-bolt-filled"></i> 300
+                <i class="ti ti-bolt-filled"></i> {appState.user.xp}
             </div>
         </div>
     </div>
@@ -195,24 +206,14 @@
                         </span>
                     </div>
                     <div class="league-rank-preview">
-                        <div class="rank-item first">
-                            <span class="rank-num">1</span>
-                            <img src="https://cdn-icons-png.flaticon.com/512/3996/3996562.png" alt="Ust. Ridwan" style="width: 28px; height: 28px; object-fit: contain; border-radius: 50%;" />
-                            <span class="name">Ust. Ridwan</span>
-                            <span class="xp">420 XP</span>
-                        </div>
-                        <div class="rank-item you">
-                            <span class="rank-num">4</span>
-                            <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Anda" style="width: 28px; height: 28px; object-fit: contain; border-radius: 50%;" />
-                            <span class="name">Anda</span>
-                            <span class="xp">340 XP</span>
-                        </div>
-                        <div class="rank-item">
-                            <span class="rank-num">5</span>
-                            <img src="https://cdn-icons-png.flaticon.com/512/3996/3996570.png" alt="Aisyah" style="width: 28px; height: 28px; object-fit: contain; border-radius: 50%;" />
-                            <span class="name">Aisyah</span>
-                            <span class="xp">310 XP</span>
-                        </div>
+                        {#each leagueRankings.slice(0, 3) as r}
+                            <div class="rank-item" class:you={r.isMe} class:first={r.rank === 1}>
+                                <span class="rank-num">{r.rank}</span>
+                                <img src="{r.avatar}" alt="{r.name}" style="width: 28px; height: 28px; object-fit: contain; border-radius: 50%;" />
+                                <span class="name">{r.name}</span>
+                                <span class="xp">{r.xp} XP</span>
+                            </div>
+                        {/each}
                     </div>
                     <div class="league-footer">Top 5 naik ke Liga Berlian · 2 hari lagi</div>
                 </div>

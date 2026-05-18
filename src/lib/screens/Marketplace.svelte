@@ -8,6 +8,23 @@
         { name: "Ust. Ridwan Hakim", rating: 4.8, status: "online", price: 40, surah: "Medium", tier: "reguler", icon: "👨‍🏫" },
         { name: "Ustadzah Siti Aminah", rating: 5.0, status: "offline", price: 250, surah: "Long", tier: "bersanad", icon: "🧕" },
     ]);
+
+    function bookMusyrif(m) {
+        if (m.status === 'offline') {
+            alert("Musyrif sedang offline, tidak bisa dibooking saat ini.");
+            return;
+        }
+        
+        if (appState.user.coins >= m.price) {
+            if (confirm(`Booking setoran hafalan ke ${m.name} seharga ${m.price} Poin?`)) {
+                appState.user.coins -= m.price;
+                appState.saveUser();
+                appState.go('livemarking');
+            }
+        } else {
+            alert(`Poin tidak cukup! Butuh ${m.price} poin, kamu hanya punya ${appState.user.coins}. Kerjakan sesi hafalan untuk mendapatkan poin.`);
+        }
+    }
 </script>
 
 <div class="screen">
@@ -17,7 +34,7 @@
                 <i class="ti ti-ticket"></i> <span>1</span>
             </div>
             <div class="pill point-pill">
-                <i class="ti ti-bolt-filled"></i> <span>300</span>
+                <i class="ti ti-bolt-filled"></i> <span>{appState.user.coins}</span>
             </div>
         </div>
         <button class="topup-btn">
@@ -41,7 +58,7 @@
 
         <div class="musyrif-list-container">
             {#each musyrifs as m}
-                <div class="musyrif-card" class:offline={m.status === 'offline'}>
+                <div class="musyrif-card" class:offline={m.status === 'offline'} onclick={() => bookMusyrif(m)} role="button" tabindex="0">
                     <div class="m-avatar">{m.icon}</div>
                     <div style="flex:1">
                         <div style="display:flex; align-items:center; gap:6px;">

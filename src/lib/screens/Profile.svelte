@@ -4,9 +4,9 @@
     import BottomNav from '../components/BottomNav.svelte';
 
     const stats = $derived([
-        { label: i18n.t('profile.total_xp'), val: "12,450", icon: "⚡", color: "#ff9600" },
-        { label: i18n.t('profile.hafalan'), val: "2 Juz", icon: "📖", color: "#00978A" },
-        { label: i18n.t('profile.streak'), val: "7", icon: "🔥", color: "#ff4b4b" },
+        { label: i18n.t('profile.total_xp'), val: appState.user.xp.toLocaleString(), icon: "⚡", color: "#ff9600" },
+        { label: i18n.t('profile.hafalan'), val: `${appState.user.progress.surah_094} Ayat`, icon: "📖", color: "#00978A" },
+        { label: i18n.t('profile.streak'), val: appState.user.streak.toString(), icon: "🔥", color: "#ff4b4b" },
         { label: i18n.t('profile.liga'), val: i18n.t('league.sapphire'), icon: "🏆", color: "#1cb0f6" },
     ]);
 </script>
@@ -24,7 +24,7 @@
                 <button class="edit-avatar-btn"><i class="ti ti-camera"></i></button>
             </div>
             <div style="text-align: center; margin-top: 16px;">
-                <div style="font-size: 22px; font-weight: 900; color: #3c3c3c;">Abdullah Irfan</div>
+                <div style="font-size: 22px; font-weight: 900; color: #3c3c3c;">{appState.user.name}</div>
                 <div style="font-size: 13px; font-weight: 700; color: #afafaf;">{i18n.t('profile.joined')} 2024</div>
             </div>
         </div>
