@@ -1043,6 +1043,13 @@
         appState.go('learn');
     }
 
+    let showBreakModal = $state(false);
+    function toggleBreak() {
+        showBreakModal = !showBreakModal;
+        if (showBreakModal && audio) audio.pause();
+        if (showBreakModal) isPlaying = false;
+    }
+
 </script>
 
 <div class="screen theme-user" class:shake={screenShaking}>
@@ -1054,6 +1061,9 @@
         <div class="prog-bar-bg" style="flex: 1; margin: 0 16px;">
             <div class="prog-bar-fill" style="width: {showCompletion ? 100 : ((currentStep + 1) / stepsPipeline.length) * 100}%"></div>
         </div>
+        <button onclick={toggleBreak} style="background: none; border: none; cursor: pointer; display: flex; align-items: center; margin-right: 8px;" title="Istirahat">
+            <i class="ti ti-coffee" style="font-size: 18px; color: #f59e0b;"></i>
+        </button>
         <div class="xp-pill">
             <i class="ti ti-bolt-filled"></i> {Math.round(((currentStep + 1) / stepsPipeline.length) * 100)} XP
         </div>
@@ -1778,6 +1788,35 @@
             </div>
         
     </div>
+
+    <!-- Break/Istirahat Modal -->
+    {#if showBreakModal}
+        <div class="completion-overlay" style="z-index: 200;">
+            <div class="completion-card" style="max-width: 340px;">
+                <div style="font-size: 56px; margin-bottom: 12px;">☕</div>
+                <div class="congrats-headline" style="color: #f59e0b;">Istirahat Sejenak</div>
+                <p style="font-size: 13px; color: #64748b; margin: 12px 0 24px; line-height: 1.6; font-weight: 500;">
+                    Istirahat sejenak agar pikiran tetap segar. Hafalan yang dilanjutkan dengan tenang akan lebih melekat di ingatan. 🌙
+                </p>
+                <div style="display: flex; flex-direction: column; gap: 10px; width: 100%;">
+                    <button 
+                        class="btn-duo btn-green" 
+                        onclick={toggleBreak}
+                        style="font-size: 14px;"
+                    >
+                        ▶️ LANJUTKAN HAFALAN
+                    </button>
+                    <button 
+                        class="btn-duo" 
+                        onclick={exitLesson}
+                        style="font-size: 13px; background: #f1f5f9; color: #64748b; border: 2px solid #e2e8f0;"
+                    >
+                        🏠 Kembali ke Dashboard
+                    </button>
+                </div>
+            </div>
+        </div>
+    {/if}
 
     <!-- 3. COMPLETED ALL STAGES SCREEN OVERLAY -->
     {#if showCompletion}
