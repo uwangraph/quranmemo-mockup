@@ -11,6 +11,7 @@
     import AdminUsers from '$lib/screens/AdminUsers.svelte';
     import AdminMusyrif from '$lib/screens/AdminMusyrif.svelte';
     import Lesson from '$lib/screens/Lesson.svelte';
+    import TajwidInfo from '$lib/screens/TajwidInfo.svelte';
     import Tadabbur from '$lib/screens/Tadabbur.svelte';
     import MusyrifEarnings from '$lib/screens/MusyrifEarnings.svelte';
     import SessionFeedback from '$lib/screens/SessionFeedback.svelte';
@@ -34,6 +35,8 @@
         <Language />
     {:else if appState.currentScreen === 'lesson'}
         <Lesson />
+    {:else if appState.currentScreen === 'tajwid'}
+        <TajwidInfo />
     {:else if appState.currentScreen === 'tadabbur'}
         <Tadabbur />
     {:else if appState.currentScreen === 'musyrif'}

@@ -500,42 +500,42 @@
     function getTajweedHTML(word) {
         const tajweedMap = {
             // Ayat 1
-            "أَلَمْ": `أَلَمْ`,
+            "أَلَمْ": `أَلَ<span class="tajweed-hitam">مْ</span>`, // Idzhar Syafawi
             "نَشْرَحْ": `نَشْرَحْ`,
             "لَكَ": `لَكَ`,
-            "صَدْرَكَ": `صَ<span class="tajweed-qalqalah">دْ</span>رَكَ`,
+            "صَدْرَكَ": `صَ<span class="tajweed-biru-pekat">دْ</span>رَكَ`, // Qalqalah Sughra
             
             // Ayat 2
-            "وَوَضَعْنَا": `وَوَضَعْ<span class="tajweed-mad">نَا</span>`,
-            "عَنكَ": `عَ<span class="tajweed-ikhfa">نكَ</span>`,
+            "وَوَضَعْنَا": `وَوَضَعْنَا`,
+            "عَنكَ": `عَ<span class="tajweed-hijau">نكَ</span>`, // Ikhfa
             "وِزْرَكَ": `وِزْرَكَ`,
             
             // Ayat 3
-            "ٱلَّذِىٓ": `ٱلَّذِ<span class="tajweed-mad">ىٓ</span>`,
-            "أَنقَضَ": `أَ<span class="tajweed-ikhfa">نقَ</span>ضَ`,
+            "ٱلَّذِىٓ": `ٱلَّذِ<span class="tajweed-hijau">ىٓ</span>`, // Madd Jaiz Munfasil
+            "أَنقَضَ": `أَ<span class="tajweed-hijau">نقَ</span>ضَ`, // Ikhfa
             "ظَهْرَكَ": `ظَهْرَكَ`,
             
             // Ayat 4
-            "وَرَفَعْنَا": `وَرَفَعْ<span class="tajweed-mad">نَا</span>`,
+            "وَرَفَعْنَا": `وَرَفَعْنَا`,
             "لَكَ": `لَكَ`,
             "ذِكْرَكَ": `ذِكْرَكَ`,
             
             // Ayat 5 & 6
-            "فَإِنَّ": `فَإِ<span class="tajweed-ghunnah">نَّ</span>`,
-            "إِنَّ": `إِ<span class="tajweed-ghunnah">نَّ</span>`,
+            "فَإِنَّ": `فَإِ<span class="tajweed-ungu">نَّ</span>`, // Gunnah
+            "إِنَّ": `إِ<span class="tajweed-ungu">نَّ</span>`, // Gunnah
             "مَعَ": `مَعَ`,
             "ٱلْعُسْرِ": `ٱلْعُسْرِ`,
-            "يُسْرًا": `يُسْ<span class="tajweed-mad">رًا</span>`,
+            "يُسْرًا": `يُسْرًا`, 
             
             // Ayat 7
-            "فَإِذَا": `فَإِ<span class="tajweed-mad">ذَا</span>`,
+            "فَإِذَا": `فَإِذَا`,
             "فَرَغْتَ": `فَرَغْتَ`,
-            "فَٱنصَبْ": `فَ<span class="tajweed-ikhfa">ٱنصَ</span><span class="tajweed-qalqalah">بْ</span>`,
+            "فَٱنصَبْ": `فَ<span class="tajweed-hijau">ٱنصَ</span><span class="tajweed-biru-pekat">بْ</span>`, // Ikhfa & Qalqalah Kubra
             
             // Ayat 8
-            "وَإِلَىٰ": `وَإِ<span class="tajweed-mad">لَىٰ</span>`,
+            "وَإِلَىٰ": `وَإِلَىٰ`,
             "رَبِّكَ": `رَبِّكَ`,
-            "فَٱرْغَبْ": `فَٱرْغَ<span class="tajweed-qalqalah">بْ</span>`
+            "فَٱرْغَبْ": `فَٱرْغَ<span class="tajweed-biru-pekat">بْ</span>` // Qalqalah Kubra
         };
         return tajweedMap[word] || word;
     }
@@ -1185,12 +1185,18 @@
                             </div>
 
                             <!-- Tajweed Legend -->
-                            <div class="tajweed-legend" style="display: flex; gap: 10px; justify-content: center; align-items: center; flex-wrap: wrap; margin-top: 12px; font-size: 10px; font-weight: 800; letter-spacing: 0.2px;">
-                                <span style="color: #64748b; font-size: 9px; text-transform: uppercase;">Warna Tajwid:</span>
-                                <span style="display: inline-flex; align-items: center; gap: 4px;"><span style="width: 7px; height: 7px; border-radius: 50%; background: #2563eb;"></span> Qalqalah</span>
-                                <span style="display: inline-flex; align-items: center; gap: 4px;"><span style="width: 7px; height: 7px; border-radius: 50%; background: #dc2626;"></span> Ghunnah</span>
-                                <span style="display: inline-flex; align-items: center; gap: 4px;"><span style="width: 7px; height: 7px; border-radius: 50%; background: #db2777;"></span> Ikhfa</span>
-                                <span style="display: inline-flex; align-items: center; gap: 4px;"><span style="width: 7px; height: 7px; border-radius: 50%; background: #16a34a;"></span> Mad</span>
+                            <div class="tajweed-legend-container" style="margin-top: 16px; padding-top: 12px; border-top: 1px solid #f1f5f9; display: flex; flex-direction: column; align-items: center; gap: 12px;">
+                                <div class="tajweed-legend" style="display: flex; gap: 8px; justify-content: center; align-items: center; flex-wrap: wrap; font-size: 10px; font-weight: 800; letter-spacing: 0.2px;">
+                                    <span style="display: inline-flex; align-items: center; gap: 4px;"><span style="width: 7px; height: 7px; border-radius: 50%; background: #555555;"></span> Idzhar</span>
+                                    <span style="display: inline-flex; align-items: center; gap: 4px;"><span style="width: 7px; height: 7px; border-radius: 50%; background: #ef4444;"></span> Idgam</span>
+                                    <span style="display: inline-flex; align-items: center; gap: 4px;"><span style="width: 7px; height: 7px; border-radius: 50%; background: #10b981;"></span> Ikhfa</span>
+                                    <span style="display: inline-flex; align-items: center; gap: 4px;"><span style="width: 7px; height: 7px; border-radius: 50%; background: #0ea5e9;"></span> Iqlab</span>
+                                    <span style="display: inline-flex; align-items: center; gap: 4px;"><span style="width: 7px; height: 7px; border-radius: 50%; background: #1e1b4b;"></span> Qalqalah</span>
+                                    <span style="display: inline-flex; align-items: center; gap: 4px;"><span style="width: 7px; height: 7px; border-radius: 50%; background: #d946ef;"></span> Ghunnah</span>
+                                </div>
+                                <button class="btn-info-tajwid" onclick={() => appState.go('tajwid')} style="background: rgba(0, 151, 138, 0.1); border: none; border-radius: 99px; color: #00978a; font-size: 11px; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; transition: all 0.2s;">
+                                    <i class="ti ti-info-circle"></i> Info Lengkap Tajwid
+                                </button>
                             </div>
                         </div>
                         
@@ -1239,12 +1245,18 @@
                             </div>
 
                             <!-- Tajweed Legend -->
-                            <div class="tajweed-legend" style="display: flex; gap: 10px; justify-content: center; align-items: center; flex-wrap: wrap; margin-top: 12px; margin-bottom: 16px; font-size: 10px; font-weight: 800; letter-spacing: 0.2px;">
-                                <span style="color: #64748b; font-size: 9px; text-transform: uppercase;">Warna Tajwid:</span>
-                                <span style="display: inline-flex; align-items: center; gap: 4px;"><span style="width: 7px; height: 7px; border-radius: 50%; background: #2563eb;"></span> Qalqalah</span>
-                                <span style="display: inline-flex; align-items: center; gap: 4px;"><span style="width: 7px; height: 7px; border-radius: 50%; background: #dc2626;"></span> Ghunnah</span>
-                                <span style="display: inline-flex; align-items: center; gap: 4px;"><span style="width: 7px; height: 7px; border-radius: 50%; background: #db2777;"></span> Ikhfa</span>
-                                <span style="display: inline-flex; align-items: center; gap: 4px;"><span style="width: 7px; height: 7px; border-radius: 50%; background: #16a34a;"></span> Mad</span>
+                            <div class="tajweed-legend-container" style="margin-top: 16px; margin-bottom: 16px; padding-top: 12px; border-top: 1px solid #f1f5f9; display: flex; flex-direction: column; align-items: center; gap: 12px;">
+                                <div class="tajweed-legend" style="display: flex; gap: 8px; justify-content: center; align-items: center; flex-wrap: wrap; font-size: 10px; font-weight: 800; letter-spacing: 0.2px;">
+                                    <span style="display: inline-flex; align-items: center; gap: 4px;"><span style="width: 7px; height: 7px; border-radius: 50%; background: #555555;"></span> Idzhar</span>
+                                    <span style="display: inline-flex; align-items: center; gap: 4px;"><span style="width: 7px; height: 7px; border-radius: 50%; background: #ef4444;"></span> Idgam</span>
+                                    <span style="display: inline-flex; align-items: center; gap: 4px;"><span style="width: 7px; height: 7px; border-radius: 50%; background: #10b981;"></span> Ikhfa</span>
+                                    <span style="display: inline-flex; align-items: center; gap: 4px;"><span style="width: 7px; height: 7px; border-radius: 50%; background: #0ea5e9;"></span> Iqlab</span>
+                                    <span style="display: inline-flex; align-items: center; gap: 4px;"><span style="width: 7px; height: 7px; border-radius: 50%; background: #1e1b4b;"></span> Qalqalah</span>
+                                    <span style="display: inline-flex; align-items: center; gap: 4px;"><span style="width: 7px; height: 7px; border-radius: 50%; background: #d946ef;"></span> Ghunnah</span>
+                                </div>
+                                <button class="btn-info-tajwid" onclick={() => appState.go('tajwid')} style="background: rgba(0, 151, 138, 0.1); border: none; border-radius: 99px; color: #00978a; font-size: 11px; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; transition: all 0.2s;">
+                                    <i class="ti ti-info-circle"></i> Info Lengkap Tajwid
+                                </button>
                             </div>
                             
                             {#if recordState === 'recording'}
