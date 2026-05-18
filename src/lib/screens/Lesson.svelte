@@ -962,6 +962,8 @@
         } else {
             word.selected = true;
             selectedWords = [...selectedWords, word];
+            // Play the word audio
+            playWordAudio(word.text);
         }
     }
 

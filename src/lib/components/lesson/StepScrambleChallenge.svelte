@@ -16,6 +16,86 @@
         playWordAudio,
         getTajweedHTML
     } = $props();
+
+    // Drag and Drop & Touch Reordering states
+    let draggedIndex = $state(null);
+    let hoverIndex = $state(null);
+
+    function handleDragStart(e, index) {
+        if (isChecked) return;
+        draggedIndex = index;
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/plain', index);
+        // Make the dragged element look semi-transparent
+        setTimeout(() => {
+            const el = e.target;
+            if (el) el.style.opacity = '0.4';
+        }, 0);
+    }
+
+    function handleDragOver(e, index) {
+        if (isChecked) return;
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+        hoverIndex = index;
+    }
+
+    function handleDragEnd(e) {
+        if (isChecked) return;
+        draggedIndex = null;
+        hoverIndex = null;
+        const el = e.target;
+        if (el) el.style.opacity = '1';
+    }
+
+    function handleDrop(e, targetIdx) {
+        if (isChecked) return;
+        e.preventDefault();
+        
+        if (draggedIndex === null || draggedIndex === targetIdx) return;
+        
+        const updated = [...selectedWords];
+        const [draggedItem] = updated.splice(draggedIndex, 1);
+        updated.splice(targetIdx, 0, draggedItem);
+        selectedWords = updated;
+        
+        draggedIndex = null;
+        hoverIndex = null;
+    }
+
+    // Touch event handlers for mobile
+    function handleTouchStart(e, idx) {
+        if (isChecked) return;
+        draggedIndex = idx;
+    }
+
+    function handleTouchMove(e) {
+        if (isChecked || draggedIndex === null) return;
+        
+        const touch = e.touches[0];
+        const element = document.elementFromPoint(touch.clientX, touch.clientY);
+        if (element) {
+            const targetIdxAttr = element.getAttribute('data-index');
+            if (targetIdxAttr !== null) {
+                const targetIdx = parseInt(targetIdxAttr, 10);
+                if (targetIdx !== draggedIndex) {
+                    hoverIndex = targetIdx;
+                }
+            }
+        }
+    }
+
+    function handleTouchEnd(e) {
+        if (isChecked || draggedIndex === null) return;
+        if (hoverIndex !== null && hoverIndex !== draggedIndex) {
+            const updated = [...selectedWords];
+            const [draggedItem] = updated.splice(draggedIndex, 1);
+            updated.splice(hoverIndex, 0, draggedItem);
+            selectedWords = updated;
+        }
+        draggedIndex = null;
+        hoverIndex = null;
+    }
 </script>
 
 <div class="scramble-challenge-container">
@@ -87,8 +167,26 @@
                 {/if}
             </span>
         {/if}
-        {#each (isChecked && !isCorrect ? (type === 'puzzle_two' ? activeVerse.twoCorrect.map((w, idx) => ({ id: idx, text: w })) : activeVerse.words.map((w, idx) => ({ id: idx, text: w }))) : selectedWords) as word}
-            <button class="scramble-word-pill" onclick={() => toggleWordSelection(word)} disabled={isChecked} class:correct-revealed={isChecked && !isCorrect}>
+        {#each (isChecked && !isCorrect ? (type === 'puzzle_two' ? activeVerse.twoCorrect.map((w, idx) => ({ id: idx, text: w })) : activeVerse.words.map((w, idx) => ({ id: idx, text: w }))) : selectedWords) as word, idx}
+            <button 
+                class="scramble-word-pill" 
+                class:dragging={draggedIndex === idx}
+                class:drag-over={hoverIndex === idx}
+                draggable={!isChecked}
+                data-index={idx}
+                onclick={() => toggleWordSelection(word)} 
+                disabled={isChecked} 
+                class:correct-revealed={isChecked && !isCorrect}
+                
+                ondragstart={(e) => handleDragStart(e, idx)}
+                ondragover={(e) => handleDragOver(e, idx)}
+                ondragend={handleDragEnd}
+                ondrop={(e) => handleDrop(e, idx)}
+                
+                ontouchstart={(e) => handleTouchStart(e, idx)}
+                ontouchmove={handleTouchMove}
+                ontouchend={handleTouchEnd}
+            >
                 {@html getTajweedHTML ? getTajweedHTML(word.text) : word.text}
             </button>
         {/each}
@@ -116,18 +214,6 @@
                     disabled={isChecked || word.selected}
                 >
                     {@html getTajweedHTML ? getTajweedHTML(word.text) : word.text}
-                    {#if type === 'audio_scramble'}
-                        <span 
-                            class="audio-mini-icon" 
-                            role="button"
-                            tabindex="0"
-                            onclick={(e) => { e.stopPropagation(); playWordAudio(word.text); }}
-                            onkeydown={(e) => { if (e.key === 'Enter') { e.stopPropagation(); playWordAudio(word.text); } }}
-                            title="Dengar kata"
-                        >
-                            <i class="ti ti-volume"></i>
-                        </span>
-                    {/if}
                 </button>
             {/each}
         {/if}
@@ -263,15 +349,15 @@
         border-bottom-color: #15803d !important;
         pointer-events: none;
     }
-    .audio-mini-icon {
-        margin-left: 4px;
-        color: #94a3b8;
-        cursor: pointer;
-        display: inline-flex;
-        align-items: center;
+    .scramble-word-pill.dragging {
+        opacity: 0.4;
+        border: 2px dashed #00978a !important;
+        background: #f0fdfa !important;
     }
-    .audio-mini-icon:hover {
-        color: #00978a;
+    .scramble-word-pill.drag-over {
+        border-color: #00978a !important;
+        transform: scale(1.08) translateY(-2px) !important;
+        box-shadow: 0 10px 15px -3px rgba(0, 151, 138, 0.2), 0 4px 6px -4px rgba(0, 151, 138, 0.2) !important;
     }
     .Amiri {
         font-family: 'Amiri', serif;
