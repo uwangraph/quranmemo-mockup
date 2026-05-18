@@ -2,6 +2,9 @@
 export function createAppState() {
     let currentScreen = $state('onboarding');
     let theme = $state('user'); // user, musyrif, admin
+    let mockupMode = $state('mobile'); // mobile, desktop
+    let selectedVerseIndex = $state(2); // 0-indexed, default to index 2 (Verse 3)
+    
     
     const screenLabels = {
         onboarding: "Onboarding",
@@ -33,12 +36,22 @@ export function createAppState() {
         }
     }
 
+    function setMockupMode(mode) {
+        mockupMode = mode;
+    }
+
     return {
         get currentScreen() { return currentScreen; },
         get theme() { return theme; },
+        get mockupMode() { return mockupMode; },
+        set mockupMode(val) { mockupMode = val; },
+        get selectedVerseIndex() { return selectedVerseIndex; },
+        set selectedVerseIndex(val) { selectedVerseIndex = val; },
         get screenLabels() { return screenLabels; },
-        go
+        go,
+        setMockupMode
     };
 }
 
 export const appState = createAppState();
+

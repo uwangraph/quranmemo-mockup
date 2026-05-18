@@ -23,7 +23,7 @@
     }
 </script>
 
-<div class="screen no-scrollbar" style="background: #46a302;">
+<div class="screen no-scrollbar" style="background: #007A70;">
     <div class="scroll-content no-scrollbar" style="padding: 0 0 20px;">
         <div class="feedback-header">
             <div class="success-icon">✨</div>
@@ -117,7 +117,7 @@
     .feedback-header {
         text-align: center;
         padding: 50px 20px 90px;
-        background: linear-gradient(135deg, #58cc02, #46a302);
+        background: linear-gradient(135deg, var(--duo-green), var(--duo-green-dark));
         position: relative;
     }
     .success-icon {
@@ -206,9 +206,9 @@
         border-bottom-width: 4px;
     }
     .tag-btn.selected {
-        background: #e6f9d4;
-        border-color: #58cc02;
-        color: #58cc02;
+        background: #DBF0EE;
+        border-color: var(--duo-green);
+        color: var(--duo-green);
     }
     .tag-btn:active {
         transform: translateY(2px);

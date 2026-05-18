@@ -1,7 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
 
 :root {
-  --duo-green: #58cc02;
+  --duo-green: #00978A;
+  --duo-green-dark: #007A70;
+  --duo-green-light: #DBF0EE;
   --duo-blue: #1cb0f6;
   --duo-red: #ff4b4b;
   --duo-gold: #ffc800;
@@ -17,7 +19,9 @@
 }
 
 :root {
-  --duo-green: #58cc02;
+  --duo-green: #00978A;
+  --duo-green-dark: #007A70;
+  --duo-green-light: #DBF0EE;
   --duo-blue: #1cb0f6;
   --duo-orange: #ff9600;
   --duo-red: #ff4b4b;
@@ -125,13 +129,13 @@ body {
 }
 
 .btn-green {
-  background: #58cc02;
+  background: var(--duo-green);
   color: #fff;
-  border-bottom: 4px solid #46a302;
+  border-bottom: 4px solid var(--duo-green-dark);
 }
 
 .btn-green:active {
-  border-bottom: 2px solid #46a302;
+  border-bottom: 2px solid var(--duo-green-dark);
   transform: translateY(2px);
 }
 
@@ -205,7 +209,7 @@ body {
 
 .prog-bar-fill {
   height: 100%;
-  background: #58cc02;
+  background: var(--duo-green);
   border-radius: 100px;
   transition: width 0.4s;
 }

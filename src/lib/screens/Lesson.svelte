@@ -2,287 +2,1676 @@
     import { appState } from '$lib/app.svelte.js';
     import { i18n } from '$lib/i18n.svelte.js';
     
-    let currentStep = $state(0);
+    // Al-Insyirah Verses Data (1 to 8)
+    const alInsyirahVerses = [
+        {
+            verseNumber: 1,
+            arabic: "أَلَمْ نَشْرَحْ لَكَ صَدْرَكَ",
+            translation: "Bukankah Kami telah melapangkan dadamu (untukmu)?",
+            transliteration: "Alam nashrah laka shadrak",
+            audio: "https://everyayah.com/data/Husary_128kbps/094001.mp3",
+            words: ["أَلَمْ", "نَشْرَحْ", "لَكَ", "صَدْرَكَ"],
+            frontBlank: "___ ___ لَكَ صَدْرَكَ",
+            frontCorrect: "أَلَمْ نَشْرَحْ",
+            frontChoices: ["أَلَمْ نَشْرَحْ", "وَوَضَعْنَا عَنكَ", "فَإِذَا فَرَغْتَ"],
+            endBlank: "أَلَمْ نَشْرَحْ لَكَ ___",
+            endCorrect: "صَدْرَكَ",
+            endChoices: ["وِزْرَكَ", "صَدْرَكَ", "ظَهْرَكَ"],
+            middleBlank: "أَلَمْ ___ لَكَ صَدْرَكَ",
+            middleCorrect: "نَشْرَحْ",
+            middleChoices: ["عَنكَ", "نَشْرَحْ", "وِزْرَكَ"],
+            twoBlank: "أَلَمْ ___ ___ صَدْرَكَ",
+            twoCorrect: ["نَشْرَحْ", "لَكَ"],
+            twoChoices: ["عَنكَ", "لَكَ", "نَشْرَحْ", "وِزْرَكَ"]
+        },
+        {
+            verseNumber: 2,
+            arabic: "وَوَضَعْنَا عَنكَ وِزْرَكَ",
+            translation: "dan Kami pun telah menurunkan bebanmu darimu,",
+            transliteration: "Wa wadha'na 'anka wizrak",
+            audio: "https://everyayah.com/data/Husary_128kbps/094002.mp3",
+            words: ["وَوَضَعْنَا", "عَنكَ", "وِزْرَكَ"],
+            frontBlank: "___ ___ وِزْرَكَ",
+            frontCorrect: "وَوَضَعْنَا عَنكَ",
+            frontChoices: ["وَوَضَعْنَا عَنكَ", "أَلَمْ نَشْرَحْ", "ٱلَّذِىٓ أَنقَضَ"],
+            endBlank: "وَوَضَعْنَا عَنكَ ___",
+            endCorrect: "وِزْرَكَ",
+            endChoices: ["صَدْرَكَ", "وِزْرَكَ", "ظَهْرَكَ"],
+            middleBlank: "وَوَضَعْنَا ___ وِزْرَكَ",
+            middleCorrect: "عَنكَ",
+            middleChoices: ["لَكَ", "عَنكَ", "مَعَ"],
+            twoBlank: "___ ___ وِزْرَكَ",
+            twoCorrect: ["وَوَضَعْنَا", "عَنكَ"],
+            twoChoices: ["وَوَضَعْنَا", "عَنكَ", "أَلَمْ", "نَشْرَحْ"]
+        },
+        {
+            verseNumber: 3,
+            arabic: "ٱلَّذِىٓ أَنقَضَ ظَهْرَكَ",
+            translation: "yang memberatkan punggungmu,",
+            transliteration: "Alladzi anqadha zhahrak",
+            audio: "https://everyayah.com/data/Husary_128kbps/094003.mp3",
+            words: ["ٱلَّذِىٓ", "أَنقَضَ", "ظَهْرَكَ"],
+            frontBlank: "___ ___ ظَهْرَكَ",
+            frontCorrect: "ٱلَّذِىٓ أَنقَضَ",
+            frontChoices: ["ٱلَّذِىٓ أَنقَضَ", "وَوَضَعْنَا عَنكَ", "فَإِنَّ مَعَ"],
+            endBlank: "ٱلَّذِىٓ أَنقَضَ ___",
+            endCorrect: "ظَهْرَكَ",
+            endChoices: ["وِزْرَكَ", "صَدْرَكَ", "ظَهْرَكَ"],
+            middleBlank: "ٱلَّذِىٓ ___ ظَهْرَكَ",
+            middleCorrect: "أَنقَضَ",
+            middleChoices: ["أَنقَضَ", "فَرَغْتَ", "عَنكَ"],
+            twoBlank: "___ ___ ظَهْرَكَ",
+            twoCorrect: ["ٱلَّذِىٓ", "أَنقَضَ"],
+            twoChoices: ["ٱلَّذِىٓ", "أَنقَضَ", "وَوَضَعْنَا", "صَدْرَكَ"]
+        },
+        {
+            verseNumber: 4,
+            arabic: "وَرَفَعْنَا لَكَ ذِكْرَكَ",
+            translation: "dan Kami tinggikan sebutan (nama)mu bagimu.",
+            transliteration: "Wa rafa'na laka dzikrak",
+            audio: "https://everyayah.com/data/Husary_128kbps/094004.mp3",
+            words: ["وَرَفَعْنَا", "لَكَ", "ذِكْرَكَ"],
+            frontBlank: "___ ___ ذِكْرَكَ",
+            frontCorrect: "وَرَفَعْنَا لَكَ",
+            frontChoices: ["وَرَفَعْنَا لَكَ", "فَإِنَّ مَعَ", "وَوَضَعْنَا عَنكَ"],
+            endBlank: "وَرَفَعْنَا لَكَ ___",
+            endCorrect: "ذِكْرَكَ",
+            endChoices: ["وِزْرَكَ", "ذِكْرَكَ", "يُسْرًا"],
+            middleBlank: "وَرَفَعْنَا ___ ذِكْرَكَ",
+            middleCorrect: "لَكَ",
+            middleChoices: ["عَنكَ", "لَكَ", "مَعَ"],
+            twoBlank: "___ ___ ذِكْرَكَ",
+            twoCorrect: ["وَرَفَعْنَا", "لَكَ"],
+            twoChoices: ["وَرَفَعْنَا", "لَكَ", "ٱلَّذِىٓ", "أَنقَضَ"]
+        },
+        {
+            verseNumber: 5,
+            arabic: "فَإِنَّ مَعَ ٱلْعُسْرِ يُسْرًا",
+            translation: "Maka sesungguhnya beserta kesulitan ada kemudahan,",
+            transliteration: "Fa inna ma'al 'usri yusra",
+            audio: "https://everyayah.com/data/Husary_128kbps/094005.mp3",
+            words: ["فَإِنَّ", "مَعَ", "ٱلْعُسْرِ", "يُسْرًا"],
+            frontBlank: "___ ___ ٱلْعُسْرِ يُسْرًا",
+            frontCorrect: "فَإِنَّ مَعَ",
+            frontChoices: ["فَإِنَّ مَعَ", "إِنَّ مَعَ", "أَلَمْ نَشْرَحْ"],
+            endBlank: "فَإِنَّ مَعَ ٱلْعُسْرِ ___",
+            endCorrect: "يُسْرًا",
+            endChoices: ["يُسْرًا", "وِزْرَكَ", "فَٱنصَبْ"],
+            middleBlank: "فَإِنَّ مَعَ ___ يُسْرًا",
+            middleCorrect: "ٱلْعُسْرِ",
+            middleChoices: ["رَبِّكَ", "ٱلْعُسْرِ", "صَدْرَكَ"],
+            twoBlank: "فَإِنَّ ___ ___ يُسْرًا",
+            twoCorrect: ["مَعَ", "ٱلْعُسْرِ"],
+            twoChoices: ["مَعَ", "ٱلْعُسْرِ", "لَكَ", "عَنكَ"]
+        },
+        {
+            verseNumber: 6,
+            arabic: "إِنَّ مَعَ ٱلْعُسْرِ يُسْرًا",
+            translation: "sesungguhnya beserta kesulitan ada kemudahan.",
+            transliteration: "Inna ma'al 'usri yusra",
+            audio: "https://everyayah.com/data/Husary_128kbps/094006.mp3",
+            words: ["إِنَّ", "مَعَ", "ٱلْعُسْرِ", "يُسْرًا"],
+            frontBlank: "___ ___ ٱلْعُسْرِ يُسْرًا",
+            frontCorrect: "إِنَّ مَعَ",
+            frontChoices: ["إِنَّ مَعَ", "فَإِنَّ مَعَ", "وَإِلَىٰ رَبِّكَ"],
+            endBlank: "إِنَّ مَعَ ٱلْعُسْرِ ___",
+            endCorrect: "يُسْرًا",
+            endChoices: ["يُسْرًا", "فَٱنصَبْ", "وِزْرَكَ"],
+            middleBlank: "إِنَّ مَعَ ___ يُسْرًا",
+            middleCorrect: "ٱلْعُسْرِ",
+            middleChoices: ["ٱلْعُسْرِ", "رَبِّكَ", "لَكَ"],
+            twoBlank: "إِنَّ ___ ___ يُسْرًا",
+            twoCorrect: ["مَعَ", "ٱلْعُسْرِ"],
+            twoChoices: ["مَعَ", "ٱلْعُسْرِ", "عَنكَ", "فَرَغْتَ"]
+        },
+        {
+            verseNumber: 7,
+            arabic: "فَإِذَا فَرَغْتَ فَٱنصَبْ",
+            translation: "Maka apabila engkau telah selesai (dari sesuatu urusan), tetaplah bekerja keras (untuk urusan yang lain),",
+            transliteration: "Fa idza faraghta fanshab",
+            audio: "https://everyayah.com/data/Husary_128kbps/094007.mp3",
+            words: ["فَإِذَا", "فَرَغْتَ", "فَٱنصَبْ"],
+            frontBlank: "___ ___ فَٱنصَبْ",
+            frontCorrect: "فَإِذَا فَرَغْتَ",
+            frontChoices: ["فَإِذَا فَرَغْتَ", "وَإِلَىٰ رَبِّكَ", "وَوَضَعْنَا عَنكَ"],
+            endBlank: "فَإِذَا فَرَغْتَ ___",
+            endCorrect: "فَٱنصَبْ",
+            endChoices: ["فَٱرْغَبْ", "فَٱنصَبْ", "صَدْرَكَ"],
+            middleBlank: "فَإِذَا ___ فَٱنصَبْ",
+            middleCorrect: "فَرَغْتَ",
+            middleChoices: ["أَنقَضَ", "فَرَغْتَ", "مَعَ"],
+            twoBlank: "___ ___ فَٱنصَبْ",
+            twoCorrect: ["فَإِذَا", "فَرَغْتَ"],
+            twoChoices: ["فَإِذَا", "فَرَغْتَ", "إِنَّ", "وَإِلَىٰ"]
+        },
+        {
+            verseNumber: 8,
+            arabic: "وَإِلَىٰ رَبِّكَ فَٱرْغَبْ",
+            translation: "dan hanya kepada Tuhanmulah engkau berharap.",
+            transliteration: "Wa ila rabbika farghab",
+            audio: "https://everyayah.com/data/Husary_128kbps/094008.mp3",
+            words: ["وَإِلَىٰ", "رَبِّكَ", "فَٱرْغَبْ"],
+            frontBlank: "___ ___ فَٱرْغَبْ",
+            frontCorrect: "وَإِلَىٰ رَبِّكَ",
+            frontChoices: ["وَإِلَىٰ رَبِّكَ", "فَإِذَا فَرَغْتَ", "وَوَضَعْنَا عَنكَ"],
+            endBlank: "وَإِلَىٰ رَبِّكَ ___",
+            endCorrect: "فَٱرْغَبْ",
+            endChoices: ["فَٱنصَبْ", "فَٱرْغَبْ", "يُسْرًا"],
+            middleBlank: "وَإِلَىٰ ___ فَٱرْغَبْ",
+            middleCorrect: "رَبِّكَ",
+            middleChoices: ["عَنكَ", "رَبِّكَ", "لَكَ"],
+            twoBlank: "___ ___ فَٱرْغَبْ",
+            twoCorrect: ["وَإِلَىٰ", "رَبِّكَ"],
+            twoChoices: ["وَإِلَىٰ", "رَبِّكَ", "فَإِذَا", "فَرَغْتَ"]
+        }
+    ];
+
+    // State Variables bound to appState selectedVerseIndex
+    const selectedVerseIndex = $derived(appState.selectedVerseIndex);
+    let currentStep = $state(0); // 0 to 9 (corresponds to steps 1 to 10)
     let isPlaying = $state(false);
-    let selectedIdx = $state(null);
+    let selectedOptionIdx = $state(null);
     let isChecked = $state(false);
     let isCorrect = $state(false);
 
-    const lessonSteps = $derived([
-        { id: "visual", t: i18n.t('lesson.visual'), d: i18n.t('lesson.visual_d'), i: "🖼️" },
-        { id: "konteks", t: i18n.t('lesson.context'), d: i18n.t('lesson.context_d'), i: "📖" },
-        { id: "audio-visual", t: i18n.t('lesson.audio'), d: i18n.t('lesson.audio_d'), i: "🎙️" },
-        { id: "penyatuan", t: i18n.t('lesson.merge'), d: i18n.t('lesson.merge_d'), i: "✨" },
-        { id: "fading", t: i18n.t('lesson.fading'), d: i18n.t('lesson.fading_d'), i: "🧩" },
-        { id: "uji", t: i18n.t('lesson.test'), d: i18n.t('lesson.test_d'), i: "🏆" },
-    ]);
+    // Audio & Voice Recording States
+    let audio = null;
+    let recordState = $state('idle'); // 'idle', 'recording', 'recorded'
+    let isComparing = $state(false);
+    let simulatedWaves = $state([]);
+    let waveInterval = null;
 
-    const step = $derived(lessonSteps[currentStep]);
-    
-    const fadingOptions = [
-        { id: 'A', text: "رَبَّهُم بِٱلۡغَيۡبِ لَهُم مَّغۡفِرَةٞ", correct: false },
-        { id: 'B', text: "رَبَّهُم بِٱلۡغَيۡبِ لَهُم مَّغۡفِرَةٞ وَأَجۡرٞ كَبِيرٞ", correct: true },
-        { id: 'C', text: "رَبَّهُم سِرٗا وَعَلَانِيَةٗ", correct: false },
-        { id: 'D', text: "رَبَّهُم لَهُم أَجۡرٞ غَيۡرُ مَمۡنُونٍ", correct: false }
-    ];
+    // Scramble / Word Selection states
+    let scrambledWords = $state([]);
+    let selectedWords = $state([]);
+    let showCompletion = $state(false);
 
-    function nextStep() {
-        if (currentStep < lessonSteps.length - 1) {
-            currentStep++;
-            isPlaying = false;
-            isChecked = false;
-            selectedIdx = null;
-        } else {
-            appState.go('learn');
+    // New Recall states
+    let recallMethod = $state('voice'); // 'voice' or 'mushaf'
+    let recallSelectedOptionIdx = $state(null);
+
+    // Dynamic derivation of active verse
+    const activeVerse = $derived(selectedVerseIndex !== null ? alInsyirahVerses[selectedVerseIndex] : null);
+
+    // Dynamic Steps Pipeline based on the active verse index
+    const stepsPipeline = $derived.by(() => {
+        const baseSteps = [
+            { id: 1, stage: 1, title: "1. Lihat & Dengar", type: "read_listen", desc: "Perhatikan lafal ayat, dengerin qari secara saksama, lalu ulangi berkali-kali sampai lancar!" },
+            { id: 2, stage: 1, title: "2. Tiru & Ikuti", type: "listen_repeat", desc: "Dengarkan lantunan ayat qari, lalu ikuti pelafalannya dengan suara lantang." },
+            { id: 3, stage: 1, title: "3. Rekam & Bandingkan", type: "record_compare", desc: "Dengarkan ayat, rekam suaramu sendiri, lalu bandingkan dengan pelafalan qari untuk mengoreksi tajwid." },
+            { id: 4, stage: 2, title: "4. Mushaf segmentasi - Hilang di depan", type: "fill_front", desc: "Memori Mushaf! Tebak dan lengkapi bagian awal ayat yang sengaja dihilangkan." },
+            { id: 5, stage: 2, title: "5. Mushaf segmentasi - Hilang di belakang", type: "fill_back", desc: "Memori Visual! Tebak dan lengkapi kata di bagian paling belakang ayat ini." },
+            { id: 6, stage: 2, title: "6. Audio to text - Susun kata", type: "audio_scramble", desc: "Dengarkan lantunan potongan ayat, lalu susun kata-kata acak di bawah menjadi urutan yang benar." },
+            { id: 7, stage: 3, title: "7. Puzzle 01 - 1 kata hilang", type: "puzzle_one", desc: "Uji ketelitian! Satu kata di bagian tengah hilang, pilih opsi yang tepat untuk melengkapinya." },
+            { id: 8, stage: 3, title: "8. Puzzle 02 - 2 kata hilang", type: "puzzle_two", desc: "Tantangan menengah! Dua kata hilang di tengah ayat, pilih kedua kata secara berurutan." },
+            { id: 9, stage: 3, title: "9. Puzzle 03 - Semua kata hilang", type: "puzzle_total", desc: "Tantangan akhir! Semua kata diacak secara total. Susun kembali menjadi ayat yang utuh tanpa bantuan." },
+            { id: 10, stage: 3, title: "10. One Ayat!", type: "setor_full", desc: "Ujian Kelulusan! Setor hafalan ayat ini sepenuhnya lewat mic tanpa bantuan teks atau audio visual!" }
+        ];
+
+        let pipeline = [];
+
+        // 🔹 0. RECALL (Sebelum mulai ayat baru) - hanya jika selectedVerseIndex > 0
+        if (selectedVerseIndex > 0) {
+            pipeline.push({
+                id: 0,
+                stage: 0,
+                title: "0. RECALL (Sebelum Mulai)",
+                type: "recall_prev",
+                desc: "Sebelum mulai ayat baru, yuk ulang ayat sebelumnya dengan salah satu metode agar ingatanmu tetap segar!"
+            });
         }
+
+        // Add STAGE 1, 2, 3
+        pipeline.push(...baseSteps);
+
+        // 🔹 11. RECALL (Setelah satu ayat hafal)
+        pipeline.push({
+            id: 11,
+            stage: 4,
+            title: "11. RECALL - Level 1",
+            type: "recall_level1",
+            desc: "Mantap! Yuk setor (baca dari hafalan) ayat baru yang baru saja kamu selesaikan."
+        });
+
+        if (selectedVerseIndex > 0) {
+            pipeline.push({
+                id: 12,
+                stage: 4,
+                title: "11. RECALL - Level 2",
+                type: "recall_level2",
+                desc: "Ujian Sempurna! Sambungkan dan setor ayat sebelumnya + ayat baru secara berurutan."
+            });
+        }
+
+        return pipeline;
+    });
+
+    const currentStepConfig = $derived(stepsPipeline[currentStep]);
+
+    // Automatically trigger setup when selectedVerseIndex from roadmap changes
+    $effect(() => {
+        if (selectedVerseIndex !== null && selectedVerseIndex !== undefined) {
+            currentStep = 0;
+            isChecked = false;
+            isCorrect = false;
+            selectedOptionIdx = null;
+            selectedWords = [];
+            showCompletion = false;
+            recordState = 'idle';
+            isComparing = false;
+            setupAudio();
+            setupScramble();
+        }
+        return () => {
+            if (audio) audio.pause();
+            clearInterval(waveInterval);
+        };
+    });
+
+    function setupAudio() {
+        if (!activeVerse) return;
+        if (audio) audio.pause();
+        audio = new Audio(activeVerse.audio);
+        audio.onended = () => {
+            isPlaying = false;
+            if (isComparing) {
+                // If comparing, play user recording next (simulated)
+                setTimeout(() => {
+                    playSimulatedUserVoice();
+                }, 600);
+            }
+        };
+    }
+
+    function setupScramble() {
+        if (!activeVerse) return;
+        
+        // For Step 6 (Audio scramble) and Step 9 (Puzzle total)
+        scrambledWords = activeVerse.words.map((w, idx) => ({ id: idx, text: w, selected: false }))
+                                         .sort(() => Math.random() - 0.5);
+        selectedWords = [];
+    }
+
+    function playSimulatedUserVoice() {
+        recordState = 'recording'; // animate wave
+        isPlaying = true;
+        // play simulated short beep and finish
+        setTimeout(() => {
+            isPlaying = false;
+            isComparing = false;
+            recordState = 'recorded';
+        }, 1500);
     }
 
     function togglePlay() {
-        isPlaying = !isPlaying;
-        if (isPlaying) {
-            setTimeout(() => isPlaying = false, 3000);
+        if (!audio) return;
+        if (isPlaying && audio.playbackRate === 1.0) {
+            audio.pause();
+            isPlaying = false;
+        } else {
+            audio.pause();
+            audio.playbackRate = 1.0;
+            audio.currentTime = 0;
+            audio.play();
+            isPlaying = true;
         }
     }
 
-    function selectOption(idx) {
+    function togglePlaySlow() {
+        if (!audio) return;
+        if (isPlaying && audio.playbackRate < 1.0) {
+            audio.pause();
+            isPlaying = false;
+        } else {
+            audio.pause();
+            audio.playbackRate = 0.55;
+            audio.currentTime = 0;
+            audio.play();
+            isPlaying = true;
+        }
+    }
+
+    function startSimulatedRecording() {
+        if (recordState === 'recording') {
+            clearInterval(waveInterval);
+            recordState = 'recorded';
+            simulatedWaves = [];
+        } else {
+            recordState = 'recording';
+            simulatedWaves = Array(15).fill(10);
+            waveInterval = setInterval(() => {
+                simulatedWaves = simulatedWaves.map(() => Math.floor(Math.random() * 40) + 10);
+            }, 100);
+            
+            // Auto stop after 3 seconds
+            setTimeout(() => {
+                if (recordState === 'recording') {
+                    clearInterval(waveInterval);
+                    recordState = 'recorded';
+                    simulatedWaves = [];
+                }
+            }, 3000);
+        }
+    }
+
+    function startComparePlay() {
+        isComparing = true;
+        isPlaying = true;
+        if (audio) {
+            audio.currentTime = 0;
+            audio.play();
+        }
+    }
+
+    function toggleWordSelection(word) {
         if (isChecked) return;
-        selectedIdx = idx;
+        
+        if (word.selected) {
+            word.selected = false;
+            selectedWords = selectedWords.filter(w => w.id !== word.id);
+        } else {
+            word.selected = true;
+            selectedWords = [...selectedWords, word];
+        }
     }
 
     function checkAnswer() {
-        if (selectedIdx === null) return;
         if (isChecked) {
-            nextStep();
+            // Move to next step or finish
+            isChecked = false;
+            isCorrect = false;
+            selectedOptionIdx = null;
+            selectedWords = [];
+            recordState = 'idle';
+            isComparing = false;
+            recallSelectedOptionIdx = null;
+            recallMethod = 'voice';
+            
+            if (currentStep < stepsPipeline.length - 1) {
+                currentStep++;
+                setupScramble();
+                if (audio) audio.pause();
+                isPlaying = false;
+            } else {
+                showCompletion = true;
+            }
             return;
         }
-        isChecked = true;
-        isCorrect = fadingOptions[selectedIdx].correct;
+
+        // Logic to validate answer based on step type
+        const type = currentStepConfig.type;
+        if (type === 'recall_prev') {
+            if (recallMethod === 'mushaf') {
+                isCorrect = recallSelectedOptionIdx === 0; // First choice is correct
+            } else {
+                isCorrect = recordState === 'recorded';
+            }
+            isChecked = true;
+        }
+        else if (type === 'recall_level1' || type === 'recall_level2') {
+            isCorrect = recordState === 'recorded';
+            isChecked = true;
+        }
+        else if (type === 'read_listen' || type === 'listen_repeat') {
+            isCorrect = true;
+            isChecked = true;
+        } 
+        else if (type === 'record_compare') {
+            isCorrect = recordState === 'recorded';
+            isChecked = true;
+        }
+        else if (type === 'fill_front') {
+            isCorrect = selectedOptionIdx === 0; // First choice is correct
+            isChecked = true;
+        }
+        else if (type === 'fill_back') {
+            isCorrect = selectedOptionIdx === 1; // Second choice is correct
+            isChecked = true;
+        }
+        else if (type === 'puzzle_one') {
+            isCorrect = selectedOptionIdx === 1; // Second choice is correct
+            isChecked = true;
+        }
+        else if (type === 'puzzle_two') {
+            // Need two words selected in correct order
+            isCorrect = selectedWords.length === 2 && 
+                        selectedWords[0].text === activeVerse.twoCorrect[0] &&
+                        selectedWords[1].text === activeVerse.twoCorrect[1];
+            isChecked = true;
+        }
+        else if (type === 'audio_scramble' || type === 'puzzle_total') {
+            // Reconstructed matches the verse words order perfectly
+            isCorrect = selectedWords.length === activeVerse.words.length &&
+                        selectedWords.every((w, i) => w.text === activeVerse.words[i]);
+            isChecked = true;
+        }
+        else if (type === 'setor_full') {
+            isCorrect = recordState === 'recorded';
+            isChecked = true;
+        }
     }
+
+    function exitLesson() {
+        if (audio) audio.pause();
+        clearInterval(waveInterval);
+        appState.go('learn');
+    }
+
 </script>
 
-<div class="screen">
+<div class="screen theme-user">
+    <!-- Topbar Header -->
     <div class="topbar">
-        <button onclick={() => appState.go('learn')} style="background: none; border: none; cursor: pointer">
-            <i class="ti ti-x" style="font-size: 20px; color: #afafaf"></i>
+        <button onclick={exitLesson} style="background: none; border: none; cursor: pointer; display: flex; align-items: center;" title="Kembali ke Dashboard">
+            <i class="ti ti-x" style="font-size: 22px; color: #afafaf;"></i>
         </button>
-        <div class="prog-bar-bg" style="flex: 1">
-            <div class="prog-bar-fill" style="width: {(currentStep + 1) * 16.6}%"></div>
+        <div class="prog-bar-bg" style="flex: 1; margin: 0 16px;">
+            <div class="prog-bar-fill" style="width: {showCompletion ? 100 : ((currentStep + 1) / stepsPipeline.length) * 100}%"></div>
         </div>
         <div class="xp-pill">
-            <i class="ti ti-bolt" style="font-size: 16px"></i> {(currentStep + 1) * 10}
+            <i class="ti ti-bolt-filled"></i> {Math.round(((currentStep + 1) / stepsPipeline.length) * 100)} XP
         </div>
     </div>
 
-    <div class="scroll-content" style="padding: 12px 16px 0">
-        <div class="instruction-label">{i18n.t('lesson.step')} {currentStep + 1}: {step.t}</div>
-        
-        <div class="exercise-box" class:full-page={currentStep < 2}>
-            {#if currentStep < 2}
-                <div class="mushaf-page">
-                    <div class="arabic-page-text">
-                        تَبَٰرَكَ ٱلَّذِي بِيَدِهِ ٱلۡمُلۡكُ وَهُوَ عَلَىٰ كُلِّ شَيۡءٖ قَدِيرٌ (1) 
-                        ٱلَّذِي خَلَقَ ٱلۡمَوۡتَ وَٱلۡحَيَوٰةَ لِيَبۡلُوَكُمۡ أَيُّكُمۡ أَحۡسَنُ عَمَلٗاۚ وَهُوَ ٱلۡعَزِيزُ ٱلۡغَفُورُ (2)
-                        ...
-                    </div>
-                    {#if currentStep === 1}
-                        <div class="page-translation">
-                            "{i18n.t('lesson.mushaf_trans')}"
+    <div class="scroll-content no-scrollbar" style="background: #fff; display: flex; flex-direction: column;">
+        <!-- 2. GAME STEPS INTERACTIVE SCREEN -->
+        <div class="lesson-step-wrapper" style="padding: 16px; flex: 1; display: flex; flex-direction: column;">
+                
+                <!-- Stage Header Navigation Track -->
+                <div class="stage-indicator-bar">
+                    <span class="stage-tag stage-{currentStepConfig.stage}">
+                        {#if currentStepConfig.stage === 0}
+                            🔄 RECALL PREV
+                        {:else if currentStepConfig.stage === 1}
+                            💡 STAGE 1: PENGENALAN
+                        {:else if currentStepConfig.stage === 2}
+                            👁️ STAGE 2: MUSHAF
+                        {:else if currentStepConfig.stage === 3}
+                            🧩 STAGE 3: PUZZLE
+                        {:else if currentStepConfig.stage === 4}
+                            🏆 AKHIR: RECALL
+                        {/if}
+                    </span>
+                    <span class="step-counter">Langkah {currentStep + 1} dari {stepsPipeline.length}</span>
+                </div>
+                
+                <h3 class="step-title-display">{currentStepConfig.title}</h3>
+                <p class="step-description">{currentStepConfig.desc}</p>
+                
+                <div class="exercise-card-container">
+                    
+                    <!-- ==================== STEP 0: RECALL PREVIOUS VERSE ==================== -->
+                    {#if currentStepConfig.type === 'recall_prev'}
+                        {@const previousVerse = alInsyirahVerses[selectedVerseIndex - 1]}
+                        <div class="verse-display-box" style="padding: 24px 16px;">
+                            <!-- Dual Selector Tab -->
+                            <div class="recall-method-tabs" style="display: flex; gap: 8px; margin-bottom: 24px; background: #f3f4f6; padding: 6px; border-radius: 12px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.06);">
+                                <button 
+                                    class="recall-tab-btn" 
+                                    class:active={recallMethod === 'voice'} 
+                                    onclick={() => { recallMethod = 'voice'; recordState = 'idle'; }}
+                                    style="flex: 1; border: none; padding: 10px; font-weight: 800; font-size: 13px; border-radius: 8px; cursor: pointer; transition: all 0.2s;"
+                                >
+                                    🎙️ Setoran Hafalan
+                                </button>
+                                <button 
+                                    class="recall-tab-btn" 
+                                    class:active={recallMethod === 'mushaf'} 
+                                    onclick={() => { recallMethod = 'mushaf'; }}
+                                    style="flex: 1; border: none; padding: 10px; font-weight: 800; font-size: 13px; border-radius: 8px; cursor: pointer; transition: all 0.2s;"
+                                >
+                                    📖 Segmentasi Mushaf
+                                </button>
+                            </div>
+
+                            {#if recallMethod === 'voice'}
+                                <div class="setor-quran-graphic" style="font-size: 48px; margin-bottom: 12px;">🎙️</div>
+                                <div class="arabic-focus-text Amiri" style="filter: blur(6px); opacity: 0.15; user-select: none;">
+                                    {previousVerse.arabic}
+                                </div>
+                                <p style="font-size: 13px; font-weight: 700; color: #7c7c7c; margin: 12px 0 20px 0;">
+                                    "Bacakan ayat {selectedVerseIndex} sepenuhnya dari hafalan tanpa teks."
+                                </p>
+                                
+                                <div style="margin: 20px 0;">
+                                    <button class="mic-circle-btn giant" class:active={recordState === 'recording'} onclick={startSimulatedRecording} title="Mulai Setoran Suara">
+                                        <i class="ti ti-microphone"></i>
+                                    </button>
+                                </div>
+
+                                {#if recordState === 'recording'}
+                                    <div class="simulated-wave-container" style="margin-top: 12px; margin-bottom: 8px;">
+                                        {#each simulatedWaves as wave}
+                                            <div class="wave-bar" style="height: {wave}px;"></div>
+                                        {/each}
+                                    </div>
+                                    <span class="pulse-text" style="color: #ef4444; font-weight: 800; font-size: 12px;">Merekam hafalanmu...</span>
+                                {:else if recordState === 'recorded'}
+                                    <div class="voice-matched-toast" style="background: #ecfdf5; border: 1px solid #10b981; color: #065f46; font-size: 14px; font-weight: 800; padding: 10px 16px; border-radius: 8px; display: inline-flex; align-items: center; gap: 8px; margin-top: 12px;">
+                                        <i class="ti ti-circle-check-filled" style="color: #10b981; font-size: 18px;"></i>
+                                        Suara terekam! Klik Periksa di bawah.
+                                    </div>
+                                {:else}
+                                    <span style="font-size: 12px; color: #a0a0a0; font-weight: 700;">Ketuk mikrofon di atas untuk mulai menyetor suara</span>
+                                {/if}
+                            {:else}
+                                <!-- Mushaf Segmentasi mode -->
+                                <div class="arabic-focus-text Amiri" style="font-size: 26px; line-height: 1.8; margin-bottom: 20px; direction: rtl;">
+                                    {previousVerse.frontBlank}
+                                </div>
+                                <p style="font-size: 13px; font-weight: 700; color: #7c7c7c; margin-bottom: 24px;">
+                                    Lengkapi potongan ayat di atas dengan memilih jawaban yang benar:
+                                </p>
+                                <div class="options-stack" style="display: flex; flex-direction: column; gap: 12px; width: 100%;">
+                                    {#each previousVerse.frontChoices as choice, i}
+                                        <button 
+                                            class="option-pill"
+                                            class:selected={recallSelectedOptionIdx === i}
+                                            class:correct={isChecked && i === 0}
+                                            class:wrong={isChecked && recallSelectedOptionIdx === i && i !== 0}
+                                            onclick={() => { if (!isChecked) recallSelectedOptionIdx = i; }}
+                                            disabled={isChecked}
+                                            style="direction: rtl; font-family: 'Amiri', serif; font-size: 20px; font-weight: bold; width: 100%; border: 2px solid #e5e5e5; border-radius: 12px; padding: 14px; background: #fff; text-align: center; cursor: pointer; transition: 0.2s;"
+                                        >
+                                            {choice}
+                                        </button>
+                                    {/each}
+                                </div>
+                            {/if}
+                        </div>
+
+                    <!-- ==================== STEP 1: LIHAT & DENGAR ==================== -->
+                    {:else if currentStepConfig.type === 'read_listen'}
+                        <div class="verse-display-box">
+                            <div class="audio-circle-row" style="display: flex; gap: 16px; justify-content: center; align-items: center; margin-bottom: 24px;">
+                                <button class="audio-circle-play" class:playing={isPlaying && audio?.playbackRate === 1.0} onclick={togglePlay} title="Putar Audio Qari (Normal)">
+                                    <i class="ti {isPlaying && audio?.playbackRate === 1.0 ? 'ti-player-pause' : 'ti-player-play'}"></i>
+                                </button>
+                                <button class="audio-circle-play slow-btn" class:playing={isPlaying && audio?.playbackRate < 1.0} onclick={togglePlaySlow} title="Putar Audio Qari (Lambat)">
+                                    <img src="https://cdn-icons-png.flaticon.com/512/8493/8493027.png" alt="Turtle" style="width: 28px; height: 28px; object-fit: contain;" />
+                                </button>
+                            </div>
+                            <div class="arabic-focus-text Amiri">{activeVerse.arabic}</div>
+                            <div class="translit-focus-text">"{activeVerse.transliteration}"</div>
+                            <div class="trans-focus-text">{activeVerse.translation}</div>
+                        </div>
+                        
+                    <!-- ==================== STEP 2: TIRU & IKUTI ==================== -->
+                    {:else if currentStepConfig.type === 'listen_repeat'}
+                        <div class="verse-display-box">
+                            <div style="display: flex; gap: 12px; justify-content: center; align-items: center; margin-bottom: 24px;">
+                                <button class="audio-circle-play" class:playing={isPlaying && audio?.playbackRate === 1.0} onclick={togglePlay} title="1. Dengar Qari (Normal)">
+                                    <i class="ti ti-volume"></i>
+                                </button>
+                                <button class="audio-circle-play slow-btn" class:playing={isPlaying && audio?.playbackRate < 1.0} onclick={togglePlaySlow} title="1. Dengar Qari (Lambat)">
+                                    <img src="https://cdn-icons-png.flaticon.com/512/8493/8493027.png" alt="Turtle" style="width: 28px; height: 28px; object-fit: contain;" />
+                                </button>
+                                <button class="mic-circle-btn" class:active={recordState === 'recording'} onclick={startSimulatedRecording} title="2. Tiru Bacaan">
+                                    <i class="ti ti-microphone"></i>
+                                </button>
+                            </div>
+                            <div class="arabic-focus-text Amiri">{activeVerse.arabic}</div>
+                            
+                            {#if recordState === 'recording'}
+                                <div class="simulated-wave-container">
+                                    {#each simulatedWaves as wave}
+                                        <span class="wave-bar" style="height: {wave}px"></span>
+                                    {/each}
+                                </div>
+                                <span class="action-helper-txt pulsing">Merekam suara Anda... Silakan membaca ayat di atas!</span>
+                            {:else if recordState === 'recorded'}
+                                <span class="action-helper-txt text-success">✓ Berhasil direkam! Ketuk check di bawah.</span>
+                            {:else}
+                                <span class="action-helper-txt">Ketuk speaker untuk mendengar, lalu ketuk mikrofon untuk meniru!</span>
+                            {/if}
+                        </div>
+
+                    <!-- ==================== STEP 3: REKAM & BANDINGKAN ==================== -->
+                    {:else if currentStepConfig.type === 'record_compare'}
+                        <div class="compare-container">
+                            <div class="compare-cards-row">
+                                <div class="compare-card">
+                                    <img src="https://cdn-icons-png.flaticon.com/512/3996/3996562.png" alt="Qari icon" style="width: 48px; height: 48px; object-fit: contain; margin-bottom: 8px;" />
+                                    <h4>Suara Qari</h4>
+                                    <button class="compare-action-btn" onclick={togglePlay} class:active={isPlaying}>
+                                        <i class="ti {isPlaying && !isComparing ? 'ti-player-pause' : 'ti-player-play'}"></i> Dengar Qari
+                                    </button>
+                                </div>
+                                
+                                <div class="compare-card">
+                                    <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="User icon" style="width: 48px; height: 48px; object-fit: contain; margin-bottom: 8px;" />
+                                    <h4>Rekaman Anda</h4>
+                                    <button class="compare-action-btn record" onclick={startSimulatedRecording} class:active={recordState === 'recording'}>
+                                        <i class="ti ti-microphone"></i> {recordState === 'recorded' ? 'Ulang Rekam' : 'Rekam Suara'}
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            {#if recordState === 'recorded'}
+                                <div style="display: flex; justify-content: center; margin-top: 16px;">
+                                    <button class="compare-match-btn" class:active={isComparing} onclick={startComparePlay}>
+                                        <i class="ti ti-arrows-minimize"></i> Bandingkan Berurutan
+                                    </button>
+                                </div>
+                            {/if}
+                            
+                            {#if recordState === 'recording'}
+                                <div class="simulated-wave-container" style="margin-top: 16px;">
+                                    {#each simulatedWaves as wave}
+                                        <span class="wave-bar" style="height: {wave}px"></span>
+                                    {/each}
+                                </div>
+                            {/if}
+                        </div>
+
+                    <!-- ==================== STEP 4: ISI BAGIAN AWAL ==================== -->
+                    {:else if currentStepConfig.type === 'fill_front'}
+                        <div class="choice-challenge-container">
+                            <div class="challenge-arabic-blank Amiri">{activeVerse.frontBlank}</div>
+                            
+                            <div class="choice-options-column">
+                                {#each activeVerse.frontChoices as choice, idx}
+                                    <button 
+                                        class="choice-card-button" 
+                                        class:selected={selectedOptionIdx === idx}
+                                        class:correct={isChecked && idx === 0}
+                                        class:wrong={isChecked && selectedOptionIdx === idx && idx !== 0}
+                                        onclick={() => !isChecked && (selectedOptionIdx = idx)}
+                                        disabled={isChecked}
+                                    >
+                                        <span class="choice-index-circle">{idx + 1}</span>
+                                        <span class="choice-text Amiri">{choice}</span>
+                                    </button>
+                                {/each}
+                            </div>
+                        </div>
+
+                    <!-- ==================== STEP 5: ISI BAGIAN AKHIR ==================== -->
+                    {:else if currentStepConfig.type === 'fill_back'}
+                        <div class="choice-challenge-container">
+                            <div class="challenge-arabic-blank Amiri">{activeVerse.endBlank}</div>
+                            
+                            <div class="choice-options-column">
+                                {#each activeVerse.endChoices as choice, idx}
+                                    <button 
+                                        class="choice-card-button" 
+                                        class:selected={selectedOptionIdx === idx}
+                                        class:correct={isChecked && idx === 1}
+                                        class:wrong={isChecked && selectedOptionIdx === idx && idx !== 1}
+                                        onclick={() => !isChecked && (selectedOptionIdx = idx)}
+                                        disabled={isChecked}
+                                    >
+                                        <span class="choice-index-circle">{idx + 1}</span>
+                                        <span class="choice-text Amiri">{choice}</span>
+                                    </button>
+                                {/each}
+                            </div>
+                        </div>
+
+                    <!-- ==================== STEP 6: AUDIO SCRAMBLE ==================== -->
+                    {:else if currentStepConfig.type === 'audio_scramble'}
+                        <div class="scramble-challenge-container">
+                            <div style="display: flex; gap: 12px; justify-content: center; align-items: center; margin-bottom: 12px;">
+                                <button class="audio-circle-play small" class:playing={isPlaying && audio?.playbackRate === 1.0} onclick={togglePlay} title="Dengar Qari (Normal)">
+                                    <i class="ti ti-volume"></i>
+                                </button>
+                                <button class="audio-circle-play small slow-btn" class:playing={isPlaying && audio?.playbackRate < 1.0} onclick={togglePlaySlow} title="Dengar Qari (Lambat)">
+                                    <img src="https://cdn-icons-png.flaticon.com/512/8493/8493027.png" alt="Turtle" style="width: 20px; height: 20px; object-fit: contain;" />
+                                </button>
+                            </div>
+                            
+                            <div class="scramble-drop-shelf {isChecked ? (isCorrect ? 'correct' : 'wrong') : ''}">
+                                {#if selectedWords.length === 0}
+                                    <span class="drop-shelf-placeholder">Ketuk kata-kata di bawah untuk menyusun ayat...</span>
+                                {/if}
+                                {#each selectedWords as word}
+                                    <button class="scramble-word-pill" onclick={() => toggleWordSelection(word)} disabled={isChecked}>
+                                        {word.text}
+                                    </button>
+                                {/each}
+                            </div>
+                            
+                            <div class="scramble-source-bank">
+                                {#each scrambledWords as word}
+                                    <button 
+                                        class="scramble-word-pill outline" 
+                                        class:placed={word.selected}
+                                        onclick={() => toggleWordSelection(word)}
+                                        disabled={isChecked || word.selected}
+                                    >
+                                        {word.text}
+                                    </button>
+                                {/each}
+                            </div>
+                        </div>
+
+                    <!-- ==================== STEP 7: PUZZLE 1 KATA HILANG ==================== -->
+                    {:else if currentStepConfig.type === 'puzzle_one'}
+                        <div class="choice-challenge-container">
+                            <div class="challenge-arabic-blank Amiri">{activeVerse.middleBlank}</div>
+                            
+                            <div class="choice-options-column">
+                                {#each activeVerse.middleChoices as choice, idx}
+                                    <button 
+                                        class="choice-card-button" 
+                                        class:selected={selectedOptionIdx === idx}
+                                        class:correct={isChecked && idx === 1}
+                                        class:wrong={isChecked && selectedOptionIdx === idx && idx !== 1}
+                                        onclick={() => !isChecked && (selectedOptionIdx = idx)}
+                                        disabled={isChecked}
+                                    >
+                                        <span class="choice-index-circle">{idx + 1}</span>
+                                        <span class="choice-text Amiri">{choice}</span>
+                                    </button>
+                                {/each}
+                            </div>
+                        </div>
+
+                    <!-- ==================== STEP 8: PUZZLE 2 KATA HILANG ==================== -->
+                    {:else if currentStepConfig.type === 'puzzle_two'}
+                        <div class="scramble-challenge-container">
+                            <div class="challenge-arabic-blank Amiri" style="margin-bottom: 24px;">{activeVerse.twoBlank}</div>
+                            
+                            <div class="scramble-drop-shelf {isChecked ? (isCorrect ? 'correct' : 'wrong') : ''}" style="min-height: 80px;">
+                                {#if selectedWords.length === 0}
+                                    <span class="drop-shelf-placeholder">Lengkapi 2 kata di atas secara berurutan...</span>
+                                {/if}
+                                {#each selectedWords as word}
+                                    <button class="scramble-word-pill" onclick={() => toggleWordSelection(word)} disabled={isChecked}>
+                                        {word.text}
+                                    </button>
+                                {/each}
+                            </div>
+                            
+                            <div class="scramble-source-bank">
+                                {#each activeVerse.twoChoices as choice, i}
+                                    {@const wordObj = { id: i, text: choice, selected: selectedWords.some(w => w.text === choice) }}
+                                    <button 
+                                        class="scramble-word-pill outline" 
+                                        class:placed={wordObj.selected}
+                                        onclick={() => toggleWordSelection(wordObj)}
+                                        disabled={isChecked || wordObj.selected}
+                                    >
+                                        {choice}
+                                    </button>
+                                {/each}
+                            </div>
+                        </div>
+
+                    <!-- ==================== STEP 9: PUZZLE TOTAL (SEMUA ACAK) ==================== -->
+                    {:else if currentStepConfig.type === 'puzzle_total'}
+                        <div class="scramble-challenge-container">
+                            <div class="scramble-drop-shelf {isChecked ? (isCorrect ? 'correct' : 'wrong') : ''}">
+                                {#if selectedWords.length === 0}
+                                    <span class="drop-shelf-placeholder">Susun seluruh ayat Al-Insyirah dari hafalanmu...</span>
+                                {/if}
+                                {#each selectedWords as word}
+                                    <button class="scramble-word-pill" onclick={() => toggleWordSelection(word)} disabled={isChecked}>
+                                        {word.text}
+                                    </button>
+                                {/each}
+                            </div>
+                            
+                            <div class="scramble-source-bank">
+                                {#each scrambledWords as word}
+                                    <button 
+                                        class="scramble-word-pill outline" 
+                                        class:placed={word.selected}
+                                        onclick={() => toggleWordSelection(word)}
+                                        disabled={isChecked || word.selected}
+                                    >
+                                        {word.text}
+                                    </button>
+                                {/each}
+                            </div>
+                        </div>
+
+                    <!-- ==================== STEP 10: SETOR FULL AYAT ==================== -->
+                    {:else if currentStepConfig.type === 'setor_full'}
+                        <div class="verse-display-box" style="padding: 40px 20px;">
+                            <div class="setor-quran-graphic">📖</div>
+                            
+                            <div style="margin: 24px 0;">
+                                <button class="mic-circle-btn giant" class:active={recordState === 'recording'} onclick={startSimulatedRecording}>
+                                    <i class="ti ti-microphone"></i>
+                                </button>
+                            </div>
+                            
+                            {#if recordState === 'recording'}
+                                <div class="simulated-wave-container">
+                                    {#each simulatedWaves as wave}
+                                        <span class="wave-bar" style="height: {wave}px"></span>
+                                    {/each}
+                                </div>
+                                <span class="action-helper-txt pulsing text-primary">Tasmi AI sedang menyimak bacaan Anda...</span>
+                            {:else if recordState === 'recorded'}
+                                <div class="transcription-box">
+                                    <div class="trans-pill-tag">TRANSKRIPSI AI</div>
+                                    <div class="arabic-transcription Amiri">{activeVerse.arabic}</div>
+                                    <span class="action-helper-txt text-success" style="margin-top: 8px;">✓ 100% Sesuai dengan Mushaf! Klik check jawaban.</span>
+                                </div>
+                            {:else}
+                                <span class="action-helper-txt">Tekan tombol mic, lalu hafalkan ayat {activeVerse.verseNumber} secara lengkap tanpa bantuan teks.</span>
+                            {/if}
+                        </div>
+
+                    <!-- ==================== STEP 11: RECALL LEVEL 1 ==================== -->
+                    {:else if currentStepConfig.type === 'recall_level1'}
+                        <div class="verse-display-box" style="padding: 40px 20px;">
+                            <div class="setor-quran-graphic">🏆</div>
+                            
+                            <div style="font-size: 16px; font-weight: 800; color: #059669; margin-bottom: 12px;">
+                                Level 1: Setor Ayat Baru
+                            </div>
+                            
+                            <div style="margin: 24px 0;">
+                                <button class="mic-circle-btn giant" class:active={recordState === 'recording'} onclick={startSimulatedRecording} title="Mulai Setoran Level 1">
+                                    <i class="ti ti-microphone"></i>
+                                </button>
+                            </div>
+                            
+                            {#if recordState === 'recording'}
+                                <div class="simulated-wave-container">
+                                    {#each simulatedWaves as wave}
+                                        <span class="wave-bar" style="height: {wave}px"></span>
+                                    {/each}
+                                </div>
+                                <span class="action-helper-txt pulsing text-primary">Tasmi AI sedang menyimak hafalan barumu...</span>
+                            {:else if recordState === 'recorded'}
+                                <div class="transcription-box">
+                                    <div class="trans-pill-tag" style="background: #e0f2fe; color: #0369a1;">TRANSKRIPSI HAFALAN</div>
+                                    <div class="arabic-transcription Amiri">{activeVerse.arabic}</div>
+                                    <span class="action-helper-txt text-success" style="margin-top: 8px;">✓ Ayat baru berhasil disetorkan dengan fasih!</span>
+                                </div>
+                            {:else}
+                                <span class="action-helper-txt">
+                                    Tekan mic dan bacakan ayat {activeVerse.verseNumber} yang baru saja kamu hafal secara penuh dari ingatanmu.
+                                </span>
+                            {/if}
+                        </div>
+
+                    <!-- ==================== STEP 12: RECALL LEVEL 2 ==================== -->
+                    {:else if currentStepConfig.type === 'recall_level2'}
+                        {@const prevVerse = alInsyirahVerses[selectedVerseIndex - 1]}
+                        <div class="verse-display-box" style="padding: 40px 20px;">
+                            <div class="setor-quran-graphic" style="animation: bounce 2s infinite;">🔗</div>
+                            
+                            <div style="font-size: 16px; font-weight: 800; color: #ea580c; margin-bottom: 12px;">
+                                Level 2: Sambungkan Hafalan
+                            </div>
+                            
+                            <div style="margin: 24px 0;">
+                                <button class="mic-circle-btn giant" class:active={recordState === 'recording'} onclick={startSimulatedRecording} title="Mulai Setoran Level 2">
+                                    <i class="ti ti-microphone"></i>
+                                </button>
+                            </div>
+                            
+                            {#if recordState === 'recording'}
+                                <div class="simulated-wave-container">
+                                    {#each simulatedWaves as wave}
+                                        <span class="wave-bar" style="height: {wave}px"></span>
+                                    {/each}
+                                </div>
+                                <span class="action-helper-txt pulsing text-primary">Tasmi AI menyimak sambungan ayat...</span>
+                            {:else if recordState === 'recorded'}
+                                <div class="transcription-box">
+                                    <div class="trans-pill-tag" style="background: #fff7ed; color: #c2410c;">HAFALAN BERSAMBUNG</div>
+                                    <div class="arabic-transcription Amiri" style="font-size: 20px; line-height: 2.0; direction: rtl; text-align: right; width: 100%;">
+                                        {prevVerse.arabic} ﴿{prevVerse.verseNumber}﴾ {activeVerse.arabic} ﴿{activeVerse.verseNumber}﴾
+                                    </div>
+                                    <span class="action-helper-txt text-success" style="margin-top: 8px;">✓ Sempurna! Sambungan ayat {prevVerse.verseNumber} & {activeVerse.verseNumber} terjalin kokoh!</span>
+                                </div>
+                            {:else}
+                                <span class="action-helper-txt">
+                                    Tekan mic dan bacakan **ayat {prevVerse.verseNumber}** dilanjutkan **ayat {activeVerse.verseNumber}** secara berurutan tanpa putus.
+                                </span>
+                            {/if}
                         </div>
                     {/if}
+                    
                 </div>
-            {:else if currentStep < 4}
-                <div class="sub-instruction">{step.d}</div>
-                <div style="display: flex; justify-content: center; margin: 20px 0;">
-                    <button class="audio-play-btn" class:playing={isPlaying} onclick={togglePlay}>
-                        <i class="ti {isPlaying ? 'ti-player-pause' : 'ti-player-play'}"></i>
-                    </button>
-                </div>
-                <div class="quran-prompt">إِنَّ الَّذِينَ يَخۡشَوۡنَ رَبَّهُم بِٱلۡغَيۡبِ لَهُم مَّغۡفِرَةٞ وَأَجۡرٞ كَبِيرٞ</div>
-                {#if currentStep === 3}
-                    <div class="translation-hint">"{i18n.t('lesson.verse_trans')}"</div>
+                
+                <!-- Bottom Slided DUOLINGO Feedback Panel Sheet -->
+                {#if isChecked}
+                    <div class="sliding-feedback-panel" class:correct={isCorrect} class:wrong={!isCorrect}>
+                        <div class="feedback-inner-content">
+                            <div class="feedback-badge" class:correct={isCorrect} class:wrong={!isCorrect}>
+                                <i class="ti {isCorrect ? 'ti-check' : 'ti-alert-circle'}"></i>
+                                {isCorrect ? 'SANGAT BAGUS!' : 'KURANG TEPAT'}
+                            </div>
+                            <p class="feedback-msg">
+                                {isCorrect 
+                                    ? 'Masya Allah! Jawabanmu 100% tepat. Hafalan tajwid dan visualmu makin kokoh!' 
+                                    : 'Perhatikan susunan kata dan lafal aslinya. Jangan menyerah, ayo coba lagi!'}
+                            </p>
+                        </div>
+                    </div>
                 {/if}
-            {:else if currentStep === 4}
-                <div class="sub-instruction">{i18n.t('lesson.complete_verse')}</div>
-                <div class="quran-prompt fading">إِنَّ الَّذِينَ يَخۡشَوۡنَ ...</div>
-                <div class="options-list" style="margin-top: 20px;">
-                    {#each fadingOptions as opt, i}
-                        <button 
-                            class="option-card" 
-                            class:selected={selectedIdx === i}
-                            class:correct={isChecked && opt.correct}
-                            class:wrong={isChecked && selectedIdx === i && !opt.correct}
-                            onclick={() => selectOption(i)}
-                        >
-                            <div class="opt-num">{opt.id}</div>
-                            <span class="opt-text">{opt.text}</span>
+                
+                <!-- Action Footer Buttons -->
+                <div class="lesson-footer-actions" style="margin-top: auto; padding: 12px 0 0;">
+                    {#if currentStepConfig.type === 'read_listen'}
+                        <button class="btn-duo btn-green" onclick={checkAnswer}>
+                            SAYA SUDAH HAFAL & PAHAM
                         </button>
-                    {/each}
+                    {:else}
+                        <button 
+                            class="btn-duo" 
+                            class:btn-green={(!isChecked && (selectedOptionIdx !== null || recallSelectedOptionIdx !== null || selectedWords.length > 0 || recordState === 'recorded')) || (isChecked && isCorrect)}
+                            class:btn-red={isChecked && !isCorrect}
+                            class:btn-disabled={!isChecked && selectedOptionIdx === null && recallSelectedOptionIdx === null && selectedWords.length === 0 && recordState !== 'recorded'}
+                            onclick={checkAnswer}
+                            disabled={!isChecked && selectedOptionIdx === null && recallSelectedOptionIdx === null && selectedWords.length === 0 && recordState !== 'recorded'}
+                        >
+                            {isChecked ? (isCorrect ? 'LANJUTKAN' : 'COBA LAGI') : 'PERIKSA JAWABAN'}
+                        </button>
+                    {/if}
                 </div>
-            {:else}
-                <div class="sub-instruction">{i18n.t('lesson.record')}</div>
-                <div class="quran-prompt">إِنَّ الَّذِينَ يَخۡشَوۡنَ رَبَّهُم بِٱلۡغَيۡبِ لَهُم مَّغۡفِرَةٞ وَأَجۡرٞ كَبِيرٞ</div>
-                <div style="display: flex; justify-content: center; margin-top: 40px;">
-                    <button class="mic-btn" onclick={nextStep}>
-                        <i class="ti ti-microphone"></i>
+                
+            </div>
+        
+    </div>
+
+    <!-- 3. COMPLETED ALL STAGES SCREEN OVERLAY -->
+    {#if showCompletion}
+        <div class="completion-overlay">
+            <div class="completion-card">
+                <div class="completed-trophy-img">🏆</div>
+                <div class="congrats-headline">✅ ONE PATH FINISHED!</div>
+                <div class="congrats-sub">
+                    {#if selectedVerseIndex > 0}
+                        Satu ayat benar-benar hafal bersambung dengan ayat sebelumnya.
+                    {:else}
+                        Selamat! Ayat {activeVerse.verseNumber} dari Surah Al-Insyirah sudah benar-benar hafal di luar kepala!
+                    {/if}
+                </div>
+                
+                <div class="reward-box" style="margin: 20px 0;">
+                    <div class="reward-item">
+                        <span style="font-size: 24px; color: #ff9600;">⚡</span>
+                        <span style="font-size: 15px; font-weight: 900; color: #3c3c3c;">+100 XP</span>
+                        <span style="font-size: 9px; font-weight: 700; color: #afafaf;">STREAK BONUS</span>
+                    </div>
+                    <div class="reward-item" style="border-left: 2px solid #e5e5e5;">
+                        <span style="font-size: 24px; color: #00978A;">🔄</span>
+                        <span style="font-size: 15px; font-weight: 900; color: #00978A;">+10 Poin</span>
+                        <span style="font-size: 9px; font-weight: 700; color: #00978A;">MEMO CASHBACK</span>
+                    </div>
+                </div>
+                
+                <div style="display: flex; flex-direction: column; gap: 8px;">
+                    <button class="btn-duo btn-green" onclick={exitLesson}>
+                        HAFAL AYAT LAINNYA
+                    </button>
+                    <button class="btn-duo outline" onclick={exitLesson}>
+                        KEMBALI KE ROADMAP
                     </button>
                 </div>
-                <div style="text-align: center; font-size: 12px; font-weight: 800; color: #1cb0f6; margin-top: 10px;">
-                    {i18n.t('lesson.start_tasmi')}
-                </div>
-            {/if}
-        </div>
-
-        {#if isChecked && currentStep === 4}
-            <div class="feedback-bar" class:feedback-correct={isCorrect} class:feedback-wrong={!isCorrect}>
-                {#if isCorrect}
-                    <div style="font-size:14px;font-weight:800;color:#46a302;">{i18n.t('lesson.correct')}</div>
-                {:else}
-                    <div style="font-size:14px;font-weight:800;color:#cc0000;">{i18n.t('lesson.wrong')}</div>
-                {/if}
             </div>
-        {/if}
-    </div>
-
-    <div style="padding: 12px 16px 16px">
-        {#if currentStep === 4}
-            <button
-                class="btn-duo"
-                class:btn-green={selectedIdx !== null && (!isChecked || isCorrect)}
-                class:btn-red={isChecked && !isCorrect}
-                class:btn-disabled={selectedIdx === null}
-                onclick={checkAnswer}
-            >
-                {isChecked ? (isCorrect ? i18n.t('lesson.next') : i18n.t('lesson.retry')) : i18n.t('lesson.check')}
-            </button>
-        {:else if currentStep !== 5}
-            <button class="btn-duo btn-green" onclick={nextStep}>
-                {i18n.t('lesson.understand')}
-            </button>
-        {/if}
-    </div>
+        </div>
+    {/if}
 </div>
 
 <style>
-    .instruction-label {
+    /* Surah and Ayat Selector Styling */
+    .topbar-surah-title {
+        font-size: 16px;
+        font-weight: 900;
+        color: var(--duo-green);
+        letter-spacing: -0.5px;
+        font-family: "Nunito", sans-serif;
+    }
+    .selector-header {
+        text-align: center;
+        margin-bottom: 24px;
+        padding: 10px 0;
+    }
+    .flaticon-header-icon {
+        width: 64px;
+        height: 64px;
+        object-fit: contain;
+        margin-bottom: 12px;
+    }
+    .selector-header h2 {
+        font-size: 22px;
+        font-weight: 900;
+        color: #3c3c3c;
+        margin: 0 0 6px;
+    }
+    .selector-header p {
+        font-size: 13px;
+        font-weight: 700;
+        color: #afafaf;
+        margin: 0;
+        line-height: 1.4;
+    }
+    .verses-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+    .verse-selection-card {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        background: #fff;
+        border: 2px solid #e5e5e5;
+        border-bottom-width: 4px;
+        border-radius: 16px;
+        padding: 14px 16px;
+        cursor: pointer;
+        text-align: left;
+        transition: all 0.2s;
+    }
+    .verse-selection-card:hover {
+        border-color: var(--duo-green);
+        background: #fdfdfd;
+    }
+    .verse-selection-card:active {
+        transform: translateY(2px);
+        border-bottom-width: 2px;
+    }
+    .verse-number-badge {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: var(--duo-green-light);
+        color: var(--duo-green);
+        font-weight: 900;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        margin-right: 14px;
+    }
+    .verse-texts-col {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+    .verse-arabic-txt {
+        font-family: "Amiri", serif;
+        font-size: 18px;
+        font-weight: 700;
+        color: #3c3c3c;
+        direction: rtl;
+        text-align: right;
+    }
+    .verse-trans-txt {
+        font-size: 11px;
+        font-weight: 700;
+        color: #888;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .verse-action-arrow {
+        color: #afafaf;
+        font-size: 16px;
+        margin-left: 12px;
+    }
+
+    /* Lesson Step Layout */
+    .stage-indicator-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 12px;
+    }
+    .stage-tag {
+        font-size: 10px;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        padding: 4px 10px;
+        border-radius: 100px;
+    }
+    .stage-tag.stage-1 { background: #ffebeb; color: #ff5c5c; }
+    .stage-tag.stage-2 { background: #e0f2fe; color: #0284c7; }
+    .stage-tag.stage-3 { background: #fef3c7; color: #d97706; }
+    .stage-tag.stage-0 { background: #fff7ed; color: #ea580c; }
+    .stage-tag.stage-4 { background: #ecfdf5; color: #059669; }
+    
+    .recall-tab-btn {
+        background: transparent;
+        color: #7c7c7c;
+        border: none;
+    }
+    .recall-tab-btn.active {
+        background: #fff !important;
+        color: var(--duo-green) !important;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+    
+    .step-counter {
         font-size: 11px;
         font-weight: 800;
-        color: #afafaf;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        margin-bottom: 10px;
+        color: #94a3b8;
     }
-    .exercise-box {
-        background: #f7f7f7;
-        border-radius: 16px;
-        padding: 16px;
-        text-align: center;
-        margin-bottom: 16px;
-        min-height: 300px;
+    .step-title-display {
+        font-size: 20px;
+        font-weight: 900;
+        color: #3c3c3c;
+        margin: 0 0 4px;
+        letter-spacing: -0.5px;
+    }
+    .step-description {
+        font-size: 12px;
+        font-weight: 700;
+        color: #64748b;
+        margin: 0 0 20px;
+        line-height: 1.4;
+    }
+
+    .exercise-card-container {
+        flex: 1;
         display: flex;
         flex-direction: column;
         justify-content: center;
+        min-height: 300px;
+        margin-bottom: 20px;
     }
-    .full-page {
-        background: #fff;
+
+    /* Display Card Box */
+    .verse-display-box {
+        background: #fafafa;
         border: 2px solid #e5e5e5;
+        border-radius: 24px;
+        padding: 30px 16px;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 280px;
     }
-    .mushaf-page {
-        font-family: serif;
-    }
-    .arabic-page-text {
-        font-size: 20px;
-        line-height: 2.2;
-        direction: rtl;
-        color: #3c3c3c;
-    }
-    .page-translation {
-        margin-top: 16px;
-        font-family: "Nunito", sans-serif;
-        font-size: 12px;
-        color: #777;
-        font-style: italic;
-        line-height: 1.5;
-    }
-    .sub-instruction {
-        font-size: 14px;
-        color: #3c3c3c;
-        font-weight: 700;
-        margin-bottom: 15px;
-    }
-    .audio-play-btn {
-        width: 70px;
-        height: 70px;
+    .audio-circle-play {
+        width: 64px;
+        height: 64px;
         border-radius: 50%;
-        background: #1cb0f6;
+        background: #00978A;
         border: none;
-        border-bottom: 4px solid #0898dc;
+        border-bottom: 4px solid #007A70;
+        color: #fff;
+        font-size: 24px;
         display: flex;
         align-items: center;
         justify-content: center;
         cursor: pointer;
-        color: #fff;
-        font-size: 30px;
         transition: all 0.1s;
+        margin-bottom: 20px;
     }
-    .audio-play-btn:active {
-        border-bottom-width: 2px;
-        transform: translateY(2px);
+    .audio-circle-play:active {
+        border-bottom-width: 0;
+        transform: translateY(4px);
     }
-    .mic-btn {
-        width: 80px;
-        height: 80px;
+    .audio-circle-play.small {
+        width: 48px;
+        height: 48px;
+        font-size: 18px;
+        margin-bottom: 12px;
+    }
+    .audio-circle-play.slow-btn {
+        background: #ffb800;
+        border-bottom-color: #d19200;
+        margin-bottom: 20px;
+    }
+    .audio-circle-play.slow-btn:active {
+        border-bottom-width: 0;
+        transform: translateY(4px);
+    }
+    .verse-display-box .audio-circle-play,
+    .scramble-challenge-container .audio-circle-play {
+        margin-bottom: 0 !important;
+    }
+    .mic-circle-btn {
+        width: 64px;
+        height: 64px;
         border-radius: 50%;
         background: #fff;
-        border: 4px solid #1cb0f6;
+        border: 4px solid #ff4b4b;
+        color: #ff4b4b;
+        font-size: 24px;
         display: flex;
         align-items: center;
         justify-content: center;
         cursor: pointer;
-        color: #1cb0f6;
+        box-shadow: 0 4px 12px rgba(255, 75, 75, 0.15);
+        transition: all 0.2s;
+    }
+    .mic-circle-btn.giant {
+        width: 90px;
+        height: 90px;
         font-size: 36px;
-        box-shadow: 0 4px 15px rgba(28, 176, 246, 0.2);
+        border-width: 6px;
     }
-    .quran-prompt {
-        font-size: 20px;
-        font-family: serif;
-        color: #3c3c3c;
-        line-height: 1.8;
+    .mic-circle-btn.active {
+        background: #ff4b4b;
+        color: #fff;
+        transform: scale(1.08);
+        box-shadow: 0 0 20px rgba(255, 75, 75, 0.4);
+    }
+    .arabic-focus-text {
+        font-size: 28px;
+        line-height: 1.6;
+        color: #1e293b;
+        margin-bottom: 12px;
         direction: rtl;
+        text-align: center;
     }
-    .fading { color: #1cb0f6; font-weight: bold; }
-    .translation-hint {
-        font-size: 12px;
-        color: #afafaf;
-        margin-top: 10px;
+    .translit-focus-text {
+        font-size: 13px;
+        font-weight: 700;
+        color: #64748b;
+        margin-bottom: 8px;
         font-style: italic;
     }
-    .options-list { display: flex; flex-direction: column; gap: 8px; }
-    .option-card {
+    .trans-focus-text {
+        font-size: 12px;
+        font-weight: 700;
+        color: #94a3b8;
+        max-width: 320px;
+        line-height: 1.4;
+    }
+
+    .simulated-wave-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 3px;
+        height: 50px;
+        margin: 16px 0;
+    }
+    .wave-bar {
+        width: 4px;
+        background: #ff4b4b;
+        border-radius: 10px;
+        transition: height 0.1s ease;
+    }
+    .action-helper-txt {
+        font-size: 11px;
+        font-weight: 800;
+        color: #94a3b8;
+        text-align: center;
+    }
+    .pulsing {
+        animation: pulseAnimation 1.5s infinite;
+    }
+    @keyframes pulseAnimation {
+        0% { opacity: 0.6; }
+        50% { opacity: 1; }
+        100% { opacity: 0.6; }
+    }
+
+    /* Record & Compare Styling */
+    .compare-container {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
         width: 100%;
-        padding: 12px 14px;
+    }
+    .compare-cards-row {
+        display: flex;
+        gap: 16px;
+    }
+    .compare-card {
+        flex: 1;
+        background: #fafafa;
+        border: 2px solid #e5e5e5;
+        border-bottom-width: 4px;
+        border-radius: 20px;
+        padding: 20px 16px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    .compare-card h4 {
+        font-size: 13px;
+        font-weight: 900;
+        color: #3c3c3c;
+        margin: 0 0 12px;
+    }
+    .compare-action-btn {
+        width: 100%;
+        padding: 8px 12px;
         border-radius: 12px;
         border: 2px solid #e5e5e5;
-        border-bottom: 4px solid #e5e5e5;
+        border-bottom-width: 3px;
         background: #fff;
-        font-family: inherit;
-        font-size: 14px;
-        font-weight: 700;
-        color: #3c3c3c;
+        font-size: 12px;
+        font-weight: 800;
+        color: #4b5563;
         cursor: pointer;
-        text-align: left;
         display: flex;
         align-items: center;
+        justify-content: center;
+        gap: 6px;
+        transition: all 0.1s;
+    }
+    .compare-action-btn:active {
+        transform: translateY(2px);
+        border-bottom-width: 1px;
+    }
+    .compare-action-btn.active {
+        border-color: #00978A;
+        background: #DBF0EE;
+        color: #00978A;
+    }
+    .compare-action-btn.record.active {
+        border-color: #ff4b4b;
+        background: #ffebeb;
+        color: #ff4b4b;
+    }
+    .compare-match-btn {
+        padding: 10px 20px;
+        border-radius: 12px;
+        border: 2px solid #00978A;
+        border-bottom-width: 4px;
+        background: var(--duo-green-light);
+        color: #00978A;
+        font-size: 12px;
+        font-weight: 900;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .compare-match-btn.active {
+        background: #00978A;
+        color: #fff;
+    }
+
+    /* Multiple Choice Challenge Box */
+    .choice-challenge-container {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        width: 100%;
+    }
+    .challenge-arabic-blank {
+        font-size: 26px;
+        line-height: 1.8;
+        text-align: center;
+        color: #1e293b;
+        background: #fafafa;
+        border: 2px dashed #cbd5e1;
+        border-radius: 20px;
+        padding: 24px 16px;
+        direction: rtl;
+    }
+    .choice-options-column {
+        display: flex;
+        flex-direction: column;
         gap: 10px;
     }
-    .option-card.selected { border-color: #1cb0f6; border-bottom-color: #0898dc; background: #ddf4ff; color: #0898dc; }
-    .option-card.correct { border-color: #58cc02; border-bottom-color: #46a302; background: #d7ffb2; color: #46a302; }
-    .option-card.wrong { border-color: #ff4b4b; border-bottom-color: #cc0000; background: #ffdfe0; color: #cc0000; }
-    .opt-num {
-        width: 28px; height: 28px; border-radius: 8px; border: 2px solid #e5e5e5;
-        display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; color: #afafaf; flex-shrink: 0;
+    .choice-card-button {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        background: #fff;
+        border: 2px solid #e5e5e5;
+        border-bottom-width: 4px;
+        border-radius: 16px;
+        padding: 14px 16px;
+        cursor: pointer;
+        text-align: left;
+        transition: all 0.1s;
     }
-    .opt-text { direction: rtl; text-align: right; flex: 1; }
-    .feedback-bar { padding: 16px; border-radius: 16px; margin-top: 16px; }
-    .feedback-correct { background: #d7ffb2; }
-    .feedback-wrong { background: #ffdfe0; }
+    .choice-card-button:hover:not(:disabled) {
+        border-color: #cbd5e1;
+    }
+    .choice-card-button:active:not(:disabled) {
+        transform: translateY(2px);
+        border-bottom-width: 2px;
+    }
+    .choice-card-button.selected {
+        border-color: #00978A;
+        background: #e0f5f3;
+    }
+    .choice-card-button.selected .choice-index-circle {
+        background: #00978A;
+        border-color: #00978A;
+        color: #fff;
+    }
+    .choice-card-button.correct {
+        border-color: #22c55e;
+        background: #f0fdf4;
+    }
+    .choice-card-button.correct .choice-index-circle {
+        background: #22c55e;
+        border-color: #22c55e;
+        color: #fff;
+    }
+    .choice-card-button.wrong {
+        border-color: #ff4b4b;
+        background: #ffebeb;
+    }
+    .choice-card-button.wrong .choice-index-circle {
+        background: #ff4b4b;
+        border-color: #ff4b4b;
+        color: #fff;
+    }
+    .choice-index-circle {
+        width: 26px;
+        height: 26px;
+        border-radius: 8px;
+        border: 2px solid #e5e5e5;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 11px;
+        font-weight: 900;
+        color: #94a3b8;
+        margin-right: 14px;
+        flex-shrink: 0;
+    }
+    .choice-text {
+        font-size: 20px;
+        color: #3c3c3c;
+        flex: 1;
+        text-align: right;
+        direction: rtl;
+    }
+
+    /* Word Scrambler Box */
+    .scramble-challenge-container {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        width: 100%;
+    }
+    .scramble-drop-shelf {
+        min-height: 100px;
+        border-bottom: 2px solid #e2e8f0;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        padding: 12px 0;
+        justify-content: center;
+        align-items: center;
+        direction: rtl;
+    }
+    .scramble-drop-shelf.correct { border-color: #22c55e; }
+    .scramble-drop-shelf.wrong { border-color: #ff4b4b; }
+    
+    .drop-shelf-placeholder {
+        font-size: 12px;
+        font-weight: 700;
+        color: #94a3b8;
+        font-style: italic;
+    }
+    .scramble-source-bank {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        justify-content: center;
+        padding: 10px 0;
+        direction: rtl;
+    }
+    .scramble-word-pill {
+        padding: 10px 16px;
+        border: 2px solid #e5e5e5;
+        border-bottom-width: 4px;
+        border-radius: 12px;
+        background: #fff;
+        color: #3c3c3c;
+        font-size: 18px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.1s;
+        direction: rtl;
+        font-family: "Amiri", serif;
+    }
+    .scramble-word-pill:active:not(:disabled) {
+        transform: translateY(2px);
+        border-bottom-width: 2px;
+    }
+    .scramble-word-pill.outline {
+        border-color: #e2e8f0;
+        background: #fff;
+    }
+    .scramble-word-pill.placed {
+        opacity: 0.15;
+        pointer-events: none;
+        box-shadow: none;
+    }
+
+    /* Setor Full Ayat Visuals */
+    .setor-quran-graphic {
+        font-size: 64px;
+        margin-bottom: 12px;
+        animation: floatAnimation 2s infinite ease-in-out;
+    }
+    @keyframes floatAnimation {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-8px); }
+    }
+    .transcription-box {
+        background: #f8fafc;
+        border: 2px solid #e2e8f0;
+        border-radius: 20px;
+        padding: 16px;
+        width: 100%;
+        max-width: 320px;
+        margin-top: 16px;
+    }
+    .trans-pill-tag {
+        font-size: 9px;
+        font-weight: 900;
+        background: #0284c7;
+        color: #fff;
+        padding: 2px 8px;
+        border-radius: 100px;
+        display: inline-block;
+        margin-bottom: 8px;
+    }
+    .arabic-transcription {
+        font-size: 22px;
+        color: #1e293b;
+        text-align: center;
+        line-height: 1.6;
+        direction: rtl;
+    }
+
+    /* Duolingo Slide Up Panel */
+    .sliding-feedback-panel {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 80px;
+        background: #fff;
+        border-top: 2px solid #e2e8f0;
+        padding: 16px;
+        z-index: 100;
+        animation: slideUp 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .sliding-feedback-panel.correct { background: #dcfce7; border-top-color: #22c55e; }
+    .sliding-feedback-panel.wrong { background: #fee2e2; border-top-color: #ff4b4b; }
+    
+    .feedback-inner-content {
+        max-width: 480px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+    .feedback-badge {
+        font-size: 13px;
+        font-weight: 900;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+    .feedback-badge.correct { color: #166534; }
+    .feedback-badge.wrong { color: #991b1b; }
+    
+    .feedback-msg {
+        font-size: 11px;
+        font-weight: 700;
+        color: #4b5563;
+        margin: 0;
+        line-height: 1.4;
+    }
+    
+    @keyframes slideUp {
+        from { transform: translateY(100%); }
+        to { transform: translateY(0); }
+    }
+
+    /* Lesson Footer */
+    .lesson-footer-actions {
+        border-top: 2px solid #f1f5f9;
+        display: flex;
+        width: 100%;
+        background: #fff;
+    }
+
+    /* Congrats Trophy overlay */
+    .completed-trophy-img {
+        font-size: 64px;
+        margin-bottom: 12px;
+        animation: zoomBounce 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .congrats-headline {
+        font-size: 20px;
+        font-weight: 950;
+        color: #00978A;
+        margin-bottom: 6px;
+        letter-spacing: -0.5px;
+    }
+    .congrats-sub {
+        font-size: 12px;
+        font-weight: 800;
+        color: #64748b;
+        margin: 0 0 20px;
+        line-height: 1.4;
+        padding: 0 16px;
+    }
+    @keyframes zoomBounce {
+        0% { transform: scale(0.3); opacity: 0; }
+        50% { transform: scale(1.1); }
+        70% { transform: scale(0.9); }
+        100% { transform: scale(1); opacity: 1; }
+    }
+
+    /* Amiri font styling helper */
+    @import url('https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+    .Amiri {
+        font-family: 'Amiri', serif;
+    }
+
+    /* Responsive adjustments */
+    :global(.desktop-browser) .selector-container {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+    :global(.desktop-browser) .lesson-step-wrapper {
+        max-width: 800px;
+        margin: 0 auto;
+        width: 100%;
+    }
 </style>
