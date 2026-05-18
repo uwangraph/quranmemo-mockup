@@ -4,30 +4,42 @@
         activeVerse, 
         selectedOptionIdx = $bindable(), 
         isChecked, 
+        isCorrect = false,
+        getTajweedHTML,
         playWordAudio 
     } = $props();
 
     let choices = $derived(type === 'fill_front' ? activeVerse.frontChoices : (type === 'fill_back' ? activeVerse.endChoices : activeVerse.middleChoices));
     let correctIdx = $derived(type === 'fill_front' ? 0 : (type === 'fill_back' ? 1 : 1));
+
+    // Get the text to show in the blank
+    let blankText = $derived.by(() => {
+        if (selectedOptionIdx === null) return null;
+        if (isChecked && !isCorrect) {
+            // Show correct answer when checked and wrong
+            return choices[correctIdx];
+        }
+        return choices[selectedOptionIdx];
+    });
 </script>
 
 <div class="choice-challenge-container">
     <div class="challenge-arabic-blank Amiri">
         {#if type === 'fill_front'}
-            {#if selectedOptionIdx !== null}
-                <span class="filled-text">{activeVerse.frontChoices[selectedOptionIdx]}</span> {activeVerse.frontBlank.split('___').pop()}
+            {#if blankText !== null}
+                <span class="filled-text" class:revealed-correct={isChecked && !isCorrect} class:correct-filled={isChecked && isCorrect}>{@html getTajweedHTML ? getTajweedHTML(blankText) : blankText}</span> {activeVerse.frontBlank.split('___').pop()}
             {:else}
                 {activeVerse.frontBlank}
             {/if}
         {:else if type === 'fill_back'}
-            {#if selectedOptionIdx !== null}
-                {activeVerse.endBlank.split('___')[0]} <span class="filled-text">{activeVerse.endChoices[selectedOptionIdx]}</span>
+            {#if blankText !== null}
+                {activeVerse.endBlank.split('___')[0]} <span class="filled-text" class:revealed-correct={isChecked && !isCorrect} class:correct-filled={isChecked && isCorrect}>{@html getTajweedHTML ? getTajweedHTML(blankText) : blankText}</span>
             {:else}
                 {activeVerse.endBlank}
             {/if}
         {:else if type === 'puzzle_one'}
-            {#if selectedOptionIdx !== null}
-                {activeVerse.middleBlank.split('___')[0]} <span class="filled-text">{activeVerse.middleChoices[selectedOptionIdx]}</span> {activeVerse.middleBlank.split('___')[1]}
+            {#if blankText !== null}
+                {activeVerse.middleBlank.split('___')[0]} <span class="filled-text" class:revealed-correct={isChecked && !isCorrect} class:correct-filled={isChecked && isCorrect}>{@html getTajweedHTML ? getTajweedHTML(blankText) : blankText}</span> {activeVerse.middleBlank.split('___')[1]}
             {:else}
                 {activeVerse.middleBlank}
             {/if}
@@ -46,7 +58,7 @@
                 disabled={isChecked}
             >
                 <span class="choice-index-circle">{idx + 1}</span>
-                <span class="choice-text Amiri">{choice}</span>
+                <span class="choice-text Amiri">{@html getTajweedHTML ? getTajweedHTML(choice) : choice}</span>
                 <span 
                     class="audio-mini-btn" 
                     role="button" 
@@ -92,6 +104,19 @@
     .filled-text {
         color: #00978a; 
         border-bottom: 2px dashed #00978a;
+        transition: all 0.3s ease;
+    }
+    .filled-text.revealed-correct {
+        color: #22c55e;
+        border-bottom: 2px solid #22c55e;
+        background: rgba(34, 197, 94, 0.1);
+        padding: 2px 8px;
+        border-radius: 6px;
+        font-weight: 800;
+    }
+    .filled-text.correct-filled {
+        color: #22c55e;
+        border-bottom: 2px solid #22c55e;
     }
     .choice-options-column {
         display: flex;

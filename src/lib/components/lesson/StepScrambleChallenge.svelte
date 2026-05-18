@@ -13,7 +13,8 @@
         togglePlay, 
         togglePlaySlow, 
         toggleWordSelection,
-        playWordAudio 
+        playWordAudio,
+        getTajweedHTML
     } = $props();
 </script>
 
@@ -68,9 +69,9 @@
                 {/if}
             </span>
         {/if}
-        {#each selectedWords as word}
-            <button class="scramble-word-pill" onclick={() => toggleWordSelection(word)} disabled={isChecked}>
-                {word.text}
+        {#each (isChecked && !isCorrect ? (type === 'puzzle_two' ? activeVerse.twoCorrect.map((w, idx) => ({ id: idx, text: w })) : activeVerse.words.map((w, idx) => ({ id: idx, text: w }))) : selectedWords) as word}
+            <button class="scramble-word-pill" onclick={() => toggleWordSelection(word)} disabled={isChecked} class:correct-revealed={isChecked && !isCorrect}>
+                {@html getTajweedHTML ? getTajweedHTML(word.text) : word.text}
             </button>
         {/each}
     </div>
@@ -85,7 +86,7 @@
                     onclick={() => toggleWordSelection(wordObj)}
                     disabled={isChecked || wordObj.selected}
                 >
-                    {choice}
+                    {@html getTajweedHTML ? getTajweedHTML(choice) : choice}
                 </button>
             {/each}
         {:else}
@@ -96,7 +97,7 @@
                     onclick={() => toggleWordSelection(word)}
                     disabled={isChecked || word.selected}
                 >
-                    {word.text}
+                    {@html getTajweedHTML ? getTajweedHTML(word.text) : word.text}
                     {#if type === 'audio_scramble'}
                         <span 
                             class="audio-mini-icon" 
@@ -236,6 +237,13 @@
         opacity: 0.15;
         pointer-events: none;
         box-shadow: none;
+    }
+    .scramble-word-pill.correct-revealed {
+        border-color: #22c55e !important;
+        background: #dcfce7 !important;
+        color: #166534 !important;
+        border-bottom-color: #15803d !important;
+        pointer-events: none;
     }
     .audio-mini-icon {
         margin-left: 4px;
