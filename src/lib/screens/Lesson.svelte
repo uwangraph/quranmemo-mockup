@@ -1992,20 +1992,29 @@
         transform: scale(1.18) translateY(-3px);
         font-weight: 800;
     }
-    :global(.tajweed-qalqalah) {
-        color: #2563eb !important; /* Royal Blue */
+    /* === 6-Color Tajweed System (Kemenag Standard) === */
+    :global(.tajweed-hitam) {
+        color: #555555 !important; /* HITAM - Idzhar */
         font-weight: bold;
     }
-    :global(.tajweed-ikhfa) {
-        color: #db2777 !important; /* Deep Pink */
+    :global(.tajweed-merah) {
+        color: #ef4444 !important; /* MERAH - Idgam */
         font-weight: bold;
     }
-    :global(.tajweed-ghunnah) {
-        color: #dc2626 !important; /* Red */
+    :global(.tajweed-hijau) {
+        color: #10b981 !important; /* HIJAU - Ikhfa */
         font-weight: bold;
     }
-    :global(.tajweed-mad) {
-        color: #16a34a !important; /* Emerald Green */
+    :global(.tajweed-cyan) {
+        color: #0ea5e9 !important; /* BIRU/CYAN - Iqlab */
+        font-weight: bold;
+    }
+    :global(.tajweed-biru-pekat) {
+        color: #1e1b4b !important; /* BIRU PEKAT - Qalqalah */
+        font-weight: bold;
+    }
+    :global(.tajweed-ungu) {
+        color: #d946ef !important; /* UNGU - Gunnah */
         font-weight: bold;
     }
     
