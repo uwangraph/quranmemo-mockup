@@ -170,6 +170,7 @@
     const selectedVerseIndex = $derived(appState.selectedVerseIndex);
     let currentStep = $state(0); // 0 to 9 (corresponds to steps 1 to 10)
     let isPlaying = $state(false);
+    let currentWordIndex = $state(-1);
     let selectedOptionIdx = $state(null);
     let isChecked = $state(false);
     let isCorrect = $state(false);
@@ -180,11 +181,21 @@
     let isComparing = $state(false);
     let simulatedWaves = $state([]);
     let waveInterval = null;
+    
+    // Real Audio Recording States
+    let mediaRecorder = null;
+    let audioChunks = [];
+    let recordedAudioUrl = $state(null);
+    let recordedAudio = $state(null);
+    let isPlayingRecorded = $state(false);
 
     // Scramble / Word Selection states
     let scrambledWords = $state([]);
     let selectedWords = $state([]);
     let showCompletion = $state(false);
+    
+    let lessonEarnedXP = $state(0);
+    let lessonEarnedCoins = $state(0);
 
     // New Recall states
     let recallMethod = $state('voice'); // 'voice' or 'mushaf'
@@ -268,17 +279,62 @@
         };
     });
 
+    let animationFrameId = null;
+
+    function updateHighlight() {
+        if (!isPlaying || !audio || !audio.duration) {
+            return;
+        }
+        const wordsCount = activeVerse.words ? activeVerse.words.length : activeVerse.arabic.split(' ').length;
+        
+        // Add 250ms latency compensation to highlight the word exactly when the Qari begins pronouncing it
+        const latencyComp = 0.25; 
+        const adjustedTime = audio.currentTime + latencyComp;
+        const progress = adjustedTime / audio.duration;
+        
+        if (progress < 0.04) {
+            currentWordIndex = -1;
+        } else if (progress > 0.94) {
+            currentWordIndex = wordsCount - 1;
+        } else {
+            const scaledProgress = (progress - 0.04) / 0.90;
+            currentWordIndex = Math.min(wordsCount - 1, Math.floor(scaledProgress * wordsCount));
+        }
+        
+        animationFrameId = requestAnimationFrame(updateHighlight);
+    }
+
+    $effect(() => {
+        if (isPlaying) {
+            updateHighlight();
+        } else {
+            if (animationFrameId) {
+                cancelAnimationFrame(animationFrameId);
+            }
+        }
+        return () => {
+            if (animationFrameId) {
+                cancelAnimationFrame(animationFrameId);
+            }
+        };
+    });
+
     function setupAudio() {
         if (!activeVerse) return;
         if (audio) audio.pause();
         audio = new Audio(activeVerse.audio);
+        currentWordIndex = -1; // Reset highlight index
+        
         audio.onended = () => {
             isPlaying = false;
-            if (isComparing) {
-                // If comparing, play user recording next (simulated)
-                setTimeout(() => {
-                    playSimulatedUserVoice();
-                }, 600);
+            currentWordIndex = -1; // Reset highlight index on end
+            if (isComparing && recordedAudio) {
+                isPlayingRecorded = true;
+                recordedAudio.currentTime = 0;
+                recordedAudio.play();
+                recordState = 'recording';
+            } else {
+                isComparing = false;
             }
         };
     }
@@ -331,35 +387,161 @@
         }
     }
 
-    function startSimulatedRecording() {
+    async function startSimulatedRecording() {
         if (recordState === 'recording') {
-            clearInterval(waveInterval);
+            if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+                mediaRecorder.stop();
+            }
             recordState = 'recorded';
             simulatedWaves = [];
         } else {
-            recordState = 'recording';
-            simulatedWaves = Array(15).fill(10);
-            waveInterval = setInterval(() => {
-                simulatedWaves = simulatedWaves.map(() => Math.floor(Math.random() * 40) + 10);
-            }, 100);
-            
-            // Auto stop after 3 seconds
-            setTimeout(() => {
-                if (recordState === 'recording') {
-                    clearInterval(waveInterval);
-                    recordState = 'recorded';
-                    simulatedWaves = [];
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                mediaRecorder = new MediaRecorder(stream);
+                audioChunks = [];
+                
+                // Set up Real-time Audio Visualizer
+                const visCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const analyser = visCtx.createAnalyser();
+                const micSource = visCtx.createMediaStreamSource(stream);
+                micSource.connect(analyser);
+                analyser.fftSize = 64;
+                const dataArray = new Uint8Array(analyser.frequencyBinCount);
+                
+                function drawWave() {
+                    if (recordState !== 'recording') return;
+                    requestAnimationFrame(drawWave);
+                    analyser.getByteFrequencyData(dataArray);
+                    
+                    let newWaves = [];
+                    for(let i = 0; i < 15; i++) {
+                        const val = dataArray[i + 1] || 0; // Use early frequency bins
+                        // Map frequency magnitude (0-255) to bar height (10px to 50px)
+                        const height = 10 + (val / 255) * 40;
+                        newWaves.push(height);
+                    }
+                    simulatedWaves = newWaves;
                 }
-            }, 3000);
+                
+                mediaRecorder.ondataavailable = event => {
+                    if (event.data.size > 0) audioChunks.push(event.data);
+                };
+                
+                mediaRecorder.onstop = () => {
+                    const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+                    recordedAudioUrl = URL.createObjectURL(audioBlob);
+                    if (recordedAudio) recordedAudio.pause();
+                    recordedAudio = new Audio(recordedAudioUrl);
+                    
+                    // Apply Mosque Reverb Effect + Playback Audio Visualizer
+                    try {
+                        const AudioContext = window.AudioContext || window.webkitAudioContext;
+                        if (!window.sharedAudioCtx) window.sharedAudioCtx = new AudioContext();
+                        const ctx = window.sharedAudioCtx;
+                        
+                        const source = ctx.createMediaElementSource(recordedAudio);
+                        
+                        // Set up Playback Audio Visualizer Analyser Node
+                        const playbackAnalyser = ctx.createAnalyser();
+                        playbackAnalyser.fftSize = 64;
+                        const playbackDataArray = new Uint8Array(playbackAnalyser.frequencyBinCount);
+                        
+                        function drawPlaybackWave() {
+                            if (!isPlayingRecorded) {
+                                simulatedWaves = [];
+                                return;
+                            }
+                            requestAnimationFrame(drawPlaybackWave);
+                            playbackAnalyser.getByteFrequencyData(playbackDataArray);
+                            
+                            let newWaves = [];
+                            for (let i = 0; i < 15; i++) {
+                                const val = playbackDataArray[i + 1] || 0;
+                                // Map frequency magnitudes (0-255) to dynamic bar heights (10-50px)
+                                const height = 10 + (val / 255) * 40;
+                                newWaves.push(height);
+                            }
+                            simulatedWaves = newWaves;
+                        }
+                        
+                        const convolver = ctx.createConvolver();
+                        // Generate a synthetic impulse response for reverb
+                        const rate = ctx.sampleRate;
+                        const length = rate * 2.5; // 2.5 seconds decay
+                        const impulse = ctx.createBuffer(2, length, rate);
+                        for (let i = 0; i < length; i++) {
+                            const decay = Math.exp(-i / (rate * 0.5));
+                            impulse.getChannelData(0)[i] = (Math.random() * 2 - 1) * decay;
+                            impulse.getChannelData(1)[i] = (Math.random() * 2 - 1) * decay;
+                        }
+                        convolver.buffer = impulse;
+                        
+                        const dryGain = ctx.createGain();
+                        const wetGain = ctx.createGain();
+                        dryGain.gain.value = 0.8; // 80% original audio
+                        wetGain.gain.value = 0.5; // 50% reverb echo
+                        
+                        source.connect(dryGain);
+                        dryGain.connect(playbackAnalyser); // Connect source through dry gain to analyser
+                        
+                        source.connect(convolver);
+                        convolver.connect(wetGain);
+                        wetGain.connect(playbackAnalyser); // Connect reverb gain to analyser too
+                        
+                        playbackAnalyser.connect(ctx.destination); // Connect analyser to destination
+                        
+                        recordedAudio.onplay = () => {
+                            if (ctx.state === 'suspended') ctx.resume();
+                            isPlayingRecorded = true;
+                            drawPlaybackWave();
+                        };
+                        recordedAudio.onpause = () => {
+                            isPlayingRecorded = false;
+                        };
+                    } catch (e) {
+                        console.warn('Reverb effect / Visualizer failed or not supported:', e);
+                    }
+                    
+                    recordedAudio.onended = () => {
+                        isPlayingRecorded = false;
+                        isComparing = false;
+                        recordState = 'recorded';
+                    };
+                    
+                    // Stop all microphone tracks to turn off the recording light
+                    stream.getTracks().forEach(track => track.stop()); 
+                    if (visCtx.state !== 'closed') visCtx.close();
+                };
+                
+                mediaRecorder.start();
+                recordState = 'recording';
+                
+                // Start drawing loop for mic visualization
+                drawWave();
+                
+            } catch (err) {
+                console.error("Error accessing microphone:", err);
+                alert("Gagal mengakses mikrofon. Pastikan Anda memberikan izin akses mikrofon di browser.");
+            }
         }
     }
 
     function startComparePlay() {
         isComparing = true;
         isPlaying = true;
+        isPlayingRecorded = false;
         if (audio) {
             audio.currentTime = 0;
             audio.play();
+        }
+    }
+
+    function togglePlayRecorded() {
+        if (!recordedAudio) return;
+        if (isPlayingRecorded) {
+            recordedAudio.pause();
+        } else {
+            recordedAudio.play();
         }
     }
 
@@ -394,6 +576,18 @@
                 isPlaying = false;
             } else {
                 showCompletion = true;
+                
+                lessonEarnedXP = 15;
+                lessonEarnedCoins = 5;
+                
+                appState.user.xp += lessonEarnedXP;
+                appState.user.coins += lessonEarnedCoins;
+                
+                if (appState.user.progress.surah_094 === selectedVerseIndex) {
+                    appState.user.progress.surah_094 += 1;
+                }
+                
+                appState.saveUser();
             }
             return;
         }
@@ -539,13 +733,15 @@
                                     </button>
                                 </div>
 
-                                {#if recordState === 'recording'}
+                                {#if recordState === 'recording' || isPlayingRecorded}
                                     <div class="simulated-wave-container" style="margin-top: 12px; margin-bottom: 8px;">
                                         {#each simulatedWaves as wave}
                                             <div class="wave-bar" style="height: {wave}px;"></div>
                                         {/each}
                                     </div>
-                                    <span class="pulse-text" style="color: #ef4444; font-weight: 800; font-size: 12px;">Merekam hafalanmu...</span>
+                                    <span class="pulse-text" style="color: #ef4444; font-weight: 800; font-size: 12px;">
+                                        {recordState === 'recording' ? 'Merekam hafalanmu...' : 'Memutar rekaman hafalanmu...'}
+                                    </span>
                                 {:else if recordState === 'recorded'}
                                     <div class="voice-matched-toast" style="background: #ecfdf5; border: 1px solid #10b981; color: #065f46; font-size: 14px; font-weight: 800; padding: 10px 16px; border-radius: 8px; display: inline-flex; align-items: center; gap: 8px; margin-top: 12px;">
                                         <i class="ti ti-circle-check-filled" style="color: #10b981; font-size: 18px;"></i>
@@ -588,10 +784,14 @@
                                     <i class="ti {isPlaying && audio?.playbackRate === 1.0 ? 'ti-player-pause' : 'ti-player-play'}"></i>
                                 </button>
                                 <button class="audio-circle-play slow-btn" class:playing={isPlaying && audio?.playbackRate < 1.0} onclick={togglePlaySlow} title="Putar Audio Qari (Lambat)">
-                                    <img src="https://cdn-icons-png.flaticon.com/512/8493/8493027.png" alt="Turtle" style="width: 28px; height: 28px; object-fit: contain;" />
+                                    <img src="/snail.png" alt="Snail" style="width: 28px; height: 28px; object-fit: contain;" />
                                 </button>
                             </div>
-                            <div class="arabic-focus-text Amiri">{activeVerse.arabic}</div>
+                            <div class="arabic-focus-text Amiri" style="direction: rtl;">
+                                {#each activeVerse.words as word, wIdx}
+                                    <span class="highlight-word" class:active={wIdx === currentWordIndex}>{word}</span>{' '}
+                                {/each}
+                            </div>
                             <div class="translit-focus-text">"{activeVerse.transliteration}"</div>
                             <div class="trans-focus-text">{activeVerse.translation}</div>
                         </div>
@@ -604,13 +804,17 @@
                                     <i class="ti ti-volume"></i>
                                 </button>
                                 <button class="audio-circle-play slow-btn" class:playing={isPlaying && audio?.playbackRate < 1.0} onclick={togglePlaySlow} title="1. Dengar Qari (Lambat)">
-                                    <img src="https://cdn-icons-png.flaticon.com/512/8493/8493027.png" alt="Turtle" style="width: 28px; height: 28px; object-fit: contain;" />
+                                    <img src="/snail.png" alt="Snail" style="width: 28px; height: 28px; object-fit: contain;" />
                                 </button>
                                 <button class="mic-circle-btn" class:active={recordState === 'recording'} onclick={startSimulatedRecording} title="2. Tiru Bacaan">
                                     <i class="ti ti-microphone"></i>
                                 </button>
                             </div>
-                            <div class="arabic-focus-text Amiri">{activeVerse.arabic}</div>
+                            <div class="arabic-focus-text Amiri" style="direction: rtl;">
+                                {#each activeVerse.words as word, wIdx}
+                                    <span class="highlight-word" class:active={wIdx === currentWordIndex}>{word}</span>{' '}
+                                {/each}
+                            </div>
                             
                             {#if recordState === 'recording'}
                                 <div class="simulated-wave-container">
@@ -620,7 +824,19 @@
                                 </div>
                                 <span class="action-helper-txt pulsing">Merekam suara Anda... Silakan membaca ayat di atas!</span>
                             {:else if recordState === 'recorded'}
-                                <span class="action-helper-txt text-success">✓ Berhasil direkam! Ketuk check di bawah.</span>
+                                {#if isPlayingRecorded}
+                                    <div class="simulated-wave-container" style="margin-bottom: 12px;">
+                                        {#each simulatedWaves as wave}
+                                            <span class="wave-bar" style="height: {wave}px"></span>
+                                        {/each}
+                                    </div>
+                                {/if}
+                                <div style="display:flex; flex-direction:column; align-items:center; gap:12px; margin-top:8px;">
+                                    <span class="action-helper-txt text-success" style="margin-top:0;">✓ Berhasil direkam!</span>
+                                    <button class="btn-duo outline" style="font-size:12px; padding:8px 16px; border-color:#00978A; color:#00978A;" onclick={togglePlayRecorded}>
+                                        <i class="ti {isPlayingRecorded ? 'ti-player-pause' : 'ti-player-play'}"></i> {isPlayingRecorded ? 'Pause Suara Saya' : 'Dengar Ulang Suara Saya'}
+                                    </button>
+                                </div>
                             {:else}
                                 <span class="action-helper-txt">Ketuk speaker untuk mendengar, lalu ketuk mikrofon untuk meniru!</span>
                             {/if}
@@ -655,7 +871,7 @@
                                 </div>
                             {/if}
                             
-                            {#if recordState === 'recording'}
+                            {#if recordState === 'recording' || isPlayingRecorded}
                                 <div class="simulated-wave-container" style="margin-top: 16px;">
                                     {#each simulatedWaves as wave}
                                         <span class="wave-bar" style="height: {wave}px"></span>
@@ -716,7 +932,7 @@
                                     <i class="ti ti-volume"></i>
                                 </button>
                                 <button class="audio-circle-play small slow-btn" class:playing={isPlaying && audio?.playbackRate < 1.0} onclick={togglePlaySlow} title="Dengar Qari (Lambat)">
-                                    <img src="https://cdn-icons-png.flaticon.com/512/8493/8493027.png" alt="Turtle" style="width: 20px; height: 20px; object-fit: contain;" />
+                                    <img src="/snail.png" alt="Snail" style="width: 20px; height: 20px; object-fit: contain;" />
                                 </button>
                             </div>
                             
@@ -837,13 +1053,15 @@
                                 </button>
                             </div>
                             
-                            {#if recordState === 'recording'}
+                            {#if recordState === 'recording' || isPlayingRecorded}
                                 <div class="simulated-wave-container">
                                     {#each simulatedWaves as wave}
                                         <span class="wave-bar" style="height: {wave}px"></span>
                                     {/each}
                                 </div>
-                                <span class="action-helper-txt pulsing text-primary">Tasmi AI sedang menyimak bacaan Anda...</span>
+                                <span class="action-helper-txt pulsing text-primary">
+                                    {recordState === 'recording' ? 'Tasmi AI sedang menyimak bacaan Anda...' : 'Memutar rekaman bacaan Anda...'}
+                                </span>
                             {:else if recordState === 'recorded'}
                                 <div class="transcription-box">
                                     <div class="trans-pill-tag">TRANSKRIPSI AI</div>
@@ -870,13 +1088,15 @@
                                 </button>
                             </div>
                             
-                            {#if recordState === 'recording'}
+                            {#if recordState === 'recording' || isPlayingRecorded}
                                 <div class="simulated-wave-container">
                                     {#each simulatedWaves as wave}
                                         <span class="wave-bar" style="height: {wave}px"></span>
                                     {/each}
                                 </div>
-                                <span class="action-helper-txt pulsing text-primary">Tasmi AI sedang menyimak hafalan barumu...</span>
+                                <span class="action-helper-txt pulsing text-primary">
+                                    {recordState === 'recording' ? 'Tasmi AI sedang menyimak hafalan barumu...' : 'Memutar rekaman hafalan barumu...'}
+                                </span>
                             {:else if recordState === 'recorded'}
                                 <div class="transcription-box">
                                     <div class="trans-pill-tag" style="background: #e0f2fe; color: #0369a1;">TRANSKRIPSI HAFALAN</div>
@@ -906,13 +1126,15 @@
                                 </button>
                             </div>
                             
-                            {#if recordState === 'recording'}
+                            {#if recordState === 'recording' || isPlayingRecorded}
                                 <div class="simulated-wave-container">
                                     {#each simulatedWaves as wave}
                                         <span class="wave-bar" style="height: {wave}px"></span>
                                     {/each}
                                 </div>
-                                <span class="action-helper-txt pulsing text-primary">Tasmi AI menyimak sambungan ayat...</span>
+                                <span class="action-helper-txt pulsing text-primary">
+                                    {recordState === 'recording' ? 'Tasmi AI menyimak sambungan ayat...' : 'Memutar rekaman sambungan ayat...'}
+                                </span>
                             {:else if recordState === 'recorded'}
                                 <div class="transcription-box">
                                     <div class="trans-pill-tag" style="background: #fff7ed; color: #c2410c;">HAFALAN BERSAMBUNG</div>
@@ -989,12 +1211,12 @@
                 <div class="reward-box" style="margin: 20px 0;">
                     <div class="reward-item">
                         <span style="font-size: 24px; color: #ff9600;">⚡</span>
-                        <span style="font-size: 15px; font-weight: 900; color: #3c3c3c;">+100 XP</span>
+                        <span style="font-size: 15px; font-weight: 900; color: #3c3c3c;">+{lessonEarnedXP} XP</span>
                         <span style="font-size: 9px; font-weight: 700; color: #afafaf;">STREAK BONUS</span>
                     </div>
                     <div class="reward-item" style="border-left: 2px solid #e5e5e5;">
                         <span style="font-size: 24px; color: #00978A;">🔄</span>
-                        <span style="font-size: 15px; font-weight: 900; color: #00978A;">+10 Poin</span>
+                        <span style="font-size: 15px; font-weight: 900; color: #00978A;">+{lessonEarnedCoins} Poin</span>
                         <span style="font-size: 9px; font-weight: 700; color: #00978A;">MEMO CASHBACK</span>
                     </div>
                 </div>
@@ -1215,8 +1437,8 @@
         margin-bottom: 12px;
     }
     .audio-circle-play.slow-btn {
-        background: #ffb800;
-        border-bottom-color: #d19200;
+        background: #10B981; /* Beautiful Fresh Mint Green */
+        border-bottom-color: #059669; /* Darker Forest Green 3D shadow */
         margin-bottom: 20px;
     }
     .audio-circle-play.slow-btn:active {
@@ -1261,6 +1483,19 @@
         margin-bottom: 12px;
         direction: rtl;
         text-align: center;
+    }
+    .highlight-word {
+        color: #1e293b;
+        transition: color 0.2s ease, text-shadow 0.2s ease, transform 0.2s ease;
+        display: inline-block;
+        padding: 0 4px;
+        cursor: default;
+    }
+    .highlight-word.active {
+        color: #00978A; /* Beautiful QuranMemo teal */
+        text-shadow: 0 0 12px rgba(0, 151, 138, 0.4);
+        transform: scale(1.15) translateY(-2px);
+        font-weight: 800;
     }
     .translit-focus-text {
         font-size: 13px;
