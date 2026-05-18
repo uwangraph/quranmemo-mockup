@@ -421,6 +421,93 @@
         }, 600);
     }
 
+    // === LOOPER & PER-WORD AUDIO STATE ===
+    let loopTimes = $state(1); // 1x, 2x, 3x, 5x
+    let currentLoopIndex = $state(0);
+
+    // Audio per kata - menggunakan Web Speech API Saudi Arabian Arabic
+    function playWordAudio(wordText) {
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel(); // batalkan audio kata yang sedang jalan
+            
+            // Haptic vibration feedback ringan jika didukung browser
+            if (navigator.vibrate) {
+                navigator.vibrate(25);
+            }
+
+            const utterance = new SpeechSynthesisUtterance(wordText);
+            utterance.lang = 'ar-SA';
+            utterance.rate = 0.55; // Kecepatan pelan agar pelafalan huruf & makhraj sangat presisi
+            utterance.pitch = 1.0;
+            
+            const voices = window.speechSynthesis.getVoices();
+            const arVoice = voices.find(voice => voice.lang.startsWith('ar') || voice.lang.includes('SA'));
+            if (arVoice) {
+                utterance.voice = arVoice;
+            }
+            window.speechSynthesis.speak(utterance);
+        } else {
+            // Fallback nada synthesizer Web Audio API jika Speech Synthesis tidak aktif
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(440 + Math.random() * 200, ctx.currentTime);
+                gain.gain.setValueAtTime(0.2, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.2);
+                osc.start();
+                osc.stop(ctx.currentTime + 0.2);
+            } catch(e) {}
+        }
+    }
+
+    // Tajwid diberi warna (Mushaf Tajwid Standar Kemenag)
+    function getTajweedHTML(word) {
+        const tajweedMap = {
+            // Ayat 1
+            "أَلَمْ": `أَلَمْ`,
+            "نَشْرَحْ": `نَشْرَحْ`,
+            "لَكَ": `لَكَ`,
+            "صَدْرَكَ": `صَ<span class="tajweed-qalqalah">دْ</span>رَكَ`,
+            
+            // Ayat 2
+            "وَوَضَعْنَا": `وَوَضَعْ<span class="tajweed-mad">نَا</span>`,
+            "عَنكَ": `عَ<span class="tajweed-ikhfa">نكَ</span>`,
+            "وِزْرَكَ": `وِزْرَكَ`,
+            
+            // Ayat 3
+            "ٱلَّذِىٓ": `ٱلَّذِ<span class="tajweed-mad">ىٓ</span>`,
+            "أَنقَضَ": `أَ<span class="tajweed-ikhfa">نقَ</span>ضَ`,
+            "ظَهْرَكَ": `ظَهْرَكَ`,
+            
+            // Ayat 4
+            "وَرَفَعْنَا": `وَرَفَعْ<span class="tajweed-mad">نَا</span>`,
+            "لَكَ": `لَكَ`,
+            "ذِكْرَكَ": `ذِكْرَكَ`,
+            
+            // Ayat 5 & 6
+            "فَإِنَّ": `فَإِ<span class="tajweed-ghunnah">نَّ</span>`,
+            "إِنَّ": `إِ<span class="tajweed-ghunnah">نَّ</span>`,
+            "مَعَ": `مَعَ`,
+            "ٱلْعُسْرِ": `ٱلْعُسْرِ`,
+            "يُسْرًا": `يُسْ<span class="tajweed-mad">رًا</span>`,
+            
+            // Ayat 7
+            "فَإِذَا": `فَإِ<span class="tajweed-mad">ذَا</span>`,
+            "فَرَغْتَ": `فَرَغْتَ`,
+            "فَٱنصَبْ": `فَ<span class="tajweed-ikhfa">ٱنصَ</span><span class="tajweed-qalqalah">بْ</span>`,
+            
+            // Ayat 8
+            "وَإِلَىٰ": `وَإِ<span class="tajweed-mad">لَىٰ</span>`,
+            "رَبِّكَ": `رَبِّكَ`,
+            "فَٱرْغَبْ": `فَٱرْغَ<span class="tajweed-qalqalah">بْ</span>`
+        };
+        return tajweedMap[word] || word;
+    }
+
     // New Recall states
     let recallMethod = $state('voice'); // 'voice' or 'mushaf'
     let recallSelectedOptionIdx = $state(null);
@@ -545,20 +632,32 @@
 
     function setupAudio() {
         if (!activeVerse) return;
-        if (audio) audio.pause();
+        if (audio) {
+            audio.pause();
+            audio.onended = null;
+        }
         audio = new Audio(activeVerse.audio);
         currentWordIndex = -1; // Reset highlight index
+        currentLoopIndex = 0;  // Reset current loop counter
         
         audio.onended = () => {
-            isPlaying = false;
-            currentWordIndex = -1; // Reset highlight index on end
-            if (isComparing && recordedAudio) {
-                isPlayingRecorded = true;
-                recordedAudio.currentTime = 0;
-                recordedAudio.play();
-                recordState = 'recording';
+            if (isPlaying && currentLoopIndex < loopTimes - 1) {
+                currentLoopIndex++;
+                audio.currentTime = 0;
+                currentWordIndex = -1; // Reset highlight for the next run
+                audio.play();
             } else {
-                isComparing = false;
+                isPlaying = false;
+                currentWordIndex = -1; // Reset highlight index on end
+                currentLoopIndex = 0;
+                if (isComparing && recordedAudio) {
+                    isPlayingRecorded = true;
+                    recordedAudio.currentTime = 0;
+                    recordedAudio.play();
+                    recordState = 'recording';
+                } else {
+                    isComparing = false;
+                }
             }
         };
     }
@@ -592,6 +691,7 @@
             audio.pause();
             audio.playbackRate = 1.0;
             audio.currentTime = 0;
+            currentLoopIndex = 0; // Reset loop counter on manual trigger
             audio.play();
             isPlaying = true;
         }
@@ -606,6 +706,7 @@
             audio.pause();
             audio.playbackRate = 0.55;
             audio.currentTime = 0;
+            currentLoopIndex = 0; // Reset loop counter on manual trigger
             audio.play();
             isPlaying = true;
         }
@@ -1010,7 +1111,7 @@
                     <!-- ==================== STEP 1: LIHAT & DENGAR ==================== -->
                     {:else if currentStepConfig.type === 'read_listen'}
                         <div class="verse-display-box">
-                            <div class="audio-circle-row" style="display: flex; gap: 16px; justify-content: center; align-items: center; margin-bottom: 24px;">
+                            <div class="audio-circle-row" style="display: flex; gap: 16px; justify-content: center; align-items: center; margin-bottom: 20px;">
                                 <button class="audio-circle-play" class:playing={isPlaying && audio?.playbackRate === 1.0} onclick={togglePlay} title="Putar Audio Qari (Normal)">
                                     <i class="ti {isPlaying && audio?.playbackRate === 1.0 ? 'ti-player-pause' : 'ti-player-play'}"></i>
                                 </button>
@@ -1018,19 +1119,53 @@
                                     <img src="/snail.png" alt="Snail" style="width: 28px; height: 28px; object-fit: contain;" />
                                 </button>
                             </div>
+
                             <div class="arabic-focus-text Amiri" style="direction: rtl;">
                                 {#each activeVerse.words as word, wIdx}
-                                    <span class="highlight-word" class:active={wIdx === currentWordIndex}>{word}</span>{' '}
+                                    <span 
+                                        class="highlight-word" 
+                                        class:active={wIdx === currentWordIndex}
+                                        onclick={() => playWordAudio(word)}
+                                        title="Klik untuk putar audio kata ini"
+                                    >
+                                        {@html getTajweedHTML(word)}
+                                    </span>{' '}
                                 {/each}
                             </div>
                             <div class="translit-focus-text">"{activeVerse.transliteration}"</div>
-                            <div class="trans-focus-text">{activeVerse.translation}</div>
+                            <div class="trans-focus-text" style="margin-bottom: 16px;">{activeVerse.translation}</div>
+
+                            <!-- Looping Selector Pill Row -->
+                            <div class="loop-selector-row" style="display: flex; gap: 8px; justify-content: center; align-items: center; margin-top: 16px; border-top: 1px solid #f1f5f9; padding-top: 12px; width: 100%;">
+                                <span style="font-size: 11px; font-weight: 800; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; gap: 4px;">
+                                    <i class="ti ti-repeat" style="font-size: 14px; color: #00978A;"></i> Loop:
+                                </span>
+                                {#each [1, 2, 3, 5] as times}
+                                    <button 
+                                        class="loop-pill" 
+                                        class:active={loopTimes === times} 
+                                        onclick={() => { loopTimes = times; setupAudio(); }}
+                                        title="Ulangi {times} kali"
+                                    >
+                                        {times}x
+                                    </button>
+                                {/each}
+                            </div>
+
+                            <!-- Tajweed Legend -->
+                            <div class="tajweed-legend" style="display: flex; gap: 10px; justify-content: center; align-items: center; flex-wrap: wrap; margin-top: 12px; font-size: 10px; font-weight: 800; letter-spacing: 0.2px;">
+                                <span style="color: #64748b; font-size: 9px; text-transform: uppercase;">Warna Tajwid:</span>
+                                <span style="display: inline-flex; align-items: center; gap: 4px;"><span style="width: 7px; height: 7px; border-radius: 50%; background: #2563eb;"></span> Qalqalah</span>
+                                <span style="display: inline-flex; align-items: center; gap: 4px;"><span style="width: 7px; height: 7px; border-radius: 50%; background: #dc2626;"></span> Ghunnah</span>
+                                <span style="display: inline-flex; align-items: center; gap: 4px;"><span style="width: 7px; height: 7px; border-radius: 50%; background: #db2777;"></span> Ikhfa</span>
+                                <span style="display: inline-flex; align-items: center; gap: 4px;"><span style="width: 7px; height: 7px; border-radius: 50%; background: #16a34a;"></span> Mad</span>
+                            </div>
                         </div>
                         
                     <!-- ==================== STEP 2: TIRU & IKUTI ==================== -->
                     {:else if currentStepConfig.type === 'listen_repeat'}
                         <div class="verse-display-box">
-                            <div style="display: flex; gap: 12px; justify-content: center; align-items: center; margin-bottom: 24px;">
+                            <div style="display: flex; gap: 12px; justify-content: center; align-items: center; margin-bottom: 20px;">
                                 <button class="audio-circle-play" class:playing={isPlaying && audio?.playbackRate === 1.0} onclick={togglePlay} title="1. Dengar Qari (Normal)">
                                     <i class="ti ti-volume"></i>
                                 </button>
@@ -1043,8 +1178,41 @@
                             </div>
                             <div class="arabic-focus-text Amiri" style="direction: rtl;">
                                 {#each activeVerse.words as word, wIdx}
-                                    <span class="highlight-word" class:active={wIdx === currentWordIndex}>{word}</span>{' '}
+                                    <span 
+                                        class="highlight-word" 
+                                        class:active={wIdx === currentWordIndex}
+                                        onclick={() => playWordAudio(word)}
+                                        title="Klik untuk putar audio kata ini"
+                                    >
+                                        {@html getTajweedHTML(word)}
+                                    </span>{' '}
                                 {/each}
+                            </div>
+
+                            <!-- Looping Selector Pill Row -->
+                            <div class="loop-selector-row" style="display: flex; gap: 8px; justify-content: center; align-items: center; margin-top: 16px; border-top: 1px solid #f1f5f9; padding-top: 12px; width: 100%;">
+                                <span style="font-size: 11px; font-weight: 800; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; gap: 4px;">
+                                    <i class="ti ti-repeat" style="font-size: 14px; color: #00978A;"></i> Loop:
+                                </span>
+                                {#each [1, 2, 3, 5] as times}
+                                    <button 
+                                        class="loop-pill" 
+                                        class:active={loopTimes === times} 
+                                        onclick={() => { loopTimes = times; setupAudio(); }}
+                                        title="Ulangi {times} kali"
+                                    >
+                                        {times}x
+                                    </button>
+                                {/each}
+                            </div>
+
+                            <!-- Tajweed Legend -->
+                            <div class="tajweed-legend" style="display: flex; gap: 10px; justify-content: center; align-items: center; flex-wrap: wrap; margin-top: 12px; margin-bottom: 16px; font-size: 10px; font-weight: 800; letter-spacing: 0.2px;">
+                                <span style="color: #64748b; font-size: 9px; text-transform: uppercase;">Warna Tajwid:</span>
+                                <span style="display: inline-flex; align-items: center; gap: 4px;"><span style="width: 7px; height: 7px; border-radius: 50%; background: #2563eb;"></span> Qalqalah</span>
+                                <span style="display: inline-flex; align-items: center; gap: 4px;"><span style="width: 7px; height: 7px; border-radius: 50%; background: #dc2626;"></span> Ghunnah</span>
+                                <span style="display: inline-flex; align-items: center; gap: 4px;"><span style="width: 7px; height: 7px; border-radius: 50%; background: #db2777;"></span> Ikhfa</span>
+                                <span style="display: inline-flex; align-items: center; gap: 4px;"><span style="width: 7px; height: 7px; border-radius: 50%; background: #16a34a;"></span> Mad</span>
                             </div>
                             
                             {#if recordState === 'recording'}
@@ -1762,16 +1930,65 @@
     }
     .highlight-word {
         color: #1e293b;
-        transition: color 0.2s ease, text-shadow 0.2s ease, transform 0.2s ease;
+        transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         display: inline-block;
-        padding: 0 4px;
-        cursor: default;
+        padding: 2px 6px;
+        cursor: pointer;
+        border-radius: 6px;
+        user-select: none;
+    }
+    .highlight-word:hover {
+        background: rgba(0, 151, 138, 0.08);
+        color: #00978a;
+        transform: translateY(-1px) scale(1.05);
     }
     .highlight-word.active {
-        color: #00978A; /* Beautiful QuranMemo teal */
-        text-shadow: 0 0 12px rgba(0, 151, 138, 0.4);
-        transform: scale(1.15) translateY(-2px);
+        background: rgba(0, 151, 138, 0.15);
+        box-shadow: 0 4px 12px rgba(0, 151, 138, 0.15);
+        transform: scale(1.18) translateY(-3px);
         font-weight: 800;
+    }
+    .tajweed-qalqalah {
+        color: #2563eb !important; /* Royal Blue */
+        font-weight: bold;
+    }
+    .tajweed-ikhfa {
+        color: #db2777 !important; /* Deep Pink */
+        font-weight: bold;
+    }
+    .tajweed-ghunnah {
+        color: #dc2626 !important; /* Red */
+        font-weight: bold;
+    }
+    .tajweed-mad {
+        color: #16a34a !important; /* Emerald Green */
+        font-weight: bold;
+    }
+    
+    /* Looping Segment Controls */
+    .loop-pill {
+        background: #f1f5f9;
+        border: none;
+        padding: 4px 10px;
+        border-radius: 99px;
+        font-size: 11px;
+        font-weight: 800;
+        color: #64748b;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .loop-pill:hover {
+        background: #e2e8f0;
+        color: #475569;
+        transform: translateY(-1px);
+    }
+    .loop-pill.active {
+        background: #00978A;
+        color: #fff;
+        box-shadow: 0 2px 6px rgba(0, 151, 138, 0.3);
     }
     .translit-focus-text {
         font-size: 13px;
