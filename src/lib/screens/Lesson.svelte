@@ -1182,6 +1182,8 @@
                             {isCorrect}
                             {isPlaying}
                             {audio}
+                            bind:loopTimes
+                            {setupAudio}
                             {scrambledWords}
                             bind:selectedWords
                             {togglePlay}

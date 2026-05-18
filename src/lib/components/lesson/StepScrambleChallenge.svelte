@@ -6,6 +6,8 @@
         isCorrect, 
         isPlaying, 
         audio, 
+        loopTimes = $bindable(), 
+        setupAudio,
         scrambledWords, 
         selectedWords = $bindable(), 
         togglePlay, 
@@ -23,6 +25,31 @@
             </button>
             <button class="audio-circle-play small slow-btn" class:playing={isPlaying && audio?.playbackRate < 1.0} onclick={togglePlaySlow} title="Dengar Qari (Lambat)">
                 <img src="/snail.png" alt="Snail" class="snail-icon-small" />
+            </button>
+        </div>
+
+        <!-- Looping Selector Pill Row in Puzzle Mode -->
+        <div class="loop-selector-row">
+            <span class="loop-label">
+                <i class="ti ti-repeat"></i> Loop:
+            </span>
+            {#each [1, 2, 3, 5, 10] as times}
+                <button 
+                    class="loop-pill" 
+                    class:active={loopTimes === times} 
+                    onclick={() => { loopTimes = times; setupAudio(); }}
+                    title="Ulangi {times} kali"
+                >
+                    {times}x
+                </button>
+            {/each}
+            <button 
+                class="loop-pill" 
+                class:active={loopTimes === Infinity} 
+                onclick={() => { loopTimes = Infinity; setupAudio(); }}
+                title="Loop tanpa batas"
+            >
+                ∞
             </button>
         </div>
     {:else if type === 'puzzle_two'}
@@ -222,5 +249,50 @@
     }
     .Amiri {
         font-family: 'Amiri', serif;
+    }
+
+    /* Looping Selector styling */
+    .loop-selector-row {
+        display: flex; 
+        gap: 8px; 
+        justify-content: center; 
+        align-items: center; 
+        border-top: 1px solid #f1f5f9; 
+        padding-top: 12px; 
+        width: 100%;
+    }
+    .loop-label {
+        font-size: 11px; 
+        font-weight: 800; 
+        color: #64748b; 
+        text-transform: uppercase; 
+        letter-spacing: 0.5px; 
+        display: inline-flex; 
+        align-items: center; 
+        gap: 4px;
+    }
+    .loop-pill {
+        background: #f1f5f9;
+        border: none;
+        padding: 4px 10px;
+        border-radius: 99px;
+        font-size: 11px;
+        font-weight: 800;
+        color: #64748b;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .loop-pill:hover {
+        background: #e2e8f0;
+        color: #475569;
+        transform: translateY(-1px);
+    }
+    .loop-pill.active {
+        background: #00978A;
+        color: #fff;
+        box-shadow: 0 2px 6px rgba(0, 151, 138, 0.3);
     }
 </style>
