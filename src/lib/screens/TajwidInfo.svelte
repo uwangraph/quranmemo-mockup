@@ -415,6 +415,7 @@
         border-radius: 14px;
         overflow: hidden;
         box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        flex-shrink: 0;
     }
 
     /* ── CATEGORY HEADER ── */
