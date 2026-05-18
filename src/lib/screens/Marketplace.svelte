@@ -4,9 +4,9 @@
     import BottomNav from '../components/BottomNav.svelte';
 
     const musyrifs = $derived([
-        { name: "Ust. Ahmad Fauzi", rating: 4.9, status: "online", price: 35, tier: "bersanad", icon: "👳" },
-        { name: "Ust. Ridwan Hakim", rating: 4.8, status: "online", price: 25, tier: "reguler", icon: "👨‍🏫" },
-        { name: "Ustadzah Siti Aminah", rating: 5.0, status: "offline", price: 35, tier: "bersanad", icon: "🧕" },
+        { name: "Ust. Ahmad Fauzi", rating: 4.9, status: "online", price: 15, surah: "Short", tier: "bersanad", icon: "👳" },
+        { name: "Ust. Ridwan Hakim", rating: 4.8, status: "online", price: 40, surah: "Medium", tier: "reguler", icon: "👨‍🏫" },
+        { name: "Ustadzah Siti Aminah", rating: 5.0, status: "offline", price: 250, surah: "Long", tier: "bersanad", icon: "🧕" },
     ]);
 </script>
 
@@ -14,10 +14,10 @@
     <div class="topbar wallet-header">
         <div class="wallet-pills">
             <div class="pill ticket-pill">
-                <i class="ti ti-ticket"></i> <span>4</span>
+                <i class="ti ti-ticket"></i> <span>1</span>
             </div>
-            <div class="pill coin-pill">
-                <i class="ti ti-coins"></i> <span>120</span>
+            <div class="pill point-pill">
+                <i class="ti ti-bolt-filled"></i> <span>300</span>
             </div>
         </div>
         <button class="topup-btn">
@@ -39,7 +39,7 @@
             <button style="background:none; border:none; color:#1cb0f6; font-size:12px; font-weight:800;">{i18n.t('market.filter')}</button>
         </div>
 
-        <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:20px;">
+        <div class="musyrif-list-container">
             {#each musyrifs as m}
                 <div class="musyrif-card" class:offline={m.status === 'offline'}>
                     <div class="m-avatar">{m.icon}</div>
@@ -56,8 +56,10 @@
                         </div>
                     </div>
                     <div style="text-align:right;">
-                        <div style="font-size:14px; font-weight:900; color:#3c3c3c;">{m.price}k</div>
-                        <div style="font-size:10px; font-weight:700; color:#afafaf;">{i18n.t('market.per_session')}</div>
+                        <div style="font-size:14px; font-weight:900; color:#3c3c3c;">{m.price} {i18n.t('market.points')}</div>
+                        <div style="font-size:10px; font-weight:700; color:#00978A; margin-top:2px;">
+                             <i class="ti ti-receipt-refund"></i> 10% Cashback
+                        </div>
                     </div>
                 </div>
             {/each}
@@ -89,7 +91,7 @@
         border: 2px solid var(--border-main);
     }
     .ticket-pill { color: var(--duo-blue); border-color: #e1f5fe; background: #f1faff; }
-    .coin-pill { color: var(--duo-purple); border-color: #f3e5f5; background: #faf5ff; }
+    .point-pill { color: #ff9600; border-color: #fff7e6; background: #fffbf2; }
     
     .topup-btn {
         width: 36px;
@@ -157,4 +159,46 @@
     }
     .tier-badge.bersanad { background: #fff7e6; color: #cc7000; border: 1px solid #ffe4b3; }
     .tier-badge.reguler { background: #f1f5f9; color: #64748b; border: 1px solid #e2e8f0; }
+
+    /* Desktop/Tablet Responsive Styles */
+    .musyrif-list-container {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+    :global(.desktop-browser) .musyrif-list-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+        gap: 20px;
+    }
+    :global(.tablet) .musyrif-list-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 16px;
+    }
+
+    :global(.desktop-browser) .hero-card {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        gap: 32px;
+        padding: 40px;
+    }
+    :global(.tablet) .hero-card {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+        padding: 32px;
+    }
+
+    :global(.desktop-browser) .hero-card button,
+    :global(.tablet) .hero-card button {
+        width: auto;
+        flex-shrink: 0;
+    }
 </style>

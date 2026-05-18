@@ -27,7 +27,7 @@
             </div>
             
             <div class="promotion-zone">
-                <div style="font-size: 10px; font-weight: 900; color: #58cc02; text-transform: uppercase;">{i18n.t('league.promo')}</div>
+                <div style="font-size: 10px; font-weight: 900; color: #00978A; text-transform: uppercase;">{i18n.t('league.promo')}</div>
                 <div style="font-size: 11px; font-weight: 700; color: #afafaf;">{i18n.t('league.promo_d')}</div>
             </div>
         </div>
@@ -40,7 +40,7 @@
                     <div style="flex: 1">
                         <div style="font-size: 14px; font-weight: 800; color: #3c3c3c;">{r.nameKey ? i18n.t(r.name) : r.name}</div>
                         {#if r.isMe}
-                            <div style="font-size: 10px; font-weight: 800; color: #58cc02;">{i18n.t('league.promo').toUpperCase()}</div>
+                            <div style="font-size: 10px; font-weight: 800; color: #00978A;">{i18n.t('league.promo').toUpperCase()}</div>
                         {/if}
                     </div>
                     <div style="text-align: right">

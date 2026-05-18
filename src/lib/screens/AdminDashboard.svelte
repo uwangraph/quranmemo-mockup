@@ -101,7 +101,7 @@
             <div class="kpi-row">
                 {#each [
                     { label: 'Total Santri', val: '1.240', change: '+34', up: true, data: activeUserData, color: '#7c5cfc' },
-                    { label: 'Sesi Hari Ini', val: '342', change: '+18%', up: true, data: submissionData, color: '#58cc02' },
+                    { label: 'Sesi Hari Ini', val: '342', change: '+18%', up: true, data: submissionData, color: '#00978A' },
                     { label: 'Revenue/Bln', val: '12.4jt', change: '+12%', up: true, data: revenueData, color: '#ff9600' },
                 ] as kpi}
                     <div class="kpi-card">
@@ -161,7 +161,7 @@
             <div class="donut-row">
                 {#each [
                     { label: 'Penyelesaian Program', pct: 72, color: '#7c5cfc', donut: completionDonut },
-                    { label: 'Retensi 30 Hari', pct: 88, color: '#58cc02', donut: retentionDonut },
+                    { label: 'Retensi 30 Hari', pct: 88, color: '#00978A', donut: retentionDonut },
                 ] as d}
                     <div class="donut-card">
                         <svg width="56" height="56" viewBox="0 0 48 48">

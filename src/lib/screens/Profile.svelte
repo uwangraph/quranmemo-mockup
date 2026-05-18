@@ -5,7 +5,7 @@
 
     const stats = $derived([
         { label: i18n.t('profile.total_xp'), val: "12,450", icon: "⚡", color: "#ff9600" },
-        { label: i18n.t('profile.hafalan'), val: "2 Juz", icon: "📖", color: "#58cc02" },
+        { label: i18n.t('profile.hafalan'), val: "2 Juz", icon: "📖", color: "#00978A" },
         { label: i18n.t('profile.streak'), val: "7", icon: "🔥", color: "#ff4b4b" },
         { label: i18n.t('profile.liga'), val: i18n.t('league.sapphire'), icon: "🏆", color: "#1cb0f6" },
     ]);
@@ -62,17 +62,17 @@
             <div class="wallet-card tickets">
                 <div style="font-size: 24px;">🎟️</div>
                 <div style="flex: 1">
-                    <div style="font-size: 14px; font-weight: 900; color: #3c3c3c;">4 {i18n.t('profile.tickets')}</div>
+                    <div style="font-size: 14px; font-weight: 900; color: #3c3c3c;">1 {i18n.t('profile.tickets')}</div>
                     <div style="font-size: 11px; font-weight: 700; color: #afafaf;">{i18n.t('profile.valid_until')}</div>
                 </div>
                 <div style="font-size: 11px; font-weight: 800; color: #1cb0f6;">PREMIUM</div>
             </div>
             
-            <div class="wallet-card coins">
-                <div style="font-size: 24px;">💎</div>
+            <div class="wallet-card points">
+                <div style="font-size: 24px;">⚡</div>
                 <div style="flex: 1">
-                    <div style="font-size: 14px; font-weight: 900; color: #3c3c3c;">120 {i18n.t('profile.coins')}</div>
-                    <div style="font-size: 11px; font-weight: 700; color: #afafaf;">{i18n.t('profile.coins_desc')}</div>
+                    <div style="font-size: 14px; font-weight: 900; color: #3c3c3c;">300 {i18n.t('profile.points')}</div>
+                    <div style="font-size: 11px; font-weight: 700; color: #afafaf;">{i18n.t('profile.points_desc')}</div>
                 </div>
                 <button class="buy-btn">{i18n.t('profile.buy')}</button>
             </div>

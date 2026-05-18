@@ -69,7 +69,7 @@
             </div>
 
             <div class="section-label" style="padding: 0; margin: 10px 0 10px">{i18n.t('tadabbur.themes')}</div>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 20px;">
+            <div class="themes-grid">
                 {#each themes as theme}
                     <button class="theme-card {theme.c}">
                         {theme.t}
@@ -224,5 +224,62 @@
         border-bottom-color: #0898dc;
         background: #ddf4ff;
         color: #0898dc;
+    }
+
+    /* Desktop/Tablet Responsive overrides */
+    .themes-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        margin-bottom: 20px;
+    }
+
+    :global(.desktop-browser) .themes-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+        max-width: 1000px;
+        margin: 0 auto 20px;
+    }
+    :global(.tablet) .themes-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+        max-width: 760px;
+        margin: 0 auto 20px;
+    }
+
+    :global(.desktop-browser) .step-card {
+        max-width: 760px;
+        margin: 20px auto;
+        padding: 50px;
+    }
+    :global(.tablet) .step-card {
+        max-width: 600px;
+        margin: 20px auto;
+        padding: 40px;
+    }
+
+    :global(.desktop-browser) .verse-card {
+        max-width: 1000px;
+        margin: 20px auto;
+        padding: 40px;
+    }
+    :global(.tablet) .verse-card {
+        max-width: 760px;
+        margin: 20px auto;
+        padding: 30px;
+    }
+
+    :global(.desktop-browser) .section-label {
+        max-width: 1000px;
+        margin: 20px auto 10px !important;
+    }
+    :global(.tablet) .section-label {
+        max-width: 760px;
+        margin: 20px auto 10px !important;
+    }
+
+    :global(.desktop-browser) .scroll-content,
+    :global(.tablet) .scroll-content {
+        padding: 24px !important;
     }
 </style>

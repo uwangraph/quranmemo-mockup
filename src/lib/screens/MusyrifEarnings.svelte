@@ -44,7 +44,7 @@
         <!-- Quick Stats -->
         <div class="stats-grid">
             <div class="stat-item">
-                <div class="stat-icon" style="background: #e6f9d4; color: #58cc02;"><i class="ti ti-microphone"></i></div>
+                <div class="stat-icon" style="background: #DBF0EE; color: #00978A;"><i class="ti ti-microphone"></i></div>
                 <div>
                     <div class="stat-label">{i18n.t('earnings.sessions')}</div>
                     <div class="stat-value">142</div>
@@ -120,7 +120,7 @@
                             <div style="font-size: 10px; font-weight: 700; color: #afafaf;">{tx.date}</div>
                         </div>
                         <div style="text-align: right">
-                            <div style="font-size: 13px; font-weight: 900; color: {tx.amount.startsWith('+') ? '#58cc02' : '#ff4b4b'};">{tx.amount}</div>
+                            <div style="font-size: 13px; font-weight: 900; color: {tx.amount.startsWith('+') ? '#00978A' : '#ff4b4b'};">{tx.amount}</div>
                             <div style="font-size: 9px; font-weight: 800; color: #afafaf; text-transform: uppercase;">{tx.status}</div>
                         </div>
                     </div>

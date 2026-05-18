@@ -52,7 +52,7 @@
             </button>
             <div style="flex: 1">
                 <div style="font-size: 14px; font-weight: 900">Ahmad Hafidz</div>
-                <div style="font-size: 10px; font-weight: 700; color: #58cc02">🔴 {i18n.t('marking.live')}</div>
+                <div style="font-size: 10px; font-weight: 700; color: #00978A">🔴 {i18n.t('marking.live')}</div>
             </div>
             <div class="timer-bubble">04:20</div>
         </div>
