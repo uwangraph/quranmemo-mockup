@@ -62,7 +62,23 @@
             tabindex="0" 
             title="Klik untuk mendengarkan bacaan Qari"
         >
-            {activeVerse.twoBlank}
+            {#each activeVerse.twoBlank.split(' ') as part}
+                {#if part === '___'}
+                    <span style="color: #cbd5e1; border-bottom: 2px dashed #cbd5e1; padding: 0 4px; margin: 0 4px;">___</span>
+                {:else}
+                    <span 
+                        class="clickable-word-question" 
+                        onclick={(e) => { e.stopPropagation(); playWordAudio(part); }}
+                        onkeydown={(e) => { if (e.key === 'Enter') { e.stopPropagation(); playWordAudio(part); } }}
+                        role="button"
+                        tabindex="0"
+                        title="Klik untuk mendengar pelafalan kata ini"
+                    >
+                        {@html getTajweedHTML ? getTajweedHTML(part) : part}
+                    </span>
+                {/if}
+                {' '}
+            {/each}
         </div>
     {/if}
     
@@ -322,5 +338,20 @@
         background: #00978A;
         color: #fff;
         box-shadow: 0 2px 6px rgba(0, 151, 138, 0.3);
+    }
+    .clickable-word-question {
+        display: inline-block;
+        cursor: pointer;
+        padding: 0 4px;
+        border-radius: 6px;
+        transition: all 0.15s ease;
+    }
+    .clickable-word-question:hover {
+        background: rgba(0, 151, 138, 0.15);
+        color: #00978a;
+        transform: translateY(-1px);
+    }
+    .clickable-word-question:active {
+        transform: translateY(0);
     }
 </style>
