@@ -317,9 +317,9 @@
                                         <div class="detail-meta">
                                             <div class="meta-row">
                                                 <span class="meta-label">Huruf</span>
-                                                <span class="meta-value arabic-inline">{item.huruf}</span>
+                                                <span class="meta-value mixed-text">{item.huruf}</span>
                                             </div>
-                                            <div class="meta-row">
+                                            <div class="meta-row" style="margin-top: 4px;">
                                                 <span class="meta-label">Contoh</span>
                                                 <div class="contoh-box" style="border-color: {cat.bgColor}20; background: {cat.bgColor}08;">
                                                     <span class="contoh-arab">{item.contohArab}</span>
@@ -554,11 +554,11 @@
         color: #374151;
     }
 
-    .arabic-inline {
-        font-family: 'Amiri', 'Scheherazade New', serif;
-        font-size: 18px !important;
-        line-height: 1.4;
-        direction: rtl;
+    .mixed-text {
+        font-size: 14.5px;
+        line-height: 1.5;
+        color: #1e293b;
+        font-family: 'Amiri', 'Inter', sans-serif;
     }
 
     .contoh-box {
