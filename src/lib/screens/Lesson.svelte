@@ -403,12 +403,40 @@
         }, 1600);
     }
 
+    // === MOTIVATIONAL MESSAGES ===
+    const motivationalMessages = [
+        "Subhanallah! Lanjutkan! 🌟",
+        "Bagus sekali! +1 ayat hafal 📖",
+        "Semangat! Terus istiqomah 💪",
+        "Masha Allah, hebat! ✨",
+        "Satu langkah lebih dekat ke hati Al-Quran 💚",
+        "Allah mencintai orang yang istiqomah 🤲",
+        "Keren! Ayat berikutnya siap? 🚀",
+        "Luar biasa! Terus dijaga ya hafalannya 🏆",
+        "Yakin bisa! Kamu hebat 🔥",
+        "Jangan lupa muroja'ah nanti ya! 📿",
+        "Alhamdulillah! Semakin lancar 🎯",
+        "Tabaarakallah, menginspirasi! 🌙"
+    ];
+    let currentMotivation = $state('');
+
     function triggerCorrect() {
         playCorrectSound();
         spawnConfetti();
         spawnSparkles();
         feedbackAnimClass = 'anim-correct';
+        currentMotivation = motivationalMessages[Math.floor(Math.random() * motivationalMessages.length)];
         setTimeout(() => feedbackAnimClass = '', 800);
+
+        // Auto-play full ayat as reward on quiz/puzzle stages
+        const quizTypes = ['fill_front', 'fill_back', 'puzzle_one', 'puzzle_two', 'audio_scramble', 'puzzle_total'];
+        if (quizTypes.includes(currentStepConfig?.type) && audio) {
+            setTimeout(() => {
+                audio.currentTime = 0;
+                audio.playbackRate = 1.0;
+                audio.play();
+            }, 600);
+        }
     }
 
     function triggerWrong() {
@@ -422,7 +450,7 @@
     }
 
     // === LOOPER & PER-WORD AUDIO STATE ===
-    let loopTimes = $state(1); // 1x, 2x, 3x, 5x
+    let loopTimes = $state(1); // 1x, 2x, 3x, 5x, 10x, ∞
     let currentLoopIndex = $state(0);
 
     // Audio per kata - menggunakan Web Speech API Saudi Arabian Arabic
@@ -673,7 +701,7 @@
         currentLoopIndex = 0;  // Reset current loop counter
         
         audio.onended = () => {
-            if (isPlaying && currentLoopIndex < loopTimes - 1) {
+            if (isPlaying && (loopTimes === Infinity || currentLoopIndex < loopTimes - 1)) {
                 currentLoopIndex++;
                 audio.currentTime = 0;
                 currentWordIndex = -1; // Reset highlight for the next run
@@ -1172,7 +1200,7 @@
                                 <span style="font-size: 11px; font-weight: 800; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; gap: 4px;">
                                     <i class="ti ti-repeat" style="font-size: 14px; color: #00978A;"></i> Loop:
                                 </span>
-                                {#each [1, 2, 3, 5] as times}
+                                {#each [1, 2, 3, 5, 10] as times}
                                     <button 
                                         class="loop-pill" 
                                         class:active={loopTimes === times} 
@@ -1182,6 +1210,14 @@
                                         {times}x
                                     </button>
                                 {/each}
+                                <button 
+                                    class="loop-pill" 
+                                    class:active={loopTimes === Infinity} 
+                                    onclick={() => { loopTimes = Infinity; setupAudio(); }}
+                                    title="Loop tanpa batas"
+                                >
+                                    ∞
+                                </button>
                             </div>
 
                             <!-- Tajweed Legend -->
@@ -1232,7 +1268,7 @@
                                 <span style="font-size: 11px; font-weight: 800; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; gap: 4px;">
                                     <i class="ti ti-repeat" style="font-size: 14px; color: #00978A;"></i> Loop:
                                 </span>
-                                {#each [1, 2, 3, 5] as times}
+                                {#each [1, 2, 3, 5, 10] as times}
                                     <button 
                                         class="loop-pill" 
                                         class:active={loopTimes === times} 
@@ -1242,6 +1278,14 @@
                                         {times}x
                                     </button>
                                 {/each}
+                                <button 
+                                    class="loop-pill" 
+                                    class:active={loopTimes === Infinity} 
+                                    onclick={() => { loopTimes = Infinity; setupAudio(); }}
+                                    title="Loop tanpa batas"
+                                >
+                                    ∞
+                                </button>
                             </div>
 
                             <!-- Tajweed Legend -->
@@ -1326,7 +1370,13 @@
                     <!-- ==================== STEP 4: ISI BAGIAN AWAL ==================== -->
                     {:else if currentStepConfig.type === 'fill_front'}
                         <div class="choice-challenge-container">
-                            <div class="challenge-arabic-blank Amiri">{activeVerse.frontBlank}</div>
+                            <div class="challenge-arabic-blank Amiri">
+                                {#if selectedOptionIdx !== null}
+                                    <span style="color: #00978a; border-bottom: 2px dashed #00978a;">{activeVerse.frontChoices[selectedOptionIdx]}</span> {activeVerse.frontBlank.split('___').pop()}
+                                {:else}
+                                    {activeVerse.frontBlank}
+                                {/if}
+                            </div>
                             
                             <div class="choice-options-column">
                                 {#each activeVerse.frontChoices as choice, idx}
@@ -1340,6 +1390,9 @@
                                     >
                                         <span class="choice-index-circle">{idx + 1}</span>
                                         <span class="choice-text Amiri">{choice}</span>
+                                        <button class="audio-mini-btn" onclick={(e) => { e.stopPropagation(); playWordAudio(choice.split(' ')[0]); }} title="Dengar">
+                                            <i class="ti ti-volume" style="font-size: 14px;"></i>
+                                        </button>
                                     </button>
                                 {/each}
                             </div>
@@ -1348,7 +1401,13 @@
                     <!-- ==================== STEP 5: ISI BAGIAN AKHIR ==================== -->
                     {:else if currentStepConfig.type === 'fill_back'}
                         <div class="choice-challenge-container">
-                            <div class="challenge-arabic-blank Amiri">{activeVerse.endBlank}</div>
+                            <div class="challenge-arabic-blank Amiri">
+                                {#if selectedOptionIdx !== null}
+                                    {activeVerse.endBlank.split('___')[0]} <span style="color: #00978a; border-bottom: 2px dashed #00978a;">{activeVerse.endChoices[selectedOptionIdx]}</span>
+                                {:else}
+                                    {activeVerse.endBlank}
+                                {/if}
+                            </div>
                             
                             <div class="choice-options-column">
                                 {#each activeVerse.endChoices as choice, idx}
@@ -1362,6 +1421,9 @@
                                     >
                                         <span class="choice-index-circle">{idx + 1}</span>
                                         <span class="choice-text Amiri">{choice}</span>
+                                        <button class="audio-mini-btn" onclick={(e) => { e.stopPropagation(); playWordAudio(choice); }} title="Dengar">
+                                            <i class="ti ti-volume" style="font-size: 14px;"></i>
+                                        </button>
                                     </button>
                                 {/each}
                             </div>
@@ -1399,6 +1461,9 @@
                                         disabled={isChecked || word.selected}
                                     >
                                         {word.text}
+                                        <span class="audio-mini-icon" onclick={(e) => { e.stopPropagation(); playWordAudio(word.text); }} title="Dengar kata">
+                                            <i class="ti ti-volume" style="font-size: 11px;"></i>
+                                        </span>
                                     </button>
                                 {/each}
                             </div>
@@ -1407,7 +1472,13 @@
                     <!-- ==================== STEP 7: PUZZLE 1 KATA HILANG ==================== -->
                     {:else if currentStepConfig.type === 'puzzle_one'}
                         <div class="choice-challenge-container">
-                            <div class="challenge-arabic-blank Amiri">{activeVerse.middleBlank}</div>
+                            <div class="challenge-arabic-blank Amiri">
+                                {#if selectedOptionIdx !== null}
+                                    {activeVerse.middleBlank.split('___')[0]} <span style="color: #00978a; border-bottom: 2px dashed #00978a;">{activeVerse.middleChoices[selectedOptionIdx]}</span> {activeVerse.middleBlank.split('___')[1]}
+                                {:else}
+                                    {activeVerse.middleBlank}
+                                {/if}
+                            </div>
                             
                             <div class="choice-options-column">
                                 {#each activeVerse.middleChoices as choice, idx}
@@ -1421,6 +1492,9 @@
                                     >
                                         <span class="choice-index-circle">{idx + 1}</span>
                                         <span class="choice-text Amiri">{choice}</span>
+                                        <button class="audio-mini-btn" onclick={(e) => { e.stopPropagation(); playWordAudio(choice); }} title="Dengar">
+                                            <i class="ti ti-volume" style="font-size: 14px;"></i>
+                                        </button>
                                     </button>
                                 {/each}
                             </div>
@@ -1509,8 +1583,31 @@
                                 <div class="transcription-box">
                                     <div class="trans-pill-tag">TRANSKRIPSI AI</div>
                                     <div class="arabic-transcription Amiri">{activeVerse.arabic}</div>
-                                    <span class="action-helper-txt text-success" style="margin-top: 8px;">✓ 100% Sesuai dengan Mushaf! Klik check jawaban.</span>
+                                    <span class="action-helper-txt text-success" style="margin-top: 8px;">✓ 100% Sesuai dengan Mushaf!</span>
                                 </div>
+
+                                <!-- Dual Audio Comparison -->
+                                <div style="display: flex; gap: 10px; justify-content: center; margin-top: 20px; flex-wrap: wrap;">
+                                    <button 
+                                        class="compare-btn" 
+                                        style="background: linear-gradient(135deg, #667eea, #764ba2); color: #fff; border: none; border-radius: 12px; padding: 12px 18px; font-size: 12px; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.2s; box-shadow: 0 4px 12px rgba(102,126,234,0.3);"
+                                        onclick={togglePlayRecorded}
+                                    >
+                                        <i class="ti {isPlayingRecorded ? 'ti-player-pause-filled' : 'ti-microphone'}"></i>
+                                        {isPlayingRecorded ? 'Mendengar...' : '🎤 Putar Rekamanku'}
+                                    </button>
+                                    <button 
+                                        class="compare-btn" 
+                                        style="background: linear-gradient(135deg, #00978a, #059669); color: #fff; border: none; border-radius: 12px; padding: 12px 18px; font-size: 12px; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.2s; box-shadow: 0 4px 12px rgba(0,151,138,0.3);"
+                                        onclick={togglePlay}
+                                    >
+                                        <i class="ti {isPlaying ? 'ti-player-pause-filled' : 'ti-quran'}"></i>
+                                        {isPlaying ? 'Mendengar...' : '📖 Putar Bacaan Qari'}
+                                    </button>
+                                </div>
+                                <p style="text-align: center; font-size: 11px; color: #94a3b8; margin-top: 10px; font-weight: 600;">
+                                    Bandingkan rekamanmu dengan bacaan qari, lalu tentukan sendiri.
+                                </p>
                             {:else}
                                 <span class="action-helper-txt">Tekan tombol mic, lalu hafalkan ayat {activeVerse.verseNumber} secara lengkap tanpa bantuan teks.</span>
                             {/if}
@@ -1647,7 +1744,7 @@
                         <div class="feedback-inner-content">
                             <div class="feedback-badge" class:correct={isCorrect} class:wrong={!isCorrect}>
                                 <i class="ti {isCorrect ? 'ti-check' : 'ti-alert-circle'}"></i>
-                                {isCorrect ? 'SANGAT BAGUS! 🌟' : 'KURANG TEPAT 💪'}
+                                {isCorrect ? currentMotivation || 'SANGAT BAGUS! 🌟' : 'KURANG TEPAT 💪'}
                             </div>
                             <p class="feedback-msg">
                                 {isCorrect 
@@ -2235,6 +2332,38 @@
         background: #ff4b4b;
         border-color: #ff4b4b;
         color: #fff;
+    }
+    .audio-mini-btn {
+        margin-left: auto;
+        background: #f1f5f9;
+        border: none;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        color: #64748b;
+        transition: all 0.15s;
+        flex-shrink: 0;
+    }
+    .audio-mini-btn:hover {
+        background: #e0f5f3;
+        color: #00978a;
+    }
+    .audio-mini-btn:active {
+        transform: scale(0.9);
+    }
+    .audio-mini-icon {
+        margin-left: 4px;
+        color: #94a3b8;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+    }
+    .audio-mini-icon:hover {
+        color: #00978a;
     }
     .choice-index-circle {
         width: 26px;
