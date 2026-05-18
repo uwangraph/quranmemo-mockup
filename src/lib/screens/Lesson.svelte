@@ -283,9 +283,39 @@
         }, 2500);
     }
 
+    let showSparkles = $state(false);
+    let sparkleParticles = $state([]);
+
+    function spawnSparkles() {
+        const icons = ['✨', '⭐', '🌟', '💫', '🌸', '🎈'];
+        const particles = Array.from({ length: 24 }, (_, i) => {
+            const angle = (i * (360 / 24)) * (Math.PI / 180); // convert to radians
+            const distance = 90 + Math.random() * 110;
+            const tx = Math.cos(angle) * distance;
+            const ty = Math.sin(angle) * distance;
+            return {
+                id: i,
+                tx: tx.toFixed(1),
+                ty: ty.toFixed(1),
+                icon: icons[Math.floor(Math.random() * icons.length)],
+                size: 16 + Math.random() * 18,
+                rotation: Math.random() * 360,
+                rotSpeed: (Math.random() - 0.5) * 10,
+                delay: Math.random() * 0.1
+            };
+        });
+        sparkleParticles = particles;
+        showSparkles = true;
+        setTimeout(() => {
+            showSparkles = false;
+            sparkleParticles = [];
+        }, 1600);
+    }
+
     function triggerCorrect() {
         playCorrectSound();
         spawnConfetti();
+        spawnSparkles();
         feedbackAnimClass = 'anim-correct';
         setTimeout(() => feedbackAnimClass = '', 800);
     }
@@ -1286,6 +1316,28 @@
                     </div>
                 {/if}
 
+                <!-- Sparkles Burst Overlay -->
+                {#if showSparkles}
+                    <div class="sparkles-overlay" aria-hidden="true">
+                        {#each sparkleParticles as s (s.id)}
+                            <div
+                                class="sparkle-element"
+                                style="
+                                    --tx: {s.tx}px;
+                                    --ty: {s.ty}px;
+                                    --rot: {s.rotation}deg;
+                                    --rot-speed: {s.rotSpeed}deg;
+                                    font-size: {s.size}px;
+                                    animation: sparkleBurst 1.3s cubic-bezier(0.1, 0.8, 0.2, 1) forwards;
+                                    animation-delay: {s.delay}s;
+                                "
+                            >
+                                {s.icon}
+                            </div>
+                        {/each}
+                    </div>
+                {/if}
+
                 <!-- Bottom Slided DUOLINGO Feedback Panel Sheet -->
                 {#if isChecked}
                     <div class="sliding-feedback-panel {feedbackAnimClass}" class:correct={isCorrect} class:wrong={!isCorrect}>
@@ -2041,6 +2093,45 @@
         60%  { transform: translateX(5px) rotate(2deg); }
         75%  { transform: translateX(-3px); }
         100% { transform: translateX(0); }
+    }
+
+    /* ============================================
+       SPARKLES BURST OVERLAY
+    ============================================ */
+    .sparkles-overlay {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        pointer-events: none;
+        z-index: 199;
+        overflow: hidden;
+    }
+
+    .sparkle-element {
+        position: absolute;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transform: translate(0, 0) scale(0) rotate(0deg);
+        filter: drop-shadow(0 0 6px rgba(255, 215, 0, 0.7));
+    }
+
+    @keyframes sparkleBurst {
+        0% {
+            opacity: 0;
+            transform: translate(0, 0) scale(0) rotate(0deg);
+        }
+        20% {
+            opacity: 1;
+            transform: translate(calc(var(--tx) * 0.25), calc(var(--ty) * 0.25)) scale(1.4) rotate(calc(var(--rot) * 0.5));
+        }
+        100% {
+            opacity: 0;
+            transform: translate(var(--tx), var(--ty)) scale(0) rotate(var(--rot));
+        }
     }
 
     /* ============================================
