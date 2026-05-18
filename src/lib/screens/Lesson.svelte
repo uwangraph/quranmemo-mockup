@@ -1175,6 +1175,7 @@
                             {isCorrect}
                             {getTajweedHTML}
                             {playWordAudio}
+                            {togglePlay}
                         />
 
                     <!-- ==================== STEP 5: ISI BAGIAN AKHIR ==================== -->
@@ -1187,6 +1188,7 @@
                             {isCorrect}
                             {getTajweedHTML}
                             {playWordAudio}
+                            {togglePlay}
                         />
 
                     <!-- ==================== STEP 6: AUDIO SCRAMBLE ==================== -->
@@ -1219,6 +1221,7 @@
                             {isCorrect}
                             {getTajweedHTML}
                             {playWordAudio}
+                            {togglePlay}
                         />
 
                     <!-- ==================== STEP 8: PUZZLE 2 KATA HILANG ==================== -->

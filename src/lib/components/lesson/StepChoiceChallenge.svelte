@@ -6,7 +6,8 @@
         isChecked, 
         isCorrect = false,
         getTajweedHTML,
-        playWordAudio 
+        playWordAudio,
+        togglePlay
     } = $props();
 
     let choices = $derived(type === 'fill_front' ? activeVerse.frontChoices : (type === 'fill_back' ? activeVerse.endChoices : activeVerse.middleChoices));
@@ -24,7 +25,14 @@
 </script>
 
 <div class="choice-challenge-container">
-    <div class="challenge-arabic-blank Amiri">
+    <div 
+        class="challenge-arabic-blank Amiri" 
+        onclick={togglePlay} 
+        onkeydown={(e) => e.key === 'Enter' && togglePlay()} 
+        role="button" 
+        tabindex="0" 
+        title="Klik untuk mendengarkan bacaan Qari"
+    >
         {#if type === 'fill_front'}
             {#if blankText !== null}
                 <span class="filled-text" class:revealed-correct={isChecked && !isCorrect} class:correct-filled={isChecked && isCorrect}>{@html getTajweedHTML ? getTajweedHTML(blankText) : blankText}</span> {activeVerse.frontBlank.split('___').pop()}
@@ -100,6 +108,17 @@
         border-radius: 20px;
         padding: 24px 16px;
         direction: rtl;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        position: relative;
+    }
+    .challenge-arabic-blank:hover {
+        background: #f1f5f9;
+        border-color: #00978a;
+        transform: scale(1.01);
+    }
+    .challenge-arabic-blank:active {
+        transform: scale(0.99);
     }
     .filled-text {
         color: #00978a; 
