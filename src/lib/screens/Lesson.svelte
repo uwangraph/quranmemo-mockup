@@ -207,55 +207,146 @@
     function playCorrectSound() {
         try {
             const ctx = new (window.AudioContext || window.webkitAudioContext)();
-            // Nada C5 -> E5 -> G5 (chord arpeggio ceria)
-            const notes = [523.25, 659.25, 783.99];
-            notes.forEach((freq, i) => {
+            const now = ctx.currentTime;
+            
+            // 1. Fast sweep rise (pop laser impact)
+            const oscPop = ctx.createOscillator();
+            const gainPop = ctx.createGain();
+            oscPop.connect(gainPop);
+            gainPop.connect(ctx.destination);
+            oscPop.type = 'sine';
+            oscPop.frequency.setValueAtTime(300, now);
+            oscPop.frequency.exponentialRampToValueAtTime(1200, now + 0.08);
+            gainPop.gain.setValueAtTime(0.3, now);
+            gainPop.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+            oscPop.start(now);
+            oscPop.stop(now + 0.09);
+
+            // 2. Sparkling Arpeggio notes: C5 (523Hz), E5 (659Hz), G5 (784Hz), C6 (1046Hz)
+            const notes = [523.25, 659.25, 783.99, 1046.50];
+            notes.forEach((freq, idx) => {
+                const startTime = now + idx * 0.06;
                 const osc = ctx.createOscillator();
                 const gain = ctx.createGain();
                 osc.connect(gain);
                 gain.connect(ctx.destination);
-                osc.type = 'sine';
-                osc.frequency.value = freq;
-                gain.gain.setValueAtTime(0, ctx.currentTime + i * 0.12);
-                gain.gain.linearRampToValueAtTime(0.35, ctx.currentTime + i * 0.12 + 0.04);
-                gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + i * 0.12 + 0.4);
-                osc.start(ctx.currentTime + i * 0.12);
-                osc.stop(ctx.currentTime + i * 0.12 + 0.5);
+                
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(freq, startTime);
+                
+                gain.gain.setValueAtTime(0, startTime);
+                gain.gain.linearRampToValueAtTime(0.25, startTime + 0.03);
+                gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.35);
+                
+                osc.start(startTime);
+                osc.stop(startTime + 0.4);
             });
-            // Tambahan shimmer high note
-            const shimmer = ctx.createOscillator();
-            const shimmerGain = ctx.createGain();
-            shimmer.connect(shimmerGain);
-            shimmerGain.connect(ctx.destination);
-            shimmer.type = 'triangle';
-            shimmer.frequency.value = 1567.98;
-            shimmerGain.gain.setValueAtTime(0, ctx.currentTime + 0.36);
-            shimmerGain.gain.linearRampToValueAtTime(0.2, ctx.currentTime + 0.4);
-            shimmerGain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.7);
-            shimmer.start(ctx.currentTime + 0.36);
-            shimmer.stop(ctx.currentTime + 0.8);
-        } catch(e) {}
+
+            // 3. Final triumphant chords with Vibrato (LFO)
+            const finalChord = [1046.50, 1318.51, 1567.98]; // C6, E6, G6
+            finalChord.forEach((freq) => {
+                const startTime = now + 0.24;
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                
+                // Vibrato LFO
+                const lfo = ctx.createOscillator();
+                const lfoGain = ctx.createGain();
+                lfo.frequency.value = 16; // 16Hz vibrato shimmer
+                lfoGain.gain.value = 15;  // depth of pitch modulation
+                
+                lfo.connect(lfoGain);
+                lfoGain.connect(osc.frequency);
+                
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(freq, startTime);
+                
+                gain.gain.setValueAtTime(0, startTime);
+                gain.gain.linearRampToValueAtTime(0.3, startTime + 0.05);
+                gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.85);
+                
+                lfo.start(startTime);
+                osc.start(startTime);
+                lfo.stop(startTime + 0.9);
+                osc.stop(startTime + 0.9);
+            });
+
+        } catch(e) {
+            console.error(e);
+        }
     }
 
     function playWrongSound() {
         try {
             const ctx = new (window.AudioContext || window.webkitAudioContext)();
-            // Nada turun sedih: E4 -> D4 -> C4
-            const notes = [329.63, 293.66, 261.63];
-            notes.forEach((freq, i) => {
+            const now = ctx.currentTime;
+
+            // 1. Springy Boing impact
+            const oscSpring = ctx.createOscillator();
+            const gainSpring = ctx.createGain();
+            oscSpring.connect(gainSpring);
+            gainSpring.connect(ctx.destination);
+            oscSpring.type = 'triangle';
+            
+            // Fast spring frequency wobble: 320Hz -> 80Hz in 0.22s
+            oscSpring.frequency.setValueAtTime(320, now);
+            oscSpring.frequency.exponentialRampToValueAtTime(80, now + 0.22);
+            
+            // Tremolo / wobble gain using LFO
+            const lfo = ctx.createOscillator();
+            const lfoGain = ctx.createGain();
+            lfo.frequency.value = 22; // 22Hz fast wobble
+            lfoGain.gain.value = 0.15;
+            lfo.connect(lfoGain);
+            lfoGain.connect(gainSpring.gain);
+            
+            gainSpring.gain.setValueAtTime(0.35, now);
+            gainSpring.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
+            
+            lfo.start(now);
+            oscSpring.start(now);
+            lfo.stop(now + 0.23);
+            oscSpring.stop(now + 0.23);
+
+            // 2. Cartoon "Wah-Wah-Wah" descending wobbly slides
+            const wahNotes = [220, 180, 140]; // descending pitches
+            wahNotes.forEach((freq, idx) => {
+                const startTime = now + 0.15 + idx * 0.1;
                 const osc = ctx.createOscillator();
                 const gain = ctx.createGain();
+                
+                // Tremolo LFO for cartoon vibe
+                const lfoWah = ctx.createOscillator();
+                const lfoGainWah = ctx.createGain();
+                lfoWah.frequency.value = 14; // 14Hz tremolo
+                lfoGainWah.gain.value = 8;   // pitch vibrato
+                
+                lfoWah.connect(lfoGainWah);
+                lfoGainWah.connect(osc.frequency);
+                
                 osc.connect(gain);
                 gain.connect(ctx.destination);
+                
                 osc.type = 'sawtooth';
-                osc.frequency.value = freq;
-                gain.gain.setValueAtTime(0, ctx.currentTime + i * 0.15);
-                gain.gain.linearRampToValueAtTime(0.25, ctx.currentTime + i * 0.15 + 0.03);
-                gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + i * 0.15 + 0.3);
-                osc.start(ctx.currentTime + i * 0.15);
-                osc.stop(ctx.currentTime + i * 0.15 + 0.4);
+                osc.frequency.setValueAtTime(freq, startTime);
+                osc.frequency.exponentialRampToValueAtTime(freq - 40, startTime + 0.15); // pitch slide
+                
+                gain.gain.setValueAtTime(0, startTime);
+                gain.gain.linearRampToValueAtTime(0.2, startTime + 0.02);
+                gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.18);
+                
+                lfoWah.start(startTime);
+                osc.start(startTime);
+                lfoWah.stop(startTime + 0.2);
+                osc.stop(startTime + 0.2);
             });
-        } catch(e) {}
+
+        } catch(e) {
+            console.error(e);
+        }
     }
 
     function spawnConfetti() {
