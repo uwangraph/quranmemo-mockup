@@ -11,6 +11,16 @@
         { id: 'league', icon: 'ti-trophy', label: i18n.t('nav.league') },
         { id: 'profile', icon: 'ti-user', label: i18n.t('nav.profile') }
     ]);
+    function getFlaticon(id) {
+        const mapping = {
+            'learn': 'https://cdn-icons-png.flaticon.com/512/2232/2232688.png', // Quran on Rehal
+            'murojaah': 'https://cdn-icons-png.flaticon.com/512/3468/3468081.png', // Handshake
+            'tadabbur': 'https://cdn-icons-png.flaticon.com/512/2947/2947998.png', // Study Book
+            'league': 'https://cdn-icons-png.flaticon.com/512/3112/3112946.png', // Gold Trophy
+            'profile': 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png' // User Avatar
+        };
+        return mapping[id] || 'https://cdn-icons-png.flaticon.com/512/2232/2232688.png';
+    }
 </script>
 
 
@@ -21,7 +31,7 @@
             class:active={active === item.id}
             onclick={() => appState.go(item.id)}
         >
-            <i class="ti {item.icon}"></i>
+            <img src={getFlaticon(item.id)} alt="" style="width: 22px; height: 22px; object-fit: contain; filter: {active === item.id ? 'none' : 'grayscale(100%) opacity(60%)'}; transition: all 0.2s; margin-bottom: 2px;" />
             <span>{item.label}</span>
         </button>
     {/each}
@@ -51,7 +61,7 @@
         color: #afafaf;
     }
     .nav-item.active i {
-        color: #58cc02;
+        color: #00978A;
     }
     .nav-item span {
         font-size: 9px;
@@ -60,6 +70,6 @@
         font-family: "Nunito", sans-serif;
     }
     .nav-item.active span {
-        color: #58cc02;
+        color: #00978A;
     }
 </style>

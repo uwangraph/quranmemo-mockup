@@ -9,8 +9,8 @@
 	const categories = [
 		{
 			name: 'User',
-			color: '#58cc02',
-			accent: '#e6f9d4',
+			color: '#00978A',
+			accent: '#DBF0EE',
 			icon: '👤',
 			screens: [
 				{ id: 'onboarding', icon: '✨' },
@@ -52,6 +52,28 @@
 		categories.find(c => c.screens.some(s => s.id === appState.currentScreen)) || categories[0]
 	);
 
+	const simulatedNavItems = $derived(
+		currentCategory.name === 'User'
+			? [
+					{ id: 'learn', icon: 'ti-home', label: 'nav.learn' },
+					{ id: 'murojaah', icon: 'ti-refresh', label: 'nav.murojaah' },
+					{ id: 'tadabbur', icon: 'ti-book', label: 'nav.tadabbur' },
+					{ id: 'league', icon: 'ti-trophy', label: 'nav.league' },
+					{ id: 'profile', icon: 'ti-user', label: 'nav.profile' }
+				]
+			: currentCategory.name === 'Musyrif'
+			? [
+					{ id: 'musyrif', icon: 'ti-category-2', label: 'screen.musyrif' },
+					{ id: 'livemarking', icon: 'ti-video', label: 'screen.livemarking' },
+					{ id: 'musyrif-earnings', icon: 'ti-wallet', label: 'screen.musyrif-earnings' }
+				]
+			: [
+					{ id: 'admin-dashboard', icon: 'ti-chart-bar', label: 'screen.admin-dashboard' },
+					{ id: 'admin-users', icon: 'ti-users', label: 'screen.admin-users' },
+					{ id: 'admin-musyrif', icon: 'ti-school', label: 'screen.admin-musyrif' }
+				]
+	);
+
 	function toggleMenu() {
 		isMenuOpen = !isMenuOpen;
 	}
@@ -59,6 +81,27 @@
 	function handleNavigate(id) {
 		appState.go(id);
 		isMenuOpen = false;
+	}
+
+	function getFlaticon(id) {
+		const mapping = {
+			'onboarding': 'https://cdn-icons-png.flaticon.com/512/9716/9716852.png', // Rocket
+			'learn': 'https://cdn-icons-png.flaticon.com/512/2232/2232688.png', // Quran on Rehal
+			'murojaah': 'https://cdn-icons-png.flaticon.com/512/3468/3468081.png', // Handshake
+			'feedback': 'https://cdn-icons-png.flaticon.com/512/2107/2107957.png', // Star
+			'tadabbur': 'https://cdn-icons-png.flaticon.com/512/2947/2947998.png', // Study Book
+			'league': 'https://cdn-icons-png.flaticon.com/512/3112/3112946.png', // Gold Trophy
+			'lesson': 'https://cdn-icons-png.flaticon.com/512/3596/3596093.png', // Lesson pad
+			'profile': 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png', // User Avatar
+			'language': 'https://cdn-icons-png.flaticon.com/512/3233/3233004.png', // Globe
+			'musyrif': 'https://cdn-icons-png.flaticon.com/512/3996/3996562.png', // Cleric/Ustadz
+			'livemarking': 'https://cdn-icons-png.flaticon.com/512/3221/3221803.png', // Recording
+			'musyrif-earnings': 'https://cdn-icons-png.flaticon.com/512/2953/2953423.png', // Earnings Bag
+			'admin-dashboard': 'https://cdn-icons-png.flaticon.com/512/2206/2206248.png', // Admin Shield
+			'admin-users': 'https://cdn-icons-png.flaticon.com/512/681/681494.png', // Users Shield
+			'admin-musyrif': 'https://cdn-icons-png.flaticon.com/512/4692/4692348.png' // Musyrif Shield
+		};
+		return mapping[id] || 'https://cdn-icons-png.flaticon.com/512/2232/2232688.png';
 	}
 </script>
 
@@ -115,7 +158,7 @@
 						style={appState.currentScreen === screen.id ? `background: ${cat.color}; border-color: ${cat.color}; color: #fff;` : ''}
 						title={i18n.t('screen.' + screen.id)}
 					>
-						<span class="snb-icon">{screen.icon}</span>
+						<img src={getFlaticon(screen.id)} alt="" style="width: 18px; height: 18px; object-fit: contain; margin-right: {isSidebarExpanded ? '10px' : '0'}; filter: {appState.currentScreen === screen.id ? 'brightness(0) invert(1)' : 'none'};" />
 						{#if isSidebarExpanded}
 							<span class="snb-text">{i18n.t('screen.' + screen.id)}</span>
 						{/if}
@@ -132,34 +175,192 @@
 
 	<!-- Main Content Area -->
 	<div class="main-container" class:collapsed={!isSidebarExpanded}>
-
-		<!-- Phone Frame -->
-		<div 
-			class="phone theme-{appState.theme}" 
-			id="phone-frame" 
-			dir={i18n.getDir()}
-		>
-			<div class="statusbar" dir="ltr" style="background: {currentCategory.color};">
-				<span>9:41</span>
-				<span style="display: flex; gap: 4px; align-items: center">
-					<i class="ti ti-wifi" style="font-size: 13px"></i>
-					<i class="ti ti-battery" style="font-size: 13px"></i>
-				</span>
-			</div>
-
-			{@render children()}
-
-			<!-- Role indicator at bottom of phone -->
-			<div class="role-indicator" style="background: {currentCategory.accent}; color: {currentCategory.color}; padding-bottom: 20px;">
-				{currentCategory.icon} {i18n.t('nav.' + currentCategory.name.toLowerCase()) || currentCategory.name} Mode
+		<!-- View Switcher -->
+		<div class="view-switcher-container">
+			<div class="view-switcher">
+				<button class="switcher-btn" class:active={appState.mockupMode === 'mobile'} onclick={() => appState.setMockupMode('mobile')}>
+					<i class="ti ti-device-mobile"></i> Mobile
+				</button>
+				<button class="switcher-btn" class:active={appState.mockupMode === 'tablet'} onclick={() => appState.setMockupMode('tablet')}>
+					<i class="ti ti-device-tablet"></i> Tablet
+				</button>
+				<button class="switcher-btn" class:active={appState.mockupMode === 'desktop'} onclick={() => appState.setMockupMode('desktop')}>
+					<i class="ti ti-device-laptop"></i> Desktop
+				</button>
 			</div>
 		</div>
+
+		{#if appState.mockupMode === 'mobile'}
+			<!-- Phone Frame -->
+			<div 
+				class="phone theme-{appState.theme}" 
+				id="phone-frame" 
+				dir={i18n.getDir()}
+			>
+				<div class="statusbar" dir="ltr" style="background: {currentCategory.color};">
+					<span>9:41</span>
+					<span style="display: flex; gap: 4px; align-items: center">
+						<i class="ti ti-wifi" style="font-size: 13px"></i>
+						<i class="ti ti-battery" style="font-size: 13px"></i>
+					</span>
+				</div>
+
+				{@render children()}
+
+				<!-- Role indicator at bottom of phone -->
+				<div class="role-indicator" style="background: {currentCategory.accent}; color: {currentCategory.color}; padding-bottom: 20px;">
+					{currentCategory.icon} {i18n.t('nav.' + currentCategory.name.toLowerCase()) || currentCategory.name} Mode
+				</div>
+			</div>
+		{:else if appState.mockupMode === 'tablet'}
+			<!-- Tablet Mockup Frame -->
+			<div 
+				class="tablet theme-{appState.theme}" 
+				id="tablet-frame" 
+				dir={i18n.getDir()}
+			>
+				<!-- iPad statusbar -->
+				<div class="tablet-statusbar" dir="ltr">
+					<div class="statusbar-left" style="display: flex; gap: 6px; align-items: center">
+						<span>9:41 AM</span>
+						<span style="font-weight: 700; color: #1cb0f6;">iPad Pro</span>
+					</div>
+					<div class="statusbar-center" style="display: flex; gap: 4px; align-items: center">
+						<i class="ti ti-lock" style="font-size: 11px; color: #10b981;"></i>
+						<span>quranmemo.app/{appState.currentScreen}</span>
+					</div>
+					<div class="statusbar-right" style="display: flex; gap: 6px; align-items: center">
+						<span>100%</span>
+						<i class="ti ti-battery-4" style="font-size: 14px"></i>
+						<i class="ti ti-wifi" style="font-size: 14px"></i>
+					</div>
+				</div>
+
+				<div class="tablet-body">
+					<div class="mockup-tablet-layout" style="display: flex; flex-direction: row; flex: 1; min-height: 0; overflow: hidden; width: 100%;">
+						<!-- Simulated Left Nav Rail for Tablet -->
+						<div class="mockup-left-rail" style="width: 76px; border-right: 2px solid #e5e5e5; background: #fff; display: flex; flex-direction: column; align-items: center; padding: 20px 0; gap: 24px; flex-shrink: 0;">
+							<div class="rail-logo" style="font-size: 24px; margin-bottom: 12px;">📖</div>
+							
+							{#each simulatedNavItems as item}
+								<button 
+									class="rail-item" 
+									class:active={appState.currentScreen === item.id}
+									onclick={() => appState.go(item.id)}
+									style="background: none; border: none; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 4px; color: {appState.currentScreen === item.id ? '#00978A' : '#afafaf'}; transition: all 0.2s; width: 100%; padding: 4px 0; -webkit-tap-highlight-color: transparent;"
+								>
+									<img src={getFlaticon(item.id)} alt="" style="width: 24px; height: 24px; object-fit: contain; filter: {appState.currentScreen === item.id ? 'none' : 'grayscale(100%) opacity(60%)'}; transition: all 0.2s;" />
+									<span style="font-size: 9px; font-weight: 800; font-family: 'Nunito', sans-serif;">{i18n.t(item.label)}</span>
+								</button>
+							{/each}
+							
+							<!-- Setting icon at the bottom of tablet rail -->
+							<button 
+								onclick={() => appState.go('language')}
+								style="margin-top: auto; background: none; border: none; cursor: pointer; color: #afafaf; font-size: 20px;"
+							>
+								<i class="ti ti-settings"></i>
+							</button>
+						</div>
+						
+						<!-- Active Screen Inside Mockup -->
+						<div class="mockup-screen-container" style="flex: 1; display: flex; flex-direction: column; min-height: 0; overflow-y: auto; background: #fff;">
+							{@render children()}
+						</div>
+					</div>
+				</div>
+
+				<!-- Role indicator at bottom of tablet -->
+				<div class="tablet-role" style="background: {currentCategory.accent}; color: {currentCategory.color};">
+					{currentCategory.icon} {i18n.t('nav.' + currentCategory.name.toLowerCase()) || currentCategory.name} Tablet View
+				</div>
+			</div>
+		{:else}
+			<!-- Desktop Browser Mockup Frame -->
+			<div 
+				class="desktop-browser theme-{appState.theme}" 
+				id="desktop-frame" 
+				dir={i18n.getDir()}
+			>
+				<!-- Browser Chrome -->
+				<div class="browser-chrome" dir="ltr">
+					<div class="chrome-dots">
+						<span class="chrome-dot red"></span>
+						<span class="chrome-dot yellow"></span>
+						<span class="chrome-dot green"></span>
+					</div>
+					<div class="chrome-nav">
+						<button class="chrome-nav-btn" onclick={() => appState.go('learn')} title="Back to Home"><i class="ti ti-chevron-left"></i></button>
+						<button class="chrome-nav-btn" disabled><i class="ti ti-chevron-right"></i></button>
+						<button class="chrome-nav-btn" onclick={() => window.location.reload()} title="Reload"><i class="ti ti-refresh"></i></button>
+					</div>
+					<div class="chrome-address">
+						<i class="ti ti-lock"></i>
+						<span>quranmemo.app/{appState.currentScreen}</span>
+					</div>
+					<div class="chrome-actions">
+						<span class="role-badge" style="background: {currentCategory.accent}; color: {currentCategory.color};">
+							{currentCategory.icon} {i18n.t('nav.' + currentCategory.name.toLowerCase()) || currentCategory.name} Mode
+						</span>
+					</div>
+				</div>
+
+				<!-- Browser Body -->
+				<div class="browser-body">
+					<div class="mockup-desktop-layout" style="display: flex; flex-direction: row; flex: 1; min-height: 0; overflow: hidden; width: 100%; background: #fff;">
+						<!-- Simulated Left Sidebar for Desktop Widescreen -->
+						<div class="mockup-left-sidebar" style="width: 240px; border-right: 2px solid #e5e5e5; background: #fff; display: flex; flex-direction: column; padding: 24px 16px; gap: 24px; flex-shrink: 0;">
+							<div class="sidebar-logo" style="display: flex; align-items: center; gap: 10px; padding: 0 8px; margin-bottom: 8px;">
+								<span style="font-size: 28px;">📖</span>
+								<span style="font-size: 18px; font-weight: 900; color: #3c3c3c; letter-spacing: -0.5px;">QuranMemo</span>
+							</div>
+							
+							<div class="sidebar-menu" style="display: flex; flex-direction: column; gap: 8px; flex: 1;">
+								{#each simulatedNavItems as item}
+									<button 
+										class="sidebar-item" 
+										class:active={appState.currentScreen === item.id}
+										onclick={() => appState.go(item.id)}
+										style="display: flex; align-items: center; gap: 14px; padding: 12px 16px; border: 2px solid transparent; border-radius: 12px; background: {appState.currentScreen === item.id ? '#DBF0EE' : 'none'}; color: {appState.currentScreen === item.id ? '#00978A' : '#4b5563'}; cursor: pointer; text-align: left; transition: all 0.2s;"
+									>
+										<img src={getFlaticon(item.id)} alt="" style="width: 22px; height: 22px; object-fit: contain; filter: {appState.currentScreen === item.id ? 'none' : 'grayscale(100%) opacity(60%)'}; transition: all 0.2s;" />
+										<span style="font-size: 13px; font-weight: 800; font-family: 'Nunito', sans-serif;">{i18n.t(item.label)}</span>
+									</button>
+								{/each}
+							</div>
+							
+							<!-- User Profile Info at the bottom of desktop layout -->
+							<div class="sidebar-user" style="display: flex; align-items: center; gap: 12px; padding: 12px 8px; border-top: 1px solid #f0f0f0; margin-top: auto;">
+								<div style="width: 36px; height: 36px; border-radius: 50%; background: #f0f0f0; display: flex; align-items: center; justify-content: center; font-size: 18px;">👤</div>
+								<div style="flex: 1; min-width: 0;">
+									<div style="font-size: 13px; font-weight: 800; color: #3c3c3c; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Abdullah Irfan</div>
+									<div style="font-size: 10px; font-weight: 700; color: #afafaf; text-transform: uppercase;">PRO USER</div>
+								</div>
+								<button 
+									onclick={() => appState.go('language')}
+									style="background: none; border: none; cursor: pointer; color: #afafaf; font-size: 18px;"
+								>
+									<i class="ti ti-settings"></i>
+								</button>
+							</div>
+						</div>
+						
+						<!-- Active Screen Inside Mockup -->
+						<div class="mockup-screen-container" style="flex: 1; display: flex; flex-direction: column; min-height: 0; overflow-y: auto; background: #fff;">
+							{@render children()}
+						</div>
+					</div>
+				</div>
+			</div>
+		{/if}
 	</div>
 </div>
 
 <style>
 	.qm-app {
 		display: flex;
+		flex-direction: row !important;
+		align-items: stretch !important;
 		min-height: 100vh;
 		background: #f0f0f0;
 		overflow-x: hidden;
@@ -298,12 +499,14 @@
 	.main-container {
 		flex: 1;
 		display: flex;
-		justify-content: center;
-		align-items: flex-start;
-		padding: 40px 20px;
+		flex-direction: column;
+		justify-content: flex-start;
+		align-items: center;
+		padding: 60px 20px 40px;
 		margin-left: 240px;
 		transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 		position: relative;
+		min-height: 100vh;
 	}
 
 	.main-container.collapsed {
@@ -335,6 +538,48 @@
 		background: #f7f7f7;
 	}
 
+	/* View Switcher Styles */
+	.view-switcher-container {
+		margin-bottom: 24px;
+		display: flex;
+		justify-content: center;
+		width: 100%;
+		flex-shrink: 0;
+	}
+	.view-switcher {
+		display: flex;
+		background: rgba(255, 255, 255, 0.85);
+		backdrop-filter: blur(10px);
+		border: 2px solid rgba(229, 229, 229, 0.8);
+		border-radius: 100px;
+		padding: 4px;
+		box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+	}
+	.switcher-btn {
+		font-family: 'Nunito', sans-serif;
+		font-size: 12px;
+		font-weight: 800;
+		color: #777;
+		background: none;
+		border: none;
+		padding: 8px 16px;
+		border-radius: 100px;
+		cursor: pointer;
+		display: flex;
+		align-items: center;
+		gap: 6px;
+		transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+	}
+	.switcher-btn:hover {
+		color: #3c3c3c;
+	}
+	.switcher-btn.active {
+		background: #00978A;
+		color: #fff;
+		box-shadow: 0 2px 8px rgba(0, 151, 138, 0.3);
+	}
+
+	/* Phone Mockup Frame */
 	.phone {
 		width: 390px;
 		height: 844px;
@@ -345,6 +590,7 @@
 		background: #fff;
 		position: relative;
 		overflow: hidden;
+		box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
 	}
 
 	.phone::after {
@@ -368,6 +614,202 @@
 		padding: 8px;
 		text-transform: uppercase;
 		letter-spacing: 1px;
+	}
+
+	/* Tablet Mockup Frame */
+	.tablet {
+		width: 680px;
+		height: 820px;
+		border-radius: 36px;
+		border: 14px solid #1a1a1a;
+		margin: 0 auto;
+		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+		background: #fff;
+		position: relative;
+		overflow: hidden;
+		box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+		display: flex;
+		flex-direction: column;
+	}
+	.tablet::after {
+		content: '';
+		position: absolute;
+		top: 6px;
+		left: 50%;
+		transform: translateX(-50%);
+		width: 8px;
+		height: 8px;
+		background: #333;
+		border-radius: 50%;
+		z-index: 1000;
+	}
+	.tablet-statusbar {
+		height: 30px;
+		background: #f8fafc;
+		border-bottom: 1px solid #e2e8f0;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: 0 16px;
+		font-size: 11px;
+		font-weight: 800;
+		color: #64748b;
+		flex-shrink: 0;
+	}
+	.tablet-body {
+		flex: 1;
+		min-height: 0;
+		display: flex;
+		flex-direction: column;
+		background: #fff;
+		overflow: hidden;
+	}
+	.tablet-role {
+		font-size: 10px;
+		font-weight: 900;
+		text-align: center;
+		padding: 8px;
+		text-transform: uppercase;
+		letter-spacing: 1px;
+	}
+
+	/* Theme Specific Tablet Overrides */
+	.tablet.theme-musyrif .tablet-statusbar {
+		background: #1a1a1a;
+		border-bottom-color: #333;
+		color: #aaa;
+	}
+	.tablet.theme-admin .tablet-statusbar {
+		background: #1e293b;
+		border-bottom-color: #334155;
+		color: #94a3b8;
+	}
+
+	/* Desktop Browser Mockup Frame */
+	.desktop-browser {
+		width: 100%;
+		max-width: 1440px;
+		height: 880px;
+		border-radius: 32px;
+		border: 14px solid #1a1a1a;
+		background: #fff;
+		margin: 0 auto;
+		box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+		display: flex;
+		flex-direction: column;
+		overflow: hidden;
+		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+	}
+	.browser-chrome {
+		height: 48px;
+		background: #f8fafc;
+		border-bottom: 1px solid #e2e8f0;
+		display: flex;
+		align-items: center;
+		padding: 0 16px;
+		gap: 16px;
+		flex-shrink: 0;
+	}
+	.chrome-dots {
+		display: flex;
+		gap: 6px;
+	}
+	.chrome-dot {
+		width: 12px;
+		height: 12px;
+		border-radius: 50%;
+		display: inline-block;
+	}
+	.chrome-dot.red { background: #ff5f56; }
+	.chrome-dot.yellow { background: #ffbd2e; }
+	.chrome-dot.green { background: #27c93f; }
+	
+	.chrome-nav {
+		display: flex;
+		gap: 4px;
+	}
+	.chrome-nav-btn {
+		background: none;
+		border: none;
+		width: 28px;
+		height: 28px;
+		border-radius: 6px;
+		color: #64748b;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		cursor: pointer;
+		font-size: 14px;
+		transition: all 0.2s;
+	}
+	.chrome-nav-btn:hover:not(:disabled) {
+		background: #f1f5f9;
+		color: #1e293b;
+	}
+	.chrome-nav-btn:disabled {
+		opacity: 0.4;
+		cursor: not-allowed;
+	}
+	.chrome-address {
+		flex: 1;
+		height: 30px;
+		background: #f1f5f9;
+		border-radius: 8px;
+		border: 1px solid #e2e8f0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 12px;
+		font-weight: 600;
+		color: #64748b;
+		gap: 6px;
+		max-width: 400px;
+		margin: 0 auto;
+	}
+	.chrome-address i {
+		font-size: 11px;
+		color: #10b981;
+	}
+	.chrome-actions {
+		display: flex;
+		align-items: center;
+	}
+	.role-badge {
+		font-size: 10px;
+		font-weight: 800;
+		text-transform: uppercase;
+		letter-spacing: 0.5px;
+		padding: 4px 10px;
+		border-radius: 100px;
+		box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+	}
+	.browser-body {
+		flex: 1;
+		min-height: 0;
+		display: flex;
+		flex-direction: column;
+		background: #fff;
+		overflow: hidden;
+	}
+
+	/* Theme Specific Chrome Overrides */
+	.desktop-browser.theme-musyrif .browser-chrome {
+		background: #1a1a1a;
+		border-bottom-color: #333;
+	}
+	.desktop-browser.theme-musyrif .chrome-address {
+		background: #2a2a2a;
+		border-color: #3e3e3e;
+		color: #aaa;
+	}
+	.desktop-browser.theme-admin .browser-chrome {
+		background: #1e293b;
+		border-bottom-color: #334155;
+	}
+	.desktop-browser.theme-admin .chrome-address {
+		background: #0f172a;
+		border-color: #1e293b;
+		color: #94a3b8;
 	}
 
 	@media (max-width: 1024px) {
@@ -402,6 +844,12 @@
 		.sidebar-toggle-btn {
 			display: none !important;
 		}
+	}
+
+	/* Hapus bottom-nav di mockup tablet dan desktop karena memakai Left Nav Rail / Sidebar */
+	.tablet-body :global(.bottom-nav),
+	.browser-body :global(.bottom-nav) {
+		display: none !important;
 	}
 
     :global(body) {
