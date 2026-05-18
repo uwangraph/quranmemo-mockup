@@ -81,8 +81,8 @@ Berikut adalah rancangan arsitektur teknis, produk, dan monetisasi jika model Du
    Arsitektur Pengujian: Pengguna menyalakan kamera dan mikrofon. Sistem AI melakukan pengawasan (proctoring) untuk memastikan mata pengguna tidak melihat mushaf untuk divalidasi oleh Musyrif(guru hafalan) manusia yang bermitra dengan aplikasi.
    Output: Pengguna mendapatkan sertifikat digital resmi yang tervalidasi.
    C. In-App Purchases (IAP) & Gamifikasi Berbasis Nilai
-   Streak Freeze (Pembeku Rekor): Mempertahankan streak harian adalah pendorong motivasi terbesar. Pengguna bisa membeli Streak Freeze menggunakan koin virtual aplikasi atau uang nyata jika mereka sakit atau sedang dalam perjalanan jauh sehingga tidak sempat membuka aplikasi.
-   Sadaqah Unlocks (Monetisasi Intrinsik): Pengguna mengumpulkan Gems dari setiap hafalan yang sukses. Gems ini bisa ditukarkan menjadi donasi nyata (misal: "Tukarkan 1000 Gems untuk menyumbang 1 Mushaf ke daerah pelosok"). Secara teknis, donasi ini didanai oleh brand sponsor (Corporate Social Responsibility) yang membayar ke platform kita, menciptakan loop gamifikasi yang bernilai pahala sekaligus menguntungkan platform.
+   Streak Freeze (Pembeku Rekor): Mempertahankan streak harian adalah pendorong motivasi terbesar. Pengguna bisa membeli Streak Freeze menggunakan Poin aplikasi atau uang nyata jika mereka sakit atau sedang dalam perjalanan jauh sehingga tidak sempat membuka aplikasi.
+   Sadaqah Unlocks (Monetisasi Intrinsik): Pengguna mengumpulkan Poin dari setiap hafalan yang sukses. Poin ini bisa ditukarkan menjadi donasi nyata (misal: "Tukarkan 1000 Poin untuk menyumbang 1 Mushaf ke daerah pelosok"). Secara teknis, donasi ini didanai oleh brand sponsor (Corporate Social Responsibility) yang membayar ke platform kita, menciptakan loop gamifikasi yang bernilai pahala sekaligus menguntungkan platform.
 3. Strategi Teknis & Pertimbangan Skalabilitas
    Akurasi Engine Voice Recognition: Ini adalah barries paling menantang. API speech-to-text umum (seperti Google atau OpenAI standar) sering kali kurang presisi untuk mendeteksi hukum bacaan tajwid (seperti ghunnah atau ikhfa). Kita perlu melatih model Machine Learning mandiri menggunakan dataset audio dari para Qari standar.
    Lokalisasi Harga (Purchasing Power Parity): Mengingat pasar terbesar aplikasi ini ada di negara berkembang (Indonesia, Pakistan, Mesir, Bangladesh), harga langganan harus dibuat sangat terjangkau (misal Rp25.000/bulan di Indonesia), sambil menerapkan harga premium (misal $10/bulan) untuk pengguna di Amerika Serikat, Eropa, dan Timur Tengah.
@@ -167,51 +167,23 @@ Fase Encoding (Senin s/d Jumat): Hari-hari ini dikhususkan untuk menambah dan me
 Fase Storing & Retrieval (Sabtu & Minggu): Hari libur dikhususkan untuk menguatkan hafalan (muraja'ah). Pengguna diminta untuk mengulang kembali semua ayat yang telah berhasil dihafal dari hari Senin hingga Jumat.
 
 📝 "Encoding" Harian (Senin - Jumat)
-Berikut adalah penjabaran 6 langkah harian untuk memasukkan hafalan baru ke dalam memori secara bertahap dan mendalam:
-Langkah
-Nama Aktivitas
-Instruksi pada Aplikasi (QMT)
+Berikut adalah penjabaran alur harian untuk memasukkan hafalan baru ke dalam memori, berfokus pada interaksi pendengaran dan pengulangan, diikuti dengan memori visual:
 
-1
-Pemetaan Visual Halaman (Tanpa Makna)
-Membaca satu halaman penuh mushaf tanpa terjemah secara berulang-ulang, minimal selama batas waktu yang ditentukan oleh aplikasi.
+Tahap 1: Dengarkan & Ulangi (Memori Audio & Verbal)
+Al-Qur’an pada dasarnya adalah pengalaman audio, jadi interaksi pertama dengan setiap ayat berfokus pada:
+• Mendengarkan lantunan ayat dari Qari.
+• Mengulangi ayat dengan suara keras.
+• Memutar ulang ayat beberapa kali sesuai kebutuhan.
+• (Opsional) Merekam suara untuk mendapatkan feedback pelafalan.
 
-2
-Pemahaman Konteks Halaman
-Membaca satu halaman penuh mushaf beserta terjemahannya secara berulang-ulang, minimal selama batas waktu yang ditentukan.
+Tahap 2: Tes Memori Visual (Pengenalan Visual & Active Recall)
+Setelah mendengar dan mengulangi, pengguna melanjutkan ke latihan interaktif, antara lain:
+• Susun Kata: Menyusun kata-kata dari ayat dalam urutan yang benar.
+• Isi Kata yang Hilang: Mengisi kata yang disensor atau dihilangkan pada ayat.
+• Pilih Kata Berikutnya: Menentukan kata yang benar untuk menyambung ayat.
+• Susun Kembali Ayat: Menyusun ulang ayat dari hafalan.
 
-3
-Fokus Audio-Visual Target Harian
-Mulai mengerucut ke "Target hari ini" (ayat spesifik). Membaca target secara berulang tanpa terjemah, sambil mendengarkan lantunan Qari melalui pemutar audio.
-
-4
-Penyatuan Audio, Visual, & Makna Target
-Membaca Target hari ini secara berulang beserta terjemahannya, sambil terus mendengarkan lantunan Qari sesuai waktu yang ditentukan.
-
-5
-Latihan Hafalan Parsial (Fading)
-Melakukan 3 aktivitas membaca & mendengar dengan tampilan teks yang disensor sebagian:
-
-• Bantuan hanya segmen ayat depan.
-
-• Bantuan hanya segmen ayat tengah.
-
-• Bantuan hanya segmen ayat belakang.
-
-6
-Uji Mandiri (Tes Rekam Banding)
-Menjalankan 4 variasi tes untuk merekam dan membandingkan hafalan:
-
-a) Tes hilangkan segmen tengah & belakang.
-
-b) Tes hilangkan segmen depan & belakang.
-
-c) Tes hilangkan segmen depan & tengah.
-
-d) Tes dengan bantuan segmen acak (random).
-
-Ringkasan Pola Metode QMT:
-Metode ini bergerak dari (Melihat satu halaman utuh Fokus ke target harian) dan dari (Membaca & mendengar Mengingat dengan teks disensor Tes hafalan tanpa teks).
+Pendekatan ini mengikuti metode tradisional (Dengar → Ulangi → Kenali → Ingat kembali) dan menggabungkan memori audio, pengulangan verbal, pengenalan visual, dan active recall, dikemas dengan interaksi yang tenang, penuh hormat, dan terasa spiritual (mirip dengan aplikasi interaktif modern, namun bernuansa Islami).
 
 ---
 
@@ -710,42 +682,42 @@ ketiadaan guru untuk melakukan validasi bacaan (talaqqi/tasmi') secara langsung 
    Panggilan Audio/Video Terintegrasi: Sesi dilakukan langsung di dalam aplikasi menggunakan protokol WebRTC yang ringan dan stabil, tanpa perlu berpindah ke aplikasi pihak ketiga.
    Dasbor Live Marking:Live Marking Layar Musyrif menampilkan teks ayat yang sedang dibaca oleh pengguna. Jika pengguna salah makhroj atau lupa, Musyrif cukup mengetuk kata tersebut di layar. Ketukan ini otomatis tercatat sebagai koreksi dan menjadi laporan analitik hafalan begitu sesi selesai.
 4. Ekonomi Agregator & Monetisasi
-   Skema Bagi Hasil (Revenue Split):Revenue Split Menerapkan potongan komisi platform, misalnya 80% dari nilai koin masuk ke saldo pendapatan Musyrif yang bisa ditarik (withdraw) secara berkala, dan 20% untuk Quran Memo.
-   Tarif Dinamis (Surge Pricing):Surge Pricing Algoritma menaikkan tarif koin secara otomatis pada jam-jam sibuk (peak hours) seperti ba'da Subuh atau ba'da Maghrib. Hal ini bertujuan memotivasi lebih banyak Musyrif untuk online di waktu-waktu tersebut demi memenuhi lonjakan permintaan.
+   Skema Bagi Hasil (Revenue Split):Revenue Split Menerapkan potongan komisi platform, misalnya 80% dari nilai Poin masuk ke saldo pendapatan Musyrif yang bisa ditarik (withdraw) secara berkala, dan 20% untuk Quran Memo.
+   Tarif Dinamis (Surge Pricing):Surge Pricing Algoritma menaikkan tarif Poin secara otomatis pada jam-jam sibuk (peak hours) seperti ba'da Subuh atau ba'da Maghrib. Hal ini bertujuan memotivasi lebih banyak Musyrif untuk online di waktu-waktu tersebut demi memenuhi lonjakan permintaan.
 5. Quality Control
    Menjaga standar adab dan kualitas pengajaran dari ekosistem mitra yang bersifat lepas (freelance).
    Sistem Rating Dua Arah: Pengguna memberikan bintang 1-5 untuk kejelasan, ketelitian, dan keramahan Musyrif. Sebaliknya, Musyrif juga menilai fokus, adab, dan kesiapan hafalan pengguna.
    Batas Minimum Rating: Musyrif dengan akumulasi rating di bawah standar (misalnya di bawah 4.5) secara otomatis mendapatkan penangguhan penerimaan order sementara untuk menjalani evaluasi atau pelatihan ulang.
 
-Detailing Monetisasi
+Sistem Ekonomi & Verifikasi (Sistem Poin Terpadu)
 
-1. Arsitektur "Dompet Hibrida" (Hybrid Wallet System)
-   Untuk memisahkan logika jatah bulanan dan pembayaran instan, database pengguna di Quran Memo harus memiliki dua variabel saldo yang berjalan berdampingan:
-   Variabel A: Tiket Setoran (Jatah Premium): Aset digital yang memiliki masa kedaluwarsa (use-it-or-lose-it). Misalnya, pelanggan Premium mendapatkan 4x Tiket Setoran per bulan (asumsi 1x setoran per minggu). Tiket ini akan di-reset kembali menjadi 4 setiap tanggal siklus tagihan.
-   Variabel B: Koin Memo (Top-Up On-Demand): Mata uang virtual aplikasi yang dibeli menggunakan uang nyata (via QRIS, GoPay, Apple/Google Pay) dan tidak memiliki masa kedaluwarsa. Koin ini digunakan oleh pengguna gratis yang ingin setor, atau pengguna Premium yang tiket bulanannya sudah habis.
+Filosofi Utama
+Quran Memo menggunakan satu sistem poin internal terpadu. Poin menjadi unit nilai universal di dalam ekosistem, menjadikan platform lebih sederhana, mudah dikembangkan secara global, mudah diseimbangkan, dan mudah dikelola secara operasional.
 
-2. Matriks Pengalaman Pengguna (User Flow Matriks)
+1. Struktur Harga Global & Tier
+• Negara Maju: $5 = 100 poin
+• Negara Berkembang: $1 = 100 poin
+• Tier Premium / Pro: $10 = 300 poin (dirancang untuk hafalan serius, menyelesaiakan Al-Qur'an, murajaah intensif, dan verifikasi lebih sering).
 
-Kondisi Pengguna
-Logika Routing & Prioritas Sistem
-Pengalaman di Layar (UI/UX)
-Premium (Tiket Tersedia)
-Prioritas VIP (Fast Track): Algoritma menempatkan pengguna ini di antrean terdepan. Biaya sesi otomatis memotong 1 Tiket.
-Teks ringkas: "Menggunakan 1 Tiket Premium. Sisa tiket bulan ini: 3." Langsung terhubung ke Musyrif.
-Premium (Tiket Habis)
-Diskon Ekosistem: Pengguna tetap mendapat antrean prioritas, namun sistem menawarkan pembelian sesi on-demand menggunakan Koin Memo dengan harga diskon khusus anggota.
-Pop-up penawaran: "Tiket bulan ini habis. Beli sesi tambahan khusus Premium hanya 50 Koin (Diskon 20%)."
-Pengguna Gratis (Freemium)
-Antrean Standar: Sistem memotong Koin Memo dengan tarif normal (misal 70 Koin). Jika koin tidak cukup, sistem memicu gerbang pembayaran (payment gateway).
-Layar konversi ganda: "Mulai sesi seharga 70 Koin, ATAU Upgrade Premium sekarang untuk dapat 4 sesi gratis/bulan!"
+2. Struktur Biaya Verifikasi
+• Surah Pendek: Biaya verifikasi 15 poin
+• Surah Menengah: Biaya verifikasi 30–50 poin
+• Surah Panjang: Biaya verifikasi 100–300+ poin tergantung panjang dan tingkat kesulitan.
+Sistem Cashback Verifikasi: Pengguna menerima kembali 10% dari poin yang digunakan setelah berhasil verifikasi, mendorong konsistensi dan mengurangi kelelahan psikologis.
 
-3. Rekonsiliasi Keuangan Backend (Payout Logic untuk Musyrif)
+3. Ekonomi Pengguna Gratis
+Pengguna gratis dapat memperoleh poin melalui:
+• Penggunaan harian (Login harian = 1 poin, maksimal 15 poin/bulan).
+• Streak (Streak 7 hari = 5 poin, 14 hari = 10 poin, 30 hari = 20 poin).
+• Iklan (1 poin per iklan, maksimal 10-15 poin/bulan).
+Batas maksimum poin gratis adalah 50–60 poin per bulan. Poin gratis akan kadaluarsa setelah 30 hari. Untuk pelanggan bulanan, saat langganan diperpanjang poin baru diberikan dan poin sebelumnya di-reset.
 
-Musyrif tidak boleh tahu atau peduli apakah santri menggunakan Tiket Premium atau Koin On-Demand; tugas Musyrif hanyalah mengajar dan menerima bayaran yang konsisten.
-Sistem backend yang harus melakukan konversi otomatis ke saldo pendapatan Musyrif (misal dikonversi menjadi Rupiah di dompet mitra):
-Jika Sesi Menggunakan Koin (On-Demand): Logika bagi hasil langsung diterapkan. Jika 1 sesi = Rp35.000 (setara 70 Koin), maka 80% (Rp28.000) langsung masuk ke dompet Musyrif, dan 20% (Rp7.000) menjadi laba Quran Memo.
-Jika Sesi Menggunakan Tiket Premium: Sistem Quran Memo mengalokasikan sebagian dari uang langganan bulanan pengguna sebagai HPP (Harga Pokok Penjualan). Di backend, sistem secara otomatis "membayar" Musyrif dengan nominal tetap (misalnya Rp28.000 flat) yang diambil dari kolam dana (pool fund) hasil subskripsi bulanan. 4. Fitur Gamifikasi Retensi & Efisiensi Sistem
-Untuk mencegah penumpukan order di akhir bulan (karena pengguna Premium panik tiketnya mau hangus), terapkan sistem berikut:
-Fitur Rollover Terbatas: Izinkan maksimal 1 atau 2 Tiket Premium yang tidak terpakai untuk diakumulasikan ke bulan berikutnya, asalkan langganan tetap aktif. Ini menurunkan churn rate (tingkat berhenti berlangganan) karena pengguna merasa tidak rugi.
-Insentif Koin untuk Setoran Mandiri AI: Jika Musyrif manusia sedang penuh/sibuk, tawarkan opsi kepada pengguna gratis: "Sistem Musyrif sedang padat. Mau setor ke AI Voice Recognition sekarang? Dapatkan cashback 10 Koin jika akurasimu di atas 90%!" Ini mengalihkan beban server sekaligus mempromosikan kecanggihan AI Anda.
-Sistem Tipping (Tip Halal): Setelah sesi selesai, berikan opsi bagi pengguna (baik Premium maupun Gratis) untuk memberikan tip kepada Musyrif menggunakan sisa Koin Memo mereka sebagai bentuk bisyaroh (tanda terima kasih). 100% tip ini masuk ke Musyrif tanpa potongan platform.
+4. Sistem Tiket Verifikasi Juz
+Jika pengguna berhasil memverifikasi seluruh surah dalam satu Juz, mereka mendapatkan Tiket Verifikasi Juz.
+• Tiket ini memberikan satu kesempatan verifikasi Juz (menghemat banyak poin).
+• Tiket tidak dapat dibeli, harus diperoleh melalui usaha dan penyelesaian hafalan.
+
+Keunggulan Strategis: Sistem ekonomi ini menciptakan ekonomi yang berkelanjutan, engagement kuat, kompensasi Huffaz yang stabil, dan partisipasi global yang scalable. Yang paling penting: pengguna merasa usaha hafalan mereka menghasilkan nilai, bukan sekadar menghabiskan mata uang digital.
+
+5. Rekonsiliasi Keuangan Backend (Payout Logic untuk Musyrif)
+Sistem backend melakukan konversi otomatis Poin menjadi saldo pendapatan Musyrif (misal dikonversi menjadi Rupiah). Musyrif menerima bagian yang konsisten setiap kali melakukan verifikasi berdasarkan tarif poin surah tersebut, dan pengguna dapat menggunakan sisa poin mereka untuk memberikan tip (bisyaroh) tanpa potongan platform.
