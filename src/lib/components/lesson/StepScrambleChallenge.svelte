@@ -54,14 +54,7 @@
             </button>
         </div>
     {:else if type === 'puzzle_two'}
-        <div 
-            class="challenge-arabic-blank Amiri" 
-            onclick={togglePlay} 
-            onkeydown={(e) => e.key === 'Enter' && togglePlay()} 
-            role="button" 
-            tabindex="0" 
-            title="Klik untuk mendengarkan bacaan Qari"
-        >
+        <div class="challenge-arabic-blank Amiri">
             {#each activeVerse.twoBlank.split(' ') as part}
                 {#if part === '___'}
                     <span style="color: #cbd5e1; border-bottom: 2px dashed #cbd5e1; padding: 0 4px; margin: 0 4px;">___</span>
@@ -166,17 +159,6 @@
         border-radius: 20px;
         padding: 24px 16px;
         direction: rtl;
-        cursor: pointer;
-        transition: all 0.2s ease;
-        position: relative;
-    }
-    .challenge-arabic-blank:hover {
-        background: #f1f5f9;
-        border-color: #00978a;
-        transform: scale(1.01);
-    }
-    .challenge-arabic-blank:active {
-        transform: scale(0.99);
     }
     .audio-circle-play {
         width: 64px;
