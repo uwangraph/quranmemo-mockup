@@ -45,11 +45,12 @@
             {:else}
                 <span 
                     class="clickable-word-question" 
-                    onclick={(e) => { e.stopPropagation(); playWordAudio(part); }}
-                    onkeydown={(e) => { if (e.key === 'Enter') { e.stopPropagation(); playWordAudio(part); } }}
+                    class:disabled={isChecked}
+                    onclick={(e) => { e.stopPropagation(); if (!isChecked) playWordAudio(part); }}
+                    onkeydown={(e) => { if (e.key === 'Enter') { e.stopPropagation(); if (!isChecked) playWordAudio(part); } }}
                     role="button"
-                    tabindex="0"
-                    title="Klik untuk mendengar pelafalan kata ini"
+                    tabindex={isChecked ? "-1" : "0"}
+                    title={isChecked ? "" : "Klik untuk mendengar pelafalan kata ini"}
                 >
                     {@html getTajweedHTML ? getTajweedHTML(part) : part}
                 </span>
@@ -202,12 +203,19 @@
         border-radius: 6px;
         transition: all 0.15s ease;
     }
-    .clickable-word-question:hover {
+    .clickable-word-question:hover:not(.disabled) {
         background: rgba(0, 151, 138, 0.15);
         color: #00978a;
         transform: translateY(-1px);
     }
-    .clickable-word-question:active {
+    .clickable-word-question:active:not(.disabled) {
         transform: translateY(0);
+    }
+    .clickable-word-question.disabled {
+        cursor: default !important;
+        pointer-events: none !important;
+        background: none !important;
+        color: inherit !important;
+        transform: none !important;
     }
 </style>
