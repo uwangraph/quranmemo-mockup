@@ -1,4 +1,55 @@
 <script>
+    import { appState } from '$lib/app.svelte.js';
+
+    const wordTransliterations = {
+        // Ayat 1
+        "أَلَمْ": "alam",
+        "نَشْرَحْ": "nashrah",
+        "لَكَ": "laka",
+        "صَدْرَكَ": "shadrak",
+        
+        // Ayat 2
+        "وَوَضَعْنَا": "wa wadha'na",
+        "عَنكَ": "anka",
+        "وِزْرَكَ": "wizrak",
+        
+        // Ayat 3
+        "ٱلَّذِىٓ": "alladzi",
+        "أَنقَضَ": "anqadha",
+        "ظَهْرَكَ": "zhahrak",
+        
+        // Ayat 4
+        "وَرَفَعْنَا": "wa rafa'na",
+        "ذِكْرَكَ": "dzikrak",
+        
+        // Ayat 5
+        "فَإِنَّ": "fa inna",
+        "مَعَ": "ma'a",
+        "ٱلْعُسْرِ": "al-'usri",
+        "يُسْرًا": "yusran",
+        
+        // Ayat 6
+        "إِنَّ": "inna",
+        
+        // Ayat 7
+        "فَإِذَا": "fa idza",
+        "فَرَغْتَ": "faraghta",
+        "فَٱنصَبْ": "fanshab",
+        
+        // Ayat 8
+        "وَإِلَىٰ": "wa ila",
+        "رَبِّكَ": "rabbika",
+        "فَٱرْغَب": "farghab",
+
+        // Frasa (untuk opsi gabungan)
+        "أَلَمْ نَشْرَحْ": "alam nashrah",
+        "وَوَضَعْنَا عَنكَ": "wa wadha'na 'anka",
+        "ٱلَّذِىٓ أَنقَضَ": "alladzi anqadha",
+        "فَإِنَّ مَعَ": "fa inna ma'a",
+        "إِنَّ مَعَ": "inna ma'a",
+        "فَإِذَا فَرَغْتَ": "fa idza faraghta",
+        "وَإِلَىٰ رَبِّكَ": "wa ila rabbika"
+    };
     let { 
         previousVerse, 
         recallMethod = $bindable(), 
@@ -14,7 +65,10 @@
     } = $props();
 </script>
 
-<div class="verse-display-box">
+<div class="verse-display-box" style="position: relative; padding-top: 50px;">
+    <button class="latin-toggle-badge" onclick={() => appState.toggleLatin()} title="Toggle Latin Transliterasi secara instan" style="top: 14px; right: 14px;">
+        🔠 Latin: {appState.user.showLatin ? 'ON' : 'OFF'}
+    </button>
     <!-- Dual Selector Tab -->
     <div class="recall-method-tabs">
         <button 
@@ -80,6 +134,13 @@
                 {previousVerse.frontBlank}
             {/if}
         </div>
+
+        {#if appState.user.showLatin}
+            <div class="translit-focus-text" style="font-size: 13px; font-weight: 700; color: #00978a; text-align: center; margin-top: -10px; margin-bottom: 16px; font-style: italic;">
+                "{previousVerse.transliteration}"
+            </div>
+        {/if}
+
         <p class="mushaf-instruction-text">
             Lengkapi potongan ayat di atas dengan memilih jawaban yang benar:
         </p>
@@ -90,31 +151,22 @@
                     class:selected={recallSelectedOptionIdx === i}
                     class:correct={isChecked && i === 0}
                     class:wrong={isChecked && recallSelectedOptionIdx === i && i !== 0}
-                    onclick={() => { if (!isChecked) recallSelectedOptionIdx = i; }}
+                    onclick={() => { 
+                        if (!isChecked) {
+                            recallSelectedOptionIdx = i; 
+                            playWordAudio(choice);
+                        }
+                    }}
                     disabled={isChecked}
                     style="display: flex; align-items: center; justify-content: space-between; padding: 14px 20px;"
                 >
-                    <span class="option-index-badge" style="font-size: 12px; font-weight: 900; background: #e2e8f0; color: #475569; width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">{i + 1}</span>
-                    <span class="option-text Amiri" style="flex: 1; text-align: center;">{@html getTajweedHTML ? getTajweedHTML(choice) : choice}</span>
-                    <span 
-                        class="audio-mini-btn" 
-                        role="button" 
-                        tabindex="0" 
-                        onclick={(e) => { 
-                            e.stopPropagation(); 
-                            playWordAudio(choice); 
-                        }} 
-                        onkeydown={(e) => { 
-                            if (e.key === 'Enter') { 
-                                e.stopPropagation(); 
-                                playWordAudio(choice); 
-                            }
-                        }} 
-                        title="Dengar"
-                        style="color: #94a3b8; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; background: #f1f5f9; transition: all 0.2s;"
-                    >
-                        <i class="ti ti-volume"></i>
-                    </span>
+                    <span class="option-index-badge" style="font-size: 12px; font-weight: 900; background: #e2e8f0; color: #475569; width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-left: 12px;">{i + 1}</span>
+                    <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1;">
+                        <span class="option-text Amiri" style="text-align: center; margin: 0; line-height: 1.2;">{@html getTajweedHTML ? getTajweedHTML(choice) : choice}</span>
+                        {#if appState.user.showLatin && wordTransliterations[choice]}
+                            <span class="latin-text-mini" style="font-size: 11px; font-weight: 700; color: #00978a; margin-top: 4px; font-style: italic; font-family: 'Outfit', 'Inter', sans-serif;">{wordTransliterations[choice]}</span>
+                        {/if}
+                    </div>
                 </button>
             {/each}
         </div>
@@ -322,14 +374,36 @@
         color: #22c55e;
         border-bottom: 2px solid #22c55e;
     }
-    .audio-mini-btn:hover {
-        background: #e2e8f0 !important;
-        color: #00978a !important;
-        transform: scale(1.05);
-    }
+
     @keyframes pulseAnimation {
         0% { opacity: 0.6; }
         50% { opacity: 1; }
         100% { opacity: 0.6; }
+    }
+    .latin-toggle-badge {
+        position: absolute;
+        top: 14px;
+        right: 14px;
+        background: #f1f5f9;
+        color: #475569;
+        border: 2px solid #e2e8f0;
+        border-radius: 99px;
+        padding: 4px 10px;
+        font-size: 11px;
+        font-weight: 800;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        transition: all 0.2s;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+        z-index: 10;
+    }
+    .latin-toggle-badge:hover {
+        background: #e2e8f0;
+        transform: translateY(-1px);
+    }
+    .latin-toggle-badge:active {
+        transform: translateY(1px);
     }
 </style>

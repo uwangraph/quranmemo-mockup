@@ -1,4 +1,55 @@
 <script>
+    import { appState } from '$lib/app.svelte.js';
+
+    const wordTransliterations = {
+        // Ayat 1
+        "أَلَمْ": "alam",
+        "نَشْرَحْ": "nashrah",
+        "لَكَ": "laka",
+        "صَدْرَكَ": "shadrak",
+        
+        // Ayat 2
+        "وَوَضَعْنَا": "wa wadha'na",
+        "عَنكَ": "anka",
+        "وِزْرَكَ": "wizrak",
+        
+        // Ayat 3
+        "ٱلَّذِىٓ": "alladzi",
+        "أَنقَضَ": "anqadha",
+        "ظَهْرَكَ": "zhahrak",
+        
+        // Ayat 4
+        "وَرَفَعْنَا": "wa rafa'na",
+        "ذِكْرَكَ": "dzikrak",
+        
+        // Ayat 5
+        "فَإِنَّ": "fa inna",
+        "مَعَ": "ma'a",
+        "ٱلْعُسْرِ": "al-'usri",
+        "يُسْرًا": "yusran",
+        
+        // Ayat 6
+        "إِنَّ": "inna",
+        
+        // Ayat 7
+        "فَإِذَا": "fa idza",
+        "فَرَغْتَ": "faraghta",
+        "فَٱنصَبْ": "fanshab",
+        
+        // Ayat 8
+        "وَإِلَىٰ": "wa ila",
+        "رَبِّكَ": "rabbika",
+        "فَٱرْغَب": "farghab",
+
+        // Frasa (untuk opsi gabungan)
+        "أَلَمْ نَشْرَحْ": "alam nashrah",
+        "وَوَضَعْنَا عَنكَ": "wa wadha'na 'anka",
+        "ٱلَّذِىٓ أَنقَضَ": "alladzi anqadha",
+        "فَإِنَّ مَعَ": "fa inna ma'a",
+        "إِنَّ مَعَ": "inna ma'a",
+        "فَإِذَا فَرَغْتَ": "fa idza faraghta",
+        "وَإِلَىٰ رَبِّكَ": "wa ila rabbika"
+    };
     let { 
         type, 
         activeVerse, 
@@ -30,7 +81,10 @@
     let firstBlankIdx = $derived(blankWords.indexOf('___'));
 </script>
 
-<div class="choice-challenge-container">
+<div class="choice-challenge-container" style="position: relative; padding-top: 30px;">
+    <button class="latin-toggle-badge" onclick={() => appState.toggleLatin()} title="Toggle Latin Transliterasi secara instan" style="top: -6px; right: 0;">
+        🔠 Latin: {appState.user.showLatin ? 'ON' : 'OFF'}
+    </button>
     <div class="challenge-arabic-blank Amiri">
         
         {#each blankWords as part, idx}
@@ -58,6 +112,12 @@
             {' '}
         {/each}
     </div>
+
+    {#if appState.user.showLatin}
+        <div class="translit-focus-text" style="font-size: 13px; font-weight: 700; color: #00978a; text-align: center; margin-top: -4px; margin-bottom: 16px; font-style: italic;">
+            "{activeVerse.transliteration}"
+        </div>
+    {/if}
     
     <div class="choice-options-column">
         
@@ -76,7 +136,12 @@
                 disabled={isChecked}
             >
                 <span class="choice-index-circle">{idx + 1}</span>
-                <span class="choice-text Amiri">{@html getTajweedHTML ? getTajweedHTML(choice) : choice}</span>
+                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1;">
+                    <span class="choice-text Amiri" style="margin: 0; line-height: 1.2;">{@html getTajweedHTML ? getTajweedHTML(choice) : choice}</span>
+                    {#if appState.user.showLatin && wordTransliterations[choice]}
+                        <span class="latin-text-mini" style="font-size: 11px; font-weight: 700; color: #00978a; margin-top: 4px; font-style: italic; font-family: 'Outfit', 'Inter', sans-serif;">{wordTransliterations[choice]}</span>
+                    {/if}
+                </div>
             </button>
         {/each}
     </div>
@@ -217,5 +282,32 @@
         background: none !important;
         color: inherit !important;
         transform: none !important;
+    }
+
+    .latin-toggle-badge {
+        position: absolute;
+        top: 14px;
+        right: 14px;
+        background: #f1f5f9;
+        color: #475569;
+        border: 2px solid #e2e8f0;
+        border-radius: 99px;
+        padding: 4px 10px;
+        font-size: 11px;
+        font-weight: 800;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        transition: all 0.2s;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+        z-index: 10;
+    }
+    .latin-toggle-badge:hover {
+        background: #e2e8f0;
+        transform: translateY(-1px);
+    }
+    .latin-toggle-badge:active {
+        transform: translateY(1px);
     }
 </style>

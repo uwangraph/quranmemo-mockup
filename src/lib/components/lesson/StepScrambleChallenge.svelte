@@ -1,4 +1,55 @@
 <script>
+    import { appState } from '$lib/app.svelte.js';
+
+    const wordTransliterations = {
+        // Ayat 1
+        "أَلَمْ": "alam",
+        "نَشْرَحْ": "nashrah",
+        "لَكَ": "laka",
+        "صَدْرَكَ": "shadrak",
+        
+        // Ayat 2
+        "وَوَضَعْنَا": "wa wadha'na",
+        "عَنكَ": "anka",
+        "وِزْرَكَ": "wizrak",
+        
+        // Ayat 3
+        "ٱلَّذِىٓ": "alladzi",
+        "أَنقَضَ": "anqadha",
+        "ظَهْرَكَ": "zhahrak",
+        
+        // Ayat 4
+        "وَرَفَعْنَا": "wa rafa'na",
+        "ذِكْرَكَ": "dzikrak",
+        
+        // Ayat 5
+        "فَإِنَّ": "fa inna",
+        "مَعَ": "ma'a",
+        "ٱلْعُسْرِ": "al-'usri",
+        "يُسْرًا": "yusran",
+        
+        // Ayat 6
+        "إِنَّ": "inna",
+        
+        // Ayat 7
+        "فَإِذَا": "fa idza",
+        "فَرَغْتَ": "faraghta",
+        "فَٱنصَبْ": "fanshab",
+        
+        // Ayat 8
+        "وَإِلَىٰ": "wa ila",
+        "رَبِّكَ": "rabbika",
+        "فَٱرْغَب": "farghab",
+
+        // Frasa (untuk opsi gabungan)
+        "أَلَمْ نَشْرَحْ": "alam nashrah",
+        "وَوَضَعْنَا عَنكَ": "wa wadha'na 'anka",
+        "ٱلَّذِىٓ أَنقَضَ": "alladzi anqadha",
+        "فَإِنَّ مَعَ": "fa inna ma'a",
+        "إِنَّ مَعَ": "inna ma'a",
+        "فَإِذَا فَرَغْتَ": "fa idza faraghta",
+        "وَإِلَىٰ رَبِّكَ": "wa ila rabbika"
+    };
     let { 
         type, 
         activeVerse, 
@@ -98,13 +149,16 @@
     }
 </script>
 
-<div class="scramble-challenge-container">
+<div class="scramble-challenge-container" style="position: relative; padding-top: 30px;">
+    <button class="latin-toggle-badge" onclick={() => appState.toggleLatin()} title="Toggle Latin Transliterasi secara instan" style="top: -6px; right: 0;">
+        🔠 Latin: {appState.user.showLatin ? 'ON' : 'OFF'}
+    </button>
     {#if type === 'audio_scramble'}
         <div class="audio-control-row">
-            <button class="audio-circle-play small" class:playing={isPlaying && audio?.playbackRate === 1.0} onclick={togglePlay} title="Dengar Qari (Normal)">
+            <button class="audio-circle-play small" class:playing={isPlaying && audio?.playbackRate === 1.0} onclick={togglePlay} disabled={isChecked} title="Dengar Qari (Normal)">
                 <i class="ti ti-volume"></i>
             </button>
-            <button class="audio-circle-play small slow-btn" class:playing={isPlaying && audio?.playbackRate < 1.0} onclick={togglePlaySlow} title="Dengar Qari (Lambat)">
+            <button class="audio-circle-play small slow-btn" class:playing={isPlaying && audio?.playbackRate < 1.0} onclick={togglePlaySlow} disabled={isChecked} title="Dengar Qari (Lambat)">
                 <img src="/snail.png" alt="Snail" class="snail-icon-small" />
             </button>
         </div>
@@ -118,7 +172,8 @@
                 <button 
                     class="loop-pill" 
                     class:active={loopTimes === times} 
-                    onclick={() => { loopTimes = times; setupAudio(); }}
+                    onclick={() => { if (!isChecked) { loopTimes = times; setupAudio(); } }}
+                    disabled={isChecked}
                     title="Ulangi {times} kali"
                 >
                     {times}x
@@ -127,7 +182,8 @@
             <button 
                 class="loop-pill" 
                 class:active={loopTimes === Infinity} 
-                onclick={() => { loopTimes = Infinity; setupAudio(); }}
+                onclick={() => { if (!isChecked) { loopTimes = Infinity; setupAudio(); } }}
+                disabled={isChecked}
                 title="Loop tanpa batas"
             >
                 ∞
@@ -156,6 +212,12 @@
         </div>
     {/if}
     
+    {#if appState.user.showLatin}
+        <div class="translit-focus-text" style="font-size: 13px; font-weight: 700; color: #00978a; text-align: center; margin-bottom: 12px; font-style: italic;">
+            "{activeVerse.transliteration}"
+        </div>
+    {/if}
+
     <div class="scramble-drop-shelf" class:correct={isChecked && isCorrect} class:wrong={isChecked && !isCorrect} class:two-blank={type === 'puzzle_two'}>
         {#if selectedWords.length === 0}
             <span class="drop-shelf-placeholder">
@@ -188,7 +250,10 @@
                 ontouchmove={handleTouchMove}
                 ontouchend={handleTouchEnd}
             >
-                {@html getTajweedHTML ? getTajweedHTML(word.text) : word.text}
+                <span class="arabic-text">{@html getTajweedHTML ? getTajweedHTML(word.text) : word.text}</span>
+                {#if appState.user.showLatin && wordTransliterations[word.text]}
+                    <span class="latin-text-mini">{wordTransliterations[word.text]}</span>
+                {/if}
             </button>
         {/each}
     </div>
@@ -203,7 +268,10 @@
                     onclick={() => toggleWordSelection(wordObj)}
                     disabled={isChecked || wordObj.selected}
                 >
-                    {@html getTajweedHTML ? getTajweedHTML(choice) : choice}
+                    <span class="arabic-text">{@html getTajweedHTML ? getTajweedHTML(choice) : choice}</span>
+                    {#if appState.user.showLatin && wordTransliterations[choice]}
+                        <span class="latin-text-mini">{wordTransliterations[choice]}</span>
+                    {/if}
                 </button>
             {/each}
         {:else}
@@ -214,7 +282,10 @@
                     onclick={() => toggleWordSelection(word)}
                     disabled={isChecked || word.selected}
                 >
-                    {@html getTajweedHTML ? getTajweedHTML(word.text) : word.text}
+                    <span class="arabic-text">{@html getTajweedHTML ? getTajweedHTML(word.text) : word.text}</span>
+                    {#if appState.user.showLatin && wordTransliterations[word.text]}
+                        <span class="latin-text-mini">{wordTransliterations[word.text]}</span>
+                    {/if}
                 </button>
             {/each}
         {/if}
@@ -316,19 +387,36 @@
         direction: rtl;
     }
     .scramble-word-pill {
-        padding: 10px 16px;
+        display: inline-flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 6px 14px;
         border: 2px solid #e5e5e5;
         border-bottom-width: 4px;
         border-radius: 12px;
         background: #fff;
         color: #3c3c3c;
-        font-size: 18px;
-        font-weight: 700;
         cursor: pointer;
         transition: all 0.1s;
-        direction: rtl;
-        font-family: "Amiri", serif;
         box-sizing: border-box;
+        min-width: 60px;
+    }
+    .scramble-word-pill .arabic-text {
+        font-size: 18px;
+        font-weight: 700;
+        font-family: "Amiri", serif;
+        direction: rtl;
+        line-height: 1.1;
+    }
+    .latin-text-mini {
+        font-size: 11px;
+        font-weight: 700;
+        color: #00978a;
+        margin-top: 3px;
+        font-style: italic;
+        font-family: "Outfit", "Inter", sans-serif;
+        line-height: 1.1;
     }
     .scramble-word-pill:active:not(:disabled) {
         transform: translateY(2px);
@@ -408,6 +496,19 @@
         color: #fff;
         box-shadow: 0 2px 6px rgba(0, 151, 138, 0.3);
     }
+    .audio-circle-play:disabled {
+        opacity: 0.5;
+        cursor: default !important;
+        pointer-events: none !important;
+        border-bottom-width: 2px !important;
+        transform: none !important;
+    }
+    .loop-pill:disabled {
+        opacity: 0.5;
+        cursor: default !important;
+        pointer-events: none !important;
+        transform: none !important;
+    }
     .clickable-word-question {
         display: inline-block;
         cursor: pointer;
@@ -429,5 +530,32 @@
         background: none !important;
         color: inherit !important;
         transform: none !important;
+    }
+
+    .latin-toggle-badge {
+        position: absolute;
+        top: 14px;
+        right: 14px;
+        background: #f1f5f9;
+        color: #475569;
+        border: 2px solid #e2e8f0;
+        border-radius: 99px;
+        padding: 4px 10px;
+        font-size: 11px;
+        font-weight: 800;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        transition: all 0.2s;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+        z-index: 10;
+    }
+    .latin-toggle-badge:hover {
+        background: #e2e8f0;
+        transform: translateY(-1px);
+    }
+    .latin-toggle-badge:active {
+        transform: translateY(1px);
     }
 </style>
