@@ -552,20 +552,20 @@
     }
 
     // === MOTIVATIONAL MESSAGES ===
-    const motivationalMessages = [
-        "Subhanallah! Lanjutkan! 🌟",
-        "Bagus sekali! +1 ayat hafal 📖",
-        "Semangat! Terus istiqomah 💪",
-        "Masha Allah, hebat! ✨",
-        "Satu langkah lebih dekat ke hati Al-Quran 💚",
-        "Allah mencintai orang yang istiqomah 🤲",
-        "Keren! Ayat berikutnya siap? 🚀",
-        "Luar biasa! Terus dijaga ya hafalannya 🏆",
-        "Yakin bisa! Kamu hebat 🔥",
-        "Jangan lupa muroja'ah nanti ya! 📿",
-        "Alhamdulillah! Semakin lancar 🎯",
-        "Tabaarakallah, menginspirasi! 🌙"
-    ];
+    const motivationalMessages = $derived([
+        i18n.t('motivation.1'),
+        i18n.t('motivation.2'),
+        i18n.t('motivation.3'),
+        i18n.t('motivation.4'),
+        i18n.t('motivation.5'),
+        i18n.t('motivation.6'),
+        i18n.t('motivation.7'),
+        i18n.t('motivation.8'),
+        i18n.t('motivation.9'),
+        i18n.t('motivation.10'),
+        i18n.t('motivation.11'),
+        i18n.t('motivation.12')
+    ]);
     let currentMotivation = $state('');
 
     function triggerCorrect() {

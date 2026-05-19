@@ -1,4 +1,6 @@
 <script>
+    import { i18n } from '$lib/i18n.svelte.js';
+
     let { 
         type, 
         activeVerse, 
@@ -23,18 +25,18 @@
             {#if type === 'setor_full'}📖{:else if type === 'recall_level1'}🏆{:else}🔗{/if}
         </div>
         <div class="mic-container">
-            <button class="mic-circle-btn giant" onclick={startSimulatedRecording} disabled={isChecked} title="Mulai Setoran">
+            <button class="mic-circle-btn giant" onclick={startSimulatedRecording} disabled={isChecked} title={i18n.t('lesson.mic_title') || 'Mulai Setoran'}>
                 <i class="ti ti-microphone"></i>
             </button>
         </div>
         <p class="instruction-txt">
             {#if type === 'setor_full'}
-                Tekan tombol mic, lalu hafalkan ayat {activeVerse.verseNumber} secara lengkap tanpa bantuan teks.
+                {i18n.t('lesson.instruct_setor_full').replace('{verse}', activeVerse.verseNumber)}
             {:else if type === 'recall_level1'}
-                Tekan mic dan bacakan ayat {activeVerse.verseNumber} yang baru saja kamu hafal secara penuh dari ingatanmu.
+                {i18n.t('lesson.instruct_recall').replace('{verse}', activeVerse.verseNumber)}
             {:else}
                 {@const prevVerse = alInsyirahVerses[selectedVerseIndex - 1]}
-                Tekan mic dan bacakan <strong>ayat {prevVerse.verseNumber}</strong> dilanjutkan <strong>ayat {activeVerse.verseNumber}</strong> secara berurutan tanpa putus.
+                {@html i18n.t('lesson.instruct_link').replace('{prev}', prevVerse.verseNumber).replace('{curr}', activeVerse.verseNumber)}
             {/if}
         </p>
     {:else if recordState === 'recording'}
@@ -53,11 +55,11 @@
         
         <p class="instruction-txt pulsing text-primary" style="margin-top: 10px;">
             {#if type === 'setor_full'}
-                Tasmi AI sedang menyimak bacaan Anda...
+                {i18n.t('lesson.tasmi_listening_full')}
             {:else if type === 'recall_level1'}
-                Tasmi AI sedang menyimak hafalan barumu...
+                {i18n.t('lesson.tasmi_listening_recall')}
             {:else}
-                Tasmi AI menyimak sambungan ayat...
+                {i18n.t('lesson.tasmi_listening_link')}
             {/if}
         </p>
     {:else if recordState === 'recorded'}
@@ -66,27 +68,27 @@
             <!-- Transcription Card -->
             <div class="transcription-card">
                 {#if type === 'setor_full'}
-                    <span class="badge-pill mushaf">BACAAN MUSHAF</span>
+                    <span class="badge-pill mushaf">{i18n.t('lesson.badge_mushaf')}</span>
                     <div class="arabic-display Amiri">
                         {@html getTajweedHTML ? getTajweedHTML(activeVerse.arabic) : activeVerse.arabic}
                     </div>
-                    <span class="card-status-txt">Bandingkan rekaman Anda dengan bacaan Qari</span>
+                    <span class="card-status-txt">{i18n.t('lesson.compare_desc')}</span>
                 {:else if type === 'recall_level1'}
-                    <span class="badge-pill transcription">TRANSKRIPSI HAFALAN</span>
+                    <span class="badge-pill transcription">{i18n.t('lesson.badge_transcription')}</span>
                     <div class="arabic-display Amiri">
                         {@html getTajweedHTML ? getTajweedHTML(activeVerse.arabic) : activeVerse.arabic}
                     </div>
-                    <span class="card-status-txt success">✓ Ayat baru berhasil disetorkan dengan fasih!</span>
+                    <span class="card-status-txt success">{i18n.t('lesson.success_recall')}</span>
                 {:else}
                     {@const prevVerse = alInsyirahVerses[selectedVerseIndex - 1]}
-                    <span class="badge-pill linking">HAFALAN BERSAMBUNG</span>
+                    <span class="badge-pill linking">{i18n.t('lesson.badge_linking')}</span>
                     <div class="arabic-display Amiri double">
                         {@html getTajweedHTML ? getTajweedHTML(prevVerse.arabic) : prevVerse.arabic} 
                         <span class="verse-num">﴿{prevVerse.verseNumber}﴾</span>
                         {@html getTajweedHTML ? getTajweedHTML(activeVerse.arabic) : activeVerse.arabic}
                         <span class="verse-num">﴿{activeVerse.verseNumber}﴾</span>
                     </div>
-                    <span class="card-status-txt success">✓ Sambungan ayat {prevVerse.verseNumber} & {activeVerse.verseNumber} terjalin kokoh!</span>
+                    <span class="card-status-txt success">{i18n.t('lesson.success_link').replace('{prev}', prevVerse.verseNumber).replace('{curr}', activeVerse.verseNumber)}</span>
                 {/if}
             </div>
 
@@ -99,7 +101,7 @@
                     disabled={isChecked}
                 >
                     <i class="ti {isPlayingRecorded ? 'ti-player-pause-filled' : 'ti-microphone-filled'}"></i>
-                    {isPlayingRecorded ? 'Memutar Rekaman...' : 'Putar Rekamanku'}
+                    {isPlayingRecorded ? i18n.t('lesson.playing_my_record') : i18n.t('lesson.play_my_record')}
                 </button>
 
                 {#if type === 'setor_full'}
@@ -110,7 +112,7 @@
                         disabled={isChecked}
                     >
                         <i class="ti {isPlaying ? 'ti-player-pause-filled' : 'ti-headphones-filled'}"></i>
-                        {isPlaying ? 'Memutar Qari...' : 'Putar Bacaan Qari'}
+                        {isPlaying ? i18n.t('lesson.playing_qari') : i18n.t('lesson.play_qari')}
                     </button>
                 {/if}
             </div>

@@ -29,15 +29,15 @@
             </div>
         </div>
 
-        <div class="section-label">Level & Preferensi Belajar</div>
+        <div class="section-label">{i18n.t('profile.levelling_title')}</div>
         <div style="padding: 0 16px; display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px;">
             <!-- Learning Path Selector -->
             <div class="pref-card">
                 <div class="pref-header">
                     <span class="pref-icon">🗺️</span>
                     <div style="flex: 1">
-                        <div class="pref-title">Jalur Belajar (Learning Path)</div>
-                        <div class="pref-desc">Ditentukan saat onboarding berdasarkan pengalaman & kualitas bacaanmu. Bisa diubah kapan saja.</div>
+                        <div class="pref-title">{i18n.t('profile.learning_path_title')}</div>
+                        <div class="pref-desc">{i18n.t('profile.learning_path_desc')}</div>
                     </div>
                 </div>
 
@@ -74,39 +74,39 @@
                 <!-- Active path detail -->
                 {#if appState.user.learningPath === 'beginner'}
                     <div class="path-detail beginner">
-                        <div class="path-detail-title">🌱 Beginner Level — Juz Amma</div>
-                        <div class="path-detail-desc">Untuk pemula yang baru memulai menghafal Al-Quran. Target utama: Juz 30 (Juz Amma).</div>
+                        <div class="path-detail-title">{i18n.t('profile.path_beginner_title')}</div>
+                        <div class="path-detail-desc">{i18n.t('profile.path_beginner_desc')}</div>
                         <div class="path-mini-targets">
-                            <div class="mini-target-row"><span class="mtr-label">Tangga 1</span><span class="mtr-val">An-Naas → Ad-Dhuha</span><span class="mtr-reward">Checkpoint</span></div>
-                            <div class="mini-target-row"><span class="mtr-label">Tangga 2</span><span class="mtr-val">Al-Layl → At-Takwir</span><span class="mtr-reward">Checkpoint</span></div>
-                            <div class="mini-target-row"><span class="mtr-label">Tangga 3</span><span class="mtr-val">An-Naziat → An-Naba'</span><span class="mtr-reward">Badge Juz</span></div>
+                            <div class="mini-target-row"><span class="mtr-label">{i18n.t('profile.ladder')} 1</span><span class="mtr-val">An-Naas → Ad-Dhuha</span><span class="mtr-reward">{i18n.t('profile.checkpoint')}</span></div>
+                            <div class="mini-target-row"><span class="mtr-label">{i18n.t('profile.ladder')} 2</span><span class="mtr-val">Al-Layl → At-Takwir</span><span class="mtr-reward">{i18n.t('profile.checkpoint')}</span></div>
+                            <div class="mini-target-row"><span class="mtr-label">{i18n.t('profile.ladder')} 3</span><span class="mtr-val">An-Naziat → An-Naba'</span><span class="mtr-reward">{i18n.t('profile.badge_juz')}</span></div>
                         </div>
-                        <div class="path-key">🎮 Fun & mudah · Audio eksperimental · Langkah kecil-kecil</div>
+                        <div class="path-key">{i18n.t('profile.path_beginner_key')}</div>
                     </div>
                 {:else if appState.user.learningPath === 'mid'}
                     <div class="path-detail mid">
-                        <div class="path-detail-title">📖 Mid Level — Juz 29, 28 & Opsional</div>
-                        <div class="path-detail-desc">Untuk yang sudah hafal Juz Amma dan ingin melanjutkan. Target 2–3× lebih besar dari Beginner.</div>
+                        <div class="path-detail-title">{i18n.t('profile.path_mid_title')}</div>
+                        <div class="path-detail-desc">{i18n.t('profile.path_mid_desc')}</div>
                         <div class="path-mini-targets">
                             <div class="mini-target-row"><span class="mtr-label">Juz 29 — T1</span><span class="mtr-val">Al-Mulk, Al-Qalam, Al-Haqqah</span></div>
                             <div class="mini-target-row"><span class="mtr-label">Juz 29 — T2</span><span class="mtr-val">Al-Ma'arij, Nuh, Al-Jinn, Al-Muzzammil</span></div>
                             <div class="mini-target-row"><span class="mtr-label">Juz 29 — T3</span><span class="mtr-val">Al-Muddatstsir, Al-Qiyamah, Al-Insan, Al-Mursalat</span></div>
-                            <div class="mini-target-row mtr-optional"><span class="mtr-label">Opsional</span><span class="mtr-val">Al-Waqi'ah · Ar-Rahman</span></div>
+                            <div class="mini-target-row mtr-optional"><span class="mtr-label">{i18n.t('profile.optional')}</span><span class="mtr-val">Al-Waqi'ah · Ar-Rahman</span></div>
                         </div>
-                        <div class="path-key">🎮 Fun & mudah · Target per juz = 1 tangga</div>
+                        <div class="path-key">{i18n.t('profile.path_mid_key')}</div>
                     </div>
                 {:else}
                     <div class="path-detail pro">
-                        <div class="path-detail-title">🏆 Pro Level — Juz 1–27</div>
-                        <div class="path-detail-desc">Untuk yang sudah selesai Mid Level atau punya hafalan sebelumnya. Target sistematis Juz 1–27.</div>
+                        <div class="path-detail-title">{i18n.t('profile.path_pro_title')}</div>
+                        <div class="path-detail-desc">{i18n.t('profile.path_pro_desc')}</div>
                         <div class="path-mini-targets">
-                            <div class="mini-target-row"><span class="mtr-label">Per Juz</span><span class="mtr-val">Dibagi 4 bagian × 5 halaman</span></div>
-                            <div class="mini-target-row"><span class="mtr-label">Bagian 1</span><span class="mtr-val">Hal 1–5</span></div>
-                            <div class="mini-target-row"><span class="mtr-label">Bagian 2</span><span class="mtr-val">Hal 6–10</span></div>
-                            <div class="mini-target-row"><span class="mtr-label">Bagian 3</span><span class="mtr-val">Hal 11–15</span></div>
-                            <div class="mini-target-row"><span class="mtr-label">Bagian 4</span><span class="mtr-val">Hal 16–20</span></div>
+                            <div class="mini-target-row"><span class="mtr-label">{i18n.t('profile.per_juz')}</span><span class="mtr-val">{i18n.t('profile.juz_parts')}</span></div>
+                            <div class="mini-target-row"><span class="mtr-label">{i18n.t('profile.part')} 1</span><span class="mtr-val">{i18n.t('profile.page')} 1–5</span></div>
+                            <div class="mini-target-row"><span class="mtr-label">{i18n.t('profile.part')} 2</span><span class="mtr-val">{i18n.t('profile.page')} 6–10</span></div>
+                            <div class="mini-target-row"><span class="mtr-label">{i18n.t('profile.part')} 3</span><span class="mtr-val">{i18n.t('profile.page')} 11–15</span></div>
+                            <div class="mini-target-row"><span class="mtr-label">{i18n.t('profile.part')} 4</span><span class="mtr-val">{i18n.t('profile.page')} 16–20</span></div>
                         </div>
-                        <div class="path-key">🎯 Disiplin · Audio-visual · Badge per surah & per juz</div>
+                        <div class="path-key">{i18n.t('profile.path_pro_key')}</div>
                     </div>
                 {/if}
             </div>
@@ -115,8 +115,8 @@
             <div class="pref-card">
                 <div class="pref-row">
                     <div style="flex: 1; padding-right: 12px;">
-                        <div class="pref-label">Tampilkan Bacaan Latin</div>
-                        <div class="pref-subtext">Kontrol transliterasi secara instan di setiap ayat soal.</div>
+                        <div class="pref-label">{i18n.t('profile.show_latin')}</div>
+                        <div class="pref-subtext">{i18n.t('profile.show_latin_desc')}</div>
                     </div>
                     <button class="toggle-switch-btn" class:active={appState.user.showLatin} onclick={() => appState.toggleLatin()}>
                         <span class="switch-handle"></span>

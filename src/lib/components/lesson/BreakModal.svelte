@@ -1,5 +1,6 @@
 <script>
     import { fade, fly } from 'svelte/transition';
+    import { i18n } from '$lib/i18n.svelte.js';
     let { showBreakModal, onContinue, onExit } = $props();
 </script>
 
@@ -7,16 +8,16 @@
 <div class="completion-overlay" transition:fade={{duration: 200}}>
     <div class="completion-card" transition:fly={{y: 20, duration: 300}}>
         <div class="break-emoji">☕</div>
-        <div class="congrats-headline">Istirahat Sejenak</div>
+        <div class="congrats-headline">{i18n.t('break.title')}</div>
         <p class="break-description">
-            Istirahat sejenak agar pikiran tetap segar. Hafalan yang dilanjutkan dengan tenang akan lebih melekat di ingatan. 🌙
+            {i18n.t('break.description')}
         </p>
         <div class="button-column">
             <button class="btn-duo btn-green" onclick={onContinue}>
-                LANJUTKAN HAFALAN
+                {i18n.t('break.continue')}
             </button>
             <button class="btn-duo btn-outline" onclick={onExit}>
-                KEMBALI KE DASHBOARD
+                {i18n.t('break.exit')}
             </button>
         </div>
     </div>

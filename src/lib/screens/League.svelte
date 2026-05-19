@@ -175,7 +175,7 @@
                 <div class="info-banner-icon">🏘️</div>
                 <div>
                     <div style="font-size: 13px; font-weight: 900; color: #3c3c3c;">Pesantren Al-Hikmah</div>
-                    <div style="font-size: 10px; font-weight: 700; color: #afafaf;">120 {i18n.t('lb.members')} · 8 Halaqah · Privat</div>
+                    <div style="font-size: 10px; font-weight: 700; color: #afafaf;">120 {i18n.t('lb.members')} · 8 {i18n.t('lb.tab_halaqah')} · {i18n.t('lb.private')}</div>
                 </div>
             </div>
         {:else if activeTab === 'my-halaqah'}

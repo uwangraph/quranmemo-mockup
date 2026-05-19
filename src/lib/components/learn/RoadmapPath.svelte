@@ -6,20 +6,20 @@
         const lp = appState.user.learningPath;
         if (lp === 'pro') {
             return {
-                unitTitle: "Juz 1 • Bagian 1",
-                unitDesc: "Halaman 1–5 (Al-Fatihah & Al-Baqarah)",
+                unitTitle: i18n.t('learn.unit_title_pro'),
+                unitDesc: i18n.t('learn.unit_desc_pro'),
                 badge: "PRO LEVEL"
             };
         } else if (lp === 'mid') {
             return {
-                unitTitle: "Juz 29 • Tangga 1",
-                unitDesc: "Al-Mulk, Al-Qalam, Al-Haqqah",
+                unitTitle: i18n.t('learn.unit_title_mid'),
+                unitDesc: i18n.t('learn.unit_desc_mid'),
                 badge: "MID LEVEL"
             };
         } else {
             return {
-                unitTitle: "Surah Al-Insyirah",
-                unitDesc: "Kelapangan Hati & Kemudahan",
+                unitTitle: i18n.t('learn.unit_title_beginner'),
+                unitDesc: i18n.t('learn.unit_desc_beginner'),
                 badge: "BEGINNER LEVEL"
             };
         }
@@ -33,36 +33,36 @@
 
         if (lp === 'pro') {
             return [
-                { id: 1, type: "lesson", verseIndex: 0, status: getStatus(0), title: "Halaman 1" },
-                { id: 2, type: "lesson", verseIndex: 1, status: getStatus(1), title: "Halaman 2" },
-                { id: 3, type: "tadabbur", status: progress >= 2 ? "completed" : "locked", title: "Tadabbur Hal 1-2" },
-                { id: 4, type: "lesson", verseIndex: 2, status: getStatus(2), title: "Halaman 3" },
-                { id: 5, type: "lesson", verseIndex: 3, status: getStatus(3), title: "Halaman 4" },
-                { id: 6, type: "lesson", verseIndex: 4, status: getStatus(4), title: "Halaman 5" },
-                { id: 7, type: "checkpoint", status: progress >= 5 ? "current" : "locked", title: "Setor Bagian 1" }
+                { id: 1, type: "lesson", verseIndex: 0, status: getStatus(0), title: `${i18n.t('learn.page')} 1` },
+                { id: 2, type: "lesson", verseIndex: 1, status: getStatus(1), title: `${i18n.t('learn.page')} 2` },
+                { id: 3, type: "tadabbur", status: progress >= 2 ? "completed" : "locked", title: `${i18n.t('learn.tadabbur_pages')} 1-2` },
+                { id: 4, type: "lesson", verseIndex: 2, status: getStatus(2), title: `${i18n.t('learn.page')} 3` },
+                { id: 5, type: "lesson", verseIndex: 3, status: getStatus(3), title: `${i18n.t('learn.page')} 4` },
+                { id: 6, type: "lesson", verseIndex: 4, status: getStatus(4), title: `${i18n.t('learn.page')} 5` },
+                { id: 7, type: "checkpoint", status: progress >= 5 ? "current" : "locked", title: `${i18n.t('learn.submit_part')} 1` }
             ];
         } else if (lp === 'mid') {
             return [
                 { id: 1, type: "lesson", verseIndex: 0, status: getStatus(0), title: "Al-Mulk (1-15)" },
                 { id: 2, type: "lesson", verseIndex: 1, status: getStatus(1), title: "Al-Mulk (16-30)" },
-                { id: 3, type: "checkpoint", status: progress >= 2 ? "completed" : "locked", title: "Setor Al-Mulk" },
+                { id: 3, type: "checkpoint", status: progress >= 2 ? "completed" : "locked", title: `${i18n.t('learn.submit_part')} Al-Mulk` },
                 { id: 4, type: "lesson", verseIndex: 2, status: getStatus(2), title: "Al-Qalam" },
                 { id: 5, type: "lesson", verseIndex: 3, status: getStatus(3), title: "Al-Haqqah" },
-                { id: 6, type: "tadabbur", status: progress >= 4 ? "current" : "locked", title: "Tadabbur T1" },
-                { id: 7, type: "checkpoint", status: progress >= 5 ? "locked" : "locked", title: "Setor Tangga 1" }
+                { id: 6, type: "tadabbur", status: progress >= 4 ? "current" : "locked", title: `Tadabbur T1` },
+                { id: 7, type: "checkpoint", status: progress >= 5 ? "locked" : "locked", title: `${i18n.t('learn.submit_ladder')} 1` }
             ];
         } else {
             return [
-                { id: 1, type: "lesson", verseIndex: 0, status: getStatus(0), title: "Ayat 1" },
-                { id: 2, type: "lesson", verseIndex: 1, status: getStatus(1), title: "Ayat 2" },
-                { id: 3, type: "lesson", verseIndex: 2, status: getStatus(2), title: "Ayat 3" },
-                { id: 4, type: "tadabbur", status: progress >= 3 ? "completed" : "locked", title: "Tadabbur 1-3" },
-                { id: 5, type: "lesson", verseIndex: 3, status: getStatus(3), title: "Ayat 4" },
-                { id: 6, type: "lesson", verseIndex: 4, status: getStatus(4), title: "Ayat 5" },
-                { id: 7, type: "lesson", verseIndex: 5, status: getStatus(5), title: "Ayat 6" },
-                { id: 8, type: "lesson", verseIndex: 6, status: getStatus(6), title: "Ayat 7" },
-                { id: 9, type: "lesson", verseIndex: 7, status: getStatus(7), title: "Ayat 8" },
-                { id: 10, type: "checkpoint", status: progress >= 8 ? "current" : "locked", title: "Setor 1 Surah Penuh" }
+                { id: 1, type: "lesson", verseIndex: 0, status: getStatus(0), title: `${i18n.t('learn.verse')} 1` },
+                { id: 2, type: "lesson", verseIndex: 1, status: getStatus(1), title: `${i18n.t('learn.verse')} 2` },
+                { id: 3, type: "lesson", verseIndex: 2, status: getStatus(2), title: `${i18n.t('learn.verse')} 3` },
+                { id: 4, type: "tadabbur", status: progress >= 3 ? "completed" : "locked", title: `Tadabbur 1-3` },
+                { id: 5, type: "lesson", verseIndex: 3, status: getStatus(3), title: `${i18n.t('learn.verse')} 4` },
+                { id: 6, type: "lesson", verseIndex: 4, status: getStatus(4), title: `${i18n.t('learn.verse')} 5` },
+                { id: 7, type: "lesson", verseIndex: 5, status: getStatus(5), title: `${i18n.t('learn.verse')} 6` },
+                { id: 8, type: "lesson", verseIndex: 6, status: getStatus(6), title: `${i18n.t('learn.verse')} 7` },
+                { id: 9, type: "lesson", verseIndex: 7, status: getStatus(7), title: `${i18n.t('learn.verse')} 8` },
+                { id: 10, type: "checkpoint", status: progress >= 8 ? "current" : "locked", title: `${i18n.t('learn.submit_full_surah')}` }
             ];
         }
     });
@@ -81,14 +81,14 @@
     <!-- Daily goal card: visible only in mobile phone mockup -->
     <div class="daily-goal-card mobile-only-card">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-            <span style="font-size: 13px; font-weight: 900; color: #3c3c3c;">Target Poin Gratis</span>
+            <span style="font-size: 13px; font-weight: 900; color: #3c3c3c;">{i18n.t('learn.free_points_target')}</span>
             <span style="font-size: 12px; font-weight: 800; color: #afafaf;">24 / 60</span>
         </div>
         <div class="goal-bar-bg">
             <div class="goal-bar-fill" style="width: 40%"></div>
         </div>
         <div style="font-size: 10px; font-weight: 700; color: #afafaf; margin-top: 6px; display: flex; align-items: center; gap: 4px;">
-            <i class="ti ti-info-circle"></i> Reset dalam 12 hari
+            <i class="ti ti-info-circle"></i> {i18n.t('learn.reset_info')}
         </div>
     </div>
 

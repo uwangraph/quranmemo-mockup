@@ -1,5 +1,6 @@
 <script>
     import { appState } from '$lib/app.svelte.js';
+    import { i18n } from '$lib/i18n.svelte.js';
 
     let { 
         previousVerse, 
@@ -25,7 +26,7 @@
             onclick={() => { recallMethod = 'voice'; }}
             disabled={isChecked}
         >
-            🎙️ Setoran Hafalan
+            {i18n.t('lesson.tab_recall_voice')}
         </button>
         <button 
             class="recall-tab-btn" 
@@ -33,7 +34,7 @@
             onclick={() => { recallMethod = 'mushaf'; }}
             disabled={isChecked}
         >
-            📖 Segmentasi Mushaf
+            {i18n.t('lesson.tab_recall_mushaf')}
         </button>
     </div>
 
@@ -43,11 +44,11 @@
             {previousVerse.arabic}
         </div>
         <p class="voice-instruction-text">
-            "Bacakan ayat {selectedVerseIndex} sepenuhnya dari hafalan tanpa teks."
+            "{i18n.t('lesson.instruct_recall_voice').replace('{verse}', selectedVerseIndex)}"
         </p>
         
         <div class="mic-container">
-            <button class="mic-circle-btn giant" class:active={recordState === 'recording'} onclick={startSimulatedRecording} disabled={isChecked} title="Mulai Setoran Suara">
+            <button class="mic-circle-btn giant" class:active={recordState === 'recording'} onclick={startSimulatedRecording} disabled={isChecked} title={i18n.t('lesson.mic_title_voice') || 'Mulai Setoran Suara'}>
                 <i class="ti ti-microphone"></i>
             </button>
         </div>
@@ -59,15 +60,15 @@
                 {/each}
             </div>
             <span class="pulse-text">
-                {recordState === 'recording' ? 'Merekam hafalanmu...' : 'Memutar rekaman hafalanmu...'}
+                {recordState === 'recording' ? i18n.t('lesson.recording_hifz') : i18n.t('lesson.playing_hifz')}
             </span>
         {:else if recordState === 'recorded'}
             <div class="voice-matched-toast">
                 <i class="ti ti-circle-check-filled"></i>
-                Suara terekam! Klik Periksa di bawah.
+                {i18n.t('lesson.voice_recorded')}
             </div>
         {:else}
-            <span class="action-helper-txt">Ketuk mikrofon di atas untuk mulai menyetor suara</span>
+            <span class="action-helper-txt">{i18n.t('lesson.tap_mic_to_start')}</span>
         {/if}
     {:else}
         <!-- Mushaf Segmentasi mode -->
@@ -85,7 +86,7 @@
 
 
         <p class="mushaf-instruction-text">
-            Lengkapi potongan ayat di atas dengan memilih jawaban yang benar:
+            {i18n.t('lesson.instruct_mushaf')}
         </p>
         <div class="options-stack">
             {#each previousVerse.frontChoices as choice, i}

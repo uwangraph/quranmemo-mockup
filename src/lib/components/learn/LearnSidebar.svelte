@@ -1,11 +1,14 @@
 <script>
     import { appState } from '$lib/app.svelte.js';
+    import { i18n } from '$lib/i18n.svelte.js';
 
     const leagueRankings = $derived([
-        { name: "Anda", xp: appState.user.xp, isMe: true, avatar: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png" },
+        { name: i18n.t('lb.you'), xp: appState.user.xp, isMe: true, avatar: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png" },
         { name: "Ust. Ridwan", xp: 1420, avatar: "https://cdn-icons-png.flaticon.com/512/3996/3996562.png" },
         { name: "Aisyah", xp: 1380, avatar: "https://cdn-icons-png.flaticon.com/512/3996/3996570.png" },
     ].sort((a, b) => b.xp - a.xp).map((item, i) => ({ ...item, rank: i + 1 })));
+
+    const dayInitials = $derived((i18n.t('sidebar.day_initials') || "S,S,R,K,J,S,M").split(','));
 </script>
 
 <div class="sidebar-column">
@@ -13,55 +16,51 @@
     <!-- Daily Goal Card -->
     <div class="daily-goal-card desktop-sidebar-card">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-            <span style="font-size: 13px; font-weight: 900; color: #3c3c3c;">Target Poin Gratis</span>
+            <span style="font-size: 13px; font-weight: 900; color: #3c3c3c;">{i18n.t('learn.free_points_target')}</span>
             <span style="font-size: 12px; font-weight: 800; color: #afafaf;">24 / 60</span>
         </div>
         <div class="goal-bar-bg">
             <div class="goal-bar-fill" style="width: 40%"></div>
         </div>
         <div style="font-size: 10px; font-weight: 700; color: #afafaf; margin-top: 6px; display: flex; align-items: center; gap: 4px;">
-            <i class="ti ti-info-circle"></i> Reset dalam 12 hari
+            <i class="ti ti-info-circle"></i> {i18n.t('learn.reset_info')}
         </div>
     </div>
 
     <!-- Consistency/Streak Calendar -->
     <div class="desktop-widget streak-widget">
         <div class="widget-header">
-            <span class="widget-title">Konsistensi Hafalan</span>
-            <span class="widget-action">7 Hari 🔥</span>
+            <span class="widget-title">{i18n.t('sidebar.consistency')}</span>
+            <span class="widget-action">{i18n.t('sidebar.consistency_days').replace('{days}', appState.user.streak)}</span>
         </div>
         <div class="calendar-grid">
-            <span class="day active">S</span>
-            <span class="day active">S</span>
-            <span class="day active">R</span>
-            <span class="day active">K</span>
-            <span class="day active">J</span>
-            <span class="day active">S</span>
-            <span class="day current">M</span>
+            {#each dayInitials as initial, i}
+                <span class="day" class:active={i < 6} class:current={i === 6}>{initial}</span>
+            {/each}
         </div>
-        <div class="streak-msg">Luar biasa! Hafalanmu aktif dan terjaga dengan sangat baik.</div>
+        <div class="streak-msg">{i18n.t('sidebar.consistency_msg')}</div>
     </div>
 
     <!-- Daily Quests -->
     <div class="desktop-widget quest-widget">
         <div class="widget-header">
-            <span class="widget-title">Misi Harian</span>
-            <span class="widget-action">1 / 3 Selesai</span>
+            <span class="widget-title">{i18n.t('sidebar.quests')}</span>
+            <span class="widget-action">1 / 3 {i18n.t('sidebar.quests_done')}</span>
         </div>
         <div class="quest-list">
             <div class="quest-item completed">
                 <span class="check-icon">✓</span>
-                <span class="quest-text">Murojaah 2 sesi</span>
+                <span class="quest-text">{i18n.t('sidebar.quest_1')}</span>
                 <span class="quest-reward">+10 XP</span>
             </div>
             <div class="quest-item">
                 <span class="check-icon">○</span>
-                <span class="quest-text">Jawab 10 kuis susun kata</span>
+                <span class="quest-text">{i18n.t('sidebar.quest_2')}</span>
                 <span class="quest-reward">+15 XP</span>
             </div>
             <div class="quest-item">
                 <span class="check-icon">○</span>
-                <span class="quest-text">Dengar audio Qari 5 menit</span>
+                <span class="quest-text">{i18n.t('sidebar.quest_3')}</span>
                 <span class="quest-reward">+10 XP</span>
             </div>
         </div>
@@ -72,10 +71,10 @@
     <!-- svelte-ignore a11y_no_static_element_interactions -->
     <div class="desktop-widget league-widget" onclick={() => appState.go('league')} style="cursor: pointer;">
         <div class="widget-header">
-            <span class="widget-title">Liga Pekan Ini</span>
+            <span class="widget-title">{i18n.t('sidebar.league_title')}</span>
             <span class="widget-action" style="color: #00978A; display: flex; align-items: center; gap: 4px;">
                 <img src="https://cdn-icons-png.flaticon.com/512/3112/3112946.png" alt="" style="width: 16px; height: 16px; object-fit: contain;" />
-                Liga Safir
+                {i18n.t('league.sapphire')}
             </span>
         </div>
         <div class="league-rank-preview">
@@ -88,7 +87,7 @@
                 </div>
             {/each}
         </div>
-        <div class="league-footer">Top 5 naik ke Liga Berlian · 2 hari lagi</div>
+        <div class="league-footer">{i18n.t('sidebar.league_footer')}</div>
     </div>
 
 </div>

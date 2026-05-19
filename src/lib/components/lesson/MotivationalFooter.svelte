@@ -1,4 +1,5 @@
 <script>
+    import { i18n } from '$lib/i18n.svelte.js';
     let { isChecked, isCorrect, feedbackAnimClass, currentMotivation } = $props();
 </script>
 
@@ -7,12 +8,12 @@
         <div class="feedback-inner-content">
             <div class="feedback-badge" class:correct={isCorrect} class:wrong={!isCorrect}>
                 <i class="ti {isCorrect ? 'ti-check' : 'ti-alert-circle'}"></i>
-                {isCorrect ? currentMotivation || 'SANGAT BAGUS! 🌟' : 'KURANG TEPAT 💪'}
+                {isCorrect ? currentMotivation || i18n.t('motivation.great_job') : i18n.t('motivation.incorrect')}
             </div>
             <p class="feedback-msg">
                 {isCorrect 
-                    ? 'Masya Allah! Jawabanmu 100% tepat. Hafalan tajwid dan visualmu makin kokoh!' 
-                    : 'Perhatikan susunan kata dan lafal aslinya. Jangan menyerah, ayo coba lagi!'}
+                    ? i18n.t('motivation.correct_msg') 
+                    : i18n.t('motivation.incorrect_msg')}
             </p>
         </div>
     </div>
