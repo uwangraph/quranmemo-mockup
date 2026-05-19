@@ -94,13 +94,13 @@
     }
     .challenge-arabic-blank {
         font-size: 26px;
-        line-height: 1.8;
+        line-height: 2.2;
         text-align: center;
         color: #1e293b;
         background: #fafafa;
         border: 2px dashed #cbd5e1;
         border-radius: 20px;
-        padding: 24px 16px;
+        padding: 40px 24px;
         direction: rtl;
     }
     .filled-text {
