@@ -221,6 +221,13 @@
     );
 
     // === ANIMASI & SOUND EFFECTS ===
+    let confettiCanvas;
+    let myConfetti;
+    $effect(() => {
+        if (confettiCanvas && !myConfetti) {
+            myConfetti = confetti.create(confettiCanvas, { resize: true, useWorker: true });
+        }
+    });
     let showConfetti = $state(false);
     // Old DOM state removed
     let feedbackAnimClass = $state(''); // 'anim-correct' | 'anim-wrong'
@@ -373,18 +380,19 @@
     }
 
     function spawnConfetti() {
+        if (!myConfetti) return;
         var duration = 3000;
         var end = Date.now() + duration;
 
         (function frame() {
-            confetti({
+            myConfetti({
                 particleCount: 5,
                 angle: 60,
                 spread: 55,
                 origin: { x: 0, y: 0.8 },
                 colors: ['#00978A', '#10B981', '#FFD700', '#FF6B6B']
             });
-            confetti({
+            myConfetti({
                 particleCount: 5,
                 angle: 120,
                 spread: 55,
@@ -1397,10 +1405,21 @@
     <BreakModal bind:showBreakModal={showBreakModal} onContinue={toggleBreak} onExit={exitLesson} />
 
     <!-- 3. COMPLETED ALL STAGES SCREEN OVERLAY -->
+    <canvas bind:this={confettiCanvas} class="confetti-canvas"></canvas>
     <LessonCompletion bind:showCompletion={showCompletion} {selectedVerseIndex} {activeVerse} {lessonEarnedXP} {lessonEarnedCoins} accuracy={accuracyPercent + '%'} onFinish={exitLesson} />
 </div>
 
 <style>
+    .confetti-canvas {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 9999;
+    }
+
     /* Reset & Fonts */
     @import url('https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&display=swap');
     
