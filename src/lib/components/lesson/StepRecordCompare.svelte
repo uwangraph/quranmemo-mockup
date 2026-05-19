@@ -7,7 +7,8 @@
         simulatedWaves, 
         togglePlay, 
         startSimulatedRecording, 
-        startComparePlay 
+        startComparePlay,
+        isChecked = false
     } = $props();
 </script>
 
@@ -16,7 +17,7 @@
         <div class="compare-card">
             <img src="https://cdn-icons-png.flaticon.com/512/3996/3996562.png" alt="Qari icon" class="avatar-icon" />
             <h4>Suara Qari</h4>
-            <button class="compare-action-btn" onclick={togglePlay} class:active={isPlaying && !isComparing}>
+            <button class="compare-action-btn" onclick={togglePlay} class:active={isPlaying && !isComparing} disabled={isChecked}>
                 <i class="ti {isPlaying && !isComparing ? 'ti-player-pause' : 'ti-player-play'}"></i> Dengar Qari
             </button>
         </div>
@@ -24,7 +25,7 @@
         <div class="compare-card">
             <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="User icon" class="avatar-icon" />
             <h4>Rekaman Anda</h4>
-            <button class="compare-action-btn record" onclick={startSimulatedRecording} class:active={recordState === 'recording'}>
+            <button class="compare-action-btn record" onclick={startSimulatedRecording} class:active={recordState === 'recording'} disabled={isChecked}>
                 <i class="ti ti-microphone"></i> {recordState === 'recorded' ? 'Ulang Rekam' : 'Rekam Suara'}
             </button>
         </div>
@@ -32,7 +33,7 @@
     
     {#if recordState === 'recorded'}
         <div class="compare-match-btn-row">
-            <button class="compare-match-btn" class:active={isComparing} onclick={startComparePlay}>
+            <button class="compare-match-btn" class:active={isComparing} onclick={startComparePlay} disabled={isChecked}>
                 <i class="ti ti-arrows-minimize"></i> Bandingkan Berurutan
             </button>
         </div>
@@ -100,9 +101,15 @@
         gap: 6px;
         transition: all 0.1s;
     }
-    .compare-action-btn:active {
+    .compare-action-btn:active:not(:disabled) {
         transform: translateY(2px);
         border-bottom-width: 1px;
+    }
+    .compare-action-btn:disabled {
+        opacity: 0.5;
+        cursor: default !important;
+        pointer-events: none !important;
+        transform: none !important;
     }
     .compare-action-btn.active {
         border-color: #00978A;
@@ -132,6 +139,16 @@
         display: flex;
         align-items: center;
         gap: 8px;
+    }
+    .compare-match-btn:active:not(:disabled) {
+        transform: translateY(2px);
+        border-bottom-width: 1px;
+    }
+    .compare-match-btn:disabled {
+        opacity: 0.5;
+        cursor: default !important;
+        pointer-events: none !important;
+        transform: none !important;
     }
     .compare-match-btn.active {
         background: #00978A;

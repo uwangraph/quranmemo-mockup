@@ -386,7 +386,7 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        padding: 6px 14px;
+        padding: 14px 16px 8px 16px;
         border: 2px solid #e5e5e5;
         border-bottom-width: 4px;
         border-radius: 12px;

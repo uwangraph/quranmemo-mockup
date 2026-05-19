@@ -209,6 +209,15 @@
     
     let lessonEarnedXP = $state(0);
     let lessonEarnedCoins = $state(0);
+    
+    // Stats for Accuracy
+    let totalAttempts = $state(0);
+    let correctAttempts = $state(0);
+    const accuracyPercent = $derived(
+        totalAttempts > 0 
+            ? Math.round((correctAttempts / totalAttempts) * 100) 
+            : 100
+    );
 
     // === ANIMASI & SOUND EFFECTS ===
     let showConfetti = $state(false);
@@ -804,7 +813,15 @@
             simulatedWaves = [];
         } else {
             try {
-                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                // Disable browser's aggressive DSP (noise gate, AGC, echo cancellation) to prevent choppy/stuttering audio during recitation
+                const stream = await navigator.mediaDevices.getUserMedia({ 
+                    audio: {
+                        echoCancellation: false,
+                        noiseSuppression: false,
+                        autoGainControl: false,
+                        channelCount: 1 // Mono is fine for voice and lighter on processing
+                    } 
+                });
                 mediaRecorder = new MediaRecorder(stream);
                 audioChunks = [];
                 
@@ -1054,6 +1071,14 @@
 
         // Trigger animasi & sound setelah isChecked & isCorrect ditentukan
         if (isChecked) {
+            // Track accuracy for actual testing steps
+            if (type !== 'read_listen' && type !== 'listen_repeat') {
+                totalAttempts += 1;
+                if (isCorrect) {
+                    correctAttempts += 1;
+                }
+            }
+
             if (isCorrect) {
                 triggerCorrect();
             } else {
@@ -1086,7 +1111,7 @@
         <div class="prog-bar-bg" style="flex: 1; margin: 0 16px;">
             <div class="prog-bar-fill" style="width: {showCompletion ? 100 : ((currentStep + 1) / stepsPipeline.length) * 100}%"></div>
         </div>
-        <button onclick={toggleBreak} style="background: none; border: none; cursor: pointer; display: flex; align-items: center; margin-right: 8px;" title="Istirahat">
+        <button onclick={toggleBreak} disabled={isChecked} style="background: none; border: none; cursor: pointer; display: flex; align-items: center; margin-right: 8px; opacity: {isChecked ? 0.5 : 1}; pointer-events: {isChecked ? 'none' : 'auto'};" title="Istirahat">
             <i class="ti ti-coffee" style="font-size: 18px; color: #f59e0b;"></i>
         </button>
         <div class="xp-pill">
@@ -1132,6 +1157,7 @@
                             {togglePlaySlow}
                             {setupAudio}
                             {getTajweedHTML}
+                            {isChecked}
                         />
                         
                     <!-- ==================== STEP 2: TIRU & IKUTI ==================== -->
@@ -1152,6 +1178,7 @@
                             {getTajweedHTML}
                             {startSimulatedRecording}
                             {togglePlayRecorded}
+                            {isChecked}
                         />
 
                     <!-- ==================== STEP 3: REKAM & BANDINGKAN ==================== -->
@@ -1165,6 +1192,7 @@
                             {togglePlay}
                             {startSimulatedRecording}
                             {startComparePlay}
+                            {isChecked}
                         />
 
                     <!-- ==================== STEP 4: ISI BAGIAN AWAL ==================== -->
@@ -1276,6 +1304,8 @@
                             {startSimulatedRecording}
                             {togglePlayRecorded}
                             {togglePlay}
+                            {isChecked}
+                            {getTajweedHTML}
                         />
 
                     <!-- ==================== STEP 11: RECALL LEVEL 1 ==================== -->
@@ -1292,6 +1322,8 @@
                             {startSimulatedRecording}
                             {togglePlayRecorded}
                             {togglePlay}
+                            {isChecked}
+                            {getTajweedHTML}
                         />
 
                     <!-- ==================== STEP 12: RECALL LEVEL 2 ==================== -->
@@ -1308,6 +1340,8 @@
                             {startSimulatedRecording}
                             {togglePlayRecorded}
                             {togglePlay}
+                            {isChecked}
+                            {getTajweedHTML}
                         />
                     {/if}
                     
@@ -1370,11 +1404,11 @@
                     {:else if (currentStepConfig.type === 'setor_full' || currentStepConfig.type === 'recall_level1' || currentStepConfig.type === 'recall_level2') && recordState === 'recorded'}
                         {#if !isChecked}
                             <div style="display: flex; gap: 12px; width: 100%;">
-                                <button class="btn-duo" style="background: #fee2e2; border-color: #fca5a5; color: #b91c1c; border-bottom-width: 4px;" onclick={() => { recordState = 'idle'; isPlayingRecorded = false; if (audio) audio.pause(); isPlaying = false; }}>
-                                    🎤 ULANG REKAM
+                                <button class="btn-duo" style="flex: 1; background: #fee2e2; border-color: #fca5a5; color: #b91c1c; border-bottom-width: 4px; padding: 12px 8px; font-size: 13px; text-transform: uppercase;" onclick={() => { recordState = 'idle'; isPlayingRecorded = false; if (audio) audio.pause(); isPlaying = false; }}>
+                                    ULANG REKAM
                                 </button>
-                                <button class="btn-duo btn-green" style="flex: 1;" onclick={() => { isCorrect = true; checkAnswer(); }}>
-                                    👍 CUKUP & LANJUT
+                                <button class="btn-duo btn-green" style="flex: 1; padding: 12px 8px; font-size: 13px; text-transform: uppercase;" onclick={() => { isCorrect = true; checkAnswer(); }}>
+                                    CUKUP & LANJUT
                                 </button>
                             </div>
                         {:else}
@@ -1404,7 +1438,7 @@
     <BreakModal bind:showBreakModal={showBreakModal} onContinue={toggleBreak} onExit={exitLesson} />
 
     <!-- 3. COMPLETED ALL STAGES SCREEN OVERLAY -->
-    <LessonCompletion bind:showCompletion={showCompletion} {selectedVerseIndex} {activeVerse} {lessonEarnedXP} {lessonEarnedCoins} onFinish={exitLesson} />
+    <LessonCompletion bind:showCompletion={showCompletion} {selectedVerseIndex} {activeVerse} {lessonEarnedXP} {lessonEarnedCoins} accuracy={accuracyPercent + '%'} onFinish={exitLesson} />
 </div>
 
 <style>

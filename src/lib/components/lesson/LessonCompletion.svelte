@@ -1,6 +1,6 @@
 <script>
     import { fade, fly } from 'svelte/transition';
-    let { showCompletion, activeVerse, selectedVerseIndex, lessonEarnedXP, lessonEarnedCoins, onFinish } = $props();
+    let { showCompletion, activeVerse, selectedVerseIndex, lessonEarnedXP, lessonEarnedCoins, accuracy = '100%', onFinish } = $props();
 </script>
 
 {#if showCompletion}
@@ -23,9 +23,9 @@
                 <span class="reward-label">STREAK BONUS</span>
             </div>
             <div class="reward-item memo-cashback">
-                <span class="reward-icon teal">🔄</span>
-                <span class="reward-value-teal">+{lessonEarnedCoins} Poin</span>
-                <span class="reward-label-teal">MEMO CASHBACK</span>
+                <span class="reward-icon teal">🎯</span>
+                <span class="reward-value-teal">{accuracy}</span>
+                <span class="reward-label-teal">AKURASI JAWABAN</span>
             </div>
         </div>
         

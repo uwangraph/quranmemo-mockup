@@ -10,124 +10,119 @@
         isPlaying, 
         startSimulatedRecording, 
         togglePlayRecorded, 
-        togglePlay 
+        togglePlay,
+        isChecked = false,
+        getTajweedHTML
     } = $props();
 </script>
 
 <div class="verse-display-box">
-    {#if type === 'setor_full'}
-        <div class="setor-quran-graphic">📖</div>
-        
+    {#if recordState === 'idle'}
+        <!-- Idle State -->
+        <div class="graphic-icon">
+            {#if type === 'setor_full'}📖{:else if type === 'recall_level1'}🏆{:else}🔗{/if}
+        </div>
         <div class="mic-container">
-            <button class="mic-circle-btn giant" class:active={recordState === 'recording'} onclick={startSimulatedRecording} title="Mulai Setoran Full">
+            <button class="mic-circle-btn giant" onclick={startSimulatedRecording} disabled={isChecked} title="Mulai Setoran">
+                <i class="ti ti-microphone"></i>
+            </button>
+        </div>
+        <p class="instruction-txt">
+            {#if type === 'setor_full'}
+                Tekan tombol mic, lalu hafalkan ayat {activeVerse.verseNumber} secara lengkap tanpa bantuan teks.
+            {:else if type === 'recall_level1'}
+                Tekan mic dan bacakan ayat {activeVerse.verseNumber} yang baru saja kamu hafal secara penuh dari ingatanmu.
+            {:else}
+                {@const prevVerse = alInsyirahVerses[selectedVerseIndex - 1]}
+                Tekan mic dan bacakan <strong>ayat {prevVerse.verseNumber}</strong> dilanjutkan <strong>ayat {activeVerse.verseNumber}</strong> secara berurutan tanpa putus.
+            {/if}
+        </p>
+    {:else if recordState === 'recording'}
+        <!-- Recording State -->
+        <div class="mic-container pulsing-container">
+            <button class="mic-circle-btn giant active" onclick={startSimulatedRecording} disabled={isChecked}>
                 <i class="ti ti-microphone"></i>
             </button>
         </div>
         
-        {#if recordState === 'recording' || isPlayingRecorded}
-            <div class="simulated-wave-container">
-                {#each simulatedWaves as wave}
-                    <span class="wave-bar" style="height: {wave}px"></span>
-                {/each}
-            </div>
-            <span class="action-helper-txt pulsing text-primary">
-                {recordState === 'recording' ? 'Tasmi AI sedang menyimak bacaan Anda...' : 'Memutar rekaman bacaan Anda...'}
-            </span>
-        {:else if recordState === 'recorded'}
-            <div class="transcription-box">
-                <div class="trans-pill-tag" style="background: #00978a;">BACAAN MUSHAF</div>
-                <div class="arabic-transcription Amiri">{activeVerse.arabic}</div>
-                <span class="action-helper-txt text-success">Silakan bandingkan rekaman Anda dengan bacaan Qari!</span>
+        <div class="simulated-wave-container">
+            {#each simulatedWaves as wave}
+                <span class="wave-bar" style="height: {wave}px"></span>
+            {/each}
+        </div>
+        
+        <p class="instruction-txt pulsing text-primary" style="margin-top: 10px;">
+            {#if type === 'setor_full'}
+                Tasmi AI sedang menyimak bacaan Anda...
+            {:else if type === 'recall_level1'}
+                Tasmi AI sedang menyimak hafalan barumu...
+            {:else}
+                Tasmi AI menyimak sambungan ayat...
+            {/if}
+        </p>
+    {:else if recordState === 'recorded'}
+        <!-- Recorded / Comparison State (Simplified and Beautiful!) -->
+        <div class="compare-view">
+            <!-- Transcription Card -->
+            <div class="transcription-card">
+                {#if type === 'setor_full'}
+                    <span class="badge-pill mushaf">BACAAN MUSHAF</span>
+                    <div class="arabic-display Amiri">
+                        {@html getTajweedHTML ? getTajweedHTML(activeVerse.arabic) : activeVerse.arabic}
+                    </div>
+                    <span class="card-status-txt">Bandingkan rekaman Anda dengan bacaan Qari</span>
+                {:else if type === 'recall_level1'}
+                    <span class="badge-pill transcription">TRANSKRIPSI HAFALAN</span>
+                    <div class="arabic-display Amiri">
+                        {@html getTajweedHTML ? getTajweedHTML(activeVerse.arabic) : activeVerse.arabic}
+                    </div>
+                    <span class="card-status-txt success">✓ Ayat baru berhasil disetorkan dengan fasih!</span>
+                {:else}
+                    {@const prevVerse = alInsyirahVerses[selectedVerseIndex - 1]}
+                    <span class="badge-pill linking">HAFALAN BERSAMBUNG</span>
+                    <div class="arabic-display Amiri double">
+                        {@html getTajweedHTML ? getTajweedHTML(prevVerse.arabic) : prevVerse.arabic} 
+                        <span class="verse-num">﴿{prevVerse.verseNumber}﴾</span>
+                        {@html getTajweedHTML ? getTajweedHTML(activeVerse.arabic) : activeVerse.arabic}
+                        <span class="verse-num">﴿{activeVerse.verseNumber}﴾</span>
+                    </div>
+                    <span class="card-status-txt success">✓ Sambungan ayat {prevVerse.verseNumber} & {activeVerse.verseNumber} terjalin kokoh!</span>
+                {/if}
             </div>
 
-            <!-- Dual Audio Comparison -->
-            <div class="compare-buttons-row">
-                <button class="compare-btn recorded" onclick={togglePlayRecorded}>
-                    <i class="ti {isPlayingRecorded ? 'ti-player-pause-filled' : 'ti-microphone'}"></i>
-                    {isPlayingRecorded ? 'Mendengar...' : '🎤 Putar Rekamanku'}
+            <!-- Sleek Minimalist Comparison Controls -->
+            <div class="minimal-controls-row">
+                <button 
+                    class="minimal-btn play-recorded" 
+                    class:active={isPlayingRecorded}
+                    onclick={togglePlayRecorded} 
+                    disabled={isChecked}
+                >
+                    <i class="ti {isPlayingRecorded ? 'ti-player-pause-filled' : 'ti-microphone-filled'}"></i>
+                    {isPlayingRecorded ? 'Memutar Rekaman...' : 'Putar Rekamanku'}
                 </button>
-                <button class="compare-btn qari" onclick={togglePlay}>
-                    <i class="ti {isPlaying ? 'ti-player-pause-filled' : 'ti-quran'}"></i>
-                    {isPlaying ? 'Mendengar...' : '📖 Putar Bacaan Qari'}
-                </button>
+
+                {#if type === 'setor_full'}
+                    <button 
+                        class="minimal-btn play-qari" 
+                        class:active={isPlaying}
+                        onclick={togglePlay} 
+                        disabled={isChecked}
+                    >
+                        <i class="ti {isPlaying ? 'ti-player-pause-filled' : 'ti-headphones-filled'}"></i>
+                        {isPlaying ? 'Memutar Qari...' : 'Putar Bacaan Qari'}
+                    </button>
+                {/if}
             </div>
-            <p class="comparison-guide-txt">
-                Bandingkan rekamanmu dengan bacaan qari, lalu tentukan sendiri.
-            </p>
-        {:else}
-            <span class="action-helper-txt">Tekan tombol mic, lalu hafalkan ayat {activeVerse.verseNumber} secara lengkap tanpa bantuan teks.</span>
-        {/if}
-        
-    {:else if type === 'recall_level1'}
-        <div class="setor-quran-graphic">🏆</div>
-        
-        <div class="level-title green">
-            Level 1: Setor Ayat Baru
-        </div>
-        
-        <div class="mic-container">
-            <button class="mic-circle-btn giant" class:active={recordState === 'recording'} onclick={startSimulatedRecording} title="Mulai Setoran Level 1">
-                <i class="ti ti-microphone"></i>
-            </button>
-        </div>
-        
-        {#if recordState === 'recording' || isPlayingRecorded}
-            <div class="simulated-wave-container">
-                {#each simulatedWaves as wave}
-                    <span class="wave-bar" style="height: {wave}px"></span>
-                {/each}
-            </div>
-            <span class="action-helper-txt pulsing text-primary">
-                {recordState === 'recording' ? 'Tasmi AI sedang menyimak hafalan barumu...' : 'Memutar rekaman hafalan barumu...'}
-            </span>
-        {:else if recordState === 'recorded'}
-            <div class="transcription-box">
-                <div class="trans-pill-tag blue">TRANSKRIPSI HAFALAN</div>
-                <div class="arabic-transcription Amiri">{activeVerse.arabic}</div>
-                <span class="action-helper-txt text-success">✓ Ayat baru berhasil disetorkan dengan fasih!</span>
-            </div>
-        {:else}
-            <span class="action-helper-txt">
-                Tekan mic dan bacakan ayat {activeVerse.verseNumber} yang baru saja kamu hafal secara penuh dari ingatanmu.
-            </span>
-        {/if}
-        
-    {:else if type === 'recall_level2'}
-        {@const prevVerse = alInsyirahVerses[selectedVerseIndex - 1]}
-        <div class="setor-quran-graphic linking">🔗</div>
-        
-        <div class="level-title orange">
-            Level 2: Sambungkan Hafalan
-        </div>
-        
-        <div class="mic-container">
-            <button class="mic-circle-btn giant" class:active={recordState === 'recording'} onclick={startSimulatedRecording} title="Mulai Setoran Level 2">
-                <i class="ti ti-microphone"></i>
-            </button>
-        </div>
-        
-        {#if recordState === 'recording' || isPlayingRecorded}
-            <div class="simulated-wave-container">
-                {#each simulatedWaves as wave}
-                    <span class="wave-bar" style="height: {wave}px"></span>
-                {/each}
-            </div>
-            <span class="action-helper-txt pulsing text-primary">
-                {recordState === 'recording' ? 'Tasmi AI menyimak sambungan ayat...' : 'Memutar rekaman sambungan ayat...'}
-            </span>
-        {:else if recordState === 'recorded'}
-            <div class="transcription-box">
-                <div class="trans-pill-tag orange">HAFALAN BERSAMBUNG</div>
-                <div class="arabic-transcription Amiri double-verse">
-                    {prevVerse.arabic} ﴿{prevVerse.verseNumber}﴾ {activeVerse.arabic} ﴿{activeVerse.verseNumber}﴾
+            
+            {#if isPlayingRecorded}
+                <div class="simulated-wave-container mini">
+                    {#each simulatedWaves as wave}
+                        <span class="wave-bar" style="height: {wave * 0.6}px"></span>
+                    {/each}
                 </div>
-                <span class="action-helper-txt text-success">✓ Sempurna! Sambungan ayat {prevVerse.verseNumber} & {activeVerse.verseNumber} terjalin kokoh!</span>
-            </div>
-        {:else}
-            <span class="action-helper-txt">
-                Tekan mic dan bacakan **ayat {prevVerse.verseNumber}** dilanjutkan **ayat {activeVerse.verseNumber}** secara berurutan tanpa putus.
-            </span>
-        {/if}
+            {/if}
+        </div>
     {/if}
 </div>
 
@@ -137,26 +132,23 @@
         background: #fafafa;
         border: 2px solid #e5e5e5;
         border-radius: 24px;
-        padding: 40px 20px;
+        padding: 36px 20px;
         text-align: center;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        min-height: 280px;
+        min-height: 300px;
         width: 100%;
         box-sizing: border-box;
     }
-    .setor-quran-graphic {
-        font-size: 64px;
-        margin-bottom: 12px;
-        animation: floatAnimation 2s infinite ease-in-out;
-    }
-    .setor-quran-graphic.linking {
+    .graphic-icon {
+        font-size: 56px;
+        margin-bottom: 8px;
         animation: floatAnimation 2s infinite ease-in-out;
     }
     .mic-container {
-        margin: 24px 0;
+        margin: 20px 0;
     }
     .mic-circle-btn {
         width: 64px;
@@ -179,6 +171,11 @@
         font-size: 36px;
         border-width: 6px;
     }
+    .mic-circle-btn:disabled {
+        opacity: 0.5;
+        cursor: default !important;
+        pointer-events: none !important;
+    }
     .mic-circle-btn.active {
         background: #ff4b4b;
         color: #fff;
@@ -193,116 +190,159 @@
         height: 50px;
         margin: 16px 0;
     }
+    .simulated-wave-container.mini {
+        height: 30px;
+        margin: 12px 0 0 0;
+    }
     .wave-bar {
         width: 4px;
         background: #ff4b4b;
         border-radius: 10px;
         transition: height 0.1s ease;
     }
-    .action-helper-txt {
-        font-size: 11px;
-        font-weight: 800;
-        color: #94a3b8;
+    .instruction-txt {
+        font-size: 13px;
+        font-weight: 700;
+        color: #718096;
         text-align: center;
+        max-width: 320px;
+        line-height: 1.5;
+        margin: 8px 0 0 0;
     }
-    .action-helper-txt.text-success {
-        color: #059669;
-        margin-top: 8px;
-    }
-    .action-helper-txt.text-primary {
-        color: #0ea5e9;
-    }
-    .pulsing {
+    .instruction-txt.pulsing {
         animation: pulseAnimation 1.5s infinite;
     }
-    .level-title {
-        font-size: 16px; 
-        font-weight: 800; 
-        margin-bottom: 12px;
+    .instruction-txt.text-primary {
+        color: #0ea5e9;
     }
-    .level-title.green { color: #059669; }
-    .level-title.orange { color: #ea580c; }
     
-    .transcription-box {
+    /* Comparison / Transcription View Styling (Simple & Elegant!) */
+    .compare-view {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+    }
+    .transcription-card {
         background: #f8fafc;
         border: 2px solid #e2e8f0;
         border-radius: 20px;
-        padding: 16px;
+        padding: 24px 20px;
         width: 100%;
-        max-width: 320px;
-        margin-top: 16px;
         box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 16px;
     }
-    .trans-pill-tag {
-        font-size: 9px;
+    .badge-pill {
+        font-size: 10px;
         font-weight: 900;
-        background: #0284c7;
-        color: #fff;
-        padding: 2px 8px;
+        padding: 4px 10px;
         border-radius: 100px;
-        display: inline-block;
-        margin-bottom: 8px;
+        letter-spacing: 0.5px;
+        color: #fff;
     }
-    .trans-pill-tag.blue {
-        background: #e0f2fe; 
-        color: #0369a1;
+    .badge-pill.mushaf {
+        background: #00978a;
     }
-    .trans-pill-tag.orange {
-        background: #fff7ed; 
-        color: #c2410c;
+    .badge-pill.transcription {
+        background: #0284c7;
     }
-    .arabic-transcription {
-        font-size: 22px;
+    .badge-pill.linking {
+        background: #ea580c;
+    }
+    .arabic-display {
+        font-size: 28px;
+        font-weight: 700;
         color: #1e293b;
         text-align: center;
-        line-height: 1.6;
+        line-height: 2.0;
         direction: rtl;
-    }
-    .arabic-transcription.double-verse {
-        font-size: 20px; 
-        line-height: 2.0; 
-        direction: rtl; 
-        text-align: right; 
         width: 100%;
+        padding: 8px 0;
     }
-    .compare-buttons-row {
-        display: flex; 
-        gap: 10px; 
-        justify-content: center; 
-        margin-top: 20px; 
+    .arabic-display.double {
+        font-size: 24px;
+        line-height: 2.2;
+    }
+    .verse-num {
+        font-family: 'Outfit', 'Inter', sans-serif;
+        font-size: 18px;
+        color: #64748b;
+        margin: 0 4px;
+    }
+    .card-status-txt {
+        font-size: 11px;
+        font-weight: 800;
+        color: #64748b;
+        text-align: center;
+    }
+    .card-status-txt.success {
+        color: #059669;
+    }
+    
+    /* Sleek Minimalist Controls */
+    .minimal-controls-row {
+        display: flex;
+        gap: 12px;
+        width: 100%;
+        justify-content: center;
         flex-wrap: wrap;
     }
-    .compare-btn {
-        color: #fff; 
-        border: none; 
-        border-radius: 12px; 
-        padding: 12px 18px; 
-        font-size: 12px; 
-        font-weight: 800; 
-        cursor: pointer; 
-        display: flex; 
-        align-items: center; 
-        gap: 6px; 
-        transition: all 0.2s;
+    .minimal-btn {
+        flex: 1;
+        min-width: 140px;
+        max-width: 180px;
+        padding: 12px 16px;
+        border-radius: 14px;
+        border: 2px solid #e2e8f0;
+        border-bottom-width: 4px;
+        background: #fff;
+        color: #475569;
+        font-size: 12px;
+        font-weight: 800;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        transition: all 0.15s ease;
+        box-sizing: border-box;
     }
-    .compare-btn.recorded {
-        background: linear-gradient(135deg, #667eea, #764ba2); 
-        box-shadow: 0 4px 12px rgba(102,126,234,0.3);
+    .minimal-btn i {
+        font-size: 14px;
+        transition: transform 0.2s;
     }
-    .compare-btn.qari {
-        background: linear-gradient(135deg, #00978a, #059669); 
-        box-shadow: 0 4px 12px rgba(0,151,138,0.3);
+    .minimal-btn:hover:not(:disabled) {
+        border-color: #cbd5e1;
+        background: #f8fafc;
+        transform: translateY(-1px);
     }
-    .compare-btn:active {
-        transform: scale(0.97);
+    .minimal-btn:active:not(:disabled) {
+        transform: translateY(1px);
+        border-bottom-width: 2px;
     }
-    .comparison-guide-txt {
-        text-align: center; 
-        font-size: 11px; 
-        color: #94a3b8; 
-        margin-top: 10px; 
-        font-weight: 600;
+    .minimal-btn.active {
+        color: #fff;
+        transform: translateY(1px);
+        border-bottom-width: 2px;
     }
+    .minimal-btn.play-recorded.active {
+        background: #4f46e5;
+        border-color: #4338ca;
+    }
+    .minimal-btn.play-qari.active {
+        background: #059669;
+        border-color: #047857;
+    }
+    .minimal-btn:disabled {
+        opacity: 0.5;
+        cursor: default !important;
+        pointer-events: none !important;
+    }
+
     .Amiri {
         font-family: 'Amiri', serif;
     }
