@@ -212,12 +212,7 @@
         </div>
     {/if}
     
-    {#if appState.user.showLatin}
-        <div class="translit-focus-text" style="font-size: 13px; font-weight: 700; color: #00978a; text-align: center; margin-bottom: 12px; font-style: italic;">
-            "{activeVerse.transliteration}"
-        </div>
-    {/if}
-
+    
     <div class="scramble-drop-shelf" class:correct={isChecked && isCorrect} class:wrong={isChecked && !isCorrect} class:two-blank={type === 'puzzle_two'}>
         {#if selectedWords.length === 0}
             <span class="drop-shelf-placeholder">

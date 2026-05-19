@@ -83,11 +83,6 @@
             {/if}
         </div>
 
-        {#if appState.user.showLatin}
-            <div class="translit-focus-text" style="font-size: 13px; font-weight: 700; color: #00978a; text-align: center; margin-top: -10px; margin-bottom: 16px; font-style: italic;">
-                "{previousVerse.transliteration}"
-            </div>
-        {/if}
 
         <p class="mushaf-instruction-text">
             Lengkapi potongan ayat di atas dengan memilih jawaban yang benar:
