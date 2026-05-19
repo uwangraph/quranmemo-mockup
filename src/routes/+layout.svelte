@@ -5,6 +5,44 @@
 	let { children } = $props();
 	let isMenuOpen = $state(false);
 	let isSidebarExpanded = $state(true);
+	let innerWidth = $state(typeof window !== 'undefined' ? window.innerWidth : 1200);
+	
+	// Simple zoom state — starts at 100%
+	let zoom = $state(1);
+
+	function adjustZoom(delta) {
+		zoom = Math.min(3, Math.max(0.2, zoom + delta));
+	}
+
+	function resetZoom() {
+		zoom = 1;
+	}
+
+	// Pinch-to-zoom for touch devices
+	let lastPinchDist = 0;
+	function getTouchDist(touches) {
+		const dx = touches[0].clientX - touches[1].clientX;
+		const dy = touches[0].clientY - touches[1].clientY;
+		return Math.sqrt(dx * dx + dy * dy);
+	}
+	function onTouchStart(e) {
+		if (e.touches.length === 2) lastPinchDist = getTouchDist(e.touches);
+	}
+	function onTouchMove(e) {
+		if (e.touches.length === 2) {
+			e.preventDefault();
+			const dist = getTouchDist(e.touches);
+			const scale = dist / lastPinchDist;
+			zoom = Math.min(3, Math.max(0.2, zoom * scale));
+			lastPinchDist = dist;
+		}
+	}
+
+	// Reset zoom whenever mockupMode changes
+	$effect(() => {
+		const _mode = appState.mockupMode;
+		resetZoom();
+	});
 
 	const categories = [
 		{
@@ -112,7 +150,9 @@
 	/>
 </svelte:head>
 
-<div class="qm-app">
+<svelte:window bind:innerWidth />
+
+<div class="qm-app" class:lesson-mode={appState.currentScreen === 'lesson'}>
 	<!-- Mobile Top Bar -->
 	<div class="mobile-topbar">
 		<button class="menu-toggle" onclick={toggleMenu}>
@@ -175,7 +215,7 @@
 
 	<!-- Main Content Area -->
 	<div class="main-container" class:collapsed={!isSidebarExpanded}>
-		<!-- View Switcher -->
+		<!-- View Switcher & Zoom Toolbar -->
 		<div class="view-switcher-container">
 			<div class="view-switcher">
 				<button class="switcher-btn" class:active={appState.mockupMode === 'mobile'} onclick={() => appState.setMockupMode('mobile')}>
@@ -188,171 +228,195 @@
 					<i class="ti ti-device-laptop"></i> Desktop
 				</button>
 			</div>
+
+			<!-- Unified Zoom Toolbar -->
+			<div class="top-zoom-controls" dir="ltr">
+				<button onclick={() => adjustZoom(-0.1)} title="Zoom Out" class="zoom-btn">
+					<i class="ti ti-minus"></i>
+				</button>
+				<span class="zoom-text" onclick={resetZoom} title="Reset to 100%">{Math.round(zoom * 100)}%</span>
+				<button onclick={() => adjustZoom(0.1)} title="Zoom In" class="zoom-btn">
+					<i class="ti ti-plus"></i>
+				</button>
+			</div>
 		</div>
 
-		{#if appState.mockupMode === 'mobile'}
-			<!-- Phone Frame -->
-			<div 
-				class="phone theme-{appState.theme}" 
-				id="phone-frame" 
-				dir={i18n.getDir()}
-			>
-				<div class="statusbar" dir="ltr" style="background: {currentCategory.color};">
-					<span>9:41</span>
-					<span style="display: flex; gap: 4px; align-items: center">
-						<i class="ti ti-wifi" style="font-size: 13px"></i>
-						<i class="ti ti-battery" style="font-size: 13px"></i>
-					</span>
-				</div>
+		<div 
+			class="canvas-viewport"
+			onwheel={(e) => { if (e.ctrlKey) { e.preventDefault(); zoom = Math.min(3, Math.max(0.2, zoom + (e.deltaY < 0 ? 0.08 : -0.08))); } }}
+			ontouchstart={onTouchStart}
+			ontouchmove={onTouchMove}
+		>
+			<div class="canvas-content" style="zoom: {zoom};">
+				{#if appState.mockupMode === 'mobile'}
+					<!-- Phone Frame -->
+					<div 
+						class="phone theme-{appState.theme}" 
+						id="phone-frame" 
+						dir={i18n.getDir()}
+						>
+							<div class="statusbar" dir="ltr" style="background: {currentCategory.color};">
+								<span>9:41</span>
+								<span style="display: flex; gap: 4px; align-items: center">
+									<i class="ti ti-wifi" style="font-size: 13px"></i>
+									<i class="ti ti-battery" style="font-size: 13px"></i>
+								</span>
+							</div>
 
-				{@render children()}
-
-				<!-- Role indicator at bottom of phone -->
-				<div class="role-indicator" style="background: {currentCategory.accent}; color: {currentCategory.color}; padding-bottom: 20px;">
-					{currentCategory.icon} {i18n.t('nav.' + currentCategory.name.toLowerCase()) || currentCategory.name} Mode
-				</div>
-			</div>
-		{:else if appState.mockupMode === 'tablet'}
-			<!-- Tablet Mockup Frame -->
-			<div 
-				class="tablet theme-{appState.theme}" 
-				id="tablet-frame" 
-				dir={i18n.getDir()}
-			>
-				<!-- iPad statusbar -->
-				<div class="tablet-statusbar" dir="ltr">
-					<div class="statusbar-left" style="display: flex; gap: 6px; align-items: center">
-						<span>9:41 AM</span>
-						<span style="font-weight: 700; color: #1cb0f6;">iPad Pro</span>
-					</div>
-					<div class="statusbar-center" style="display: flex; gap: 4px; align-items: center">
-						<i class="ti ti-lock" style="font-size: 11px; color: #10b981;"></i>
-						<span>quranmemo.app/{appState.currentScreen}</span>
-					</div>
-					<div class="statusbar-right" style="display: flex; gap: 6px; align-items: center">
-						<span>100%</span>
-						<i class="ti ti-battery-4" style="font-size: 14px"></i>
-						<i class="ti ti-wifi" style="font-size: 14px"></i>
-					</div>
-				</div>
-
-				<div class="tablet-body">
-					<div class="mockup-tablet-layout" style="display: flex; flex-direction: row; flex: 1; min-height: 0; overflow: hidden; width: 100%;">
-						<!-- Simulated Left Nav Rail for Tablet -->
-						<div class="mockup-left-rail" style="width: 76px; border-right: 2px solid #e5e5e5; background: #fff; display: flex; flex-direction: column; align-items: center; padding: 20px 0; gap: 24px; flex-shrink: 0;">
-							<div class="rail-logo" style="font-size: 24px; margin-bottom: 12px;">📖</div>
-							
-							{#each simulatedNavItems as item}
-								<button 
-									class="rail-item" 
-									class:active={appState.currentScreen === item.id}
-									onclick={() => appState.go(item.id)}
-									style="background: none; border: none; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 4px; color: {appState.currentScreen === item.id ? '#00978A' : '#afafaf'}; transition: all 0.2s; width: 100%; padding: 4px 0; -webkit-tap-highlight-color: transparent;"
-								>
-									<img src={getFlaticon(item.id)} alt="" style="width: 24px; height: 24px; object-fit: contain; filter: {appState.currentScreen === item.id ? 'none' : 'grayscale(100%) opacity(60%)'}; transition: all 0.2s;" />
-									<span style="font-size: 9px; font-weight: 800; font-family: 'Nunito', sans-serif;">{i18n.t(item.label)}</span>
-								</button>
-							{/each}
-							
-							<!-- Setting icon at the bottom of tablet rail -->
-							<button 
-								onclick={() => appState.go('language')}
-								style="margin-top: auto; background: none; border: none; cursor: pointer; color: #afafaf; font-size: 20px;"
-							>
-								<i class="ti ti-settings"></i>
-							</button>
-						</div>
-						
-						<!-- Active Screen Inside Mockup -->
-						<div class="mockup-screen-container" style="flex: 1; display: flex; flex-direction: column; min-height: 0; overflow-y: auto; background: #fff;">
 							{@render children()}
+
+							<!-- Role indicator at bottom of phone -->
+							<div class="role-indicator" style="background: {currentCategory.accent}; color: {currentCategory.color}; padding-bottom: 20px;">
+								{currentCategory.icon} {i18n.t('nav.' + currentCategory.name.toLowerCase()) || currentCategory.name} Mode
+							</div>
 						</div>
-					</div>
-				</div>
-
-				<!-- Role indicator at bottom of tablet -->
-				<div class="tablet-role" style="background: {currentCategory.accent}; color: {currentCategory.color};">
-					{currentCategory.icon} {i18n.t('nav.' + currentCategory.name.toLowerCase()) || currentCategory.name} Tablet View
-				</div>
-			</div>
-		{:else}
-			<!-- Desktop Browser Mockup Frame -->
-			<div 
-				class="desktop-browser theme-{appState.theme}" 
-				id="desktop-frame" 
-				dir={i18n.getDir()}
-			>
-				<!-- Browser Chrome -->
-				<div class="browser-chrome" dir="ltr">
-					<div class="chrome-dots">
-						<span class="chrome-dot red"></span>
-						<span class="chrome-dot yellow"></span>
-						<span class="chrome-dot green"></span>
-					</div>
-					<div class="chrome-nav">
-						<button class="chrome-nav-btn" onclick={() => appState.go('learn')} title="Back to Home"><i class="ti ti-chevron-left"></i></button>
-						<button class="chrome-nav-btn" disabled><i class="ti ti-chevron-right"></i></button>
-						<button class="chrome-nav-btn" onclick={() => window.location.reload()} title="Reload"><i class="ti ti-refresh"></i></button>
-					</div>
-					<div class="chrome-address">
-						<i class="ti ti-lock"></i>
-						<span>quranmemo.app/{appState.currentScreen}</span>
-					</div>
-					<div class="chrome-actions">
-						<span class="role-badge" style="background: {currentCategory.accent}; color: {currentCategory.color};">
-							{currentCategory.icon} {i18n.t('nav.' + currentCategory.name.toLowerCase()) || currentCategory.name} Mode
-						</span>
-					</div>
-				</div>
-
-				<!-- Browser Body -->
-				<div class="browser-body">
-					<div class="mockup-desktop-layout" style="display: flex; flex-direction: row; flex: 1; min-height: 0; overflow: hidden; width: 100%; background: #fff;">
-						<!-- Simulated Left Sidebar for Desktop Widescreen -->
-						<div class="mockup-left-sidebar" style="width: 240px; border-right: 2px solid #e5e5e5; background: #fff; display: flex; flex-direction: column; padding: 24px 16px; gap: 24px; flex-shrink: 0;">
-							<div class="sidebar-logo" style="display: flex; align-items: center; gap: 10px; padding: 0 8px; margin-bottom: 8px;">
-								<span style="font-size: 28px;">📖</span>
-								<span style="font-size: 18px; font-weight: 900; color: #3c3c3c; letter-spacing: -0.5px;">QuranMemo</span>
-							</div>
-							
-							<div class="sidebar-menu" style="display: flex; flex-direction: column; gap: 8px; flex: 1;">
-								{#each simulatedNavItems as item}
-									<button 
-										class="sidebar-item" 
-										class:active={appState.currentScreen === item.id}
-										onclick={() => appState.go(item.id)}
-										style="display: flex; align-items: center; gap: 14px; padding: 12px 16px; border: 2px solid transparent; border-radius: 12px; background: {appState.currentScreen === item.id ? '#DBF0EE' : 'none'}; color: {appState.currentScreen === item.id ? '#00978A' : '#4b5563'}; cursor: pointer; text-align: left; transition: all 0.2s;"
-									>
-										<img src={getFlaticon(item.id)} alt="" style="width: 22px; height: 22px; object-fit: contain; filter: {appState.currentScreen === item.id ? 'none' : 'grayscale(100%) opacity(60%)'}; transition: all 0.2s;" />
-										<span style="font-size: 13px; font-weight: 800; font-family: 'Nunito', sans-serif;">{i18n.t(item.label)}</span>
-									</button>
-								{/each}
-							</div>
-							
-							<!-- User Profile Info at the bottom of desktop layout -->
-							<div class="sidebar-user" style="display: flex; align-items: center; gap: 12px; padding: 12px 8px; border-top: 1px solid #f0f0f0; margin-top: auto;">
-								<div style="width: 36px; height: 36px; border-radius: 50%; background: #f0f0f0; display: flex; align-items: center; justify-content: center; font-size: 18px;">👤</div>
-								<div style="flex: 1; min-width: 0;">
-									<div style="font-size: 13px; font-weight: 800; color: #3c3c3c; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Abdullah Irfan</div>
-									<div style="font-size: 10px; font-weight: 700; color: #afafaf; text-transform: uppercase;">PRO USER</div>
+				{:else if appState.mockupMode === 'tablet'}
+					<!-- Tablet Mockup Frame -->
+					<div 
+						class="tablet theme-{appState.theme}" 
+						id="tablet-frame" 
+						dir={i18n.getDir()}
+						>
+							<!-- iPad statusbar -->
+							<div class="tablet-statusbar" dir="ltr">
+								<div class="statusbar-left" style="display: flex; gap: 6px; align-items: center">
+									<span>9:41 AM</span>
+									<span style="font-weight: 700; color: #1cb0f6;">iPad Pro</span>
 								</div>
-								<button 
-									onclick={() => appState.go('language')}
-									style="background: none; border: none; cursor: pointer; color: #afafaf; font-size: 18px;"
-								>
-									<i class="ti ti-settings"></i>
-								</button>
+								<div class="statusbar-center" style="display: flex; gap: 4px; align-items: center">
+									<i class="ti ti-lock" style="font-size: 11px; color: #10b981;"></i>
+									<span>quranmemo.app/{appState.currentScreen}</span>
+								</div>
+								<div class="statusbar-right" style="display: flex; gap: 6px; align-items: center">
+									<span>100%</span>
+									<i class="ti ti-battery-4" style="font-size: 14px"></i>
+									<i class="ti ti-wifi" style="font-size: 14px"></i>
+								</div>
 							</div>
-						</div>
-						
-						<!-- Active Screen Inside Mockup -->
-						<div class="mockup-screen-container" style="flex: 1; display: flex; flex-direction: column; min-height: 0; overflow-y: auto; background: #fff;">
-							{@render children()}
-						</div>
+
+							<div class="tablet-body">
+								<div class="mockup-tablet-layout" style="display: flex; flex-direction: row; flex: 1; min-height: 0; overflow: hidden; width: 100%;">
+									{#if appState.currentScreen !== 'lesson'}
+										<!-- Simulated Left Nav Rail for Tablet -->
+										<div class="mockup-left-rail" style="width: 76px; border-right: 2px solid #e5e5e5; background: #fff; display: flex; flex-direction: column; align-items: center; padding: 20px 0; gap: 24px; flex-shrink: 0;">
+											<div class="rail-logo" style="font-size: 24px; margin-bottom: 12px;">📖</div>
+											
+											{#each simulatedNavItems as item}
+												<button 
+													class="rail-item" 
+													class:active={appState.currentScreen === item.id}
+													onclick={() => appState.go(item.id)}
+													style="background: none; border: none; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 4px; color: {appState.currentScreen === item.id ? '#00978A' : '#afafaf'}; transition: all 0.2s; width: 100%; padding: 4px 0; -webkit-tap-highlight-color: transparent;"
+												>
+													<img src={getFlaticon(item.id)} alt="" style="width: 24px; height: 24px; object-fit: contain; filter: {appState.currentScreen === item.id ? 'none' : 'grayscale(100%) opacity(60%)'}; transition: all 0.2s;" />
+													<span style="font-size: 9px; font-weight: 800; font-family: 'Nunito', sans-serif;">{i18n.t(item.label)}</span>
+												</button>
+											{/each}
+											
+											<!-- Setting icon at the bottom of tablet rail -->
+											<button 
+												onclick={() => appState.go('language')}
+												style="margin-top: auto; background: none; border: none; cursor: pointer; color: #afafaf; font-size: 20px;"
+											>
+												<i class="ti ti-settings"></i>
+											</button>
+										</div>
+									{/if}
+									
+									<!-- Active Screen Inside Mockup -->
+									<div class="mockup-screen-container" style="flex: 1; display: flex; flex-direction: column; min-height: 0; overflow-y: auto; background: #fff;">
+										{@render children()}
+									</div>
+								</div>
+							</div>
+
+							<!-- Role indicator at bottom of tablet -->
+							<div class="tablet-role" style="background: {currentCategory.accent}; color: {currentCategory.color};">
+								{currentCategory.icon} {i18n.t('nav.' + currentCategory.name.toLowerCase()) || currentCategory.name} Tablet View
+							</div>
 					</div>
-				</div>
+				{:else}
+					<!-- Desktop Browser Mockup Frame -->
+					<div 
+						class="desktop-browser theme-{appState.theme}" 
+						id="desktop-frame" 
+						dir={i18n.getDir()}
+					>
+							<!-- Browser Chrome -->
+							<div class="browser-chrome" dir="ltr">
+								<div class="chrome-dots">
+									<span class="chrome-dot red"></span>
+									<span class="chrome-dot yellow"></span>
+									<span class="chrome-dot green"></span>
+								</div>
+								<div class="chrome-nav">
+									<button class="chrome-nav-btn" onclick={() => appState.go('learn')} title="Back to Home"><i class="ti ti-chevron-left"></i></button>
+									<button class="chrome-nav-btn" disabled><i class="ti ti-chevron-right"></i></button>
+									<button class="chrome-nav-btn" onclick={() => window.location.reload()} title="Reload"><i class="ti ti-refresh"></i></button>
+								</div>
+								<div class="chrome-address">
+									<i class="ti ti-lock"></i>
+									<span>quranmemo.app/{appState.currentScreen}</span>
+								</div>
+								<div class="chrome-actions">
+									<span class="role-badge" style="background: {currentCategory.accent}; color: {currentCategory.color};">
+										{currentCategory.icon} {i18n.t('nav.' + currentCategory.name.toLowerCase()) || currentCategory.name} Mode
+									</span>
+								</div>
+							</div>
+
+							<!-- Browser Body -->
+							<div class="browser-body">
+								<div class="mockup-desktop-layout" style="display: flex; flex-direction: row; flex: 1; min-height: 0; overflow: hidden; width: 100%; background: #fff;">
+									{#if appState.currentScreen !== 'lesson'}
+										<!-- Simulated Left Sidebar for Desktop Widescreen -->
+										<div class="mockup-left-sidebar" style="width: 240px; border-right: 2px solid #e5e5e5; background: #fff; display: flex; flex-direction: column; padding: 24px 16px; gap: 24px; flex-shrink: 0;">
+											<div class="sidebar-logo" style="display: flex; align-items: center; gap: 10px; padding: 0 8px; margin-bottom: 8px;">
+												<span style="font-size: 28px;">📖</span>
+												<span style="font-size: 18px; font-weight: 900; color: #3c3c3c; letter-spacing: -0.5px;">QuranMemo</span>
+											</div>
+											
+											<div class="sidebar-menu" style="display: flex; flex-direction: column; gap: 8px; flex: 1;">
+												{#each simulatedNavItems as item}
+													<button 
+														class="sidebar-item" 
+														class:active={appState.currentScreen === item.id}
+														onclick={() => appState.go(item.id)}
+														style="display: flex; align-items: center; gap: 14px; padding: 12px 16px; border: 2px solid transparent; border-radius: 12px; background: {appState.currentScreen === item.id ? '#DBF0EE' : 'none'}; color: {appState.currentScreen === item.id ? '#00978A' : '#4b5563'}; cursor: pointer; text-align: left; transition: all 0.2s;"
+													>
+														<img src={getFlaticon(item.id)} alt="" style="width: 22px; height: 22px; object-fit: contain; filter: {appState.currentScreen === item.id ? 'none' : 'grayscale(100%) opacity(60%)'}; transition: all 0.2s;" />
+														<span style="font-size: 13px; font-weight: 800; font-family: 'Nunito', sans-serif;">{i18n.t(item.label)}</span>
+													</button>
+												{/each}
+											</div>
+											
+											<!-- User Profile Info at the bottom of desktop layout -->
+											<div class="sidebar-user" style="display: flex; align-items: center; gap: 12px; padding: 12px 8px; border-top: 1px solid #f0f0f0; margin-top: auto;">
+												<div style="width: 36px; height: 36px; border-radius: 50%; background: #f0f0f0; display: flex; align-items: center; justify-content: center; font-size: 18px;">👤</div>
+												<div style="flex: 1; min-width: 0;">
+													<div style="font-size: 13px; font-weight: 800; color: #3c3c3c; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Abdullah Irfan</div>
+													<div style="font-size: 10px; font-weight: 700; color: #afafaf; text-transform: uppercase;">PRO USER</div>
+												</div>
+												<button 
+													onclick={() => appState.go('language')}
+													style="background: none; border: none; cursor: pointer; color: #afafaf; font-size: 18px;"
+												>
+													<i class="ti ti-settings"></i>
+												</button>
+											</div>
+										</div>
+									{/if}
+									
+									<!-- Active Screen Inside Mockup -->
+									<div class="mockup-screen-container" style="flex: 1; display: flex; flex-direction: column; min-height: 0; overflow-y: auto; background: #fff;">
+										{@render children()}
+									</div>
+								</div>
+							</div>
+					</div>
+				{/if}
 			</div>
-		{/if}
+		</div>
 	</div>
 </div>
 
@@ -543,8 +607,11 @@
 		margin-bottom: 24px;
 		display: flex;
 		justify-content: center;
+		align-items: center;
+		gap: 16px;
 		width: 100%;
 		flex-shrink: 0;
+		flex-wrap: wrap;
 	}
 	.view-switcher {
 		display: flex;
@@ -687,9 +754,8 @@
 
 	/* Desktop Browser Mockup Frame */
 	.desktop-browser {
-		width: 100%;
-		max-width: 1440px;
-		height: 880px;
+		width: 1280px;
+		height: 800px;
 		border-radius: 32px;
 		border: 14px solid #1a1a1a;
 		background: #fff;
@@ -852,8 +918,86 @@
 		display: none !important;
 	}
 
+	/* Lesson Mode: Hide outer navbar and remove margin */
+	.qm-app.lesson-mode .snav {
+		display: none !important;
+	}
+	.qm-app.lesson-mode .main-container {
+		margin-left: 0 !important;
+		padding-top: 20px !important;
+	}
+
     :global(body) {
         margin: 0;
         padding: 0;
     }
+
+	/* Mockup Canvas Viewport */
+	.canvas-viewport {
+		position: relative;
+		width: 100%;
+		height: auto;
+		overflow: auto;
+		scroll-behavior: smooth;
+		touch-action: pan-x pan-y;
+		display: flex;
+		justify-content: center;
+		align-items: flex-start;
+	}
+	.canvas-content {
+		display: flex;
+		justify-content: center;
+		align-items: flex-start;
+		padding: 20px;
+		will-change: transform;
+	}
+	.hint-touch { display: none; }
+	@media (pointer: coarse) {
+		.hint-desktop { display: none; }
+		.hint-touch { display: inline; }
+	}
+
+	/* Unified Zoom Controls */
+	.top-zoom-controls {
+		display: flex;
+		align-items: center;
+		background: rgba(255, 255, 255, 0.85);
+		backdrop-filter: blur(10px);
+		border: 2px solid rgba(229, 229, 229, 0.8);
+		border-radius: 100px;
+		padding: 4px;
+		box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+	}
+	.zoom-btn {
+		width: 28px;
+		height: 28px;
+		border-radius: 50%;
+		border: none;
+		background: transparent;
+		color: #777;
+		font-size: 11px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		cursor: pointer;
+		transition: all 0.2s;
+	}
+	.zoom-btn:hover {
+		background: #00978A;
+		color: #fff;
+	}
+	.zoom-text {
+		font-family: 'Nunito', sans-serif;
+		font-size: 12px;
+		font-weight: 800;
+		color: #555;
+		min-width: 44px;
+		text-align: center;
+		cursor: pointer;
+		user-select: none;
+		transition: color 0.2s;
+	}
+	.zoom-text:hover {
+		color: #00978A;
+	}
 </style>
