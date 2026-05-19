@@ -16,19 +16,23 @@
         setupAudio, 
         getTajweedHTML, 
         startSimulatedRecording, 
-        togglePlayRecorded 
+        togglePlayRecorded,
+        isChecked = false
     } = $props();
 </script>
 
-<div class="verse-display-box">
+<div class="verse-display-box" style="position: relative;">
+    <button class="latin-toggle-badge" onclick={() => appState.toggleLatin()} title="Toggle Latin Transliterasi secara instan">
+        🔠 Latin: {appState.user.showLatin ? 'ON' : 'OFF'}
+    </button>
     <div class="actions-row">
-        <button class="audio-circle-play" class:playing={isPlaying && audio?.playbackRate === 1.0} onclick={togglePlay} title="1. Dengar Qari (Normal)">
+        <button class="audio-circle-play" class:playing={isPlaying && audio?.playbackRate === 1.0} onclick={togglePlay} disabled={isChecked} title="1. Dengar Qari (Normal)">
             <i class="ti ti-volume"></i>
         </button>
-        <button class="audio-circle-play slow-btn" class:playing={isPlaying && audio?.playbackRate < 1.0} onclick={togglePlaySlow} title="1. Dengar Qari (Lambat)">
+        <button class="audio-circle-play slow-btn" class:playing={isPlaying && audio?.playbackRate < 1.0} onclick={togglePlaySlow} disabled={isChecked} title="1. Dengar Qari (Lambat)">
             <img src="/snail.png" alt="Snail" class="snail-icon" />
         </button>
-        <button class="mic-circle-btn" class:active={recordState === 'recording'} onclick={startSimulatedRecording} title="2. Tiru Bacaan">
+        <button class="mic-circle-btn" class:active={recordState === 'recording'} onclick={startSimulatedRecording} disabled={isChecked} title="2. Tiru Bacaan">
             <i class="ti ti-microphone"></i>
         </button>
     </div>
@@ -38,16 +42,23 @@
             <span 
                 class="highlight-word" 
                 class:active={wIdx === currentWordIndex}
-                onclick={() => playWordAudio(word)}
-                onkeydown={(e) => { if (e.key === 'Enter') playWordAudio(word); }}
+                class:disabled={isChecked}
+                onclick={() => { if (!isChecked) playWordAudio(word); }}
+                onkeydown={(e) => { if (e.key === 'Enter' && !isChecked) playWordAudio(word); }}
                 role="button"
-                tabindex="0"
-                title="Klik untuk putar audio kata ini"
+                tabindex={isChecked ? "-1" : "0"}
+                title={isChecked ? "" : "Klik untuk putar audio kata ini"}
             >
                 {@html getTajweedHTML(word)}
             </span>{' '}
         {/each}
     </div>
+
+    {#if appState.user.showLatin}
+        <div class="translit-focus-text" style="font-size: 14px; font-weight: 700; color: #00978A; margin-top: -8px; margin-bottom: 12px; text-align: center;">
+            "{activeVerse.transliteration}"
+        </div>
+    {/if}
 
     <!-- Looping Selector Pill Row -->
     <div class="loop-selector-row">
@@ -58,7 +69,8 @@
             <button 
                 class="loop-pill" 
                 class:active={loopTimes === times} 
-                onclick={() => { loopTimes = times; setupAudio(); }}
+                onclick={() => { if (!isChecked) { loopTimes = times; setupAudio(); } }}
+                disabled={isChecked}
                 title="Ulangi {times} kali"
             >
                 {times}x
@@ -67,7 +79,8 @@
         <button 
             class="loop-pill" 
             class:active={loopTimes === Infinity} 
-            onclick={() => { loopTimes = Infinity; setupAudio(); }}
+            onclick={() => { if (!isChecked) { loopTimes = Infinity; setupAudio(); } }}
+            disabled={isChecked}
             title="Loop tanpa batas"
         >
             ∞
@@ -84,7 +97,7 @@
             <span class="legend-item"><span class="color-dot qalqalah"></span> Qalqalah</span>
             <span class="legend-item"><span class="color-dot ghunnah"></span> Ghunnah</span>
         </div>
-        <button class="btn-info-tajwid" onclick={() => appState.go('tajwid')}>
+        <button class="btn-info-tajwid" onclick={() => appState.go('tajwid')} disabled={isChecked}>
             <i class="ti ti-info-circle"></i> Info Lengkap Tajwid
         </button>
     </div>
@@ -107,11 +120,11 @@
         <div class="success-recording-box">
             <span class="action-helper-txt text-success">✓ Suara berhasil direkam!</span>
             <div style="display: flex; gap: 8px; width: 100%; justify-content: center; margin-top: 4px;">
-                <button class="btn-duo" style="flex: 1; color: #00978A; border-color: #ccfbf1;" onclick={togglePlayRecorded}>
+                <button class="btn-duo" style="flex: 1; color: #00978A; border-color: #ccfbf1;" onclick={togglePlayRecorded} disabled={isChecked}>
                     <i class="ti {isPlayingRecorded ? 'ti-player-pause' : 'ti-player-play'}"></i> 
                     {isPlayingRecorded ? 'Pause' : 'Putar Suara'}
                 </button>
-                <button class="btn-duo" style="flex: 1; color: #ff4b4b; border-color: #fee2e2;" onclick={startSimulatedRecording}>
+                <button class="btn-duo" style="flex: 1; color: #ff4b4b; border-color: #fee2e2;" onclick={startSimulatedRecording} disabled={isChecked}>
                     <i class="ti ti-microphone"></i> 
                     Rekam Ulang
                 </button>
@@ -160,9 +173,16 @@
         cursor: pointer;
         transition: all 0.1s;
     }
-    .audio-circle-play:active {
+    .audio-circle-play:active:not(:disabled) {
         border-bottom-width: 0;
         transform: translateY(4px);
+    }
+    .audio-circle-play:disabled {
+        opacity: 0.5;
+        cursor: default !important;
+        pointer-events: none !important;
+        border-bottom-width: 2px !important;
+        transform: none !important;
     }
     .audio-circle-play.slow-btn {
         background: #10B981; /* Beautiful Fresh Mint Green */
@@ -188,6 +208,13 @@
         box-shadow: 0 4px 12px rgba(255, 75, 75, 0.15);
         transition: all 0.2s;
     }
+    .mic-circle-btn:disabled {
+        opacity: 0.5;
+        cursor: default !important;
+        pointer-events: none !important;
+        transform: none !important;
+        box-shadow: none !important;
+    }
     .mic-circle-btn.active {
         background: #ff4b4b;
         color: #fff;
@@ -211,16 +238,23 @@
         border-radius: 6px;
         user-select: none;
     }
-    .highlight-word:hover {
+    .highlight-word:hover:not(.disabled) {
         background: rgba(0, 151, 138, 0.08);
         color: #00978a;
         transform: translateY(-1px) scale(1.05);
     }
-    .highlight-word.active {
+    .highlight-word.active:not(.disabled) {
         background: rgba(0, 151, 138, 0.15);
         box-shadow: 0 4px 12px rgba(0, 151, 138, 0.15);
         transform: scale(1.18) translateY(-3px);
         font-weight: 800;
+    }
+    .highlight-word.disabled {
+        cursor: default !important;
+        pointer-events: none !important;
+        background: none !important;
+        transform: none !important;
+        box-shadow: none !important;
     }
     .loop-selector-row {
         display: flex; 
@@ -256,7 +290,7 @@
         align-items: center;
         justify-content: center;
     }
-    .loop-pill:hover {
+    .loop-pill:hover:not(:disabled) {
         background: #e2e8f0;
         color: #475569;
         transform: translateY(-1px);
@@ -265,6 +299,12 @@
         background: #00978A;
         color: #fff;
         box-shadow: 0 2px 6px rgba(0, 151, 138, 0.3);
+    }
+    .loop-pill:disabled {
+        opacity: 0.5;
+        cursor: default !important;
+        pointer-events: none !important;
+        transform: none !important;
     }
     .tajweed-legend-container {
         margin-top: 16px; 
@@ -319,8 +359,13 @@
         padding: 6px 14px; 
         transition: all 0.2s;
     }
-    .btn-info-tajwid:hover {
+    .btn-info-tajwid:hover:not(:disabled) {
         background: rgba(0, 151, 138, 0.2);
+    }
+    .btn-info-tajwid:disabled {
+        opacity: 0.5;
+        cursor: default !important;
+        pointer-events: none !important;
     }
     .simulated-wave-container {
         display: flex;
@@ -417,5 +462,32 @@
     :global(.tajweed-ungu) {
         color: #d946ef !important;
         font-weight: bold;
+    }
+
+    .latin-toggle-badge {
+        position: absolute;
+        top: 14px;
+        right: 14px;
+        background: #f1f5f9;
+        color: #475569;
+        border: 2px solid #e2e8f0;
+        border-radius: 99px;
+        padding: 4px 10px;
+        font-size: 11px;
+        font-weight: 800;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        transition: all 0.2s;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+        z-index: 10;
+    }
+    .latin-toggle-badge:hover {
+        background: #e2e8f0;
+        transform: translateY(-1px);
+    }
+    .latin-toggle-badge:active {
+        transform: translateY(1px);
     }
 </style>

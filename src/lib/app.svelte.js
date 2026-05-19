@@ -65,12 +65,33 @@ export function createAppState() {
         inventory: [], // bought items
         progress: {
             surah_094: 2 // which verse index they are currently at (0-indexed). 2 means Verse 1 and 2 are done.
-        }
+        },
+        level: 'pemula', // pemula, menengah, mahir
+        showLatin: true
     }));
+
+    // Ensure fallback properties exist
+    if (user.level === undefined) user.level = 'pemula';
+    if (user.showLatin === undefined) user.showLatin = true;
 
     // Method to save user state to localStorage
     function saveUser() {
         setStoredData('quranmemo_user', user);
+    }
+
+    function setUserLevel(levelValue) {
+        user.level = levelValue;
+        if (levelValue === 'pemula') {
+            user.showLatin = true;
+        } else {
+            user.showLatin = false;
+        }
+        saveUser();
+    }
+
+    function toggleLatin() {
+        user.showLatin = !user.showLatin;
+        saveUser();
     }
 
     // Initialize selectedVerseIndex based on progress
@@ -121,7 +142,9 @@ export function createAppState() {
         get user() { return user; },
         saveUser,
         go,
-        setMockupMode
+        setMockupMode,
+        setUserLevel,
+        toggleLatin
     };
 }
 

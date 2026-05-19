@@ -29,20 +29,43 @@
             </div>
         </div>
 
-        <div class="section-label">{i18n.t('profile.settings')}</div>
-        <div style="padding: 0 16px;">
-            <button 
-                class="settings-btn"
-                onclick={() => appState.go('language')}
-            >
-                <div class="s-icon"><i class="ti ti-world"></i></div>
-                <div style="flex: 1; text-align: left; font-size: 14px; font-weight: 800; color: #3c3c3c;">
-                    {i18n.t('settings.language')}
+        <div class="section-label">Level & Preferensi Belajar</div>
+        <div style="padding: 0 16px; display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px;">
+            <!-- System Level Selector -->
+            <div class="pref-card">
+                <div class="pref-header">
+                    <span class="pref-icon">🏆</span>
+                    <div style="flex: 1">
+                        <div class="pref-title">Sistem Leveling</div>
+                        <div class="pref-desc">Pemula otomatis memunculkan Latin. Menengah/Mahir menyembunyikannya untuk memperkuat memori visual hafalanmu.</div>
+                    </div>
                 </div>
-                <div style="font-size: 14px; font-weight: 800; color: #afafaf;">
-                    {locales.find(l => l.code === i18n.locale)?.label} <i class="ti ti-chevron-right"></i>
+                
+                <div class="level-tabs">
+                    <button class="level-tab-btn" class:active={appState.user.level === 'pemula'} onclick={() => appState.setUserLevel('pemula')}>
+                        Pemula
+                    </button>
+                    <button class="level-tab-btn" class:active={appState.user.level === 'menengah'} onclick={() => appState.setUserLevel('menengah')}>
+                        Menengah
+                    </button>
+                    <button class="level-tab-btn" class:active={appState.user.level === 'mahir'} onclick={() => appState.setUserLevel('mahir')}>
+                        Mahir
+                    </button>
                 </div>
-            </button>
+            </div>
+
+            <!-- Manual Toggle -->
+            <div class="pref-card">
+                <div class="pref-row">
+                    <div style="flex: 1; padding-right: 12px;">
+                        <div class="pref-label">Tampilkan Bacaan Latin</div>
+                        <div class="pref-subtext">Kontrol transliterasi secara instan di setiap ayat soal.</div>
+                    </div>
+                    <button class="toggle-switch-btn" class:active={appState.user.showLatin} onclick={() => appState.toggleLatin()}>
+                        <span class="switch-handle"></span>
+                    </button>
+                </div>
+            </div>
         </div>
 
         <div class="stats-grid">
@@ -215,5 +238,106 @@
         border-color: #e5e5e5;
         filter: grayscale(1);
         opacity: 0.5;
+    }
+
+    /* Preference Cards Styling */
+    .pref-card {
+        background: #fff;
+        border: 2px solid #e5e5e5;
+        border-bottom-width: 4px;
+        border-radius: 16px;
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+    .pref-header {
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+    }
+    .pref-icon {
+        font-size: 24px;
+    }
+    .pref-title {
+        font-size: 14px;
+        font-weight: 900;
+        color: #3c3c3c;
+    }
+    .pref-desc {
+        font-size: 11px;
+        font-weight: 700;
+        color: #888;
+        line-height: 1.4;
+        margin-top: 2px;
+    }
+    .level-tabs {
+        display: flex;
+        background: #f1f5f9;
+        border-radius: 12px;
+        padding: 4px;
+        gap: 4px;
+    }
+    .level-tab-btn {
+        flex: 1;
+        background: none;
+        border: none;
+        border-radius: 8px;
+        padding: 8px 12px;
+        font-size: 12px;
+        font-weight: 800;
+        color: #64748b;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    .level-tab-btn.active {
+        background: #fff;
+        color: #00978a;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    }
+    .pref-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .pref-label {
+        font-size: 13px;
+        font-weight: 900;
+        color: #3c3c3c;
+    }
+    .pref-subtext {
+        font-size: 10px;
+        font-weight: 700;
+        color: #888;
+        margin-top: 2px;
+    }
+    .toggle-switch-btn {
+        width: 50px;
+        height: 28px;
+        background: #e2e8f0;
+        border: none;
+        border-radius: 99px;
+        position: relative;
+        cursor: pointer;
+        transition: background 0.3s;
+        padding: 0;
+        flex-shrink: 0;
+    }
+    .toggle-switch-btn.active {
+        background: #00978a;
+    }
+    .switch-handle {
+        width: 22px;
+        height: 22px;
+        background: #fff;
+        border-radius: 50%;
+        position: absolute;
+        top: 3px;
+        left: 3px;
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+    }
+    .toggle-switch-btn.active .switch-handle {
+        transform: translateX(22px);
     }
 </style>
