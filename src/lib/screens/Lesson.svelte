@@ -381,29 +381,24 @@
 
     function spawnConfetti() {
         if (!myConfetti) return;
-        var duration = 3000;
-        var end = Date.now() + duration;
-
-        (function frame() {
-            myConfetti({
-                particleCount: 5,
-                angle: 60,
-                spread: 55,
-                origin: { x: 0, y: 0.8 },
-                colors: ['#00978A', '#10B981', '#FFD700', '#FF6B6B']
-            });
-            myConfetti({
-                particleCount: 5,
-                angle: 120,
-                spread: 55,
-                origin: { x: 1, y: 0.8 },
-                colors: ['#00978A', '#10B981', '#FFD700', '#FF6B6B']
-            });
-
-            if (Date.now() < end) {
-                requestAnimationFrame(frame);
-            }
-        }());
+        
+        // Crisp, high-impact burst from the bottom-left corner
+        myConfetti({
+            particleCount: 30,
+            angle: 60,
+            spread: 60,
+            origin: { x: 0, y: 0.85 },
+            colors: ['#00978A', '#10B981', '#FFD700', '#FF6B6B']
+        });
+        
+        // Crisp, high-impact burst from the bottom-right corner
+        myConfetti({
+            particleCount: 30,
+            angle: 120,
+            spread: 60,
+            origin: { x: 1, y: 0.85 },
+            colors: ['#00978A', '#10B981', '#FFD700', '#FF6B6B']
+        });
     }
 
     let showSparkles = $state(false);
