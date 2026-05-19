@@ -1,6 +1,7 @@
 <script>
-    import { appState } from '$lib/app.svelte.js';
-    import { i18n } from '$lib/i18n.svelte.js';
+	import { appState } from '$lib/app.svelte.js';
+	import { i18n } from '$lib/i18n.svelte.js';
+	import confetti from 'canvas-confetti';
     
     // Import modular components
     import BreakModal from '$lib/components/lesson/BreakModal.svelte';
@@ -221,7 +222,7 @@
 
     // === ANIMASI & SOUND EFFECTS ===
     let showConfetti = $state(false);
-    let confettiParticles = $state([]);
+    // Old DOM state removed
     let feedbackAnimClass = $state(''); // 'anim-correct' | 'anim-wrong'
     let screenShaking = $state(false);
 
@@ -372,28 +373,29 @@
     }
 
     function spawnConfetti() {
-        const colors = ['#00978A', '#10B981', '#FFD700', '#FF6B6B', '#A78BFA', '#38BDF8', '#FB923C', '#F472B6'];
-        const shapes = ['circle', 'square', 'triangle', 'star'];
-        const particles = Array.from({ length: 60 }, (_, i) => ({
-            id: i,
-            x: Math.random() * 100,
-            y: -10 - Math.random() * 20,
-            size: 6 + Math.random() * 10,
-            color: colors[Math.floor(Math.random() * colors.length)],
-            shape: shapes[Math.floor(Math.random() * shapes.length)],
-            rotation: Math.random() * 360,
-            speedX: (Math.random() - 0.5) * 3,
-            speedY: 2 + Math.random() * 4,
-            rotSpeed: (Math.random() - 0.5) * 8,
-            opacity: 1
-        }));
-        confettiParticles = particles;
-        showConfetti = true;
-        // Auto-clear setelah 2.5 detik
-        setTimeout(() => {
-            showConfetti = false;
-            confettiParticles = [];
-        }, 2500);
+        var duration = 3000;
+        var end = Date.now() + duration;
+
+        (function frame() {
+            confetti({
+                particleCount: 5,
+                angle: 60,
+                spread: 55,
+                origin: { x: 0, y: 0.8 },
+                colors: ['#00978A', '#10B981', '#FFD700', '#FF6B6B']
+            });
+            confetti({
+                particleCount: 5,
+                angle: 120,
+                spread: 55,
+                origin: { x: 1, y: 0.8 },
+                colors: ['#00978A', '#10B981', '#FFD700', '#FF6B6B']
+            });
+
+            if (Date.now() < end) {
+                requestAnimationFrame(frame);
+            }
+        }());
     }
 
     let showSparkles = $state(false);
@@ -889,29 +891,7 @@
                             simulatedWaves = newWaves;
                         }
                         
-                        const convolver = ctx.createConvolver();
-                        // Generate a subtle impulse response — short decay so articulation stays clear
-                        const rate = ctx.sampleRate;
-                        const length = rate * 0.6; // 0.6s decay (was 2.5s — too roomy)
-                        const impulse = ctx.createBuffer(2, length, rate);
-                        for (let i = 0; i < length; i++) {
-                            const decay = Math.exp(-i / (rate * 0.15)); // fast decay tail
-                            impulse.getChannelData(0)[i] = (Math.random() * 2 - 1) * decay;
-                            impulse.getChannelData(1)[i] = (Math.random() * 2 - 1) * decay;
-                        }
-                        convolver.buffer = impulse;
-                        
-                        const dryGain = ctx.createGain();
-                        const wetGain = ctx.createGain();
-                        dryGain.gain.value = 1.0;  // 100% original — keep voice crisp and upfront
-                        wetGain.gain.value = 0.08; // 8% reverb — subtle warmth only (was 50%)
-                        
-                        source.connect(dryGain);
-                        dryGain.connect(playbackAnalyser); // Connect source through dry gain to analyser
-                        
-                        source.connect(convolver);
-                        convolver.connect(wetGain);
-                        wetGain.connect(playbackAnalyser); // Connect reverb gain to analyser too
+                        source.connect(playbackAnalyser); // Connect source directly without effects
                         
                         playbackAnalyser.connect(ctx.destination); // Connect analyser to destination
                         
@@ -1347,28 +1327,7 @@
                     
                 </div>
                 
-                <!-- Confetti Overlay -->
-                {#if showConfetti}
-                    <div class="confetti-overlay" aria-hidden="true">
-                        {#each confettiParticles as p (p.id)}
-                            <div
-                                class="confetti-particle shape-{p.shape}"
-                                style="
-                                    left: {p.x}%;
-                                    top: {p.y}%;
-                                    width: {p.size}px;
-                                    height: {p.size}px;
-                                    background: {p.color};
-                                    --speed-x: {p.speedX};
-                                    --speed-y: {p.speedY};
-                                    --rot-speed: {p.rotSpeed}deg;
-                                    animation: confettiFall 2.5s ease-in forwards;
-                                    animation-delay: {Math.random() * 0.3}s;
-                                "
-                            ></div>
-                        {/each}
-                    </div>
-                {/if}
+                <!-- Confetti overlay replaced with canvas-confetti -->
 
                 <!-- Sparkles Burst Overlay -->
                 {#if showSparkles}
