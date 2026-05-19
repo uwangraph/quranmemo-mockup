@@ -22,9 +22,6 @@
 </script>
 
 <div class="verse-display-box" style="position: relative;">
-    <button class="latin-toggle-badge" onclick={() => appState.toggleLatin()} title="Toggle Latin Transliterasi secara instan">
-        🔠 Latin: {appState.user.showLatin ? 'ON' : 'OFF'}
-    </button>
     <div class="actions-row">
         <button class="audio-circle-play" class:playing={isPlaying && audio?.playbackRate === 1.0} onclick={togglePlay} disabled={isChecked} title="1. Dengar Qari (Normal)">
             <i class="ti ti-volume"></i>
@@ -464,30 +461,4 @@
         font-weight: bold;
     }
 
-    .latin-toggle-badge {
-        position: absolute;
-        top: 14px;
-        right: 14px;
-        background: #f1f5f9;
-        color: #475569;
-        border: 2px solid #e2e8f0;
-        border-radius: 99px;
-        padding: 4px 10px;
-        font-size: 11px;
-        font-weight: 800;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        gap: 4px;
-        transition: all 0.2s;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.04);
-        z-index: 10;
-    }
-    .latin-toggle-badge:hover {
-        background: #e2e8f0;
-        transform: translateY(-1px);
-    }
-    .latin-toggle-badge:active {
-        transform: translateY(1px);
-    }
 </style>
