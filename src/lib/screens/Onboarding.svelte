@@ -50,6 +50,7 @@
         },
     ]);
 
+    let answers = $state({}); // key = question index, value = option index
     let currentQ = $state(0);
     let selectedOpt = $state(null);
     let specialAction = $state(null);
@@ -60,20 +61,32 @@
     function selectOption(idx, action) {
         selectedOpt = idx;
         specialAction = action;
+        answers[currentQ] = idx;
+    }
+
+    // Determine learning path from Q2 (experience) and Q3 (tajwid)
+    // Q2: 0=from zero, 1=short surahs, 2=1-3 juz, 3=>3 juz
+    // Q3: 0=spelling, 1=fluent no tajwid, 2=fluent+tajwid, 3=very fluent
+    function computeLearningPath() {
+        const q2 = answers[1] ?? 0; // experience
+        const q3 = answers[2] ?? 0; // tajwid quality
+        if (q2 === 3) return 'pro';          // >3 juz memorized → Pro
+        if (q2 === 2 && q3 >= 2) return 'mid'; // 1-3 juz + good tajwid → Mid
+        if (q2 === 1 && q3 >= 2) return 'mid'; // short surahs + good tajwid → Mid
+        return 'beginner';                   // all other cases → Beginner
     }
 
     function nextQuestion() {
         if (selectedOpt === null) return;
-
-        if (currentQ === 1 && specialAction !== "skip_placement") {
-            console.log("Should show placement test");
-        }
 
         if (currentQ < questions.length - 1) {
             currentQ++;
             selectedOpt = null;
             specialAction = null;
         } else {
+            // Final step — set learning path then navigate
+            const path = computeLearningPath();
+            appState.setLearningPath(path);
             appState.go('learn');
         }
     }

@@ -31,27 +31,84 @@
 
         <div class="section-label">Level & Preferensi Belajar</div>
         <div style="padding: 0 16px; display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px;">
-            <!-- System Level Selector -->
+            <!-- Learning Path Selector -->
             <div class="pref-card">
                 <div class="pref-header">
-                    <span class="pref-icon">🏆</span>
+                    <span class="pref-icon">🗺️</span>
                     <div style="flex: 1">
-                        <div class="pref-title">Sistem Leveling</div>
-                        <div class="pref-desc">Pemula otomatis memunculkan Latin. Menengah/Mahir menyembunyikannya untuk memperkuat memori visual hafalanmu.</div>
+                        <div class="pref-title">Jalur Belajar (Learning Path)</div>
+                        <div class="pref-desc">Ditentukan saat onboarding berdasarkan pengalaman & kualitas bacaanmu. Bisa diubah kapan saja.</div>
                     </div>
                 </div>
-                
-                <div class="level-tabs">
-                    <button class="level-tab-btn" class:active={appState.user.level === 'pemula'} onclick={() => appState.setUserLevel('pemula')}>
-                        Pemula
+
+                <div class="path-tabs">
+                    <button
+                        class="path-tab"
+                        class:active={appState.user.learningPath === 'beginner'}
+                        onclick={() => appState.setLearningPath('beginner')}
+                        style={appState.user.learningPath === 'beginner' ? 'border-color:#10b981; background:#ecfdf5; color:#059669;' : ''}
+                    >
+                        <span class="path-tab-icon">🌱</span>
+                        <span>Beginner</span>
                     </button>
-                    <button class="level-tab-btn" class:active={appState.user.level === 'menengah'} onclick={() => appState.setUserLevel('menengah')}>
-                        Menengah
+                    <button
+                        class="path-tab"
+                        class:active={appState.user.learningPath === 'mid'}
+                        onclick={() => appState.setLearningPath('mid')}
+                        style={appState.user.learningPath === 'mid' ? 'border-color:#f59e0b; background:#fffbeb; color:#d97706;' : ''}
+                    >
+                        <span class="path-tab-icon">📖</span>
+                        <span>Mid</span>
                     </button>
-                    <button class="level-tab-btn" class:active={appState.user.level === 'mahir'} onclick={() => appState.setUserLevel('mahir')}>
-                        Mahir
+                    <button
+                        class="path-tab"
+                        class:active={appState.user.learningPath === 'pro'}
+                        onclick={() => appState.setLearningPath('pro')}
+                        style={appState.user.learningPath === 'pro' ? 'border-color:#8b5cf6; background:#f5f3ff; color:#7c3aed;' : ''}
+                    >
+                        <span class="path-tab-icon">🏆</span>
+                        <span>Pro</span>
                     </button>
                 </div>
+
+                <!-- Active path detail -->
+                {#if appState.user.learningPath === 'beginner'}
+                    <div class="path-detail beginner">
+                        <div class="path-detail-title">🌱 Beginner Level — Juz Amma</div>
+                        <div class="path-detail-desc">Untuk pemula yang baru memulai menghafal Al-Quran. Target utama: Juz 30 (Juz Amma).</div>
+                        <div class="path-mini-targets">
+                            <div class="mini-target-row"><span class="mtr-label">Tangga 1</span><span class="mtr-val">An-Naas → Ad-Dhuha</span><span class="mtr-reward">Checkpoint</span></div>
+                            <div class="mini-target-row"><span class="mtr-label">Tangga 2</span><span class="mtr-val">Al-Layl → At-Takwir</span><span class="mtr-reward">Checkpoint</span></div>
+                            <div class="mini-target-row"><span class="mtr-label">Tangga 3</span><span class="mtr-val">An-Naziat → An-Naba'</span><span class="mtr-reward">Badge Juz</span></div>
+                        </div>
+                        <div class="path-key">🎮 Fun & mudah · Audio eksperimental · Langkah kecil-kecil</div>
+                    </div>
+                {:else if appState.user.learningPath === 'mid'}
+                    <div class="path-detail mid">
+                        <div class="path-detail-title">📖 Mid Level — Juz 29, 28 & Opsional</div>
+                        <div class="path-detail-desc">Untuk yang sudah hafal Juz Amma dan ingin melanjutkan. Target 2–3× lebih besar dari Beginner.</div>
+                        <div class="path-mini-targets">
+                            <div class="mini-target-row"><span class="mtr-label">Juz 29 — T1</span><span class="mtr-val">Al-Mulk, Al-Qalam, Al-Haqqah</span></div>
+                            <div class="mini-target-row"><span class="mtr-label">Juz 29 — T2</span><span class="mtr-val">Al-Ma'arij, Nuh, Al-Jinn, Al-Muzzammil</span></div>
+                            <div class="mini-target-row"><span class="mtr-label">Juz 29 — T3</span><span class="mtr-val">Al-Muddatstsir, Al-Qiyamah, Al-Insan, Al-Mursalat</span></div>
+                            <div class="mini-target-row mtr-optional"><span class="mtr-label">Opsional</span><span class="mtr-val">Al-Waqi'ah · Ar-Rahman</span></div>
+                        </div>
+                        <div class="path-key">🎮 Fun & mudah · Target per juz = 1 tangga</div>
+                    </div>
+                {:else}
+                    <div class="path-detail pro">
+                        <div class="path-detail-title">🏆 Pro Level — Juz 1–27</div>
+                        <div class="path-detail-desc">Untuk yang sudah selesai Mid Level atau punya hafalan sebelumnya. Target sistematis Juz 1–27.</div>
+                        <div class="path-mini-targets">
+                            <div class="mini-target-row"><span class="mtr-label">Per Juz</span><span class="mtr-val">Dibagi 4 bagian × 5 halaman</span></div>
+                            <div class="mini-target-row"><span class="mtr-label">Bagian 1</span><span class="mtr-val">Hal 1–5</span></div>
+                            <div class="mini-target-row"><span class="mtr-label">Bagian 2</span><span class="mtr-val">Hal 6–10</span></div>
+                            <div class="mini-target-row"><span class="mtr-label">Bagian 3</span><span class="mtr-val">Hal 11–15</span></div>
+                            <div class="mini-target-row"><span class="mtr-label">Bagian 4</span><span class="mtr-val">Hal 16–20</span></div>
+                        </div>
+                        <div class="path-key">🎯 Disiplin · Audio-visual · Badge per surah & per juz</div>
+                    </div>
+                {/if}
             </div>
 
             <!-- Manual Toggle -->
@@ -340,4 +397,34 @@
     .toggle-switch-btn.active .switch-handle {
         transform: translateX(22px);
     }
+
+    /* Learning Path Specific CSS */
+    .path-tabs { display: flex; gap: 8px; margin-top: 4px; }
+    .path-tab {
+        flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px;
+        padding: 10px 4px; border: 2px solid #e5e5e5; border-radius: 12px; background: #fff;
+        cursor: pointer; font-family: "Nunito", sans-serif; font-size: 13px; font-weight: 800; color: #afafaf;
+        transition: all 0.2s;
+    }
+    .path-tab-icon { font-size: 20px; }
+    
+    .path-detail { margin-top: 8px; padding-top: 12px; border-top: 1px dashed #e5e5e5; }
+    .path-detail-title { font-size: 14px; font-weight: 900; color: #3c3c3c; }
+    .path-detail-desc { font-size: 12px; font-weight: 700; color: #888; line-height: 1.4; margin-top: 4px; }
+    
+    .path-mini-targets { margin-top: 12px; display: flex; flex-direction: column; gap: 6px; }
+    .mini-target-row {
+        display: flex; align-items: center; justify-content: space-between; gap: 8px;
+        background: #f8fafc; padding: 6px 10px; border-radius: 8px; border: 1px solid #f1f5f9;
+    }
+    .mtr-label { font-size: 11px; font-weight: 900; color: #64748b; white-space: nowrap; }
+    .mtr-val { flex: 1; font-size: 12px; font-weight: 700; color: #334155; }
+    .mtr-reward { font-size: 10px; font-weight: 800; background: #fffbeb; color: #d97706; padding: 2px 6px; border-radius: 4px; border: 1px solid #fde68a; white-space: nowrap; }
+    .mtr-optional { opacity: 0.8; border-style: dashed; }
+    
+    .path-key {
+        margin-top: 12px; background: #f1f5f9; padding: 8px 12px; border-radius: 8px;
+        font-size: 11px; font-weight: 800; color: #475569; display: flex; align-items: center; gap: 6px;
+    }
 </style>
+

@@ -66,13 +66,15 @@ export function createAppState() {
         progress: {
             surah_094: 2 // which verse index they are currently at (0-indexed). 2 means Verse 1 and 2 are done.
         },
-        level: 'pemula', // pemula, menengah, mahir
+        level: 'pemula', // pemula, menengah, mahir (controls Latin display)
+        learningPath: 'beginner', // beginner, mid, pro (controls roadmap/mini-target)
         showLatin: true
     }));
 
     // Ensure fallback properties exist
     if (user.level === undefined) user.level = 'pemula';
     if (user.showLatin === undefined) user.showLatin = true;
+    if (user.learningPath === undefined) user.learningPath = 'beginner';
 
     // Method to save user state to localStorage
     function saveUser() {
@@ -86,6 +88,11 @@ export function createAppState() {
         } else {
             user.showLatin = false;
         }
+        saveUser();
+    }
+
+    function setLearningPath(path) {
+        user.learningPath = path; // 'beginner' | 'mid' | 'pro'
         saveUser();
     }
 
@@ -144,6 +151,7 @@ export function createAppState() {
         go,
         setMockupMode,
         setUserLevel,
+        setLearningPath,
         toggleLatin
     };
 }
