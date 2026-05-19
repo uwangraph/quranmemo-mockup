@@ -60,12 +60,6 @@
             {' '}
         {/each}
     </div>
-
-    {#if appState.user.showLatin}
-        <div class="translit-focus-text" style="font-size: 13px; font-weight: 700; color: #00978a; text-align: center; margin-top: -4px; margin-bottom: 16px; font-style: italic;">
-            "{activeVerse.transliteration}"
-        </div>
-    {/if}
     
     <div class="choice-options-column">
         
