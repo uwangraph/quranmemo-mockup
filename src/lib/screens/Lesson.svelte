@@ -233,6 +233,127 @@
     let feedbackAnimClass = $state(''); // 'anim-correct' | 'anim-wrong'
     let screenShaking = $state(false);
 
+    // Web Audio API - generate "yeayyy" celebration sound (swell noise + arpeggio + vibrato + bell chimes)
+    function playYeaySound() {
+        try {
+            const ctx = new (window.AudioContext || window.webkitAudioContext)();
+            const now = ctx.currentTime;
+            
+            // 1. Cheering crowd noise swell
+            const bufferSize = ctx.sampleRate * 2.5; 
+            const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+            const data = buffer.getChannelData(0);
+            for (let i = 0; i < bufferSize; i++) {
+                data[i] = Math.random() * 2 - 1;
+            }
+            
+            const noise = ctx.createBufferSource();
+            noise.buffer = buffer;
+            
+            const noiseFilter = ctx.createBiquadFilter();
+            noiseFilter.type = 'bandpass';
+            noiseFilter.frequency.setValueAtTime(800, now);
+            noiseFilter.Q.setValueAtTime(1.0, now);
+            noiseFilter.frequency.exponentialRampToValueAtTime(1600, now + 0.3);
+            noiseFilter.frequency.exponentialRampToValueAtTime(1000, now + 1.2);
+            noiseFilter.frequency.exponentialRampToValueAtTime(500, now + 2.4);
+            
+            const noiseGain = ctx.createGain();
+            noiseGain.gain.setValueAtTime(0, now);
+            noiseGain.gain.linearRampToValueAtTime(0.15, now + 0.3); // swell in
+            noiseGain.gain.linearRampToValueAtTime(0.08, now + 1.2);
+            noiseGain.gain.exponentialRampToValueAtTime(0.001, now + 2.4); // decay
+            
+            noise.connect(noiseFilter);
+            noiseFilter.connect(noiseGain);
+            noiseGain.connect(ctx.destination);
+            noise.start(now);
+            noise.stop(now + 2.5);
+            
+            // 2. Play triumphant vibrato chord arpeggio (C Major chord notes)
+            const chords = [
+                { f: 523.25, d: 0.08 },  // C5
+                { f: 659.25, d: 0.14 }, // E5
+                { f: 783.99, d: 0.20 },  // G5
+                { f: 1046.50, d: 0.26 }, // C6
+                { f: 1318.51, d: 0.32 }   // E6
+            ];
+            
+            chords.forEach((note, idx) => {
+                const startTime = now + note.d;
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                
+                osc.type = idx % 2 === 0 ? 'sine' : 'triangle';
+                osc.frequency.setValueAtTime(note.f, startTime);
+                
+                // Add vibrato to resemble a vocal "yeayyy" pitch wobble
+                const vibrato = ctx.createOscillator();
+                const vibratoGain = ctx.createGain();
+                vibrato.frequency.value = 9; // wobbling rate
+                vibratoGain.gain.value = 20; // wobbling width
+                vibrato.connect(vibratoGain);
+                vibratoGain.connect(osc.frequency);
+                vibrato.start(startTime);
+                vibrato.stop(startTime + 1.6);
+                
+                gain.gain.setValueAtTime(0, startTime);
+                gain.gain.linearRampToValueAtTime(0.20, startTime + 0.1);
+                gain.gain.exponentialRampToValueAtTime(0.001, startTime + 1.5);
+                
+                osc.start(startTime);
+                osc.stop(startTime + 1.6);
+            });
+            
+            // 3. High pitch celebration chime (bell rings)
+            for (let i = 0; i < 6; i++) {
+                const ringTime = now + 0.25 + i * 0.15;
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.type = 'sine';
+                osc.frequency.value = 1900 - (i * 100);
+                gain.gain.setValueAtTime(0, ringTime);
+                gain.gain.linearRampToValueAtTime(0.06, ringTime + 0.02);
+                gain.gain.exponentialRampToValueAtTime(0.001, ringTime + 0.35);
+                osc.start(ringTime);
+                osc.stop(ringTime + 0.4);
+            }
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
+    function spawnLongConfetti() {
+        if (!myConfetti) return;
+        var duration = 4000;
+        var end = Date.now() + duration;
+
+        (function frame() {
+            myConfetti({
+                particleCount: 4,
+                angle: 60,
+                spread: 55,
+                origin: { x: 0, y: 0.8 },
+                colors: ['#00978A', '#10B981', '#FFD700', '#FF6B6B']
+            });
+            myConfetti({
+                particleCount: 4,
+                angle: 120,
+                spread: 55,
+                origin: { x: 1, y: 0.8 },
+                colors: ['#00978A', '#10B981', '#FFD700', '#FF6B6B']
+            });
+
+            if (Date.now() < end) {
+                requestAnimationFrame(frame);
+            }
+        }());
+    }
+
     // Web Audio API - generate suara tanpa file MP3 eksternal
     function playCorrectSound() {
         try {
@@ -464,6 +585,11 @@
                 audio.play();
             }, 600);
         }
+    }
+
+    function triggerCompletionEffects() {
+        playYeaySound();
+        spawnLongConfetti();
     }
 
     function triggerWrong() {
@@ -998,6 +1124,9 @@
                 }
                 
                 appState.saveUser();
+                
+                // Celebratory completion effects!
+                triggerCompletionEffects();
             }
             return;
         }
