@@ -14,8 +14,8 @@
     import StepScrambleChallenge from '$lib/components/lesson/StepScrambleChallenge.svelte';
     import StepSetorFull from '$lib/components/lesson/StepSetorFull.svelte';
     import MotivationalFooter from '$lib/components/lesson/MotivationalFooter.svelte';
+    import TajwidInfo from '$lib/screens/TajwidInfo.svelte';
 
-    
     // Al-Insyirah Verses Data (1 to 8)
     const alInsyirahVerses = [
         {
@@ -188,6 +188,12 @@
     let selectedOptionIdx = $state(null);
     let isChecked = $state(false);
     let isCorrect = $state(false);
+    
+    let showTajwidModal = $state(false);
+    let energy = $state(5);
+    let streakCount = $state(0);
+    let incorrectQueue = $state([]);
+    let showStreakBonus = $state(false);
 
     // Audio & Voice Recording States
     let audio = null;
@@ -788,6 +794,10 @@
             });
         }
 
+        if (incorrectQueue.length > 0) {
+            pipeline.push(...incorrectQueue);
+        }
+
         return pipeline;
     });
 
@@ -799,6 +809,9 @@
             currentStep = 0;
             isChecked = false;
             isCorrect = false;
+            energy = 5;
+            streakCount = 0;
+            incorrectQueue = [];
             selectedOptionIdx = null;
             selectedWords = [];
             showCompletion = false;
@@ -1215,7 +1228,23 @@
                 totalAttempts += 1;
                 if (isCorrect) {
                     correctAttempts += 1;
+                    streakCount += 1;
+                    if (streakCount === 3) {
+                        energy += 2;
+                        streakCount = 0;
+                        showStreakBonus = true;
+                        setTimeout(() => showStreakBonus = false, 2000);
+                    }
+                } else {
+                    streakCount = 0;
+                    incorrectQueue.push({
+                        ...currentStepConfig,
+                        id: currentStepConfig.id + '_' + Date.now(),
+                        title: "(Ulang) " + currentStepConfig.title
+                    });
                 }
+                
+                if (energy > 0) energy -= 1;
             }
 
             if (isCorrect) {
@@ -1253,8 +1282,12 @@
         <button onclick={toggleBreak} disabled={isChecked} style="background: none; border: none; cursor: pointer; display: flex; align-items: center; margin-right: 8px; opacity: {isChecked ? 0.5 : 1}; pointer-events: {isChecked ? 'none' : 'auto'};" title="Istirahat">
             <i class="ti ti-coffee" style="font-size: 18px; color: #f59e0b;"></i>
         </button>
-        <div class="xp-pill">
-            <i class="ti ti-bolt-filled"></i> {Math.round(((currentStep + 1) / stepsPipeline.length) * 100)} XP
+        
+        <div class="energy-pill {showStreakBonus ? 'streak-bonus-anim' : ''}">
+            <i class="ti ti-bolt-filled"></i> {energy} Energy
+            {#if showStreakBonus}
+                <span class="bonus-float">+2</span>
+            {/if}
         </div>
     </div>
 
@@ -1297,6 +1330,7 @@
                             {setupAudio}
                             {getTajweedHTML}
                             {isChecked}
+                            onOpenTajwid={() => showTajwidModal = true}
                         />
                         
                     <!-- ==================== STEP 2: TIRU & IKUTI ==================== -->
@@ -1318,6 +1352,7 @@
                             {startSimulatedRecording}
                             {togglePlayRecorded}
                             {isChecked}
+                            onOpenTajwid={() => showTajwidModal = true}
                         />
 
                     <!-- ==================== STEP 3: REKAM & BANDINGKAN ==================== -->
@@ -1443,6 +1478,7 @@
                             {startSimulatedRecording}
                             {togglePlayRecorded}
                             {togglePlay}
+                            {startComparePlay}
                             {isChecked}
                             {getTajweedHTML}
                         />
@@ -1461,6 +1497,7 @@
                             {startSimulatedRecording}
                             {togglePlayRecorded}
                             {togglePlay}
+                            {startComparePlay}
                             {isChecked}
                             {getTajweedHTML}
                         />
@@ -1479,6 +1516,7 @@
                             {startSimulatedRecording}
                             {togglePlayRecorded}
                             {togglePlay}
+                            {startComparePlay}
                             {isChecked}
                             {getTajweedHTML}
                         />
@@ -1554,6 +1592,10 @@
 
     <!-- Break/Istirahat Modal -->
     <BreakModal bind:showBreakModal={showBreakModal} onContinue={toggleBreak} onExit={exitLesson} />
+    
+    {#if showTajwidModal}
+        <TajwidInfo isModal={true} onClose={() => showTajwidModal = false} />
+    {/if}
 
     <!-- 3. COMPLETED ALL STAGES SCREEN OVERLAY -->
     <canvas bind:this={confettiCanvas} class="confetti-canvas"></canvas>

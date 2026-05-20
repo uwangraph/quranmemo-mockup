@@ -3,6 +3,8 @@
     import { fade } from 'svelte/transition';
     import TajwidCard from '$lib/components/tajwid/TajwidCard.svelte';
 
+    let { onClose = null, isModal = false } = $props();
+
     // State untuk accordion - mana yang sedang terbuka
     let openCategory = $state(null);
     let openItem = $state(null);
@@ -20,10 +22,10 @@
 
 </script>
 
-<div class="screen" in:fade={{duration: 200}}>
+<div class="screen {isModal ? 'modal-overlay' : ''}" in:fade={{duration: 200}}>
     <!-- Header -->
     <header class="app-header">
-        <button class="icon-btn" onclick={() => appState.go('lesson')}>
+        <button class="icon-btn" onclick={() => { if (onClose) onClose(); else appState.go('lesson'); }}>
             <i class="ti ti-arrow-left"></i>
         </button>
         <h1 class="page-title">Info Tajwid</h1>
@@ -59,6 +61,13 @@
         flex-direction: column;
         overflow: hidden;
         font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+    }
+
+    .screen.modal-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 1000;
     }
 
     .app-header {

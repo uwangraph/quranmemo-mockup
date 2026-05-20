@@ -13,6 +13,7 @@
         startSimulatedRecording, 
         togglePlayRecorded, 
         togglePlay,
+        startComparePlay,
         isChecked = false,
         getTajweedHTML
     } = $props();
@@ -94,25 +95,25 @@
 
             <!-- Sleek Minimalist Comparison Controls -->
             <div class="minimal-controls-row">
-                <button 
-                    class="minimal-btn play-recorded" 
-                    class:active={isPlayingRecorded}
-                    onclick={togglePlayRecorded} 
-                    disabled={isChecked}
-                >
-                    <i class="ti {isPlayingRecorded ? 'ti-player-pause-filled' : 'ti-microphone-filled'}"></i>
-                    {isPlayingRecorded ? i18n.t('lesson.playing_my_record') : i18n.t('lesson.play_my_record')}
-                </button>
-
                 {#if type === 'setor_full'}
                     <button 
-                        class="minimal-btn play-qari" 
-                        class:active={isPlaying}
-                        onclick={togglePlay} 
+                        class="minimal-btn play-combined" 
+                        class:active={isPlaying || isPlayingRecorded}
+                        onclick={startComparePlay} 
                         disabled={isChecked}
                     >
-                        <i class="ti {isPlaying ? 'ti-player-pause-filled' : 'ti-headphones-filled'}"></i>
-                        {isPlaying ? i18n.t('lesson.playing_qari') : i18n.t('lesson.play_qari')}
+                        <i class="ti {isPlaying || isPlayingRecorded ? 'ti-player-pause-filled' : 'ti-headphones-filled'}"></i>
+                        {isPlaying ? i18n.t('lesson.playing_qari') : (isPlayingRecorded ? i18n.t('lesson.playing_my_record') : 'Bandingkan Bacaan')}
+                    </button>
+                {:else}
+                    <button 
+                        class="minimal-btn play-recorded" 
+                        class:active={isPlayingRecorded}
+                        onclick={togglePlayRecorded} 
+                        disabled={isChecked}
+                    >
+                        <i class="ti {isPlayingRecorded ? 'ti-player-pause-filled' : 'ti-microphone-filled'}"></i>
+                        {isPlayingRecorded ? i18n.t('lesson.playing_my_record') : i18n.t('lesson.play_my_record')}
                     </button>
                 {/if}
             </div>
@@ -331,13 +332,9 @@
         transform: translateY(1px);
         border-bottom-width: 2px;
     }
-    .minimal-btn.play-recorded.active {
+    .minimal-btn.play-recorded.active, .minimal-btn.play-combined.active {
         background: #4f46e5;
         border-color: #4338ca;
-    }
-    .minimal-btn.play-qari.active {
-        background: #059669;
-        border-color: #047857;
     }
     .minimal-btn:disabled {
         opacity: 0.5;

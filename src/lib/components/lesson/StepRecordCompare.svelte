@@ -11,9 +11,6 @@
         isChecked = false
     } = $props();
 
-    // Tracks whether we've already auto-triggered compare for current recording
-    let autoCompareTriggered = $state(false);
-
     // Current phase in the single-button flow
     const phase = $derived.by(() => {
         if (recordState === 'recording') return 'recording';
@@ -21,18 +18,6 @@
         if (isPlayingRecorded) return 'user_playing';
         if (recordState === 'recorded' && !isComparing && !isPlayingRecorded) return 'done';
         return 'idle';
-    });
-
-    // Auto-trigger compare right after recording finishes
-    $effect(() => {
-        if (recordState === 'recorded' && !autoCompareTriggered && !isComparing && !isPlayingRecorded && !isChecked) {
-            autoCompareTriggered = true;
-            setTimeout(() => startComparePlay(), 400);
-        }
-        // Reset flag when a new recording starts
-        if (recordState === 'recording' || recordState === 'idle') {
-            autoCompareTriggered = false;
-        }
     });
 </script>
 
@@ -155,7 +140,7 @@
     {:else if phase === 'recording'}
         <button class="main-action-btn btn-stop" onclick={startSimulatedRecording} disabled={isChecked}>
             <i class="ti ti-player-stop-filled" style="font-size: 22px;"></i>
-            <span>Stop & Bandingkan</span>
+            <span>Stop Rekam</span>
         </button>
     {:else if phase === 'qari_playing' || phase === 'user_playing'}
         <button class="main-action-btn btn-loading" disabled>
@@ -169,6 +154,10 @@
             <button class="main-action-btn btn-retry" onclick={startSimulatedRecording} disabled={isChecked}>
                 <i class="ti ti-refresh" style="font-size: 18px;"></i>
                 <span>Rekam Ulang</span>
+            </button>
+            <button class="main-action-btn btn-compare" onclick={startComparePlay} disabled={isChecked}>
+                <i class="ti ti-headphones" style="font-size: 18px;"></i>
+                <span>Bandingkan</span>
             </button>
         </div>
     {/if}
@@ -344,6 +333,11 @@
         background: #f1f5f9;
         border-bottom-color: #e2e8f0;
         color: #475569;
+    }
+    .btn-compare {
+        background: #0ea5e9;
+        border-bottom-color: #0284c7;
+        color: #fff;
     }
     .done-btn-row {
         width: 100%;

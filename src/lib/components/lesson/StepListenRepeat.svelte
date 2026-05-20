@@ -15,9 +15,10 @@
         togglePlaySlow, 
         setupAudio, 
         getTajweedHTML, 
-        startSimulatedRecording, 
+        startSimulatedRecording,
         togglePlayRecorded,
-        isChecked = false
+        isChecked = false,
+        onOpenTajwid
     } = $props();
 </script>
 
@@ -94,7 +95,7 @@
             <span class="legend-item"><span class="color-dot qalqalah"></span> Qalqalah</span>
             <span class="legend-item"><span class="color-dot ghunnah"></span> Ghunnah</span>
         </div>
-        <button class="btn-info-tajwid" onclick={() => appState.go('tajwid')} disabled={isChecked}>
+        <button class="btn-info-tajwid" onclick={onOpenTajwid} disabled={isChecked}>
             <i class="ti ti-info-circle"></i> Info Lengkap Tajwid
         </button>
     </div>

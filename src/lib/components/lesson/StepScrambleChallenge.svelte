@@ -190,10 +190,24 @@
             </button>
         </div>
     {:else if type === 'puzzle_two'}
-        <div class="challenge-arabic-blank Amiri">
-            {#each activeVerse.twoBlank.split(' ') as part}
-                {#if part === '___'}
-                    <span style="color: #cbd5e1; border-bottom: 2px dashed #cbd5e1; padding: 0 4px; margin: 0 4px;">___</span>
+        <div class="challenge-arabic-blank Amiri inline-puzzle-container">
+            {#each activeVerse.twoBlank.split(' ') as part, i}
+                {@const isBlank = part === '___'}
+                {@const blankIndex = activeVerse.twoBlank.split(' ').slice(0, i).filter(p => p === '___').length}
+                {@const selectedWord = isBlank ? (isChecked && !isCorrect ? { text: activeVerse.twoCorrect[blankIndex] } : selectedWords[blankIndex]) : null}
+
+                {#if isBlank}
+                    {#if selectedWord}
+                        <button class="inline-placed" 
+                                class:correct-revealed={isChecked && !isCorrect}
+                                onclick={() => { if (!isChecked && !isCorrect) toggleWordSelection(selectedWord); }} 
+                                disabled={isChecked}
+                                title={isChecked ? "" : "Ketuk untuk membatalkan pilihan"}>
+                            {@html getTajweedHTML ? getTajweedHTML(selectedWord.text) : selectedWord.text}
+                        </button>
+                    {:else}
+                        <span class="inline-blank-placeholder">_____</span>
+                    {/if}
                 {:else}
                     <span 
                         class="clickable-word-question" 
@@ -213,45 +227,45 @@
     {/if}
     
     
-    <div class="scramble-drop-shelf" class:correct={isChecked && isCorrect} class:wrong={isChecked && !isCorrect} class:two-blank={type === 'puzzle_two'}>
-        {#if selectedWords.length === 0}
-            <span class="drop-shelf-placeholder">
-                {#if type === 'puzzle_two'}
-                    Lengkapi 2 kata di atas secara berurutan...
-                {:else if type === 'puzzle_total'}
-                    Susun seluruh ayat Al-Insyirah dari hafalanmu...
-                {:else}
-                    Ketuk kata-kata di bawah untuk menyusun ayat...
-                {/if}
-            </span>
-        {/if}
-        {#each (isChecked && !isCorrect ? (type === 'puzzle_two' ? activeVerse.twoCorrect.map((w, idx) => ({ id: idx, text: w })) : activeVerse.words.map((w, idx) => ({ id: idx, text: w }))) : selectedWords) as word, idx}
-            <button 
-                class="scramble-word-pill" 
-                class:dragging={draggedIndex === idx}
-                class:drag-over={hoverIndex === idx}
-                draggable={!isChecked}
-                data-index={idx}
-                onclick={() => toggleWordSelection(word)} 
-                disabled={isChecked} 
-                class:correct-revealed={isChecked && !isCorrect}
-                
-                ondragstart={(e) => handleDragStart(e, idx)}
-                ondragover={(e) => handleDragOver(e, idx)}
-                ondragend={handleDragEnd}
-                ondrop={(e) => handleDrop(e, idx)}
-                
-                ontouchstart={(e) => handleTouchStart(e, idx)}
-                ontouchmove={handleTouchMove}
-                ontouchend={handleTouchEnd}
-            >
-                <span class="arabic-text">{@html getTajweedHTML ? getTajweedHTML(word.text) : word.text}</span>
-                {#if appState.user.showLatin && wordTransliterations[word.text]}
-                    <span class="latin-text-mini">{wordTransliterations[word.text]}</span>
-                {/if}
-            </button>
-        {/each}
-    </div>
+    {#if type !== 'puzzle_two'}
+        <div class="scramble-drop-shelf" class:correct={isChecked && isCorrect} class:wrong={isChecked && !isCorrect} class:two-blank={type === 'puzzle_two'}>
+            {#if selectedWords.length === 0}
+                <span class="drop-shelf-placeholder">
+                    {#if type === 'puzzle_total'}
+                        Susun seluruh ayat Al-Insyirah dari hafalanmu...
+                    {:else}
+                        Ketuk kata-kata di bawah untuk menyusun ayat...
+                    {/if}
+                </span>
+            {/if}
+            {#each (isChecked && !isCorrect ? (type === 'puzzle_two' ? activeVerse.twoCorrect.map((w, idx) => ({ id: idx, text: w })) : activeVerse.words.map((w, idx) => ({ id: idx, text: w }))) : selectedWords) as word, idx}
+                <button 
+                    class="scramble-word-pill" 
+                    class:dragging={draggedIndex === idx}
+                    class:drag-over={hoverIndex === idx}
+                    draggable={!isChecked}
+                    data-index={idx}
+                    onclick={() => toggleWordSelection(word)} 
+                    disabled={isChecked} 
+                    class:correct-revealed={isChecked && !isCorrect}
+                    
+                    ondragstart={(e) => handleDragStart(e, idx)}
+                    ondragover={(e) => handleDragOver(e, idx)}
+                    ondragend={handleDragEnd}
+                    ondrop={(e) => handleDrop(e, idx)}
+                    
+                    ontouchstart={(e) => handleTouchStart(e, idx)}
+                    ontouchmove={handleTouchMove}
+                    ontouchend={handleTouchEnd}
+                >
+                    <span class="arabic-text">{@html getTajweedHTML ? getTajweedHTML(word.text) : word.text}</span>
+                    {#if appState.user.showLatin && wordTransliterations[word.text]}
+                        <span class="latin-text-mini">{wordTransliterations[word.text]}</span>
+                    {/if}
+                </button>
+            {/each}
+        </div>
+    {/if}
     
     <div class="scramble-source-bank">
         {#if type === 'puzzle_two'}
@@ -312,6 +326,44 @@
         border-radius: 20px;
         padding: 24px 16px;
         direction: rtl;
+    }
+    .challenge-arabic-blank.inline-puzzle-container {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+    .inline-blank-placeholder {
+        color: #cbd5e1;
+        border-bottom: 2px dashed #cbd5e1;
+        padding: 0 4px;
+        margin: 0 4px;
+        font-family: 'Inter', sans-serif;
+        letter-spacing: 2px;
+    }
+    .inline-placed {
+        background: transparent;
+        border: none;
+        border-bottom: 2px solid #00978a;
+        color: #1e293b;
+        font-size: inherit;
+        font-family: inherit;
+        padding: 0 4px;
+        margin: 0 4px;
+        cursor: pointer;
+        display: inline-block;
+        border-radius: 0;
+        transition: all 0.15s ease;
+    }
+    .inline-placed:hover:not(:disabled) {
+        background: rgba(0, 151, 138, 0.1);
+        transform: translateY(-1px);
+    }
+    .inline-placed.correct-revealed {
+        border-bottom-color: #22c55e !important;
+        color: #166534 !important;
+        pointer-events: none;
     }
     .audio-circle-play {
         width: 64px;
