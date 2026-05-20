@@ -888,9 +888,23 @@
     function setupScramble() {
         if (!activeVerse) return;
         
-        // For Step 6 (Audio scramble) and Step 9 (Puzzle total)
-        scrambledWords = activeVerse.words.map((w, idx) => ({ id: idx, text: w, selected: false }))
-                                         .sort(() => Math.random() - 0.5);
+        const verseWords = activeVerse.words;
+        
+        // Collect 2 distractor words from OTHER verses (words not in current verse)
+        const distractors = alInsyirahVerses
+            .filter((_, i) => i !== selectedVerseIndex)
+            .flatMap(v => v.words)
+            .filter(w => !verseWords.includes(w))
+            .filter((w, i, arr) => arr.indexOf(w) === i) // unique
+            .sort(() => Math.random() - 0.5)
+            .slice(0, 2)
+            .map((w, idx) => ({ id: verseWords.length + idx, text: w, selected: false, isDistractor: true }));
+        
+        scrambledWords = [
+            ...verseWords.map((w, idx) => ({ id: idx, text: w, selected: false, isDistractor: false })),
+            ...distractors
+        ].sort(() => Math.random() - 0.5);
+        
         selectedWords = [];
     }
 
@@ -1110,6 +1124,19 @@
                 setupScramble();
                 if (audio) audio.pause();
                 isPlaying = false;
+
+                // Auto-play murottal when opening a new step
+                const autoPlayTypes = ['read_listen', 'listen_repeat', 'fill_front', 'fill_back', 'audio_scramble', 'puzzle_one', 'puzzle_two', 'puzzle_total'];
+                const nextStepConfig = stepsPipeline[currentStep];
+                if (nextStepConfig && autoPlayTypes.includes(nextStepConfig.type) && audio) {
+                    setTimeout(() => {
+                        audio.currentTime = 0;
+                        audio.playbackRate = 1.0;
+                        currentLoopIndex = 0;
+                        audio.play().catch(() => {});
+                        isPlaying = true;
+                    }, 450);
+                }
             } else {
                 showCompletion = true;
                 

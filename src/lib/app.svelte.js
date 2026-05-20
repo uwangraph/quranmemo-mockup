@@ -13,39 +13,15 @@ function setStoredData(key, data) {
     }
 }
 
-// Hard Refresh state reset engine using Performance Navigation & Cache Analysis
+// Hard Refresh detection: sessionStorage is wiped on hard refresh, localStorage is not.
+// If our session marker is missing → this is a fresh start → reset localStorage data.
 if (typeof window !== 'undefined') {
-    window.addEventListener('load', () => {
-        if (sessionStorage.getItem('quranmemo_just_reset') === 'true') {
-            sessionStorage.removeItem('quranmemo_just_reset');
-            return;
-        }
-        
-        setTimeout(() => {
-            const resources = performance.getEntriesByType('resource');
-            let checkedCount = 0;
-            let cacheCount = 0;
-            
-            for (const r of resources) {
-                if (r.name.includes('.js') || r.name.includes('.css') || r.name.includes('.png')) {
-                    if (r.encodedBodySize > 0) {
-                        checkedCount++;
-                        if (r.transferSize === 0) {
-                            cacheCount++;
-                        }
-                    }
-                }
-            }
-            
-            // Hard refresh is detected if none of the loaded resources came from cache (cacheCount === 0)
-            if (checkedCount > 0 && cacheCount === 0) {
-                console.log("⚠️ HARD REFRESH DETECTED! Clearing state and resetting data...");
-                localStorage.removeItem('quranmemo_user');
-                sessionStorage.setItem('quranmemo_just_reset', 'true');
-                window.location.reload();
-            }
-        }, 120);
-    });
+    if (!sessionStorage.getItem('quranmemo_session_active')) {
+        // Tab closed or new tab detected — reset persistent mock data
+        localStorage.removeItem('quranmemo_user');
+    }
+    // Mark this session as active (survives soft navigation, wiped on tab close)
+    sessionStorage.setItem('quranmemo_session_active', 'true');
 }
 
 export function createAppState() {
@@ -53,6 +29,7 @@ export function createAppState() {
     let theme = $state('user'); // user, musyrif, admin
     let mockupMode = $state('mobile'); // mobile, desktop
     let selectedVerseIndex = $state(0); 
+    let musyrifBalance = $state(1250); // In-memory only — resets on every page load/refresh
     
     // Persistent User Data
     let user = $state(getStoredData('quranmemo_user', {
@@ -147,6 +124,10 @@ export function createAppState() {
         set selectedVerseIndex(val) { selectedVerseIndex = val; },
         get screenLabels() { return screenLabels; },
         get user() { return user; },
+        get musyrifBalance() { return musyrifBalance; },
+        setMusyrifBalance(val) {
+            musyrifBalance = val;
+        },
         saveUser,
         go,
         setMockupMode,

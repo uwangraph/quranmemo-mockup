@@ -15,9 +15,12 @@
                     <div class="tier-badge-gold">{i18n.t('musyrif.partner_tier')}</div>
                 </div>
             </div>
-            <div class="earnings-pill-mini" onclick={() => appState.go('musyrif-earnings')}>
-                <div style="font-size: 14px; font-weight: 900">Rp 840.000</div>
-                <div style="font-size: 9px; font-weight: 800; opacity: 0.7; text-transform: uppercase;">{i18n.t('musyrif.balance')}</div>
+            <div class="earnings-pill-mini" onclick={() => appState.go('musyrif-earnings')} style="display: flex; align-items: center; gap: 8px;">
+                <div>
+                    <div style="font-size: 14px; font-weight: 900; color: #1cb0f6;">{appState.musyrifBalance} <i class="ti ti-diamond-filled"></i></div>
+                    <div style="font-size: 9px; font-weight: 800; opacity: 0.7; text-transform: uppercase;">{i18n.t('musyrif.balance')}</div>
+                </div>
+                <i class="ti ti-chevron-right" style="color: #afafaf;"></i>
             </div>
         </div>
     </div>
@@ -37,14 +40,14 @@
             </button>
         </div>
 
-        <div class="section-label">{i18n.t('musyrif.requests')}</div>
+        <div class="section-label">{i18n.t('musyrif.requests')} (Instan)</div>
         
         {#if isAvailable}
             <div class="request-card">
                 <div style="width: 48px; height: 48px; border-radius: 50%; background: #fff4e0; display: flex; align-items: center; justify-content: center; font-size: 24px;">🧑‍🎓</div>
                 <div style="flex: 1">
                     <div style="font-size: 14px; font-weight: 900; color: #3c3c3c">Ahmad Hafidz</div>
-                    <div style="font-size: 11px; font-weight: 700; color: #ff9600">{i18n.t('admin.serving')}: Al-Mulk 12-16 ({i18n.t('market.tickets')})</div>
+                    <div style="font-size: 11px; font-weight: 700; color: #ff9600">{i18n.t('admin.serving')}: Al-Insyirah (Instan) • +15 <i class="ti ti-diamond-filled" style="color: #1cb0f6;"></i></div>
                 </div>
                 <button class="btn-duo btn-orange" style="width: auto; padding: 10px 16px; font-size: 12px" onclick={() => appState.go('livemarking')}>
                     {i18n.t('musyrif.accept')}
@@ -57,6 +60,37 @@
                 <div style="font-size: 11px; font-weight: 700;">{i18n.t('musyrif.offline_msg')}</div>
             </div>
         {/if}
+
+        <div class="section-label" style="margin-top: 24px">Jadwal Setoran Mendatang</div>
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+            <div class="booking-card">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+                    <div style="font-size: 12px; font-weight: 800; color: #1cb0f6;">Besok, 10:00</div>
+                    <div style="font-size: 11px; font-weight: 800; color: #1cb0f6; background: #e1f5fe; padding: 2px 8px; border-radius: 6px;">+15 <i class="ti ti-diamond-filled"></i></div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <div style="width: 36px; height: 36px; border-radius: 50%; background: #e0f2fe; display: flex; align-items: center; justify-content: center; font-size: 18px;">👧</div>
+                    <div style="flex: 1">
+                        <div style="font-size: 14px; font-weight: 900; color: #3c3c3c">Aisyah Putri</div>
+                        <div style="font-size: 11px; font-weight: 700; color: #64748b">Surah: Al-Mulk 1-10</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="booking-card">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+                    <div style="font-size: 12px; font-weight: 800; color: #1cb0f6;">Lusa, 14:00</div>
+                    <div style="font-size: 11px; font-weight: 800; color: #1cb0f6; background: #e1f5fe; padding: 2px 8px; border-radius: 6px;">+15 <i class="ti ti-diamond-filled"></i></div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <div style="width: 36px; height: 36px; border-radius: 50%; background: #fef08a; display: flex; align-items: center; justify-content: center; font-size: 18px;">👨</div>
+                    <div style="flex: 1">
+                        <div style="font-size: 14px; font-weight: 900; color: #3c3c3c">Budi Santoso</div>
+                        <div style="font-size: 11px; font-weight: 700; color: #64748b">Surah: An-Naba 1-20</div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <div class="section-label" style="margin-top: 16px">{i18n.t('musyrif.stats')}</div>
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px">
@@ -166,5 +200,13 @@
         border-radius: 18px;
         padding: 16px;
         text-align: center;
+    }
+
+    .booking-card {
+        background: #fff;
+        border: 2px solid var(--border-main);
+        border-bottom-width: 4px;
+        border-radius: 16px;
+        padding: 16px;
     }
 </style>

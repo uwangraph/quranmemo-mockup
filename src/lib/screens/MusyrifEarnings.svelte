@@ -6,12 +6,96 @@
     const weeklyData = [65, 45, 80, 55, 90, 70, 85];
     const maxVal = Math.max(...weeklyData);
     
-    const transactions = [
-        { id: 1, type: 'Recitation', student: 'Ahmad Hafidz', date: 'Today, 09:30', amount: '+Rp 25.000', status: 'Completed' },
-        { id: 2, type: 'Recitation', student: 'Sarah Amira', date: 'Yesterday, 20:15', amount: '+Rp 25.000', status: 'Completed' },
-        { id: 3, type: 'Withdrawal', student: 'To Bank BCA', date: '10 May, 14:00', amount: '-Rp 500.000', status: 'Processing' },
-        { id: 4, type: 'Recitation', student: 'Zaid Fawwaz', date: '10 May, 08:45', amount: '+Rp 25.000', status: 'Completed' },
-    ];
+    let transactions = $state([
+        { id: 1, type: 'Recitation', student: 'Ahmad Hafidz', date: 'Today, 09:30', amount: '+15 💎', status: 'Completed' },
+        { id: 2, type: 'Recitation', student: 'Sarah Amira', date: 'Yesterday, 20:15', amount: '+15 💎', status: 'Completed' },
+        { id: 3, type: 'Withdrawal', student: 'To Bank BCA', date: '10 May, 14:00', amount: '-1000 💎', status: 'Processing' },
+        { id: 4, type: 'Recitation', student: 'Zaid Fawwaz', date: '10 May, 08:45', amount: '+15 💎', status: 'Completed' },
+    ]);
+    
+    let showWithdrawModal = $state(false);
+    let alertStatus = $state(null); // 'success' | 'error' | null
+    let alertTitle = $state('');
+    let alertMessage = $state('');
+
+    function playSuccessSound() {
+        try {
+            const ctx = new (window.AudioContext || window.webkitAudioContext)();
+            const now = ctx.currentTime;
+            const notes = [523.25, 659.25, 783.99, 1046.50];
+            notes.forEach((freq, idx) => {
+                const startTime = now + idx * 0.1;
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(freq, startTime);
+                gain.gain.setValueAtTime(0, startTime);
+                gain.gain.linearRampToValueAtTime(0.15, startTime + 0.02);
+                gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.3);
+                osc.start(startTime);
+                osc.stop(startTime + 0.35);
+            });
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
+    function playErrorSound() {
+        try {
+            const ctx = new (window.AudioContext || window.webkitAudioContext)();
+            const now = ctx.currentTime;
+            const notes = [220, 147];
+            notes.forEach((freq, idx) => {
+                const startTime = now + idx * 0.15;
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(freq, startTime);
+                osc.frequency.exponentialRampToValueAtTime(freq - 30, startTime + 0.15);
+                gain.gain.setValueAtTime(0, startTime);
+                gain.gain.linearRampToValueAtTime(0.1, startTime + 0.02);
+                gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.18);
+                osc.start(startTime);
+                osc.stop(startTime + 0.2);
+            });
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
+    function confirmWithdrawal() {
+        const amountToWithdraw = appState.musyrifBalance;
+        showWithdrawModal = false;
+        
+        if (amountToWithdraw > 0) {
+            transactions = [
+                { 
+                    id: Date.now(), 
+                    type: 'Withdrawal', 
+                    student: 'To Bank BCA', 
+                    date: 'Today, ' + new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}), 
+                    amount: `-${amountToWithdraw} 💎`, 
+                    status: 'Processing' 
+                },
+                ...transactions
+            ];
+            appState.setMusyrifBalance(0);
+            
+            alertTitle = 'Pencairan Berhasil!';
+            alertMessage = `Dana sebesar Rp ${(amountToWithdraw * 672).toLocaleString('id-ID')} sedang diproses dan akan ditransfer ke rekening Bank BCA Anda dalam waktu maksimal 1x24 jam.`;
+            alertStatus = 'success';
+            playSuccessSound();
+        } else {
+            alertTitle = 'Pencairan Gagal';
+            alertMessage = 'Saldo Anda kosong atau tidak mencukupi untuk melakukan pencairan pendapatan.';
+            alertStatus = 'error';
+            playErrorSound();
+        }
+    }
 </script>
 
 <div class="screen no-scrollbar" style="background: #fafafa;">
@@ -26,18 +110,18 @@
 
     <div class="scroll-content no-scrollbar" style="padding: 20px;">
         <!-- Balance Card -->
-        <div class="balance-card" style="background: var(--duo-orange); box-shadow: 0 10px 20px rgba(255, 150, 0, 0.2);">
+        <div class="balance-card" style="background: linear-gradient(135deg, #1cb0f6, #0898dc); box-shadow: 0 10px 20px rgba(28, 176, 246, 0.2);">
             <div class="balance-info">
-                <div style="font-size: 11px; font-weight: 800; color: #ffffff; opacity: 0.8; text-transform: uppercase;">{i18n.t('earnings.total_balance')}</div>
-                <div style="font-size: 28px; font-weight: 900; color: #ffffff; margin: 4px 0;">Rp 840.000</div>
-                <div style="display: flex; align-items: center; gap: 4px; font-size: 10px; font-weight: 800; color: #ffffff;">
-                    <span style="background: rgba(255,255,255,0.2); padding: 2px 6px; border-radius: 4px;">+12.5%</span>
-                    <span style="opacity: 0.8;">{i18n.t('earnings.growth')}</span>
+                <div style="font-size: 11px; font-weight: 800; color: #ffffff; opacity: 0.8; text-transform: uppercase;">Total Gems</div>
+                <div style="font-size: 32px; font-weight: 900; color: #ffffff; margin: 4px 0;">{appState.musyrifBalance} <i class="ti ti-diamond-filled"></i></div>
+                <div style="display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 800; color: #ffffff;">
+                    <span style="background: rgba(255,255,255,0.2); padding: 4px 8px; border-radius: 6px;">≈ Rp {(appState.musyrifBalance * 672).toLocaleString('id-ID')}</span>
+                    <span style="opacity: 0.8;">Estimasi Rupiah</span>
                 </div>
             </div>
-            <button class="withdraw-btn" style="color: #ff9600;">
+            <button class="withdraw-btn" onclick={() => showWithdrawModal = true} disabled={appState.musyrifBalance <= 0} style={appState.musyrifBalance <= 0 ? "opacity: 0.6; cursor: not-allowed;" : ""}>
                 <i class="ti ti-wallet" style="font-size: 18px;"></i>
-                <span>{i18n.t('earnings.withdraw')}</span>
+                <span>Cairkan ke Rupiah</span>
             </button>
         </div>
 
@@ -130,6 +214,56 @@
     </div>
 </div>
 
+{#if showWithdrawModal}
+    <!-- svelte-ignore a11y_click_events_have_key_events -->
+    <!-- svelte-ignore a11y_no_static_element_interactions -->
+    <div class="custom-alert-overlay" onclick={() => showWithdrawModal = false}>
+        <div class="custom-alert-box" onclick={e => e.stopPropagation()}>
+            <div class="alert-icon" style="color: #1cb0f6; background: #e1f5fe;">
+                <i class="ti ti-wallet"></i>
+            </div>
+            <div style="font-size: 16px; font-weight: 900; margin-bottom: 8px;">Cairkan Pendapatan</div>
+            <div style="font-size: 13px; color: #64748b; margin-bottom: 16px; line-height: 1.4;">
+                Saldo <b>{appState.musyrifBalance} Gems</b> Anda akan dikonversi menjadi <b>Rp {(appState.musyrifBalance * 672).toLocaleString('id-ID')}</b> dan ditransfer ke rekening yang terdaftar.
+            </div>
+            <div style="background: #f8fafc; padding: 12px; border-radius: 12px; font-size: 12px; text-align: left; margin-bottom: 20px;">
+                <div style="color: #64748b; font-weight: 800; margin-bottom: 4px;">REKENING TUJUAN</div>
+                <div style="font-weight: 900; color: #334155; margin-bottom: 2px;">Bank BCA - 837192****</div>
+                <div style="font-weight: 700; color: #94a3b8;">a.n. Ustadz Malik</div>
+            </div>
+            <div class="alert-actions">
+                <button class="alert-btn secondary" onclick={() => showWithdrawModal = false}>Batal</button>
+                <button class="alert-btn primary" style="background: #1cb0f6; border-color: #1cb0f6;" onclick={confirmWithdrawal}>Konfirmasi</button>
+            </div>
+        </div>
+    </div>
+{/if}
+
+{#if alertStatus}
+    <!-- svelte-ignore a11y_click_events_have_key_events -->
+    <!-- svelte-ignore a11y_no_static_element_interactions -->
+    <div class="custom-alert-overlay" onclick={() => alertStatus = null}>
+        <div class="custom-alert-box" onclick={e => e.stopPropagation()}>
+            {#if alertStatus === 'success'}
+                <div class="alert-icon" style="color: #10b981; background: #e6f4ea;">
+                    <i class="ti ti-circle-check" style="font-size: 28px;"></i>
+                </div>
+            {:else}
+                <div class="alert-icon" style="color: #ef4444; background: #fce8e6;">
+                    <i class="ti ti-circle-x" style="font-size: 28px;"></i>
+                </div>
+            {/if}
+            <div style="font-size: 16px; font-weight: 900; margin-bottom: 8px;">{alertTitle}</div>
+            <div style="font-size: 13px; color: #64748b; margin-bottom: 20px; line-height: 1.4;">
+                {alertMessage}
+            </div>
+            <button class="alert-btn primary" style="background: {alertStatus === 'success' ? '#10b981' : '#ef4444'}; border-color: {alertStatus === 'success' ? '#10b981' : '#ef4444'}; width: 100%; color: white;" onclick={() => alertStatus = null}>
+                Tutup
+            </button>
+        </div>
+    </div>
+{/if}
+
 <style>
     .earnings-header {
         display: flex;
@@ -148,21 +282,21 @@
     }
 
     .balance-card {
-        background: linear-gradient(135deg, #ff9600, #ff5e00);
+        background: linear-gradient(135deg, #1cb0f6, #0898dc);
         border-radius: 24px;
         padding: 24px;
         display: flex;
         flex-direction: column;
         gap: 20px;
-        box-shadow: 0 10px 20px rgba(255, 150, 0, 0.2);
+        box-shadow: 0 10px 20px rgba(28, 176, 246, 0.2);
         margin-bottom: 24px;
     }
     .withdraw-btn {
-        background: rgba(255,255,255,0.2);
-        border: 1px solid rgba(255,255,255,0.4);
+        background: #fff;
+        border: none;
         padding: 12px;
         border-radius: 16px;
-        color: #fff;
+        color: #1cb0f6;
         font-weight: 900;
         font-size: 13px;
         display: flex;
@@ -171,8 +305,38 @@
         gap: 8px;
         cursor: pointer;
         transition: all 0.2s;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
-    .withdraw-btn:active { transform: scale(0.98); background: rgba(255,255,255,0.3); }
+    .withdraw-btn:active { transform: scale(0.98); box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+
+    /* Modal Styles */
+    .custom-alert-overlay {
+        position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+        background: rgba(0,0,0,0.5); z-index: 1000;
+        display: flex; align-items: center; justify-content: center;
+        padding: 20px;
+    }
+    .custom-alert-box {
+        background: #fff; border-radius: 24px; padding: 24px;
+        width: 100%; max-width: 320px; text-align: center;
+        animation: slideUpScale 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .alert-icon {
+        width: 56px; height: 56px; border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 28px; margin: 0 auto 16px;
+    }
+    .alert-actions { display: flex; gap: 12px; }
+    .alert-btn {
+        flex: 1; padding: 12px; border-radius: 12px;
+        font-size: 13px; font-weight: 800; cursor: pointer;
+    }
+    .alert-btn.primary { color: #fff; }
+    .alert-btn.secondary { background: #f1f5f9; color: #64748b; border: 1px solid #e2e8f0; }
+    @keyframes slideUpScale {
+        from { opacity: 0; transform: translateY(20px) scale(0.95); }
+        to { opacity: 1; transform: translateY(0) scale(1); }
+    }
 
     .stats-grid {
         display: grid;
