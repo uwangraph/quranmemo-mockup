@@ -3,38 +3,135 @@
     import { i18n } from '$lib/i18n.svelte.js';
     import BottomNav from '../components/BottomNav.svelte';
 
-    const musyrifs = $derived([
-        { name: "Ust. Ahmad Fauzi", rating: 4.9, status: "online", price: 15, surah: "Short", tier: "bersanad", icon: "👳" },
-        { name: "Ust. Ridwan Hakim", rating: 4.8, status: "online", price: 40, surah: "Medium", tier: "reguler", icon: "👨‍🏫" },
-        { name: "Ustadzah Siti Aminah", rating: 5.0, status: "offline", price: 250, surah: "Long", tier: "bersanad", icon: "🧕" },
-    ]);
+    let selectedSurah = $state("Al-Insyirah");
+    let selectedAyah = $state("");
+    let selectedGender = $state("all");
+    let showDropdown = $state(false);
+    let hasSearched = $state(false);
+    let activeTab = $state("instant");
 
-    function bookMusyrif(m) {
-        if (m.status === 'offline') {
-            alert("Musyrif sedang offline, tidak bisa dibooking saat ini.");
+    let showCustomAlert = $state(false);
+    let alertMessage = $state("");
+    let alertType = $state("alert");
+    let onConfirm = $state(() => {});
+
+    function customAlert(msg) {
+        alertMessage = msg;
+        alertType = "alert";
+        showCustomAlert = true;
+    }
+
+    function customConfirm(msg, callback) {
+        alertMessage = msg;
+        alertType = "confirm";
+        onConfirm = callback;
+        showCustomAlert = true;
+    }
+
+    const juz30Surahs = [
+        "An-Naba'", "An-Nazi'at", "'Abasa", "At-Takwir", "Al-Infitar", 
+        "Al-Mutaffifin", "Al-Inshiqaq", "Al-Buruj", "At-Tariq", "Al-A'la", 
+        "Al-Ghashiyah", "Al-Fajr", "Al-Balad", "Ash-Shams", "Al-Lail", 
+        "Ad-Duha", "Al-Insyirah", "At-Tin", "Al-'Alaq", "Al-Qadr", 
+        "Al-Bayyinah", "Az-Zalzalah", "Al-'Adiyat", "Al-Qari'ah", "At-Takathur", 
+        "Al-'Asr", "Al-Humazah", "Al-Fil", "Quraish", "Al-Ma'un", 
+        "Al-Kauthar", "Al-Kafirun", "An-Nasr", "Al-Masad", "Al-Ikhlas", 
+        "Al-Falaq", "An-Nas"
+    ];
+    
+    const juz29Surahs = [
+        "Al-Mulk", "Al-Qalam", "Al-Haqqah", "Al-Ma'arij", "Nuh", 
+        "Al-Jinn", "Al-Muzzammil", "Al-Muddaththir", "Al-Qiyamah", 
+        "Al-Insan", "Al-Mursalat"
+    ];
+    
+    const proSurahs = [
+        "Juz 1 (Al-Baqarah)", "Juz 2 (Al-Baqarah)", "Juz 3 (Ali 'Imran)", 
+        "Juz 4 (Ali 'Imran - An-Nisa)", "Juz 5 (An-Nisa)"
+    ];
+
+    const availableSurahs = $derived.by(() => {
+        if (appState.user.learningPath === 'mid') return juz29Surahs;
+        if (appState.user.learningPath === 'pro') return proSurahs;
+        return juz30Surahs;
+    });
+
+    // Ensure selectedSurah matches the available list when initialized or changed
+    $effect(() => {
+        if (!availableSurahs.includes(selectedSurah)) {
+            selectedSurah = availableSurahs[0];
+        }
+    });
+
+    const defaultSchedule = ["Besok, 10:00", "Lusa, 14:00", "Lusa, 19:30"];
+    const allMusyrifs = [
+        { name: "Ust. Ahmad Fauzi", gender: "ustadz", rating: 4.9, status: "online", tier: "bersanad", icon: "👳", schedule: ["Hari ini, 20:00", ...defaultSchedule] },
+        { name: "Ust. Ridwan Hakim", gender: "ustadz", rating: 4.8, status: "online", tier: "reguler", icon: "👨‍🏫", schedule: defaultSchedule },
+        { name: "Ustadzah Siti Aminah", gender: "ustadzah", rating: 5.0, status: "offline", tier: "bersanad", icon: "🧕", schedule: ["Besok, 09:00", "Besok, 16:00", "Lusa, 10:00"] },
+        { name: "Ust. Budi Santoso", gender: "ustadz", rating: 4.7, status: "online", tier: "reguler", icon: "🧔", schedule: defaultSchedule },
+        { name: "Ustadzah Aisyah", gender: "ustadzah", rating: 4.9, status: "online", tier: "reguler", icon: "🧕", schedule: ["Hari ini, 19:00", ...defaultSchedule] },
+        { name: "Ust. Hasanuddin", gender: "ustadz", rating: 5.0, status: "online", tier: "bersanad", icon: "👳", schedule: defaultSchedule },
+        { name: "Ustadzah Fatimah", gender: "ustadzah", rating: 4.6, status: "offline", tier: "reguler", icon: "🧕", schedule: defaultSchedule },
+        { name: "Ust. Zulkifli", gender: "ustadz", rating: 4.8, status: "online", tier: "bersanad", icon: "👨‍🏫", schedule: defaultSchedule },
+        { name: "Ustadzah Khadijah", gender: "ustadzah", rating: 4.9, status: "online", tier: "bersanad", icon: "🧕", schedule: defaultSchedule }
+    ];
+
+    const musyrifs = $derived(
+        selectedGender === 'all' 
+            ? allMusyrifs 
+            : allMusyrifs.filter(m => m.gender === selectedGender)
+    );
+
+    const displayMusyrifs = $derived(
+        activeTab === 'instant'
+            ? musyrifs.filter(m => m.status === 'online')
+            : musyrifs
+    );
+
+    function bookMusyrif(m, time) {
+        if (!selectedAyah) {
+            customAlert("Silakan tentukan Surah dan Ayat yang ingin disetorkan terlebih dahulu.");
             return;
         }
         
-        if (appState.user.coins >= m.price) {
-            if (confirm(`Booking setoran hafalan ke ${m.name} seharga ${m.price} Poin?`)) {
-                appState.user.coins -= m.price;
+        if (m.status === 'offline' && !time) {
+            customAlert("Musyrif sedang offline, tidak bisa melakukan setoran instan saat ini. Silakan booking jadwal yang tersedia.");
+            return;
+        }
+        
+        const cost = 15;
+        if (appState.user.coins >= cost) {
+            const timeText = time ? ` untuk jadwal ${time}` : " sekarang (Instan)";
+            customConfirm(`Booking setoran hafalan ${selectedSurah} ayat ${selectedAyah} ke ${m.name}${timeText} seharga ${cost} Gems?`, () => {
+                appState.user.coins -= cost;
                 appState.saveUser();
                 appState.go('livemarking');
-            }
+            });
         } else {
-            alert(`Poin tidak cukup! Butuh ${m.price} poin, kamu hanya punya ${appState.user.coins}. Kerjakan sesi hafalan untuk mendapatkan poin.`);
+            customAlert(`Gems tidak cukup! Butuh ${cost} Gems, kamu hanya punya ${appState.user.coins}. Selesaikan quest dan rajin murajaah untuk mendapatkan lebih banyak Gems.`);
         }
+    }
+
+    function quickFind() {
+        if (!selectedAyah) {
+            customAlert("Silakan tentukan Surah dan Ayat yang ingin disetorkan terlebih dahulu.");
+            return;
+        }
+        hasSearched = true;
     }
 </script>
 
 <div class="screen">
     <div class="topbar wallet-header">
         <div class="wallet-pills">
-            <div class="pill ticket-pill">
-                <i class="ti ti-ticket"></i> <span>1</span>
+            <div class="pill energy-pill" style="color: #ef4444; border-color: #fee2e2; background: #fef2f2;">
+                <i class="ti ti-bolt-filled"></i> <span>5/5</span>
             </div>
-            <div class="pill point-pill">
-                <i class="ti ti-bolt-filled"></i> <span>{appState.user.coins}</span>
+            <div class="pill xp-pill" style="color: #ff9600; border-color: #fff7e6; background: #fffbf2;">
+                <i class="ti ti-star-filled"></i> <span>{appState.user.xp}</span>
+            </div>
+            <div class="pill gem-pill" style="color: #1cb0f6; border-color: #e1f5fe; background: #f1faff;">
+                <i class="ti ti-diamond-filled"></i> <span>{appState.user.coins}</span>
             </div>
         </div>
         <button class="topup-btn">
@@ -42,49 +139,135 @@
         </button>
     </div>
 
+    <div class="market-tabs">
+        <button class="m-tab" class:active={activeTab === 'instant'} onclick={() => {activeTab = 'instant'; hasSearched = false;}}>Setoran Instan</button>
+        <button class="m-tab" class:active={activeTab === 'booking'} onclick={() => {activeTab = 'booking'; hasSearched = false;}}>Booking Jadwal</button>
+    </div>
+
     <div class="scroll-content" style="padding: 0 16px;">
         <div class="hero-card">
             <div style="flex:1">
-                <div style="font-size:18px; font-weight:900; color:#fff;">{i18n.t('market.instant')}</div>
-                <div style="font-size:12px; font-weight:700; color:rgba(255,255,255,0.8); margin-top:4px;">{i18n.t('market.instant_d')}</div>
+                <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                    <div>
+                        <div style="font-size:18px; font-weight:900; color:#fff;">{activeTab === 'instant' ? i18n.t('market.instant') : 'Pesan Jadwal'}</div>
+                        <div style="font-size:12px; font-weight:700; color:rgba(255,255,255,0.8); margin-top:4px;">{activeTab === 'instant' ? i18n.t('market.instant_d') : 'Pilih jadwal setoran yang sesuai'}</div>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.2); padding: 4px 10px; border-radius: 12px; display: flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 800;">
+                        Biaya: 15 <i class="ti ti-diamond-filled" style="color:#fff;"></i>
+                    </div>
+                </div>
+                
+                <div class="target-selector">
+                    <div class="target-field">
+                        <label>Surah</label>
+                        <div class="custom-select-wrapper" style="position: relative;">
+                            <div class="custom-select-box" onclick={() => showDropdown = !showDropdown}>
+                                <span>{selectedSurah}</span>
+                                <i class="ti ti-chevron-down"></i>
+                            </div>
+                            {#if showDropdown}
+                                <!-- svelte-ignore a11y_click_events_have_key_events -->
+                                <!-- svelte-ignore a11y_no_static_element_interactions -->
+                                <div class="dropdown-menu-overlay" onclick={() => showDropdown = false}></div>
+                                <div class="dropdown-menu">
+                                    {#each availableSurahs as surah}
+                                        <!-- svelte-ignore a11y_click_events_have_key_events -->
+                                        <!-- svelte-ignore a11y_no_static_element_interactions -->
+                                        <div class="dropdown-item" class:selected={selectedSurah === surah} onclick={() => {selectedSurah = surah; showDropdown = false;}}>
+                                            {surah}
+                                        </div>
+                                    {/each}
+                                </div>
+                            {/if}
+                        </div>
+                    </div>
+                    <div class="target-field">
+                        <label>Ayat</label>
+                        <input type="text" placeholder="Cth: 1-8" bind:value={selectedAyah} />
+                    </div>
+                </div>
             </div>
-            <button class="btn-duo" style="background:#fff; color:#1cb0f6; font-size:14px; padding:12px 20px;">{i18n.t('market.find')}</button>
+            <button class="btn-duo find-btn" onclick={quickFind}>
+                {i18n.t('market.find')}
+            </button>
         </div>
 
+        {#if hasSearched}
         <div class="section-header">
             <span class="section-label" style="padding:0">{i18n.t('market.available')}</span>
-            <button style="background:none; border:none; color:#1cb0f6; font-size:12px; font-weight:800;">{i18n.t('market.filter')}</button>
+            <div class="gender-filter">
+                <button class:active={selectedGender === 'all'} onclick={() => selectedGender = 'all'}>Semua</button>
+                <button class:active={selectedGender === 'ustadz'} onclick={() => selectedGender = 'ustadz'}>Ustadz</button>
+                <button class:active={selectedGender === 'ustadzah'} onclick={() => selectedGender = 'ustadzah'}>Ustadzah</button>
+            </div>
         </div>
 
         <div class="musyrif-list-container">
-            {#each musyrifs as m}
-                <div class="musyrif-card" class:offline={m.status === 'offline'} onclick={() => bookMusyrif(m)} role="button" tabindex="0">
-                    <div class="m-avatar">{m.icon}</div>
-                    <div style="flex:1">
-                        <div style="display:flex; align-items:center; gap:6px;">
-                            <span style="font-size:14px; font-weight:800; color:#3c3c3c;">{m.name}</span>
+            {#each displayMusyrifs as m}
+                <div class="musyrif-card" class:offline={m.status === 'offline'}>
+                    <div style="display:flex; align-items: center; gap: 16px; width: 100%;">
+                        <div class="m-avatar">{m.icon}</div>
+                        <div style="flex:1">
+                            <div style="display:flex; align-items:center; gap:6px;">
+                                <span style="font-size:14px; font-weight:800; color:#3c3c3c;">{m.name}</span>
+                            </div>
+                            <div style="display:flex; align-items:center; gap:10px; margin-top:4px;">
+                                <div style="font-size:12px; font-weight:800; color:#ff9600; display:flex; align-items:center; gap:2px;">
+                                    <i class="ti ti-star-filled"></i> {m.rating}
+                                </div>
+                                <div style="font-size:12px; font-weight:700; color:#afafaf;">{i18n.t(`status.${m.status}`)}</div>
+                            </div>
+                        </div>
+                        <div style="display: flex; flex-direction: column; align-items: flex-end; justify-content: flex-start; height: 46px;">
                             <span class="tier-badge {m.tier}">{i18n.t(`tier.${m.tier}`)}</span>
                         </div>
-                        <div style="display:flex; align-items:center; gap:10px; margin-top:4px;">
-                            <div style="font-size:12px; font-weight:800; color:#ff9600; display:flex; align-items:center; gap:2px;">
-                                <i class="ti ti-star-filled"></i> {m.rating}
-                            </div>
-                             <div style="font-size:12px; font-weight:700; color:#afafaf;">{i18n.t(`status.${m.status}`)}</div>
-                        </div>
                     </div>
-                    <div style="text-align:right;">
-                        <div style="font-size:14px; font-weight:900; color:#3c3c3c;">{m.price} {i18n.t('market.points')}</div>
-                        <div style="font-size:10px; font-weight:700; color:#00978A; margin-top:2px;">
-                             <i class="ti ti-receipt-refund"></i> 10% Cashback
+                    
+                    <div class="schedule-box">
+                        <div style="font-size: 11px; font-weight: 800; color: #64748b; margin-bottom: 8px;">{activeTab === 'instant' ? 'AKSI:' : 'JADWAL TERSEDIA:'}</div>
+                        <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                            {#if activeTab === 'instant'}
+                                <button class="schedule-chip instant" style="width: 100%; text-align: center; padding: 10px;" onclick={() => bookMusyrif(m, null)}>Mulai Setoran Sekarang</button>
+                            {:else}
+                                {#each m.schedule as time}
+                                    <button class="schedule-chip" onclick={() => bookMusyrif(m, time)}>{time}</button>
+                                {/each}
+                            {/if}
                         </div>
                     </div>
                 </div>
             {/each}
         </div>
+        {/if}
     </div>
 
     <BottomNav active="murojaah" />
 </div>
+
+{#if showCustomAlert}
+    <!-- svelte-ignore a11y_click_events_have_key_events -->
+    <!-- svelte-ignore a11y_no_static_element_interactions -->
+    <div class="custom-alert-overlay" onclick={() => showCustomAlert = false}>
+        <div class="custom-alert-box" onclick={e => e.stopPropagation()}>
+            <div class="alert-icon">
+                {#if alertType === 'alert'}
+                    <i class="ti ti-info-circle-filled"></i>
+                {:else}
+                    <i class="ti ti-help-hexagon-filled"></i>
+                {/if}
+            </div>
+            <div class="alert-text">{alertMessage}</div>
+            <div class="alert-actions">
+                {#if alertType === 'confirm'}
+                    <button class="alert-btn secondary" onclick={() => showCustomAlert = false}>Batal</button>
+                    <button class="alert-btn primary" onclick={() => { onConfirm(); showCustomAlert = false; }}>Ya, Lanjutkan</button>
+                {:else}
+                    <button class="alert-btn primary" onclick={() => showCustomAlert = false}>Mengerti</button>
+                {/if}
+            </div>
+        </div>
+    </div>
+{/if}
 
 <style>
     .wallet-header {
@@ -124,6 +307,29 @@
         font-size: 18px;
     }
 
+    .market-tabs {
+        display: flex;
+        background: #fff;
+        padding: 0 20px;
+        border-bottom: 2px solid var(--border-main);
+    }
+    .m-tab {
+        flex: 1;
+        background: none;
+        border: none;
+        padding: 16px 0;
+        font-size: 14px;
+        font-weight: 800;
+        color: #afafaf;
+        cursor: pointer;
+        border-bottom: 3px solid transparent;
+        transition: all 0.2s;
+    }
+    .m-tab.active {
+        color: #1cb0f6;
+        border-bottom: 3px solid #1cb0f6;
+    }
+
     .hero-card {
         background: linear-gradient(135deg, #1cb0f6, #0898dc);
         padding: 24px;
@@ -132,16 +338,127 @@
         margin-bottom: 24px;
         display: flex;
         flex-direction: column;
-        gap: 16px;
+        gap: 20px;
         box-shadow: 0 10px 20px rgba(28, 176, 246, 0.2);
         color: #fff;
     }
+    .target-selector {
+        display: flex;
+        gap: 12px;
+        margin-top: 16px;
+        background: rgba(255, 255, 255, 0.15);
+        padding: 12px;
+        border-radius: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .target-field {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+    .target-field label {
+        font-size: 10px;
+        font-weight: 800;
+        color: rgba(255, 255, 255, 0.9);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    .custom-select-box,
+    .target-field input {
+        background: #fff;
+        border: none;
+        padding: 8px 12px;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 700;
+        color: #3c3c3c;
+        outline: none;
+        font-family: inherit;
+        box-sizing: border-box;
+        width: 100%;
+    }
+    .custom-select-box {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+    }
+    .dropdown-menu-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 40;
+    }
+    .dropdown-menu {
+        position: absolute;
+        top: calc(100% + 4px);
+        left: 0;
+        right: 0;
+        background: #fff;
+        border: 1px solid #e5e5e5;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        max-height: 200px;
+        overflow-y: auto;
+        z-index: 50;
+        display: flex;
+        flex-direction: column;
+        padding: 8px 0;
+    }
+    .dropdown-item {
+        padding: 10px 16px;
+        font-size: 13px;
+        font-weight: 700;
+        color: #3c3c3c;
+        cursor: pointer;
+    }
+    .dropdown-item:active {
+        background: #f1f5f9;
+    }
+    .dropdown-item.selected {
+        background: #e0f5f3;
+        color: #00978A;
+    }
+    
+    .find-btn {
+        background: #fff; 
+        color: #1cb0f6; 
+        font-size: 14px; 
+        padding: 14px 20px;
+        width: 100%;
+    }
+    
     .section-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
         margin-bottom: 16px;
     }
+    
+    .gender-filter {
+        display: flex;
+        background: #f1f5f9;
+        border-radius: 12px;
+        padding: 4px;
+        gap: 4px;
+    }
+    .gender-filter button {
+        background: none;
+        border: none;
+        padding: 6px 12px;
+        font-size: 12px;
+        font-weight: 800;
+        color: #64748b;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    .gender-filter button.active {
+        background: #fff;
+        color: #1cb0f6;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    
     .musyrif-card {
         background: #fff;
         border: 2px solid var(--border-main);
@@ -149,7 +466,7 @@
         border-radius: 20px;
         padding: 16px;
         display: flex;
-        align-items: center;
+        flex-direction: column;
         gap: 16px;
         transition: transform 0.1s;
     }
@@ -213,9 +530,118 @@
         padding: 32px;
     }
 
-    :global(.desktop-browser) .hero-card button,
-    :global(.tablet) .hero-card button {
+    :global(.desktop-browser) .hero-card .find-btn,
+    :global(.tablet) .hero-card .find-btn {
         width: auto;
         flex-shrink: 0;
+        align-self: flex-end;
+    }
+
+    /* Custom Alert Styles */
+    .custom-alert-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.4);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+        padding: 20px;
+        animation: fadeIn 0.2s ease;
+    }
+    .custom-alert-box {
+        background: #fff;
+        width: 100%;
+        max-width: 320px;
+        border-radius: 24px;
+        padding: 24px;
+        text-align: center;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        animation: slideUpScale 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .alert-icon {
+        font-size: 48px;
+        color: #1cb0f6;
+        margin-bottom: 16px;
+    }
+    .alert-text {
+        font-size: 15px;
+        font-weight: 700;
+        color: #3c3c3c;
+        line-height: 1.5;
+        margin-bottom: 24px;
+    }
+    .alert-actions {
+        display: flex;
+        gap: 12px;
+    }
+    .alert-btn {
+        flex: 1;
+        padding: 12px;
+        border-radius: 16px;
+        font-size: 14px;
+        font-weight: 800;
+        cursor: pointer;
+        border: none;
+        transition: transform 0.1s;
+    }
+    .alert-btn:active {
+        transform: translateY(2px);
+    }
+    .alert-btn.primary {
+        background: #1cb0f6;
+        color: #fff;
+        box-shadow: 0 4px 0 #1899d6;
+    }
+    .alert-btn.primary:active {
+        box-shadow: 0 2px 0 #1899d6;
+    }
+    .alert-btn.secondary {
+        background: #f1f5f9;
+        color: #64748b;
+        box-shadow: 0 4px 0 #e2e8f0;
+    }
+    .alert-btn.secondary:active {
+        box-shadow: 0 2px 0 #e2e8f0;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+    @keyframes slideUpScale {
+        from { opacity: 0; transform: translateY(20px) scale(0.95); }
+        to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    /* Schedule Chips */
+    .schedule-box {
+        background: #f8fafc;
+        border-radius: 12px;
+        padding: 12px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    .schedule-chip {
+        background: #fff;
+        border: 2px solid #e2e8f0;
+        border-bottom-width: 3px;
+        border-radius: 10px;
+        padding: 6px 10px;
+        font-size: 11px;
+        font-weight: 800;
+        color: #475569;
+        cursor: pointer;
+        transition: transform 0.1s;
+    }
+    .schedule-chip:active {
+        transform: translateY(1px);
+        border-bottom-width: 2px;
+        margin-top: 1px;
+    }
+    .schedule-chip.instant {
+        background: #1cb0f6;
+        color: #fff;
+        border-color: #1899d6;
     }
 </style>
