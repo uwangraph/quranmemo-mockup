@@ -1,13 +1,13 @@
 <script>
     import { fade, fly } from 'svelte/transition';
-    let { showCompletion, activeVerse, selectedVerseIndex, lessonEarnedXP, lessonEarnedCoins, accuracy = '100%', onFinish } = $props();
+    let { showCompletion, activeVerse, selectedVerseIndex, lessonEarnedXP, lessonEarnedGems, accuracy = '100%', breakdown = '', onFinish } = $props();
 </script>
 
 {#if showCompletion}
 <div class="completion-overlay" transition:fade={{duration: 200}}>
     <div class="completion-card" transition:fly={{y: 20, duration: 300}}>
         <div class="completed-trophy-img">🏆</div>
-        <div class="congrats-headline">✅ ONE PATH FINISHED!</div>
+        <div class="congrats-headline">✅ TARGET SELESAI!</div>
         <div class="congrats-sub">
             {#if selectedVerseIndex > 0}
                 Satu ayat benar-benar hafal bersambung dengan ayat sebelumnya.
@@ -20,7 +20,12 @@
             <div class="reward-item">
                 <span class="reward-icon gold">⚡</span>
                 <span class="reward-value">+{lessonEarnedXP} XP</span>
-                <span class="reward-label">STREAK BONUS</span>
+                <span class="reward-label">EXPERIENCE</span>
+            </div>
+            <div class="reward-item memo-gems">
+                <span class="reward-icon diamond">💎</span>
+                <span class="reward-value-gems">+{lessonEarnedGems} Gems</span>
+                <span class="reward-label-gems">REWARD</span>
             </div>
             <div class="reward-item memo-cashback">
                 <span class="reward-icon teal">🎯</span>
@@ -28,6 +33,18 @@
                 <span class="reward-label-teal">AKURASI JAWABAN</span>
             </div>
         </div>
+
+        {#if breakdown}
+            <div class="breakdown-box">
+                {#each breakdown.split('\n') as line}
+                    {#if line.trim()}
+                        <div class="breakdown-line">
+                            <i class="ti ti-circle-check-filled"></i> {line}
+                        </div>
+                    {/if}
+                {/each}
+            </div>
+        {/if}
         
         <div class="button-column">
             <button class="btn-duo btn-green" onclick={onFinish}>
@@ -101,6 +118,9 @@
         align-items: center;
         gap: 2px;
     }
+    .reward-item.memo-gems {
+        border-left: 2px solid #e5e5e5;
+    }
     .reward-item.memo-cashback {
         border-left: 2px solid #e5e5e5;
     }
@@ -117,6 +137,11 @@
         font-weight: 900;
         color: #00978A;
     }
+    .reward-value-gems {
+        font-size: 15px;
+        font-weight: 900;
+        color: #ff9600;
+    }
     .reward-label {
         font-size: 9px;
         font-weight: 700;
@@ -126,6 +151,37 @@
         font-size: 9px;
         font-weight: 700;
         color: #00978A;
+    }
+    .reward-label-gems {
+        font-size: 9px;
+        font-weight: 700;
+        color: #ff9600;
+    }
+    .breakdown-box {
+        width: 100%;
+        background: #fdfdfd;
+        border: 2px dashed #ffe4b3;
+        border-radius: 16px;
+        padding: 12px 16px;
+        margin-bottom: 24px;
+        text-align: left;
+        box-sizing: border-box;
+    }
+    .breakdown-line {
+        font-size: 12px;
+        font-weight: 800;
+        color: #d97706;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin-bottom: 6px;
+    }
+    .breakdown-line:last-child {
+        margin-bottom: 0;
+    }
+    .breakdown-line i {
+        font-size: 14px;
+        color: #ff9600;
     }
     .button-column {
         display: flex;

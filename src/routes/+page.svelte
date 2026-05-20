@@ -16,6 +16,7 @@
     import MusyrifEarnings from '$lib/screens/MusyrifEarnings.svelte';
     import SessionFeedback from '$lib/screens/SessionFeedback.svelte';
     import AdminDashboard from '$lib/screens/AdminDashboard.svelte';
+    import Quests from '$lib/screens/Quests.svelte';
 </script>
 
 {#if appState.currentScreen === 'onboarding'}
@@ -23,6 +24,8 @@
 {:else}
     {#if appState.currentScreen === 'learn'}
         <Learn />
+    {:else if appState.currentScreen === 'quests'}
+        <Quests />
     {:else if appState.currentScreen === 'murojaah'}
         <Marketplace />
     {:else if appState.currentScreen === 'feedback'}

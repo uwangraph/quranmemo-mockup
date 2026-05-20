@@ -4,7 +4,6 @@
 	import confetti from 'canvas-confetti';
     
     // Import modular components
-    import BreakModal from '$lib/components/lesson/BreakModal.svelte';
     import LessonCompletion from '$lib/components/lesson/LessonCompletion.svelte';
     import StepRecallPrev from '$lib/components/lesson/StepRecallPrev.svelte';
     import StepReadListen from '$lib/components/lesson/StepReadListen.svelte';
@@ -190,10 +189,11 @@
     let isCorrect = $state(false);
     
     let showTajwidModal = $state(false);
-    let energy = $state(5);
     let streakCount = $state(0);
     let incorrectQueue = $state([]);
-    let showStreakBonus = $state(false);
+    let pendingStreakAnimation = $state(false);
+    let showStreakOverlay = $state(false);
+    let showEnergyModal = $state(false);
 
     // Audio & Voice Recording States
     let audio = null;
@@ -215,7 +215,8 @@
     let showCompletion = $state(false);
     
     let lessonEarnedXP = $state(0);
-    let lessonEarnedCoins = $state(0);
+    let lessonEarnedGems = $state(0);
+    let lessonBreakdown = $state('');
     
     // Stats for Accuracy
     let totalAttempts = $state(0);
@@ -809,7 +810,6 @@
             currentStep = 0;
             isChecked = false;
             isCorrect = false;
-            energy = 5;
             streakCount = 0;
             incorrectQueue = [];
             selectedOptionIdx = null;
@@ -1120,57 +1120,118 @@
         }
     }
 
-    function checkAnswer() {
-        if (isChecked) {
-            // Move to next step or finish
-            isChecked = false;
-            isCorrect = false;
-            selectedOptionIdx = null;
-            selectedWords = [];
-            recordState = 'idle';
-            isComparing = false;
-            recallSelectedOptionIdx = null;
-            recallMethod = 'voice';
-            loopTimes = 1; // Reset loop state for the next step
-            
-            if (currentStep < stepsPipeline.length - 1) {
-                currentStep++;
-                setupScramble();
-                if (audio) audio.pause();
-                isPlaying = false;
+    function buyEnergy(gemsCost, energyGained) {
+        if (appState.user.gems >= gemsCost) {
+            appState.user.gems -= gemsCost;
+            appState.user.energy += energyGained;
+            appState.saveUser();
+            showEnergyModal = false;
+        } else {
+            alert(`Gems tidak cukup! Butuh ${gemsCost} Gems, Anda hanya punya ${appState.user.gems}.`);
+        }
+    }
 
-                // Auto-play murottal when opening a new step
-                const autoPlayTypes = ['read_listen', 'listen_repeat', 'fill_front', 'fill_back', 'audio_scramble', 'puzzle_one', 'puzzle_two', 'puzzle_total'];
-                const nextStepConfig = stepsPipeline[currentStep];
-                if (nextStepConfig && autoPlayTypes.includes(nextStepConfig.type) && audio) {
-                    setTimeout(() => {
-                        audio.currentTime = 0;
-                        audio.playbackRate = 1.0;
-                        currentLoopIndex = 0;
-                        audio.play().catch(() => {});
-                        isPlaying = true;
-                    }, 450);
-                }
-            } else {
-                showCompletion = true;
-                
-                lessonEarnedXP = 15;
-                lessonEarnedCoins = 5;
-                
-                appState.user.xp += lessonEarnedXP;
-                appState.user.coins += lessonEarnedCoins;
-                
-                if (appState.user.progress.surah_094 === selectedVerseIndex) {
-                    appState.user.progress.surah_094 += 1;
-                }
-                
-                appState.saveUser();
-                
-                // Celebratory completion effects!
-                triggerCompletionEffects();
+    function advanceStep() {
+        recordState = 'idle';
+        isChecked = false;
+        isCorrect = false;
+        selectedOptionIdx = null;
+        selectedWords = [];
+        isComparing = false;
+        recallSelectedOptionIdx = null;
+        recallMethod = 'voice';
+        loopTimes = 1; // Reset loop state for the next step
+        
+        if (currentStep < stepsPipeline.length - 1) {
+            currentStep++;
+            setupScramble();
+            if (audio) audio.pause();
+            isPlaying = false;
+            isPlayingRecorded = false;
+            isPlayingQari = false;
+
+            // Auto-play murottal when opening a new step
+            const autoPlayTypes = ['read_listen', 'listen_repeat', 'fill_front', 'fill_back', 'audio_scramble', 'puzzle_one', 'puzzle_two', 'puzzle_total'];
+            const nextStepConfig = stepsPipeline[currentStep];
+            if (nextStepConfig && autoPlayTypes.includes(nextStepConfig.type) && audio) {
+                setTimeout(() => {
+                    audio.currentTime = 0;
+                    audio.playbackRate = 1.0;
+                    currentLoopIndex = 0;
+                    audio.play().catch(() => {});
+                    isPlaying = true;
+                }, 450);
             }
+            
+            if (nextStepConfig && nextStepConfig.type !== 'read_listen' && nextStepConfig.type !== 'listen_repeat') {
+                playWordAudio('bloop'); 
+            }
+        } else {
+            // === Hitung reward berdasarkan tipe node ===
+            const nodeType = appState.selectedNodeType || 'lesson'; // 'lesson' | 'checkpoint'
+            const totalVerses = 8; // Al-Insyirah: 8 ayat
+            const isLastVerse = selectedVerseIndex === totalVerses - 1;
+            const surahJustCompleted = isLastVerse && appState.user.progress.surah_094 === selectedVerseIndex;
+
+            const xpEarned = 20;
+            let gemsEarned = nodeType === 'checkpoint' ? 150 : 55; // Per target: 55, per checkpoint: 150
+            const breakdownLines = [];
+
+            if (nodeType === 'checkpoint') {
+                breakdownLines.push(`+${gemsEarned} Gems — Checkpoint selesai`);
+            } else {
+                breakdownLines.push(`+${gemsEarned} Gems — Satu target selesai`);
+            }
+
+            // Bonus: Surah selesai (Al-Insyirah < 30 ayat → +75 Gems)
+            let surahBonus = 0;
+            if (surahJustCompleted) {
+                surahBonus = 75;
+                gemsEarned += surahBonus;
+                breakdownLines.push(`+${surahBonus} Gems — Surah Al-Insyirah selesai!`);
+            }
+
+            lessonEarnedXP = xpEarned;
+            lessonEarnedGems = gemsEarned;
+            lessonBreakdown = breakdownLines.join('\n');
+
+            appState.user.xp += lessonEarnedXP;
+            appState.user.gems += lessonEarnedGems;
+
+            if (appState.user.progress.surah_094 === selectedVerseIndex) {
+                appState.user.progress.surah_094 += 1;
+            }
+            appState.updateQuestProgress('q1', 1); // trigger quest
+            appState.saveUser();
+
+            showCompletion = true;
+            triggerCompletionEffects();
+        }
+    }
+
+    function checkAnswer() {
+        if (!currentStepConfig) return;
+
+        // If it's already checked, this button click means "Continue to Next Step"
+        if (isChecked) {
+            if (pendingStreakAnimation) {
+                pendingStreakAnimation = false;
+                showStreakOverlay = true;
+                return;
+            }
+            advanceStep();
             return;
         }
+
+        // Before checking answer, make sure they have energy
+        if (appState.user.energy <= 0) {
+            showEnergyModal = true;
+            return; // Block checking until they buy energy
+        }
+
+        // Deduct energy for this question
+        appState.user.energy -= 1;
+        appState.saveUser();
 
         // Logic to validate answer based on step type
         const type = currentStepConfig.type;
@@ -1229,12 +1290,13 @@
                 totalAttempts += 1;
                 if (isCorrect) {
                     correctAttempts += 1;
+                    appState.updateQuestProgress('q2', 1); // trigger quest
                     streakCount += 1;
-                    if (streakCount === 3) {
-                        energy += 2;
+                    if (streakCount === 5) {
+                        appState.user.energy += 4;
+                        appState.saveUser();
                         streakCount = 0;
-                        showStreakBonus = true;
-                        setTimeout(() => showStreakBonus = false, 2000);
+                        pendingStreakAnimation = true;
                     }
                 } else {
                     streakCount = 0;
@@ -1244,8 +1306,6 @@
                         title: "(Ulang) " + currentStepConfig.title
                     });
                 }
-                
-                if (energy > 0) energy -= 1;
             }
 
             if (isCorrect) {
@@ -1261,14 +1321,6 @@
         clearInterval(waveInterval);
         appState.go('learn');
     }
-
-    let showBreakModal = $state(false);
-    function toggleBreak() {
-        showBreakModal = !showBreakModal;
-        if (showBreakModal && audio) audio.pause();
-        if (showBreakModal) isPlaying = false;
-    }
-
 </script>
 
 <div class="screen theme-user" class:shake={screenShaking}>
@@ -1287,11 +1339,8 @@
             <i class="ti ti-info-circle" style="font-size: 18px; color: #00978a;"></i>
         </button>
         
-        <div class="energy-pill {showStreakBonus ? 'streak-bonus-anim' : ''}">
-            <i class="ti ti-bolt-filled"></i> {energy} Energy
-            {#if showStreakBonus}
-                <span class="bonus-float">+2</span>
-            {/if}
+        <div class="energy-pill">
+            <i class="ti ti-bolt-filled"></i> {appState.user.energy} Energy
         </div>
     </div>
 
@@ -1594,8 +1643,6 @@
         
     </div>
 
-    <!-- Break/Istirahat Modal -->
-    <BreakModal bind:showBreakModal={showBreakModal} onContinue={toggleBreak} onExit={exitLesson} />
     
     {#if showTajwidModal}
         <TajwidInfo isModal={true} onClose={() => showTajwidModal = false} />
@@ -1603,12 +1650,156 @@
 
     <!-- 3. COMPLETED ALL STAGES SCREEN OVERLAY -->
     <canvas bind:this={confettiCanvas} class="confetti-canvas"></canvas>
-    <LessonCompletion bind:showCompletion={showCompletion} {selectedVerseIndex} {activeVerse} {lessonEarnedXP} {lessonEarnedCoins} accuracy={accuracyPercent + '%'} onFinish={exitLesson} />
+    <LessonCompletion bind:showCompletion={showCompletion} {selectedVerseIndex} {activeVerse} {lessonEarnedXP} {lessonEarnedGems} breakdown={lessonBreakdown} accuracy={accuracyPercent + '%'} onFinish={exitLesson} />
+
+    {#if showStreakOverlay}
+        <div class="streak-overlay-page">
+            <div class="streak-content">
+                <div class="streak-icon"><i class="ti ti-bolt-filled"></i></div>
+                <h2 class="streak-title">Luar Biasa!</h2>
+                <p class="streak-desc">5 Jawaban benar berturut-turut. Terus pertahankan fokusmu!</p>
+                <div class="streak-reward">
+                    <span class="plus-text">+4</span>
+                    <span class="energy-text">Energy</span>
+                </div>
+            </div>
+            <div class="streak-footer">
+                <button class="btn-duo btn-green streak-continue-btn" onclick={() => { showStreakOverlay = false; advanceStep(); }}>
+                    LANJUTKAN
+                </button>
+            </div>
+        </div>
+    {/if}
+
+    {#if showEnergyModal}
+        <div class="modal-overlay" onclick={() => showEnergyModal = false}>
+            <div class="modal-content" onclick={(e) => e.stopPropagation()}>
+                <div class="modal-header">
+                    <h3>Energy Habis! ⚡</h3>
+                    <button class="close-btn" onclick={() => showEnergyModal = false}>✕</button>
+                </div>
+                <div class="modal-body">
+                    <p>Setiap soal membutuhkan 1 Energy. Tunggu hingga pukul 03.00 untuk reset harian, atau gunakan Gems kamu.</p>
+                    
+                    <div class="conversion-options">
+                        <button class="convert-btn" onclick={() => buyEnergy(100, 15)}>
+                            <div class="energy-gain"><i class="ti ti-bolt-filled"></i> +15 Energy</div>
+                            <div class="gems-cost"><i class="ti ti-diamond-filled"></i> 100</div>
+                        </button>
+                        
+                        <button class="convert-btn recommended" onclick={() => buyEnergy(200, 35)}>
+                            <div class="recommended-badge">Paling Hemat</div>
+                            <div class="energy-gain"><i class="ti ti-bolt-filled"></i> +35 Energy</div>
+                            <div class="gems-cost"><i class="ti ti-diamond-filled"></i> 200</div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {/if}
 </div>
 
 <style>
     /* Reset & Fonts */
     @import url('https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+    .bonus-float {
+        position: absolute;
+        top: -15px;
+        right: -10px;
+        color: #ff9600;
+        font-weight: 900;
+        font-size: 14px;
+        animation: floatUp 1s ease-out forwards;
+    }
+    
+    /* Streak Overlay Page */
+    .streak-overlay-page {
+        position: fixed;
+        inset: 0;
+        background: #fff;
+        z-index: 200;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 40px 24px;
+        animation: slideInUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .streak-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+    }
+    .streak-icon {
+        font-size: 80px;
+        color: #ff9600;
+        margin-bottom: 24px;
+        animation: pulseHeart 1.5s infinite;
+        filter: drop-shadow(0 10px 20px rgba(255,150,0,0.3));
+    }
+    .streak-title {
+        font-size: 28px;
+        font-weight: 900;
+        color: #ff9600;
+        margin: 0 0 12px 0;
+        letter-spacing: -0.5px;
+    }
+    .streak-desc {
+        font-size: 15px;
+        font-weight: 700;
+        color: #64748b;
+        margin: 0 0 32px 0;
+        line-height: 1.5;
+        max-width: 280px;
+    }
+    .streak-reward {
+        background: #fffbf2;
+        border: 3px solid #ffe4b3;
+        padding: 16px 32px;
+        border-radius: 24px;
+        display: flex;
+        align-items: baseline;
+        gap: 8px;
+        animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.2s both;
+    }
+    .streak-reward .plus-text {
+        font-size: 32px;
+        font-weight: 900;
+        color: #ff9600;
+    }
+    .streak-reward .energy-text {
+        font-size: 20px;
+        font-weight: 800;
+        color: #d97706;
+    }
+    .streak-footer {
+        width: 100%;
+        padding-top: 24px;
+    }
+    .streak-continue-btn {
+        width: 100%;
+        padding: 18px;
+        font-size: 16px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    @keyframes slideInUp {
+        from { transform: translateY(100%); }
+        to { transform: translateY(0); }
+    }
+    @keyframes pulseHeart {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.1); }
+    }
+    @keyframes popIn {
+        0% { transform: scale(0.5); opacity: 0; }
+        80% { transform: scale(1.1); opacity: 1; }
+        100% { transform: scale(1); opacity: 1; }
+    }
 
     .confetti-canvas {
         position: absolute;
@@ -1715,6 +1906,48 @@
         45% { transform: scale(1.15); }
         60% { transform: scale(1); }
     }
+
+    /* Modal CSS */
+    .modal-overlay {
+        position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+        background: rgba(0,0,0,0.5); z-index: 9999;
+        display: flex; align-items: center; justify-content: center;
+        padding: 20px;
+    }
+    .modal-content {
+        background: #fff; border-radius: 20px; width: 100%; max-width: 400px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.2); overflow: hidden;
+        animation: modalPop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    @keyframes modalPop {
+        0% { transform: scale(0.9); opacity: 0; }
+        100% { transform: scale(1); opacity: 1; }
+    }
+    .modal-header {
+        display: flex; justify-content: space-between; align-items: center;
+        padding: 16px 20px; border-bottom: 2px solid #f1f5f9;
+    }
+    .modal-header h3 { margin: 0; font-size: 18px; font-weight: 800; color: #ff9600; }
+    .close-btn { background: none; border: none; font-size: 18px; font-weight: bold; color: #94a3b8; cursor: pointer; }
+    .modal-body { padding: 20px; text-align: center; }
+    .modal-body p { margin: 0 0 20px 0; font-size: 14px; color: #475569; font-weight: 600; line-height: 1.5; }
+    
+    .conversion-options { display: flex; flex-direction: column; gap: 12px; }
+    .convert-btn {
+        display: flex; justify-content: space-between; align-items: center;
+        padding: 14px 20px; border-radius: 16px; border: 2px solid #e2e8f0;
+        background: #f8fafc; cursor: pointer; position: relative; transition: all 0.2s;
+    }
+    .convert-btn:active { transform: translateY(2px); }
+    .convert-btn.recommended { border-color: #00978a; background: #e0f2f1; margin-top: 10px; }
+    
+    .recommended-badge {
+        position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
+        background: #00978a; color: #fff; font-size: 10px; font-weight: 800;
+        padding: 2px 8px; border-radius: 100px; text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .energy-gain { font-size: 16px; font-weight: 900; color: #ff9600; display: flex; align-items: center; gap: 6px; }
+    .gems-cost { font-size: 15px; font-weight: 800; color: #00978a; display: flex; align-items: center; gap: 4px; }
 
     /* Lesson Content Area */
     .lesson-content-wrapper {
