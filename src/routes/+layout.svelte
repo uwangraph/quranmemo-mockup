@@ -54,6 +54,7 @@
 				{ id: 'onboarding', icon: '✨' },
 				{ id: 'learn', icon: '🏠' },
 				{ id: 'murojaah', icon: '🤝' },
+				{ id: 'quests', icon: '🎁' },
 				{ id: 'feedback', icon: '⭐' },
 				{ id: 'tadabbur', icon: '📚' },
 				{ id: 'league', icon: '🏆' },
@@ -96,6 +97,7 @@
 					{ id: 'learn', icon: 'ti-home', label: 'nav.learn' },
 					{ id: 'murojaah', icon: 'ti-refresh', label: 'nav.murojaah' },
 					{ id: 'tadabbur', icon: 'ti-book', label: 'nav.tadabbur' },
+					{ id: 'quests', icon: 'ti-gift', label: 'Quests' },
 					{ id: 'league', icon: 'ti-trophy', label: 'nav.league' },
 					{ id: 'profile', icon: 'ti-user', label: 'nav.profile' }
 				]
@@ -126,6 +128,7 @@
 			'onboarding': 'https://cdn-icons-png.flaticon.com/512/9716/9716852.png', // Rocket
 			'learn': 'https://cdn-icons-png.flaticon.com/512/2232/2232688.png', // Quran on Rehal
 			'murojaah': 'https://cdn-icons-png.flaticon.com/512/3468/3468081.png', // Handshake
+			'quests': 'https://cdn-icons-png.flaticon.com/512/4006/4006326.png', // Chest/Gift
 			'feedback': 'https://cdn-icons-png.flaticon.com/512/2107/2107957.png', // Star
 			'tadabbur': 'https://cdn-icons-png.flaticon.com/512/2947/2947998.png', // Study Book
 			'league': 'https://cdn-icons-png.flaticon.com/512/3112/3112946.png', // Gold Trophy

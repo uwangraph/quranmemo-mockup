@@ -13,17 +13,21 @@
     });
 </script>
 
-<div class="topbar">
+<div class="topbar" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
     <div class="streak-pill">
         <i class="ti ti-flame"></i> {appState.user.streak}
     </div>
-    <div style="flex: 1; display: flex; justify-content: center">
-        <span style="font-size: 18px; font-weight: 900; color: var(--duo-green); letter-spacing: -1px;">{i18n.t('learn.title')}</span>
+    
+    <div class="xp-pill" style="display: flex; align-items: center; gap: 4px; font-size: 14px; font-weight: 800; color: #ff9600; cursor: default; border: 2px solid #fff7e6; padding: 4px 8px; border-radius: 100px; background: #fffbf2;">
+        <i class="ti ti-star-filled"></i> {appState.user.xp}
     </div>
-    <div style="display: flex; gap: 12px;">
-        <div class="points-pill" onclick={() => appState.go('murojaah')}>
-            <i class="ti ti-bolt-filled"></i> {appState.user.xp}
-        </div>
+    
+    <div class="gems-pill" onclick={() => appState.go('murojaah')}>
+        <i class="ti ti-diamond-filled"></i> {appState.user.gems}
+    </div>
+    
+    <div class="energy-pill">
+        <i class="ti ti-bolt-filled"></i> {appState.user.energy}
     </div>
 </div>
 
@@ -61,5 +65,6 @@
     }
     .close-toast { background: none; border: none; cursor: pointer; color: #afafaf; font-size: 18px; }
     .streak-pill { display: flex; align-items: center; gap: 4px; font-size: 14px; font-weight: 800; color: #ff9600; }
-    .points-pill { display: flex; align-items: center; gap: 4px; font-size: 14px; font-weight: 800; color: #ff9600; cursor: pointer; border: 2px solid #fff7e6; padding: 4px 10px; border-radius: 100px; background: #fffbf2; }
+    .gems-pill { display: flex; align-items: center; gap: 4px; font-size: 14px; font-weight: 800; color: #00978A; cursor: pointer; border: 2px solid #e0f2f1; padding: 4px 10px; border-radius: 100px; background: #e0f2f1; }
+    .energy-pill { display: flex; align-items: center; gap: 4px; font-size: 14px; font-weight: 800; color: #ff9600; cursor: pointer; border: 2px solid #fff7e6; padding: 4px 10px; border-radius: 100px; background: #fffbf2; }
 </style>

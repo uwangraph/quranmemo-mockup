@@ -100,15 +100,15 @@
         }
         
         const cost = 15;
-        if (appState.user.coins >= cost) {
+        if (appState.user.gems >= cost) {
             const timeText = time ? ` untuk jadwal ${time}` : " sekarang (Instan)";
             customConfirm(`Booking setoran hafalan ${selectedSurah} ayat ${selectedAyah} ke ${m.name}${timeText} seharga ${cost} Gems?`, () => {
-                appState.user.coins -= cost;
+                appState.user.gems -= cost;
                 appState.saveUser();
                 appState.go('livemarking');
             });
         } else {
-            customAlert(`Gems tidak cukup! Butuh ${cost} Gems, kamu hanya punya ${appState.user.coins}. Selesaikan quest dan rajin murajaah untuk mendapatkan lebih banyak Gems.`);
+            customAlert(`Gems tidak cukup! Butuh ${cost} Gems, kamu hanya punya ${appState.user.gems}. Selesaikan quest dan rajin murajaah untuk mendapatkan lebih banyak Gems.`);
         }
     }
 
@@ -124,14 +124,14 @@
 <div class="screen">
     <div class="topbar wallet-header">
         <div class="wallet-pills">
-            <div class="pill energy-pill" style="color: #ef4444; border-color: #fee2e2; background: #fef2f2;">
-                <i class="ti ti-bolt-filled"></i> <span>5/5</span>
+            <div class="pill energy-pill" style="color: #ff9600; border-color: #fff7e6; background: #fffbf2;">
+                <i class="ti ti-bolt-filled"></i> <span>{appState.user.energy}</span>
             </div>
             <div class="pill xp-pill" style="color: #ff9600; border-color: #fff7e6; background: #fffbf2;">
                 <i class="ti ti-star-filled"></i> <span>{appState.user.xp}</span>
             </div>
-            <div class="pill gem-pill" style="color: #1cb0f6; border-color: #e1f5fe; background: #f1faff;">
-                <i class="ti ti-diamond-filled"></i> <span>{appState.user.coins}</span>
+            <div class="pill gem-pill" style="color: #00978A; border-color: #e0f2f1; background: #e0f2f1;">
+                <i class="ti ti-diamond-filled"></i> <span>{appState.user.gems}</span>
             </div>
         </div>
         <button class="topup-btn">

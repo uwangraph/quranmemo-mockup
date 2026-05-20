@@ -39,17 +39,17 @@
                 { id: 4, type: "lesson", verseIndex: 2, status: getStatus(2), title: `${i18n.t('learn.page')} 3` },
                 { id: 5, type: "lesson", verseIndex: 3, status: getStatus(3), title: `${i18n.t('learn.page')} 4` },
                 { id: 6, type: "lesson", verseIndex: 4, status: getStatus(4), title: `${i18n.t('learn.page')} 5` },
-                { id: 7, type: "checkpoint", status: progress >= 5 ? "current" : "locked", title: `${i18n.t('learn.submit_part')} 1` }
+                { id: 7, type: "checkpoint", verseIndex: 4, status: progress >= 5 ? "current" : "locked", title: `${i18n.t('learn.submit_part')} 1` }
             ];
         } else if (lp === 'mid') {
             return [
                 { id: 1, type: "lesson", verseIndex: 0, status: getStatus(0), title: "Al-Mulk (1-15)" },
                 { id: 2, type: "lesson", verseIndex: 1, status: getStatus(1), title: "Al-Mulk (16-30)" },
-                { id: 3, type: "checkpoint", status: progress >= 2 ? "completed" : "locked", title: `${i18n.t('learn.submit_part')} Al-Mulk` },
+                { id: 3, type: "checkpoint", verseIndex: 1, status: progress >= 2 ? "completed" : "locked", title: `${i18n.t('learn.submit_part')} Al-Mulk` },
                 { id: 4, type: "lesson", verseIndex: 2, status: getStatus(2), title: "Al-Qalam" },
                 { id: 5, type: "lesson", verseIndex: 3, status: getStatus(3), title: "Al-Haqqah" },
                 { id: 6, type: "tadabbur", status: progress >= 4 ? "current" : "locked", title: `Tadabbur T1` },
-                { id: 7, type: "checkpoint", status: progress >= 5 ? "locked" : "locked", title: `${i18n.t('learn.submit_ladder')} 1` }
+                { id: 7, type: "checkpoint", verseIndex: 3, status: progress >= 5 ? "locked" : "locked", title: `${i18n.t('learn.submit_ladder')} 1` }
             ];
         } else {
             return [
@@ -62,10 +62,47 @@
                 { id: 7, type: "lesson", verseIndex: 5, status: getStatus(5), title: `${i18n.t('learn.verse')} 6` },
                 { id: 8, type: "lesson", verseIndex: 6, status: getStatus(6), title: `${i18n.t('learn.verse')} 7` },
                 { id: 9, type: "lesson", verseIndex: 7, status: getStatus(7), title: `${i18n.t('learn.verse')} 8` },
-                { id: 10, type: "checkpoint", status: progress >= 8 ? "current" : "locked", title: `${i18n.t('learn.submit_full_surah')}` }
+                { id: 10, type: "checkpoint", verseIndex: 7, status: progress >= 8 ? "current" : "locked", title: `${i18n.t('learn.submit_full_surah')}` }
             ];
         }
     });
+
+    let showEnergyModal = $state(false);
+
+    function handleNodeClick(node) {
+        if (node.status === 'locked') return;
+
+        if (node.type === 'lesson' || node.type === 'checkpoint') {
+            if (appState.user.energy > 0) {
+                appState.selectedVerseIndex = node.verseIndex;
+                appState.selectedNodeType = node.type;
+                appState.user.energy -= 1;
+                appState.updateQuestProgress('q3', 1);
+                appState.saveUser();
+                appState.go('lesson');
+            } else {
+                showEnergyModal = true;
+            }
+        } else {
+            appState.go(node.type);
+        }
+    }
+
+    function buyEnergy(gemsCost, energyGained) {
+        if (appState.user.gems >= gemsCost) {
+            const confirmed = confirm(`Apakah Anda yakin ingin menukar ${gemsCost} Gems dengan ${energyGained} Energy?`);
+            if (!confirmed) return;
+
+            appState.user.gems -= gemsCost;
+            appState.user.energy += energyGained;
+            if (typeof localStorage !== 'undefined') {
+                localStorage.setItem('quranmemo_user', JSON.stringify(appState.user));
+            }
+            showEnergyModal = false;
+        } else {
+            alert(`Gems tidak cukup! Butuh ${gemsCost} Gems, Anda hanya punya ${appState.user.gems}.`);
+        }
+    }
 </script>
 
 <div class="path-column">
@@ -97,16 +134,7 @@
             <div class="node-wrapper" style="margin-left: {i % 2 === 0 ? '20px' : '-20px'}">
                 <button 
                     class="node-btn {node.type} {node.status}" 
-                    onclick={() => {
-                        if (node.status !== 'locked') {
-                            if (node.type === 'lesson') {
-                                appState.selectedVerseIndex = node.verseIndex;
-                                appState.go('lesson');
-                            } else {
-                                appState.go(node.type);
-                            }
-                        }
-                    }}
+                    onclick={() => handleNodeClick(node)}
                 >
                     {#if node.type === 'review'}
                         <i class="ti ti-refresh"></i>
@@ -131,6 +159,33 @@
         {/each}
     </div>
 </div>
+
+{#if showEnergyModal}
+    <div class="modal-overlay" onclick={() => showEnergyModal = false}>
+        <div class="modal-content" onclick={(e) => e.stopPropagation()}>
+            <div class="modal-header">
+                <h3>Energy Habis! ⚡</h3>
+                <button class="close-btn" onclick={() => showEnergyModal = false}>✕</button>
+            </div>
+            <div class="modal-body">
+                <p>Kamu butuh Energy untuk memulai sesi hafalan. Tunggu hingga pukul 03.00 untuk reset harian, atau gunakan Gems kamu.</p>
+                
+                <div class="conversion-options">
+                    <button class="convert-btn" onclick={() => buyEnergy(100, 15)}>
+                        <div class="energy-gain"><i class="ti ti-bolt-filled"></i> +15 Energy</div>
+                        <div class="gems-cost"><i class="ti ti-diamond-filled"></i> 100</div>
+                    </button>
+                    
+                    <button class="convert-btn recommended" onclick={() => buyEnergy(200, 35)}>
+                        <div class="recommended-badge">Paling Hemat</div>
+                        <div class="energy-gain"><i class="ti ti-bolt-filled"></i> +35 Energy</div>
+                        <div class="gems-cost"><i class="ti ti-diamond-filled"></i> 200</div>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+{/if}
 
 <style>
     .path-column { width: 100%; }
@@ -203,4 +258,46 @@
     :global(.tablet) .mobile-only-card { display: block; margin: 0 0 20px; }
     .goal-bar-bg { height: 8px; background: #e5e5e5; border-radius: 4px; overflow: hidden; }
     .goal-bar-fill { height: 100%; background: #ff9600; border-radius: 4px; }
+
+    /* Modal CSS */
+    .modal-overlay {
+        position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+        background: rgba(0,0,0,0.5); z-index: 9999;
+        display: flex; align-items: center; justify-content: center;
+        padding: 20px;
+    }
+    .modal-content {
+        background: #fff; border-radius: 20px; width: 100%; max-width: 400px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.2); overflow: hidden;
+        animation: modalPop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    @keyframes modalPop {
+        0% { transform: scale(0.9); opacity: 0; }
+        100% { transform: scale(1); opacity: 1; }
+    }
+    .modal-header {
+        display: flex; justify-content: space-between; align-items: center;
+        padding: 16px 20px; border-bottom: 2px solid #f1f5f9;
+    }
+    .modal-header h3 { margin: 0; font-size: 18px; font-weight: 800; color: #ff9600; }
+    .close-btn { background: none; border: none; font-size: 18px; font-weight: bold; color: #94a3b8; cursor: pointer; }
+    .modal-body { padding: 20px; text-align: center; }
+    .modal-body p { margin: 0 0 20px 0; font-size: 14px; color: #475569; font-weight: 600; line-height: 1.5; }
+    
+    .conversion-options { display: flex; flex-direction: column; gap: 12px; }
+    .convert-btn {
+        display: flex; justify-content: space-between; align-items: center;
+        padding: 14px 20px; border-radius: 16px; border: 2px solid #e2e8f0;
+        background: #f8fafc; cursor: pointer; position: relative; transition: all 0.2s;
+    }
+    .convert-btn:active { transform: translateY(2px); }
+    .convert-btn.recommended { border-color: #00978a; background: #e0f2f1; margin-top: 10px; }
+    
+    .recommended-badge {
+        position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
+        background: #00978a; color: #fff; font-size: 10px; font-weight: 800;
+        padding: 2px 8px; border-radius: 100px; text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .energy-gain { font-size: 16px; font-weight: 900; color: #ff9600; display: flex; align-items: center; gap: 6px; }
+    .gems-cost { font-size: 15px; font-weight: 800; color: #00978a; display: flex; align-items: center; gap: 4px; }
 </style>

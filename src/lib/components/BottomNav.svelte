@@ -8,16 +8,18 @@
         { id: 'learn', icon: 'ti-home', label: i18n.t('nav.learn') },
         { id: 'murojaah', icon: 'ti-refresh', label: i18n.t('nav.murojaah') },
         { id: 'tadabbur', icon: 'ti-book', label: i18n.t('nav.tadabbur') },
+        { id: 'quests', icon: 'ti-gift', label: 'Quests' },
         { id: 'league', icon: 'ti-trophy', label: i18n.t('nav.league') },
         { id: 'profile', icon: 'ti-user', label: i18n.t('nav.profile') }
     ]);
     function getFlaticon(id) {
         const mapping = {
-            'learn': 'https://cdn-icons-png.flaticon.com/512/2232/2232688.png', // Quran on Rehal
-            'murojaah': 'https://cdn-icons-png.flaticon.com/512/3468/3468081.png', // Handshake
-            'tadabbur': 'https://cdn-icons-png.flaticon.com/512/2947/2947998.png', // Study Book
-            'league': 'https://cdn-icons-png.flaticon.com/512/3112/3112946.png', // Gold Trophy
-            'profile': 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png' // User Avatar
+            'learn': 'https://cdn-icons-png.flaticon.com/512/2232/2232688.png',
+            'murojaah': 'https://cdn-icons-png.flaticon.com/512/3468/3468081.png',
+            'tadabbur': 'https://cdn-icons-png.flaticon.com/512/2947/2947998.png',
+            'quests': 'https://cdn-icons-png.flaticon.com/512/4006/4006326.png', // Chest/Gift icon
+            'league': 'https://cdn-icons-png.flaticon.com/512/3112/3112946.png',
+            'profile': 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'
         };
         return mapping[id] || 'https://cdn-icons-png.flaticon.com/512/2232/2232688.png';
     }
