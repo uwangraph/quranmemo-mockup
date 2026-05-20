@@ -20,6 +20,8 @@
         isChecked = false,
         onOpenTajwid
     } = $props();
+
+    let isLoopDropdownOpen = $state(false);
 </script>
 
 <div class="verse-display-box" style="position: relative;">
@@ -58,46 +60,48 @@
         </div>
     {/if}
 
-    <!-- Looping Selector Pill Row -->
+    <!-- Looping Selector Dropdown (Custom) -->
     <div class="loop-selector-row">
-        <span class="loop-label">
+        <label class="loop-label" for="loop-select-repeat">
             <i class="ti ti-repeat"></i> Loop:
-        </span>
-        {#each [1, 2, 3, 5, 10] as times}
+        </label>
+        
+        <div class="custom-dropdown-container">
             <button 
-                class="loop-pill" 
-                class:active={loopTimes === times} 
-                onclick={() => { if (!isChecked) { loopTimes = times; setupAudio(); } }}
+                class="loop-dropdown-trigger" 
+                onclick={() => { if (!isChecked) isLoopDropdownOpen = !isLoopDropdownOpen; }}
                 disabled={isChecked}
-                title="Ulangi {times} kali"
             >
-                {times}x
+                {loopTimes === Infinity ? '∞' : loopTimes + 'x'}
+                <i class="ti ti-chevron-down" style="font-size: 14px;"></i>
             </button>
-        {/each}
-        <button 
-            class="loop-pill" 
-            class:active={loopTimes === Infinity} 
-            onclick={() => { if (!isChecked) { loopTimes = Infinity; setupAudio(); } }}
-            disabled={isChecked}
-            title="Loop tanpa batas"
-        >
-            ∞
-        </button>
-    </div>
-
-    <!-- Tajweed Legend -->
-    <div class="tajweed-legend-container">
-        <div class="tajweed-legend">
-            <span class="legend-item"><span class="color-dot idzhar"></span> Idzhar</span>
-            <span class="legend-item"><span class="color-dot idgam"></span> Idgam</span>
-            <span class="legend-item"><span class="color-dot ikhfa"></span> Ikhfa</span>
-            <span class="legend-item"><span class="color-dot iqlab"></span> Iqlab</span>
-            <span class="legend-item"><span class="color-dot qalqalah"></span> Qalqalah</span>
-            <span class="legend-item"><span class="color-dot ghunnah"></span> Ghunnah</span>
+            
+            {#if isLoopDropdownOpen}
+                <div class="custom-dropdown-menu">
+                    {#each [1, 2, 3, 5, 10] as times}
+                        <button 
+                            class="dropdown-item" 
+                            class:active={loopTimes === times}
+                            onclick={() => { loopTimes = times; isLoopDropdownOpen = false; setupAudio(); }}
+                        >
+                            {times}x
+                        </button>
+                    {/each}
+                    <button 
+                        class="dropdown-item" 
+                        class:active={loopTimes === Infinity}
+                        onclick={() => { loopTimes = Infinity; isLoopDropdownOpen = false; setupAudio(); }}
+                    >
+                        ∞
+                    </button>
+                </div>
+            {/if}
+            
+            <!-- Backdrop to close dropdown when clicking outside -->
+            {#if isLoopDropdownOpen}
+                <div class="dropdown-backdrop" aria-hidden="true" onclick={() => isLoopDropdownOpen = false}></div>
+            {/if}
         </div>
-        <button class="btn-info-tajwid" onclick={onOpenTajwid} disabled={isChecked}>
-            <i class="ti ti-info-circle"></i> Info Lengkap Tajwid
-        </button>
     </div>
     
     {#if recordState === 'recording'}
@@ -256,12 +260,10 @@
     }
     .loop-selector-row {
         display: flex; 
-        gap: 8px; 
+        gap: 6px; 
         justify-content: center; 
         align-items: center; 
-        margin-top: 16px; 
-        border-top: 1px solid #f1f5f9; 
-        padding-top: 12px; 
+        margin-top: 12px; 
         width: 100%;
     }
     .loop-label {
@@ -274,96 +276,75 @@
         align-items: center; 
         gap: 4px;
     }
-    .loop-pill {
+    .custom-dropdown-container {
+        position: relative;
+        display: inline-block;
+    }
+    .loop-dropdown-trigger {
         background: #f1f5f9;
-        border: none;
-        padding: 4px 10px;
-        border-radius: 99px;
+        border: 2px solid #e2e8f0;
+        padding: 4px 8px 4px 12px;
+        border-radius: 12px;
         font-size: 11px;
         font-weight: 800;
-        color: #64748b;
-        cursor: pointer;
-        transition: all 0.2s ease;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-    }
-    .loop-pill:hover:not(:disabled) {
-        background: #e2e8f0;
         color: #475569;
-        transform: translateY(-1px);
+        cursor: pointer;
+        outline: none;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        transition: all 0.2s ease;
+        font-family: 'Nunito', sans-serif;
     }
-    .loop-pill.active {
+    .loop-dropdown-trigger:hover:not(:disabled) {
+        border-color: #cbd5e1;
+    }
+    .loop-dropdown-trigger:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+    .custom-dropdown-menu {
+        position: absolute;
+        top: 110%; /* Open downwards */
+        left: 50%;
+        transform: translateX(-50%);
+        background: #fff;
+        border: 2px solid #e2e8f0;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        padding: 4px;
+        z-index: 100;
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        min-width: 60px;
+    }
+    .dropdown-item {
+        background: transparent;
+        border: none;
+        padding: 8px 12px;
+        font-size: 12px;
+        font-weight: 700;
+        color: #475569;
+        border-radius: 8px;
+        cursor: pointer;
+        text-align: center;
+        transition: all 0.1s;
+    }
+    .dropdown-item:hover {
+        background: #f1f5f9;
+    }
+    .dropdown-item.active {
         background: #00978A;
         color: #fff;
-        box-shadow: 0 2px 6px rgba(0, 151, 138, 0.3);
     }
-    .loop-pill:disabled {
-        opacity: 0.5;
-        cursor: default !important;
-        pointer-events: none !important;
-        transform: none !important;
-    }
-    .tajweed-legend-container {
-        margin-top: 16px; 
-        margin-bottom: 16px;
-        padding-top: 12px; 
-        border-top: 1px solid #f1f5f9; 
-        display: flex; 
-        flex-direction: column; 
-        align-items: center; 
-        gap: 12px;
-        width: 100%;
-    }
-    .tajweed-legend {
-        display: flex; 
-        gap: 8px; 
-        justify-content: center; 
-        align-items: center; 
-        flex-wrap: wrap; 
-        font-size: 10px; 
-        font-weight: 800; 
-        letter-spacing: 0.2px;
-    }
-    .legend-item {
-        display: inline-flex; 
-        align-items: center; 
-        gap: 4px;
-        color: #64748b;
-    }
-    .color-dot {
-        width: 7px; 
-        height: 7px; 
-        border-radius: 50%;
-    }
-    .color-dot.idzhar { background: #555555; }
-    .color-dot.idgam { background: #ef4444; }
-    .color-dot.ikhfa { background: #10b981; }
-    .color-dot.iqlab { background: #0ea5e9; }
-    .color-dot.qalqalah { background: #1e1b4b; }
-    .color-dot.ghunnah { background: #d946ef; }
-    
-    .btn-info-tajwid {
-        background: rgba(0, 151, 138, 0.1); 
-        border: none; 
-        border-radius: 99px; 
-        color: #00978a; 
-        font-size: 11px; 
-        font-weight: 800; 
-        cursor: pointer; 
-        display: inline-flex; 
-        align-items: center; 
-        gap: 6px; 
-        padding: 6px 14px; 
-        transition: all 0.2s;
-    }
-    .btn-info-tajwid:hover:not(:disabled) {
-        background: rgba(0, 151, 138, 0.2);
-    }
-    .btn-info-tajwid:disabled {
-        opacity: 0.5;
-        cursor: default !important;
-        pointer-events: none !important;
+    .dropdown-backdrop {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 99;
     }
     .simulated-wave-container {
         display: flex;

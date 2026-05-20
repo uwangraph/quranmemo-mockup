@@ -1131,6 +1131,7 @@
             isComparing = false;
             recallSelectedOptionIdx = null;
             recallMethod = 'voice';
+            loopTimes = 1; // Reset loop state for the next step
             
             if (currentStep < stepsPipeline.length - 1) {
                 currentStep++;
@@ -1281,6 +1282,9 @@
         </div>
         <button onclick={toggleBreak} disabled={isChecked} style="background: none; border: none; cursor: pointer; display: flex; align-items: center; margin-right: 8px; opacity: {isChecked ? 0.5 : 1}; pointer-events: {isChecked ? 'none' : 'auto'};" title="Istirahat">
             <i class="ti ti-coffee" style="font-size: 18px; color: #f59e0b;"></i>
+        </button>
+        <button onclick={() => showTajwidModal = true} disabled={isChecked} style="background: none; border: none; cursor: pointer; display: flex; align-items: center; margin-right: 8px; opacity: {isChecked ? 0.5 : 1}; pointer-events: {isChecked ? 'none' : 'auto'};" title="Info Tajwid">
+            <i class="ti ti-info-circle" style="font-size: 18px; color: #00978a;"></i>
         </button>
         
         <div class="energy-pill {showStreakBonus ? 'streak-bonus-anim' : ''}">
@@ -1603,6 +1607,9 @@
 </div>
 
 <style>
+    /* Reset & Fonts */
+    @import url('https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
     .confetti-canvas {
         position: absolute;
         top: 0;
@@ -1612,9 +1619,6 @@
         pointer-events: none;
         z-index: 9999;
     }
-
-    /* Reset & Fonts */
-    @import url('https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&display=swap');
     
     .Amiri { font-family: 'Amiri', serif; }
 
