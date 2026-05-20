@@ -13,15 +13,19 @@ function setStoredData(key, data) {
     }
 }
 
-// Hard Refresh detection: sessionStorage is wiped on hard refresh, localStorage is not.
-// If our session marker is missing → this is a fresh start → reset localStorage data.
+// Hard Refresh detection for Mockup (Cmd+Shift+R / Ctrl+Shift+R)
 if (typeof window !== 'undefined') {
+    window.addEventListener('keydown', (e) => {
+        if ((e.metaKey || e.ctrlKey) && e.shiftKey && e.key.toLowerCase() === 'r') {
+            localStorage.removeItem('quranmemo_user');
+        }
+    });
+
     if (!sessionStorage.getItem('quranmemo_session_active')) {
-        // Tab closed or new tab detected — reset persistent mock data
-        localStorage.removeItem('quranmemo_user');
+        // Only clear on completely new tab/window, not on normal refresh
+        // localStorage.removeItem('quranmemo_user'); 
+        sessionStorage.setItem('quranmemo_session_active', 'true');
     }
-    // Mark this session as active (survives soft navigation, wiped on tab close)
-    sessionStorage.setItem('quranmemo_session_active', 'true');
 }
 
 export function createAppState() {
@@ -29,29 +33,94 @@ export function createAppState() {
     let theme = $state('user'); // user, musyrif, admin
     let mockupMode = $state('mobile'); // mobile, desktop
     let selectedVerseIndex = $state(0); 
+    let selectedNodeType = $state('lesson'); // 'lesson' | 'checkpoint'
     let musyrifBalance = $state(1250); // In-memory only — resets on every page load/refresh
     
     // Persistent User Data
     let user = $state(getStoredData('quranmemo_user', {
         name: "Ahmad Fulan",
         xp: 2450,
-        coins: 350,
+        gems: 350,
         streak: 7,
-        hearts: 5,
-        maxHearts: 5,
+        energy: 25,
+        lastEnergyResetDate: new Date().toISOString(), // Track when energy was last reset
         inventory: [], // bought items
         progress: {
             surah_094: 2 // which verse index they are currently at (0-indexed). 2 means Verse 1 and 2 are done.
         },
         level: 'pemula', // pemula, menengah, mahir (controls Latin display)
         learningPath: 'beginner', // beginner, mid, pro (controls roadmap/mini-target)
-        showLatin: true
+        showLatin: true,
+        loginStreak: 1,         // Consecutive login days
+        lastLoginDate: null,    // ISO string of last login date (server date string YYYY-MM-DD)
+        dailyQuests: {
+            date: null, // yyyy-mm-dd
+            completedAll: false,
+            quests: [
+                { id: 'q1', text: 'Selesaikan 1 tahap hafalan', max: 1, current: 0, xp: 10, claimed: false },
+                { id: 'q2', text: 'Dapatkan 3 jawaban benar', max: 3, current: 0, xp: 15, claimed: false },
+                { id: 'q3', text: 'Mulai sesi hari ini', max: 1, current: 0, xp: 10, claimed: false }
+            ]
+        }
     }));
 
-    // Ensure fallback properties exist
+    // Ensure fallback properties exist for old users
     if (user.level === undefined) user.level = 'pemula';
     if (user.showLatin === undefined) user.showLatin = true;
     if (user.learningPath === undefined) user.learningPath = 'beginner';
+    if (user.gems === undefined) { user.gems = user.coins || 350; delete user.coins; }
+    if (user.energy === undefined) { user.energy = 25; delete user.hearts; delete user.maxHearts; }
+    if (user.lastEnergyResetDate === undefined) user.lastEnergyResetDate = new Date().toISOString();
+    if (user.loginStreak === undefined) user.loginStreak = 1;
+    if (user.lastLoginDate === undefined) user.lastLoginDate = null;
+    
+    const defaultQuests = [
+        { id: 'q1', text: 'Selesaikan 1 tahap hafalan', max: 1, current: 0, xp: 10, claimed: false },
+        { id: 'q2', text: 'Dapatkan 3 jawaban benar tanpa salah', max: 3, current: 0, xp: 15, claimed: false },
+        { id: 'q3', text: 'Selesaikan 1 Murojaah instan', max: 1, current: 0, xp: 10, claimed: false }
+    ];
+    if (user.dailyQuests === undefined || user.dailyQuests.date === undefined) {
+        user.dailyQuests = { date: null, completedAll: false, quests: defaultQuests };
+    }
+
+    // Check for daily energy reset (Reset at 03:00 Server Time — Mocked as UTC+7 Western Indonesian Time)
+    function checkEnergyReset() {
+        const now = new Date();
+        const utcMs = now.getTime() + (now.getTimezoneOffset() * 60000);
+        const serverNow = new Date(utcMs + (3600000 * 7)); // UTC+7
+        const todayStr = serverNow.toISOString().split('T')[0];
+
+        // 1. Check Energy Reset
+        const lastReset = new Date(user.lastEnergyResetDate);
+        if (serverNow.getTime() > lastReset.getTime() && serverNow.getDate() !== lastReset.getDate() && serverNow.getHours() >= 3) {
+            user.energy = 25; 
+            user.lastEnergyResetDate = serverNow.toISOString();
+            saveUser();
+        } else if (serverNow.getTime() - lastReset.getTime() > 86400000) {
+            user.energy = 25; 
+            user.lastEnergyResetDate = serverNow.toISOString();
+            saveUser();
+        }
+
+        // 2. Check Daily Quests Reset
+        if (user.dailyQuests.date !== todayStr) {
+            user.dailyQuests = {
+                date: todayStr,
+                completedAll: false,
+                quests: [
+                    { id: 'q1', text: 'Selesaikan 1 tahap hafalan', max: 1, current: 0, xp: 10, claimed: false },
+                    { id: 'q2', text: 'Dapatkan 3 jawaban benar beruntun', max: 3, current: 0, xp: 15, claimed: false },
+                    { id: 'q3', text: 'Gunakan 1 Energy', max: 1, current: 0, xp: 10, claimed: false }
+                ]
+            };
+            saveUser();
+        }
+    }
+    
+    // Run check on initialization
+    if (typeof window !== 'undefined') {
+        checkEnergyReset();
+    }
 
     // Method to save user state to localStorage
     function saveUser() {
@@ -76,6 +145,72 @@ export function createAppState() {
     function toggleLatin() {
         user.showLatin = !user.showLatin;
         saveUser();
+    }
+
+    // Daily Login Reward system (streak-based)
+    // Returns reward info if a new-day login is detected, else null.
+    function checkLoginReward() {
+        if (typeof window === 'undefined') return null;
+        const now = new Date();
+        const utcMs = now.getTime() + (now.getTimezoneOffset() * 60000);
+        const serverNow = new Date(utcMs + (3600000 * 7)); // UTC+7
+        const todayStr = serverNow.toISOString().split('T')[0]; // YYYY-MM-DD
+
+        if (user.lastLoginDate === todayStr) {
+            return null; // Already claimed today
+        }
+
+        // Check if yesterday was logged in (for streak continuation)
+        const yesterday = new Date(serverNow);
+        yesterday.setDate(yesterday.getDate() - 1);
+        const yesterdayStr = yesterday.toISOString().split('T')[0];
+        const isConsecutive = user.lastLoginDate === yesterdayStr;
+
+        const newStreak = isConsecutive ? user.loginStreak + 1 : 1;
+
+        // Reward schedule: streak day → energy reward
+        const rewardSchedule = [3, 3, 5, 5, 7, 7, 10];
+        const energyReward = rewardSchedule[Math.min(newStreak - 1, rewardSchedule.length - 1)];
+
+        return { energyReward, streakDay: newStreak };
+    }
+
+    function claimLoginReward(energyReward, streakDay) {
+        if (typeof window === 'undefined') return;
+        const now = new Date();
+        const utcMs = now.getTime() + (now.getTimezoneOffset() * 60000);
+        const serverNow = new Date(utcMs + (3600000 * 7));
+        const todayStr = serverNow.toISOString().split('T')[0];
+
+        user.lastLoginDate = todayStr;
+        user.loginStreak = streakDay;
+        user.energy += energyReward;
+        saveUser();
+    }
+
+    function updateQuestProgress(questId, amount = 1) {
+        if (!user.dailyQuests) return;
+        const q = user.dailyQuests.quests.find(x => x.id === questId);
+        if (q && !q.claimed && q.current < q.max) {
+            q.current = Math.min(q.max, q.current + amount);
+            saveUser();
+        }
+    }
+
+    function claimQuestReward(questId) {
+        if (!user.dailyQuests) return;
+        const q = user.dailyQuests.quests.find(x => x.id === questId);
+        if (q && !q.claimed && q.current >= q.max) {
+            q.claimed = true;
+            user.xp += q.xp;
+            
+            // Check if all completed
+            if (user.dailyQuests.quests.every(x => x.claimed)) {
+                user.dailyQuests.completedAll = true;
+                user.xp += 35; // Bonus for completing all
+            }
+            saveUser();
+        }
     }
 
     // Initialize selectedVerseIndex based on progress
@@ -122,6 +257,8 @@ export function createAppState() {
         set mockupMode(val) { mockupMode = val; },
         get selectedVerseIndex() { return selectedVerseIndex; },
         set selectedVerseIndex(val) { selectedVerseIndex = val; },
+        get selectedNodeType() { return selectedNodeType; },
+        set selectedNodeType(val) { selectedNodeType = val; },
         get screenLabels() { return screenLabels; },
         get user() { return user; },
         get musyrifBalance() { return musyrifBalance; },
@@ -133,7 +270,11 @@ export function createAppState() {
         setMockupMode,
         setUserLevel,
         setLearningPath,
-        toggleLatin
+        toggleLatin,
+        checkLoginReward,
+        claimLoginReward,
+        updateQuestProgress,
+        claimQuestReward
     };
 }
 

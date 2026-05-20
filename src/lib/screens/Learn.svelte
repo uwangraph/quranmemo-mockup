@@ -3,6 +3,7 @@
     import RoadmapPath from '$lib/components/learn/RoadmapPath.svelte';
     import LearnSidebar from '$lib/components/learn/LearnSidebar.svelte';
     import BottomNav from '../components/BottomNav.svelte';
+    import DailyLoginReward from '$lib/components/learn/DailyLoginReward.svelte';
 </script>
 
 <div class="screen">
@@ -22,6 +23,9 @@
     </div>
 
     <BottomNav active="learn" />
+
+    <!-- Daily Login Reward Modal (auto-shows on new day) -->
+    <DailyLoginReward />
 </div>
 
 <style>

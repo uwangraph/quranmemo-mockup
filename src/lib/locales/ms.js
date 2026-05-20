@@ -64,7 +64,7 @@ export default {
     "profile.settings": "Tetapan",
     "profile.wallet": "Dompet Hibrid",
     "profile.tickets": "Tiket Session",
-    "profile.coins": "Syiling Memo",
+    "profile.coins": "Gems",
     "profile.coins_desc": "Guna untuk sesi on-demand",
     "profile.points": "Poin Memo",
     "profile.points_desc": "Guna untuk verifikasi",
@@ -151,7 +151,7 @@ export default {
 
     "market.wallet": "Baki Dompet",
     "market.tickets": "Tiket",
-    "market.coins": "Syiling",
+    "market.coins": "Gems",
     "market.topup": "TAMBAH NILAI",
     "market.instant": "Setoran Segera",
     "market.instant_d": "Berhubung dengan Musyrif dalam beberapa saat",
