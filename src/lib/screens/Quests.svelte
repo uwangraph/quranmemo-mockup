@@ -29,9 +29,10 @@
                 <div class="mobile-tabs">
                     <button class="m-tab {activeTab === 'misi' ? 'active' : ''}" onclick={() => activeTab = 'misi'}>MISI</button>
                     <button class="m-tab {activeTab === 'pencapaian' ? 'active' : ''}" onclick={() => activeTab = 'pencapaian'}>TANTANGAN</button>
+                    <button class="m-tab {activeTab === 'panduan' ? 'active' : ''}" onclick={() => activeTab = 'panduan'}>PANDUAN</button>
                 </div>
 
-                {#if activeTab === 'misi'}
+{#if activeTab === 'misi'}
                     <!-- Banner -->
                     <div class="quests-banner">
                         <div class="banner-body">
@@ -93,7 +94,7 @@
                             </div>
                         </div>
                     </div>
-                {:else}
+                {:else if activeTab === 'pencapaian'}
                     <!-- Mobile Pencapaian (Badges/Monthly Challenge) Tab Content -->
                     <div class="mobile-pencapaian-tab">
                         <div class="badge-cluster-large">
@@ -105,6 +106,26 @@
                         </div>
                         <h2 class="pencapaian-title">Tantangan bulanan akan segera terbuka!</h2>
                         <p class="pencapaian-desc">Selesaikan tantangan setiap bulan untuk mendapatkan lencana eksklusif</p>
+                    </div>
+                {:else if activeTab === 'panduan'}
+                    <!-- Panduan Section (Islamic Design) -->
+                    <div class="guide-section">
+                        <h3 class="guide-title">Panduan Penggunaan QuranMemo</h3>
+                        <ul class="guide-steps">
+                            <li>
+                                <i class="ti ti-book"></i> <strong>Mulai Hafalan</strong> – Pilih surat atau ayat di halaman belajar, kemudian tekan tombol “Mulai Hafalan”.
+                            </li>
+                            <li>
+                                <i class="ti ti-clock"></i> <strong>Ikuti Misi Harian</strong> – Selesaikan misi harian untuk mengumpulkan XP dan hadiah.
+                            </li>
+                            <li>
+                                <i class="ti ti-star"></i> <strong>Periksa Tantangan Bulanan</strong> – Buka tab Tantangan untuk melihat target bulanan dan lencana.
+                            </li>
+                            <li>
+                                <i class="ti ti-gift"></i> <strong>Raih Lencana</strong> – Setelah menyelesaikan tantangan, lencana eksklusif akan otomatis ditambahkan ke koleksi.
+                            </li>
+                        </ul>
+                        <p class="guide-note">Semua elemen visual pada aplikasi ini menggunakan motif Islami (warna hijau, aksen emas, dan pola arabesque) untuk menciptakan suasana yang khusyuk selama proses belajar.</p>
                     </div>
                 {/if}
             </div>
@@ -320,14 +341,18 @@
 
     /* Base Card Styling */
     .quest-card {
-        background: #fff;
-        border: 2px solid #e5e5e5;
+        background: #f8fbf5; /* Nuansa hijau pastel Islami */
+        border: 2px solid #cdd9c6;
         border-radius: 16px;
         padding: 20px;
         display: flex;
         gap: 20px;
         align-items: center;
-        box-shadow: 0 4px 0 #e5e5e5;
+        box-shadow: 0 4px 0 #cdd9c6;
+        /* Motif arabesque lembut menggunakan gradient */
+        background-image: linear-gradient(45deg, rgba(255,215,0,0.05) 25%, transparent 25%, transparent 75%, rgba(255,215,0,0.05) 75%, rgba(255,215,0,0.05)),
+                          linear-gradient(45deg, transparent 25%, rgba(0,102,51,0.05) 25%, rgba(0,102,51,0.05) 75%, transparent 75%, transparent);
+        background-size: 8px 8px;
     }
     
     .card-icon {
@@ -364,6 +389,13 @@
         display: flex;
         align-items: center;
         gap: 16px;
+        /* Tambahkan aksen hijau pada progress bar */
+    }
+    .progress-bar-bg {
+        background: #e6f2e9;
+    }
+    .progress-bar-fill {
+        background: #00978A;
     }
     .progress-bar-bg {
         flex: 1;
@@ -524,7 +556,47 @@
         margin: 0 10px;
     }
     .footer-links a:hover {
+        color: #00978A;
+    }
+
+    /* Guide Section Styling */
+    .guide-section {
+        padding: 24px 16px;
+        background: #fff;
+        border: 2px solid #cdd9c6;
+        border-radius: 16px;
+        margin-top: 20px;
+    }
+    .guide-title {
+        font-size: 20px;
+        font-weight: 900;
+        color: #006633;
+        margin-bottom: 12px;
+        text-align: center;
+    }
+    .guide-steps {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+    .guide-steps li {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 14px;
         color: #3c3c3c;
+    }
+    .guide-steps i {
+        color: #ff9600;
+    }
+    .guide-note {
+        margin-top: 12px;
+        font-size: 13px;
+        color: #777;
+        text-align: center;
     }
 
     /* Mobile Pencapaian Tab Content */
