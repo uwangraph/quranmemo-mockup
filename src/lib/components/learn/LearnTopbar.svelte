@@ -1,8 +1,10 @@
 <script>
     import { appState } from '$lib/app.svelte.js';
     import { i18n } from '$lib/i18n.svelte.js';
+    import StreakModal from './StreakModal.svelte';
     
     let showToast = $state(false);
+    let showStreakModal = $state(false);
 
     $effect(() => {
         const timer = setTimeout(() => {
@@ -14,9 +16,11 @@
 </script>
 
 <div class="topbar" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
-    <div class="streak-pill">
-        <i class="ti ti-flame"></i> {appState.user.streak}
-    </div>
+    <!-- Streak pill — bisa diklik untuk detail -->
+    <button class="streak-pill" onclick={() => showStreakModal = true} title="Lihat detail streak">
+        <i class="ti ti-flame"></i>
+        <span>{appState.user.streak}</span>
+    </button>
     
     <div class="xp-pill" style="display: flex; align-items: center; gap: 4px; font-size: 14px; font-weight: 800; color: #ff9600; cursor: default; border: 2px solid #fff7e6; padding: 4px 8px; border-radius: 100px; background: #fffbf2;">
         <i class="ti ti-star-filled"></i> {appState.user.xp}
@@ -30,6 +34,11 @@
         <i class="ti ti-bolt-filled"></i> {appState.user.energy}
     </div>
 </div>
+
+<!-- Streak Modal -->
+{#if showStreakModal}
+    <StreakModal onClose={() => showStreakModal = false} />
+{/if}
 
 {#if showToast}
     <div class="achievement-toast">
@@ -64,7 +73,13 @@
         to { opacity: 1; transform: translateY(0); }
     }
     .close-toast { background: none; border: none; cursor: pointer; color: #afafaf; font-size: 18px; }
-    .streak-pill { display: flex; align-items: center; gap: 4px; font-size: 14px; font-weight: 800; color: #ff9600; }
+    .streak-pill {
+        display: flex; align-items: center; gap: 4px; font-size: 14px; font-weight: 800;
+        color: #ff6200; background: #fff7ed; border: 2px solid #fed7aa;
+        padding: 5px 12px; border-radius: 100px; cursor: pointer;
+        transition: all 0.15s; font-family: 'Nunito', sans-serif;
+    }
+    .streak-pill:hover { background: #ffedd5; transform: scale(1.05); }
     .gems-pill { display: flex; align-items: center; gap: 4px; font-size: 14px; font-weight: 800; color: #00978A; cursor: pointer; border: 2px solid #e0f2f1; padding: 4px 10px; border-radius: 100px; background: #e0f2f1; }
     .energy-pill { display: flex; align-items: center; gap: 4px; font-size: 14px; font-weight: 800; color: #ff9600; cursor: pointer; border: 2px solid #fff7e6; padding: 4px 10px; border-radius: 100px; background: #fffbf2; }
 </style>

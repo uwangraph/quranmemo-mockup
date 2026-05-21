@@ -42,19 +42,41 @@ export function createAppState() {
         xp: 2450,
         gems: 350,
         streak: 7,
+        maxStreak: 12,          // Runtunan terbanyak sepanjang masa
+        streakHistory: [true, true, false, true, true, true, true], // 7 hari terakhir (index 0 = paling lama)
+        streakFreezes: 1,       // Jumlah Rukhsah Harian yang dimiliki
+        streakRepairsUsed: 0,   // Berapa kali Tebus Hari dipakai bulan ini (maks 2)
         energy: 25,
-        lastEnergyResetDate: new Date().toISOString(), // Track when energy was last reset
-        inventory: [], // bought items
+        lastEnergyResetDate: new Date().toISOString(),
+        inventory: [],
         progress: {
-            surah_094: 2 // which verse index they are currently at (0-indexed). 2 means Verse 1 and 2 are done.
+            surah_094: 2
         },
-        level: 'pemula', // pemula, menengah, mahir (controls Latin display)
-        learningPath: 'beginner', // beginner, mid, pro (controls roadmap/mini-target)
+        level: 'pemula',
+        learningPath: 'beginner',
         showLatin: true,
-        loginStreak: 1,         // Consecutive login days
-        lastLoginDate: null,    // ISO string of last login date (server date string YYYY-MM-DD)
+        loginStreak: 1,
+        lastLoginDate: null,
+        scheduledBooking: {
+            musyrifName: 'Ust. Ahmad Zaki',
+            time: '2026-05-22T15:00:00', // ISO string waktu setoran
+            surah: 'Ad-Dhuha',
+            juz: 30
+        },
+        badges: [
+            { id: 'b1', icon: '🔥', name: 'Langkah Pertama', desc: 'Menyelesaikan 3 hari streak berturut-turut', earned: true },
+            { id: 'b2', icon: '📅', name: 'Satu Pekan Istiqomah', desc: 'Menyelesaikan 7 hari streak berturut-turut', earned: true },
+            { id: 'b3', icon: '🏅', name: 'Penghafal Juz 30', desc: 'Menyelesaikan seluruh hafalan Juz 30', earned: true },
+            { id: 'b4', icon: '💎', name: 'Sebulan Teguh', desc: 'Menyelesaikan 30 hari streak berturut-turut', earned: false },
+            { id: 'b5', icon: '🛡️', name: 'Penghafal Setia', desc: 'Mencapai 100 hari streak berturut-turut', earned: false },
+            { id: 'b6', icon: '👑', name: 'Istiqomah Sejati', desc: 'Mencapai 365 hari streak berturut-turut. Lencana Permanen!', earned: false }
+        ],
+        certificates: [
+            { id: 'c1', title: 'Sertifikat Hafalan Juz 30', type: 'Hafalan', date: '2026-01-15', icon: '📜' },
+            { id: 'c2', title: 'Sertifikat Tahsin Dasar', type: 'Tahsin', date: '2025-11-20', icon: '🎓' }
+        ],
         dailyQuests: {
-            date: null, // yyyy-mm-dd
+            date: null,
             completedAll: false,
             quests: [
                 { id: 'q1', text: 'Selesaikan 1 tahap hafalan', max: 1, current: 0, xp: 10, claimed: false },
@@ -73,6 +95,23 @@ export function createAppState() {
     if (user.lastEnergyResetDate === undefined) user.lastEnergyResetDate = new Date().toISOString();
     if (user.loginStreak === undefined) user.loginStreak = 1;
     if (user.lastLoginDate === undefined) user.lastLoginDate = null;
+    if (user.maxStreak === undefined) user.maxStreak = user.streak || 1;
+    if (user.streakHistory === undefined) user.streakHistory = [true, true, false, true, true, true, true];
+    if (user.streakFreezes === undefined) user.streakFreezes = 1;
+    if (user.streakRepairsUsed === undefined) user.streakRepairsUsed = 0;
+    if (user.scheduledBooking === undefined) user.scheduledBooking = { musyrifName: 'Ust. Ahmad Zaki', time: '2026-05-22T15:00:00', surah: 'Ad-Dhuha', juz: 30 };
+    if (user.badges === undefined) user.badges = [
+        { id: 'b1', icon: '🔥', name: 'Langkah Pertama', desc: 'Menyelesaikan 3 hari streak berturut-turut', earned: true },
+        { id: 'b2', icon: '📅', name: 'Satu Pekan Istiqomah', desc: 'Menyelesaikan 7 hari streak berturut-turut', earned: true },
+        { id: 'b3', icon: '🏅', name: 'Penghafal Juz 30', desc: 'Menyelesaikan seluruh hafalan Juz 30', earned: true },
+        { id: 'b4', icon: '💎', name: 'Sebulan Teguh', desc: 'Menyelesaikan 30 hari streak berturut-turut', earned: false },
+        { id: 'b5', icon: '🛡️', name: 'Penghafal Setia', desc: 'Mencapai 100 hari streak berturut-turut', earned: false },
+        { id: 'b6', icon: '👑', name: 'Istiqomah Sejati', desc: 'Mencapai 365 hari streak berturut-turut. Lencana Permanen!', earned: false }
+    ];
+    if (user.certificates === undefined) user.certificates = [
+        { id: 'c1', title: 'Sertifikat Hafalan Juz 30', type: 'Hafalan', date: '2026-01-15', icon: '📜' },
+        { id: 'c2', title: 'Sertifikat Tahsin Dasar', type: 'Tahsin', date: '2025-11-20', icon: '🎓' }
+    ];
     
     const defaultQuests = [
         { id: 'q1', text: 'Selesaikan 1 tahap hafalan', max: 1, current: 0, xp: 10, claimed: false },
@@ -213,6 +252,48 @@ export function createAppState() {
         }
     }
 
+    // ====== Streak-related functions ======
+
+    // Gunakan Rukhsah Harian (Streak Freeze) — cegah streak putus 1 hari
+    function useStreakFreeze() {
+        if (user.streakFreezes > 0) {
+            user.streakFreezes -= 1;
+            saveUser();
+            return true;
+        }
+        return false;
+    }
+
+    // Tebus Hari (Streak Repair) — kembalikan streak yang sudah putus
+    function repairStreak() {
+        if (user.streakRepairsUsed < 2 && user.streak === 0) {
+            user.streak = 1;
+            user.streakRepairsUsed += 1;
+            saveUser();
+            return true;
+        }
+        return false;
+    }
+
+    // Simulasi tambah streak (untuk demo di mockup)
+    function addStreak(days = 1) {
+        user.streak = Math.min(user.streak + days, 999);
+        if (user.streak > user.maxStreak) user.maxStreak = user.streak;
+        // Geser streak history
+        const newHistory = [...user.streakHistory.slice(1), true];
+        user.streakHistory = newHistory;
+        // Cek milestone badge
+        const milestones = [3, 7, 30, 100, 365];
+        const badgeIds = ['b1', 'b2', 'b4', 'b5', 'b6'];
+        milestones.forEach((m, i) => {
+            if (user.streak >= m) {
+                const badge = user.badges.find(b => b.id === badgeIds[i]);
+                if (badge) badge.earned = true;
+            }
+        });
+        saveUser();
+    }
+
     // Initialize selectedVerseIndex based on progress
     selectedVerseIndex = user.progress.surah_094;
     
@@ -274,7 +355,10 @@ export function createAppState() {
         checkLoginReward,
         claimLoginReward,
         updateQuestProgress,
-        claimQuestReward
+        claimQuestReward,
+        useStreakFreeze,
+        repairStreak,
+        addStreak
     };
 }
 
