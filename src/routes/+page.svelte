@@ -18,6 +18,9 @@
     import AdminDashboard from '$lib/screens/AdminDashboard.svelte';
     import Quests from '$lib/screens/Quests.svelte';
     import Guide from '$lib/screens/Guide.svelte';
+    import CreateCommunity from '$lib/screens/CreateCommunity.svelte';
+    import CreateHalaqah from '$lib/screens/CreateHalaqah.svelte';
+    import HalaqahHub from '$lib/screens/HalaqahHub.svelte';
 </script>
 
 {#if appState.currentScreen === 'onboarding'}
@@ -29,6 +32,12 @@
         <Quests />
     {:else if appState.currentScreen === 'guide'}
         <Guide />
+    {:else if appState.currentScreen === 'create_community'}
+        <CreateCommunity />
+    {:else if appState.currentScreen === 'create_halaqah'}
+        <CreateHalaqah />
+    {:else if appState.currentScreen === 'halaqah'}
+        <HalaqahHub />
     {:else if appState.currentScreen === 'murojaah'}
         <Marketplace />
     {:else if appState.currentScreen === 'feedback'}

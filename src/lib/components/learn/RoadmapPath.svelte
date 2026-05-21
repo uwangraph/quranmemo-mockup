@@ -107,12 +107,16 @@
 
 <div class="path-column">
     <div class="unit-banner">
-        <div class="unit-badge">{pathConfig.badge}</div>
-        <div style="font-size: 22px; font-weight: 900; color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.1);">{pathConfig.unitTitle}</div>
-        <div style="font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.9); margin-top: 4px;">{pathConfig.unitDesc}</div>
-        <div class="unit-guide-btn">
+        <!-- Islamic Pattern Background Elements -->
+        <div class="islamic-motif motif-1"></div>
+        <div class="islamic-motif motif-2"></div>
+        
+        <div class="unit-badge" style="position: relative; z-index: 2;">{pathConfig.badge}</div>
+        <div style="font-size: 22px; font-weight: 900; color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.1); position: relative; z-index: 2;">{pathConfig.unitTitle}</div>
+        <div style="font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.9); margin-top: 4px; position: relative; z-index: 2;">{pathConfig.unitDesc}</div>
+        <button class="unit-guide-btn" style="position: relative; z-index: 2; border: none; font-family: inherit;" onclick={() => appState.go('guide')}>
             <i class="ti ti-notebook"></i> {i18n.t('learn.guide') || 'GUIDE'}
-        </div>
+        </button>
     </div>
 
     <!-- Daily goal card: visible only in mobile phone mockup -->
@@ -203,16 +207,17 @@
     }
     :global(.desktop-browser) .unit-banner, :global(.tablet) .unit-banner { margin: 0; }
     
-    .unit-banner::after {
-        content: '';
+    .islamic-motif {
         position: absolute;
-        right: -20px;
-        top: -20px;
-        width: 100px;
-        height: 100px;
-        background: rgba(255,255,255,0.1);
-        border-radius: 50%;
+        width: 180px;
+        height: 180px;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M50 0 L60 40 L100 50 L60 60 L50 100 L40 60 L0 50 L40 40 Z' fill='rgba(255,255,255,0.08)'/%3E%3Cpath d='M15 15 L50 35 L85 15 L65 50 L85 85 L50 65 L15 85 L35 50 Z' fill='rgba(255,255,255,0.05)'/%3E%3C/svg%3E");
+        background-size: contain;
+        background-repeat: no-repeat;
     }
+    .motif-1 { right: -40px; top: -40px; transform: rotate(22.5deg); }
+    .motif-2 { left: -50px; bottom: -50px; transform: rotate(45deg) scale(0.7); }
+
     .unit-badge { font-size: 11px; font-weight: 900; color: rgba(255,255,255,0.7); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
     .unit-guide-btn {
         display: inline-flex; align-items: center; gap: 6px; background: rgba(0,0,0,0.15); color: #fff;

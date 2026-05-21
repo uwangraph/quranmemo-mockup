@@ -320,18 +320,14 @@
 
     /* Base Card Styling */
     .quest-card {
-        background: #f8fbf5; /* Nuansa hijau pastel Islami */
-        border: 2px solid #cdd9c6;
+        background: #fff;
+        border: 2px solid #e5e5e5;
         border-radius: 16px;
         padding: 20px;
         display: flex;
         gap: 20px;
         align-items: center;
-        box-shadow: 0 4px 0 #cdd9c6;
-        /* Motif arabesque lembut menggunakan gradient */
-        background-image: linear-gradient(45deg, rgba(255,215,0,0.05) 25%, transparent 25%, transparent 75%, rgba(255,215,0,0.05) 75%, rgba(255,215,0,0.05)),
-                          linear-gradient(45deg, transparent 25%, rgba(0,102,51,0.05) 25%, rgba(0,102,51,0.05) 75%, transparent 75%, transparent);
-        background-size: 8px 8px;
+        box-shadow: 0 4px 0 #e5e5e5;
     }
     
     .card-icon {

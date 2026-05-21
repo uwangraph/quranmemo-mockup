@@ -7,32 +7,23 @@
     let activeTab = $state('global-user');
     // Period filter
     let activePeriod = $state('weekly');
-    // Sub-view for community boards
-    let communityView = $state('all-member');
-    // Selected community/halaqah for detail view
-    let selectedCommunity = $state(null);
-    let selectedHalaqah = $state(null);
 
     const tabs = $derived([
-        { id: 'global-user', label: i18n.t('lb.tab_global_user'), icon: '🌍' },
-        { id: 'regional-user', label: i18n.t('lb.tab_regional'), icon: '🏳️' },
-        { id: 'global-halaqah', label: i18n.t('lb.tab_halaqah'), icon: '📖' },
-        { id: 'global-komunitas', label: i18n.t('lb.tab_komunitas'), icon: '🏘️' },
-        { id: 'my-community', label: i18n.t('lb.tab_my_community'), icon: '👥' },
-        { id: 'my-halaqah', label: i18n.t('lb.tab_my_halaqah'), icon: '🤝' },
+        { id: 'global-user', label: i18n.t('lb.tab_global_user') || 'Global', icon: '🌍' },
+        { id: 'regional-user', label: i18n.t('lb.tab_regional') || 'Regional', icon: '🏳️' },
     ]);
 
     const periods = $derived([
-        { id: 'weekly', label: i18n.t('lb.weekly') },
-        { id: 'monthly', label: i18n.t('lb.monthly') },
-        { id: 'alltime', label: i18n.t('lb.alltime') },
+        { id: 'weekly', label: i18n.t('lb.weekly') || 'Pekanan' },
+        { id: 'monthly', label: i18n.t('lb.monthly') || 'Bulanan' },
+        { id: 'alltime', label: i18n.t('lb.alltime') || 'All Time' },
     ]);
 
     // Mock data generators
     const globalUsers = $derived([
         { name: 'Siti Nurhaliza', xp: 4820, avatar: '🧕', country: '🇮🇩', streak: 42 },
         { name: 'Ahmad Dani', xp: 4350, avatar: '🧔', country: '🇮🇩', streak: 38 },
-        { name: i18n.t('lb.you'), xp: appState.user.xp, avatar: '👤', country: '🇮🇩', streak: appState.user.streak, isMe: true },
+        { name: i18n.t('lb.you') || 'Kamu', xp: appState.user.xp, avatar: '👤', country: '🇮🇩', streak: appState.user.streak, isMe: true },
         { name: 'Fatimah Az-Zahra', xp: 2100, avatar: '🧕', country: '🇲🇾', streak: 21 },
         { name: 'Omar Farooq', xp: 1950, avatar: '🧔', country: '🇸🇦', streak: 19 },
         { name: 'Aisha Bello', xp: 1800, avatar: '🧕', country: '🇳🇬', streak: 15 },
@@ -40,54 +31,14 @@
         { name: 'Khadijah Musa', xp: 1500, avatar: '🧕', country: '🇲🇾', streak: 10 },
     ].sort((a, b) => b.xp - a.xp).map((u, i) => ({ ...u, rank: i + 1 })));
 
-    const halaqahList = $derived([
-        { name: 'Halaqah Al-Fatih', xp: 12400, members: 15, avatar: '🟢', region: '🇮🇩' },
-        { name: 'Halaqah An-Nur', xp: 11200, members: 18, avatar: '🔵', region: '🇲🇾' },
-        { name: 'Halaqah Al-Huda', xp: 9800, members: 12, avatar: '🟡', region: '🇮🇩' },
-        { name: 'Halaqah Ar-Rahman', xp: 8500, members: 20, avatar: '🟣', region: '🇸🇦' },
-        { name: 'Halaqah Al-Amin', xp: 7200, members: 10, avatar: '🟠', region: '🇳🇬' },
-    ].sort((a, b) => b.xp - a.xp).map((h, i) => ({ ...h, rank: i + 1 })));
-
-    const komunitasList = $derived([
-        { name: 'Pesantren Al-Hikmah', xp: 45200, members: 120, halaqah: 8, avatar: '🏛️', region: '🇮🇩' },
-        { name: 'Madrasah An-Nur', xp: 38900, members: 85, halaqah: 6, avatar: '🕌', region: '🇲🇾' },
-        { name: 'QuranHub Global', xp: 32100, members: 200, halaqah: 12, avatar: '🌐', region: '🇸🇦' },
-        { name: 'Tahfiz Center', xp: 28700, members: 65, halaqah: 4, avatar: '📚', region: '🇮🇩' },
-    ].sort((a, b) => b.xp - a.xp).map((k, i) => ({ ...k, rank: i + 1 })));
-
-    // My community members
-    const myCommunityMembers = $derived([
-        { name: 'Siti Nurhaliza', xp: 3200, avatar: '🧕', halaqah: 'Al-Fatih' },
-        { name: i18n.t('lb.you'), xp: appState.user.xp, avatar: '👤', halaqah: 'Al-Fatih', isMe: true },
-        { name: 'Ahmad Dani', xp: 2100, avatar: '🧔', halaqah: 'An-Nur' },
-        { name: 'Budi Utomo', xp: 1800, avatar: '👨', halaqah: 'Al-Fatih' },
-        { name: 'Sarah W.', xp: 1500, avatar: '👩', halaqah: 'An-Nur' },
-        { name: 'Rizky B.', xp: 1200, avatar: '👦', halaqah: 'Al-Huda' },
-    ].sort((a, b) => b.xp - a.xp).map((u, i) => ({ ...u, rank: i + 1 })));
-
-    const myCommunityHalaqahs = $derived([
-        { name: 'Halaqah Al-Fatih', xp: 8200, members: 15, avgXp: 547, avatar: '🟢' },
-        { name: 'Halaqah An-Nur', xp: 6800, members: 12, avgXp: 567, avatar: '🔵' },
-        { name: 'Halaqah Al-Huda', xp: 5400, members: 10, avgXp: 540, avatar: '🟡' },
-    ].sort((a, b) => b.xp - a.xp).map((h, i) => ({ ...h, rank: i + 1 })));
-
-    // My halaqah members
-    const myHalaqahMembers = $derived([
-        { name: 'Siti Nurhaliza', xp: 3200, avatar: '🧕' },
-        { name: i18n.t('lb.you'), xp: appState.user.xp, avatar: '👤', isMe: true },
-        { name: 'Budi Utomo', xp: 1800, avatar: '👨' },
-        { name: 'Dewi Sartika', xp: 1600, avatar: '👩' },
-        { name: 'Hasan Ali', xp: 1400, avatar: '🧔' },
-    ].sort((a, b) => b.xp - a.xp).map((u, i) => ({ ...u, rank: i + 1 })));
+    const regionalUsers = $derived(
+        globalUsers.filter(u => u.country === '🇮🇩')
+        .sort((a, b) => b.xp - a.xp)
+        .map((u, i) => ({ ...u, rank: i + 1 }))
+    );
 
     function getCurrentData() {
-        if (activeTab === 'global-user' || activeTab === 'regional-user') return globalUsers;
-        if (activeTab === 'global-halaqah') return halaqahList;
-        if (activeTab === 'global-komunitas') return komunitasList;
-        if (activeTab === 'my-community') {
-            return communityView === 'all-member' ? myCommunityMembers : myCommunityHalaqahs;
-        }
-        if (activeTab === 'my-halaqah') return myHalaqahMembers;
+        if (activeTab === 'regional-user') return regionalUsers;
         return globalUsers;
     }
 
@@ -96,9 +47,9 @@
     const rest = $derived(currentData.slice(3));
 
     function getPeriodLabel() {
-        if (activePeriod === 'weekly') return i18n.t('lb.reset_weekly');
-        if (activePeriod === 'monthly') return i18n.t('lb.reset_monthly');
-        return i18n.t('lb.reset_alltime');
+        if (activePeriod === 'weekly') return i18n.t('lb.reset_weekly') || 'Reset setiap hari Senin jam 00:00';
+        if (activePeriod === 'monthly') return i18n.t('lb.reset_monthly') || 'Reset setiap tanggal 1';
+        return i18n.t('lb.reset_alltime') || 'Peringkat sepanjang masa (tidak diretas)';
     }
 
     function getMedalColor(rank) {
@@ -120,18 +71,18 @@
     <!-- Top Bar -->
     <div class="topbar" style="background: linear-gradient(135deg, #00978A, #00bfa5); padding: 14px 16px 10px;">
         <span style="font-size: 16px; font-weight: 900; color: #fff; flex: 1; text-align: center;">
-            🏆 {i18n.t('lb.title')}
+            🏆 Leaderboard
         </span>
     </div>
 
     <div class="scroll-content no-scrollbar">
         <!-- Tab Scroller -->
-        <div class="tab-scroller no-scrollbar">
+        <div class="tab-scroller no-scrollbar" style="justify-content: center;">
             {#each tabs as tab}
                 <button
                     class="tab-chip"
                     class:active={activeTab === tab.id}
-                    onclick={() => { activeTab = tab.id; communityView = 'all-member'; }}
+                    onclick={() => activeTab = tab.id}
                 >
                     <span class="tab-icon">{tab.icon}</span>
                     <span class="tab-label">{tab.label}</span>
@@ -156,37 +107,6 @@
             <i class="ti ti-clock" style="font-size: 12px;"></i>
             {getPeriodLabel()}
         </div>
-
-        <!-- Community sub-view toggle -->
-        {#if activeTab === 'my-community'}
-            <div class="community-toggle">
-                <button class="ctog" class:active={communityView === 'all-member'} onclick={() => communityView = 'all-member'}>
-                    👤 {i18n.t('lb.all_members')}
-                </button>
-                <button class="ctog" class:active={communityView === 'per-halaqah'} onclick={() => communityView = 'per-halaqah'}>
-                    📖 {i18n.t('lb.per_halaqah')}
-                </button>
-            </div>
-        {/if}
-
-        <!-- Community/Halaqah Info Banner -->
-        {#if activeTab === 'my-community'}
-            <div class="info-banner">
-                <div class="info-banner-icon">🏘️</div>
-                <div>
-                    <div style="font-size: 13px; font-weight: 900; color: #3c3c3c;">Pesantren Al-Hikmah</div>
-                    <div style="font-size: 10px; font-weight: 700; color: #afafaf;">120 {i18n.t('lb.members')} · 8 {i18n.t('lb.tab_halaqah')} · {i18n.t('lb.private')}</div>
-                </div>
-            </div>
-        {:else if activeTab === 'my-halaqah'}
-            <div class="info-banner">
-                <div class="info-banner-icon">🟢</div>
-                <div>
-                    <div style="font-size: 13px; font-weight: 900; color: #3c3c3c;">Halaqah Al-Fatih</div>
-                    <div style="font-size: 10px; font-weight: 700; color: #afafaf;">15/20 {i18n.t('lb.members')} · Pesantren Al-Hikmah</div>
-                </div>
-            </div>
-        {/if}
 
         <!-- Podium Top 3 -->
         {#if top3.length >= 3}
@@ -232,15 +152,11 @@
                         <div class="rank-name">
                             {r.name}
                             {#if r.isMe}
-                                <span class="me-badge">{i18n.t('lb.you_badge')}</span>
+                                <span class="me-badge">KAMU</span>
                             {/if}
                         </div>
-                        {#if r.members}
-                            <div class="rank-sub">{r.members} {i18n.t('lb.members')}{#if r.halaqah} · {r.halaqah} Halaqah{/if}</div>
-                        {:else if r.halaqah && !r.members}
-                            <div class="rank-sub">{r.halaqah}</div>
-                        {:else if r.streak}
-                            <div class="rank-sub">🔥 {r.streak} {i18n.t('lb.day_streak')}</div>
+                        {#if r.streak}
+                            <div class="rank-sub">🔥 {r.streak} {i18n.t('lb.day_streak') || 'Hari Streak'}</div>
                         {/if}
                     </div>
                     <div class="rank-xp-col">
@@ -254,13 +170,13 @@
         <!-- XP Source Info -->
         <div class="xp-info-card">
             <div style="font-size: 13px; font-weight: 900; color: #3c3c3c; margin-bottom: 8px;">
-                ⚡ {i18n.t('lb.xp_sources')}
+                ⚡ {i18n.t('lb.xp_sources') || 'Sumber XP'}
             </div>
-            <div class="xp-row"><span>📝 {i18n.t('lb.xp_mini_target')}</span><span class="xp-val">+50 XP</span></div>
-            <div class="xp-row"><span>📖 {i18n.t('lb.xp_checkpoint')}</span><span class="xp-val">+200 XP</span></div>
-            <div class="xp-row"><span>🎤 {i18n.t('lb.xp_setoran')}</span><span class="xp-val">+100 XP</span></div>
-            <div class="xp-row"><span>🔥 {i18n.t('lb.xp_streak')}</span><span class="xp-val">+25 XP</span></div>
-            <div class="xp-row"><span>⭐ {i18n.t('lb.xp_mumtaz')}</span><span class="xp-val">+150 XP</span></div>
+            <div class="xp-row"><span>📝 Mini Target</span><span class="xp-val">+50 XP</span></div>
+            <div class="xp-row"><span>📖 Checkpoint</span><span class="xp-val">+200 XP</span></div>
+            <div class="xp-row"><span>🎤 Setoran</span><span class="xp-val">+100 XP</span></div>
+            <div class="xp-row"><span>🔥 Streak</span><span class="xp-val">+25 XP</span></div>
+            <div class="xp-row"><span>⭐ Mumtaz</span><span class="xp-val">+150 XP</span></div>
         </div>
 
         <div style="height: 20px;"></div>
@@ -282,12 +198,12 @@
         display: flex;
         align-items: center;
         gap: 4px;
-        padding: 7px 12px;
+        padding: 7px 16px;
         border-radius: 100px;
         border: 2px solid #e5e5e5;
         background: #fff;
         font-family: 'Nunito', sans-serif;
-        font-size: 10px;
+        font-size: 11px;
         font-weight: 800;
         color: #777;
         cursor: pointer;
@@ -301,8 +217,8 @@
         border-color: #00978A;
         box-shadow: 0 2px 8px rgba(0, 151, 138, 0.3);
     }
-    .tab-icon { font-size: 13px; }
-    .tab-label { font-size: 10px; }
+    .tab-icon { font-size: 14px; }
+    .tab-label { font-size: 12px; }
 
     .period-bar {
         display: flex;
@@ -343,43 +259,6 @@
         color: #afafaf;
         background: #fafafa;
     }
-
-    .community-toggle {
-        display: flex;
-        gap: 6px;
-        padding: 8px 16px;
-        background: #fff;
-    }
-    .ctog {
-        flex: 1;
-        padding: 8px 10px;
-        border-radius: 12px;
-        border: 2px solid #e5e5e5;
-        background: #fff;
-        font-family: 'Nunito', sans-serif;
-        font-size: 11px;
-        font-weight: 800;
-        color: #777;
-        cursor: pointer;
-        transition: all 0.2s;
-    }
-    .ctog.active {
-        background: #DBF0EE;
-        border-color: #00978A;
-        color: #00978A;
-    }
-
-    .info-banner {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        padding: 10px 16px;
-        margin: 0 16px 4px;
-        background: #f0faf9;
-        border: 2px solid #DBF0EE;
-        border-radius: 14px;
-    }
-    .info-banner-icon { font-size: 28px; }
 
     /* Podium */
     .podium-section {
@@ -454,6 +333,7 @@
     .podium-rank {
         font-size: 18px;
         font-weight: 900;
+        color: inherit;
     }
 
     /* Ranking List */
