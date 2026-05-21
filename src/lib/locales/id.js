@@ -5,6 +5,7 @@ export default {
     "nav.learn": "Belajar",
     "nav.murojaah": "Murojaah",
     "nav.tadabbur": "Tadabbur",
+    "nav.guide": "Panduan",
     "nav.league": "Liga",
     "nav.profile": "Profil",
 
@@ -18,6 +19,7 @@ export default {
     "screen.musyrif-earnings": "Pendapatan",
     "screen.lesson": "Pelajaran",
     "screen.tadabbur": "Tadabbur",
+    "screen.guide": "Panduan",
     "screen.profile": "Profil",
     "screen.language": "Bahasa",
     "screen.admin-dashboard": "Dasbor Admin",

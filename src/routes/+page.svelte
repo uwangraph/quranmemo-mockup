@@ -17,6 +17,7 @@
     import SessionFeedback from '$lib/screens/SessionFeedback.svelte';
     import AdminDashboard from '$lib/screens/AdminDashboard.svelte';
     import Quests from '$lib/screens/Quests.svelte';
+    import Guide from '$lib/screens/Guide.svelte';
 </script>
 
 {#if appState.currentScreen === 'onboarding'}
@@ -26,6 +27,8 @@
         <Learn />
     {:else if appState.currentScreen === 'quests'}
         <Quests />
+    {:else if appState.currentScreen === 'guide'}
+        <Guide />
     {:else if appState.currentScreen === 'murojaah'}
         <Marketplace />
     {:else if appState.currentScreen === 'feedback'}

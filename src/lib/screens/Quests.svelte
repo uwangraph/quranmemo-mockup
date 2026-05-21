@@ -29,7 +29,6 @@
                 <div class="mobile-tabs">
                     <button class="m-tab {activeTab === 'misi' ? 'active' : ''}" onclick={() => activeTab = 'misi'}>MISI</button>
                     <button class="m-tab {activeTab === 'pencapaian' ? 'active' : ''}" onclick={() => activeTab = 'pencapaian'}>TANTANGAN</button>
-                    <button class="m-tab {activeTab === 'panduan' ? 'active' : ''}" onclick={() => activeTab = 'panduan'}>PANDUAN</button>
                 </div>
 
 {#if activeTab === 'misi'}
@@ -106,26 +105,6 @@
                         </div>
                         <h2 class="pencapaian-title">Tantangan bulanan akan segera terbuka!</h2>
                         <p class="pencapaian-desc">Selesaikan tantangan setiap bulan untuk mendapatkan lencana eksklusif</p>
-                    </div>
-                {:else if activeTab === 'panduan'}
-                    <!-- Panduan Section (Islamic Design) -->
-                    <div class="guide-section">
-                        <h3 class="guide-title">Panduan Penggunaan QuranMemo</h3>
-                        <ul class="guide-steps">
-                            <li>
-                                <i class="ti ti-book"></i> <strong>Mulai Hafalan</strong> – Pilih surat atau ayat di halaman belajar, kemudian tekan tombol “Mulai Hafalan”.
-                            </li>
-                            <li>
-                                <i class="ti ti-clock"></i> <strong>Ikuti Misi Harian</strong> – Selesaikan misi harian untuk mengumpulkan XP dan hadiah.
-                            </li>
-                            <li>
-                                <i class="ti ti-star"></i> <strong>Periksa Tantangan Bulanan</strong> – Buka tab Tantangan untuk melihat target bulanan dan lencana.
-                            </li>
-                            <li>
-                                <i class="ti ti-gift"></i> <strong>Raih Lencana</strong> – Setelah menyelesaikan tantangan, lencana eksklusif akan otomatis ditambahkan ke koleksi.
-                            </li>
-                        </ul>
-                        <p class="guide-note">Semua elemen visual pada aplikasi ini menggunakan motif Islami (warna hijau, aksen emas, dan pola arabesque) untuk menciptakan suasana yang khusyuk selama proses belajar.</p>
                     </div>
                 {/if}
             </div>

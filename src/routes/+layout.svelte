@@ -55,6 +55,7 @@
 				{ id: 'learn', icon: '🏠' },
 				{ id: 'murojaah', icon: '🤝' },
 				{ id: 'quests', icon: '🎁' },
+				{ id: 'guide', icon: '📋' },
 				{ id: 'feedback', icon: '⭐' },
 				{ id: 'tadabbur', icon: '📚' },
 				{ id: 'league', icon: '🏆' },
@@ -98,6 +99,7 @@
 					{ id: 'murojaah', icon: 'ti-refresh', label: 'nav.murojaah' },
 					{ id: 'tadabbur', icon: 'ti-book', label: 'nav.tadabbur' },
 					{ id: 'quests', icon: 'ti-gift', label: 'Quests' },
+					{ id: 'guide', icon: 'ti-info-circle', label: 'nav.guide' },
 					{ id: 'league', icon: 'ti-trophy', label: 'nav.league' },
 					{ id: 'profile', icon: 'ti-user', label: 'nav.profile' }
 				]
@@ -133,6 +135,7 @@
 			'tadabbur': 'https://cdn-icons-png.flaticon.com/512/2947/2947998.png', // Study Book
 			'league': 'https://cdn-icons-png.flaticon.com/512/3112/3112946.png', // Gold Trophy
 			'lesson': 'https://cdn-icons-png.flaticon.com/512/3596/3596093.png', // Lesson pad
+			'guide': 'https://cdn-icons-png.flaticon.com/512/3330/3330327.png', // Guide book
 			'profile': 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png', // User Avatar
 			'language': 'https://cdn-icons-png.flaticon.com/512/3233/3233004.png', // Globe
 			'musyrif': 'https://cdn-icons-png.flaticon.com/512/3996/3996562.png', // Cleric/Ustadz
