@@ -583,13 +583,14 @@
         currentMotivation = motivationalMessages[Math.floor(Math.random() * motivationalMessages.length)];
         setTimeout(() => feedbackAnimClass = '', 800);
 
-        // Auto-play full ayat as reward on quiz/puzzle stages
-        const quizTypes = ['fill_front', 'fill_back', 'puzzle_one', 'puzzle_two', 'audio_scramble', 'puzzle_total'];
-        if (quizTypes.includes(currentStepConfig?.type) && audio) {
+        // Auto-play full ayat as reward
+        if (audio) {
             setTimeout(() => {
                 audio.currentTime = 0;
                 audio.playbackRate = 1.0;
-                audio.play();
+                currentLoopIndex = 0;
+                audio.play().catch(() => {});
+                isPlaying = true;
             }, 600);
         }
     }
@@ -608,13 +609,14 @@
             feedbackAnimClass = '';
         }, 600);
 
-        // Play full ayat as learning support when answer is wrong, as requested in docs/FEEDBACK.md
-        const quizTypes = ['fill_front', 'fill_back', 'puzzle_one', 'puzzle_two', 'audio_scramble', 'puzzle_total'];
-        if (quizTypes.includes(currentStepConfig?.type) && audio) {
+        // Play full ayat as learning support when answer is wrong
+        if (audio) {
             setTimeout(() => {
                 audio.currentTime = 0;
                 audio.playbackRate = 1.0;
-                audio.play();
+                currentLoopIndex = 0;
+                audio.play().catch(() => {});
+                isPlaying = true;
             }, 600);
         }
     }
@@ -819,6 +821,16 @@
             isComparing = false;
             setupAudio();
             setupScramble();
+            // Auto-play for the first step
+            if (audio) {
+                setTimeout(() => {
+                    audio.currentTime = 0;
+                    audio.playbackRate = 1.0;
+                    currentLoopIndex = 0;
+                    audio.play().catch(() => {});
+                    isPlaying = true;
+                }, 450);
+            }
         }
         return () => {
             if (audio) audio.pause();
@@ -1161,9 +1173,8 @@
             isPlayingQari = false;
 
             // Auto-play murottal when opening a new step
-            const autoPlayTypes = ['read_listen', 'listen_repeat', 'fill_front', 'fill_back', 'audio_scramble', 'puzzle_one', 'puzzle_two', 'puzzle_total'];
             const nextStepConfig = stepsPipeline[currentStep];
-            if (nextStepConfig && autoPlayTypes.includes(nextStepConfig.type) && audio) {
+            if (nextStepConfig && audio) {
                 setTimeout(() => {
                     audio.currentTime = 0;
                     audio.playbackRate = 1.0;
