@@ -4,10 +4,13 @@
     import LearnSidebar from '$lib/components/learn/LearnSidebar.svelte';
     import BottomNav from '../components/BottomNav.svelte';
     import DailyLoginReward from '$lib/components/learn/DailyLoginReward.svelte';
+    import StreakModal from '$lib/components/learn/StreakModal.svelte';
+
+    let showStreakModal = $state(false);
 </script>
 
 <div class="screen">
-    <LearnTopbar />
+    <LearnTopbar onOpenStreakModal={() => showStreakModal = true} />
 
     <div class="scroll-content no-scrollbar" style="background: #fff;">
         <div class="learn-layout-container">
@@ -26,6 +29,11 @@
 
     <!-- Daily Login Reward Modal (auto-shows on new day) -->
     <DailyLoginReward />
+
+    <!-- Streak Modal -->
+    {#if showStreakModal}
+        <StreakModal onClose={() => showStreakModal = false} />
+    {/if}
 </div>
 
 <style>

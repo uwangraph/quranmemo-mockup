@@ -1,10 +1,9 @@
 <script>
     import { appState } from '$lib/app.svelte.js';
     import { i18n } from '$lib/i18n.svelte.js';
-    import StreakModal from './StreakModal.svelte';
     
     let showToast = $state(false);
-    let showStreakModal = $state(false);
+    let { onOpenStreakModal } = $props();
 
     $effect(() => {
         const timer = setTimeout(() => {
@@ -17,7 +16,7 @@
 
 <div class="topbar" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
     <!-- Streak pill — bisa diklik untuk detail -->
-    <button class="streak-pill" onclick={() => showStreakModal = true} title="Lihat detail streak">
+    <button class="streak-pill" onclick={onOpenStreakModal} title="Lihat detail streak">
         <i class="ti ti-flame"></i>
         <span>{appState.user.streak}</span>
     </button>
@@ -34,11 +33,6 @@
         <i class="ti ti-bolt-filled"></i> {appState.user.energy}
     </div>
 </div>
-
-<!-- Streak Modal -->
-{#if showStreakModal}
-    <StreakModal onClose={() => showStreakModal = false} />
-{/if}
 
 {#if showToast}
     <div class="achievement-toast">
