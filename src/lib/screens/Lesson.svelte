@@ -962,6 +962,16 @@
         }
     }
 
+    function toggleBreak() {
+        // Toggle break/check state
+        isChecked = !isChecked;
+        // If entering break, pause audio and stop playing
+        if (isChecked && audio && isPlaying) {
+            audio.pause();
+            isPlaying = false;
+        }
+    }
+
     async function startSimulatedRecording() {
         if (recordState === 'recording') {
             if (mediaRecorder && mediaRecorder.state !== 'inactive') {
