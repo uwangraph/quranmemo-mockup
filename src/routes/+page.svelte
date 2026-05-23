@@ -21,6 +21,7 @@
     import CreateCommunity from '$lib/screens/CreateCommunity.svelte';
     import CreateHalaqah from '$lib/screens/CreateHalaqah.svelte';
     import HalaqahHub from '$lib/screens/HalaqahHub.svelte';
+    import DailyLoginReward from '$lib/components/learn/DailyLoginReward.svelte';
 </script>
 
 {#if appState.currentScreen === 'onboarding'}
@@ -78,3 +79,5 @@
         </div>
     {/if}
 {/if}
+
+<DailyLoginReward />

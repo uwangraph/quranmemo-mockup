@@ -78,8 +78,8 @@ export function createAppState() {
             completedAll: false,
             quests: [
                 { id: 'q1', text: 'Selesaikan 1 tahap hafalan', max: 1, current: 0, xp: 10, claimed: false },
-                { id: 'q2', text: 'Dapatkan 3 jawaban benar', max: 3, current: 0, xp: 15, claimed: false },
-                { id: 'q3', text: 'Mulai sesi hari ini', max: 1, current: 0, xp: 20, claimed: false }
+                { id: 'q2', text: 'Dapatkan 3 jawaban benar', max: 3, current: 0, xp: 10, claimed: false },
+                { id: 'q3', text: 'Mulai sesi hari ini', max: 1, current: 0, xp: 15, claimed: false }
             ]
         }
     }));
@@ -112,12 +112,14 @@ export function createAppState() {
     
     const defaultQuests = [
         { id: 'q1', text: 'Selesaikan 1 tahap hafalan', max: 1, current: 0, xp: 10, claimed: false },
-        { id: 'q2', text: 'Dapatkan 3 jawaban benar tanpa salah', max: 3, current: 0, xp: 15, claimed: false },
-        { id: 'q3', text: 'Selesaikan 1 Murojaah instan', max: 1, current: 0, xp: 10, claimed: false }
+        { id: 'q2', text: 'Dapatkan 3 jawaban benar tanpa salah', max: 3, current: 0, xp: 10, claimed: false },
+        { id: 'q3', text: 'Selesaikan 1 Murojaah instan', max: 1, current: 0, xp: 15, claimed: false }
     ];
     if (user.dailyQuests === undefined || user.dailyQuests.date === undefined) {
         user.dailyQuests = { date: null, completedAll: false, quests: defaultQuests };
     }
+
+    let pendingRewardInfo = $state(null);
 
     function checkDailyReset() {
         const now = new Date();
@@ -132,8 +134,8 @@ export function createAppState() {
                 completedAll: false,
                 quests: [
                     { id: 'q1', text: 'Selesaikan 1 tahap hafalan', max: 1, current: 0, xp: 10, claimed: false },
-                    { id: 'q2', text: 'Dapatkan 3 jawaban benar beruntun', max: 3, current: 0, xp: 15, claimed: false },
-                    { id: 'q3', text: 'Selesaikan 1 Murojaah instan', max: 1, current: 0, xp: 20, claimed: false }
+                    { id: 'q2', text: 'Dapatkan 3 jawaban benar beruntun', max: 3, current: 0, xp: 10, claimed: false },
+                    { id: 'q3', text: 'Selesaikan 1 Murojaah instan', max: 1, current: 0, xp: 15, claimed: false }
                 ]
             };
             saveUser();
@@ -170,8 +172,8 @@ export function createAppState() {
         saveUser();
     }
 
-    // Daily Login Reward system (streak-based)
-    // Returns reward info if a new-day login is detected, else null.
+    // Weekly streak reward system (streak-based)
+    // Returns reward info if a new-day streak continuation is detected after daily target completion.
     function checkLoginReward() {
         if (typeof window === 'undefined') return null;
         const now = new Date();
@@ -183,6 +185,11 @@ export function createAppState() {
             return null; // Already claimed today
         }
 
+        const targetQuest = user.dailyQuests?.quests?.find(x => x.id === 'q1');
+        if (!targetQuest || targetQuest.current < targetQuest.max) {
+            return null; // No valid daily target completed yet
+        }
+
         // Check if yesterday was logged in (for streak continuation)
         const yesterday = new Date(serverNow);
         yesterday.setDate(yesterday.getDate() - 1);
@@ -191,17 +198,21 @@ export function createAppState() {
 
         const newStreak = isConsecutive ? user.loginStreak + 1 : 1;
 
-        // Reward schedule: streak day → XP reward
-        // Milestone days: 7→15, 14→20, 30→30, other days (1-6)→5
-        let xpReward = 5;
-        if (newStreak === 30) xpReward = 30;
-        else if (newStreak === 14) xpReward = 20;
-        else if (newStreak === 7) xpReward = 15;
+        // Reward schedule berdasarkan target streak (STREAK.md):
+        // 1-7 hari: 3 gems energy
+        // 8-14 hari: 4 gems energy
+        // 15-21 hari: 5 gems energy
+        // 22-30 hari: 3 gems energy
+        let gemsReward = 3;
+        if (newStreak >= 22) gemsReward = 3;
+        else if (newStreak >= 15) gemsReward = 5;
+        else if (newStreak >= 8) gemsReward = 4;
+        else gemsReward = 3;
 
-        return { xpReward, streakDay: newStreak };
+        return { gemsReward, streakDay: newStreak };
     }
 
-    function claimLoginReward(xpReward, streakDay) {
+    function claimLoginReward(gemsReward, streakDay) {
         if (typeof window === 'undefined') return;
         const now = new Date();
         const utcMs = now.getTime() + (now.getTimezoneOffset() * 60000);
@@ -210,8 +221,19 @@ export function createAppState() {
 
         user.lastLoginDate = todayStr;
         user.loginStreak = streakDay;
-        user.xp += xpReward;
+        user.gems += gemsReward;
+        pendingRewardInfo = null;
         saveUser();
+    }
+
+    function triggerLoginRewardCheck() {
+        const info = checkLoginReward();
+        if (info) pendingRewardInfo = info;
+        return info;
+    }
+
+    function clearPendingRewardInfo() {
+        pendingRewardInfo = null;
     }
 
     function updateQuestProgress(questId, amount = 1) {
@@ -228,14 +250,14 @@ export function createAppState() {
         const q = user.dailyQuests.quests.find(x => x.id === questId);
         if (q && !q.claimed && q.current >= q.max) {
             q.claimed = true;
-            if (q.id === 'q1') user.xp += 10;
-            if (q.id === 'q2') user.xp += 15;
-            if (q.id === 'q3') user.xp += 20;
+            // XP per misi sesuai docs: total 1 misi harian = 35 XP (dibagi 3 misi)
+            // q1: 10 XP, q2: 10 XP, q3: 15 XP → total 35 XP
+            user.xp += q.xp;
             
-            // Check if all completed
+            // Check if all completed → bonus agar total = 35 XP
             if (user.dailyQuests.quests.every(x => x.claimed)) {
                 user.dailyQuests.completedAll = true;
-                user.xp += 35; // Bonus for completing all
+                // Bonus sudah termasuk dalam xp per quest (total 35 XP)
             }
             saveUser();
         }
@@ -331,6 +353,7 @@ export function createAppState() {
         set selectedNodeType(val) { selectedNodeType = val; },
         get screenLabels() { return screenLabels; },
         get user() { return user; },
+        get pendingRewardInfo() { return pendingRewardInfo; },
         get musyrifBalance() { return musyrifBalance; },
         setMusyrifBalance(val) {
             musyrifBalance = val;

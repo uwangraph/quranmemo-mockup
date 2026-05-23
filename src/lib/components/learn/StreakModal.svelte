@@ -4,10 +4,10 @@
     let { onClose } = $props();
 
     const milestones = [
-        { days: 3,   name: 'Langkah Pertama',    reward: '+50 XP +20 Gems',         icon: '🔥', badgeId: 'b1' },
-        { days: 7,   name: 'Satu Pekan Istiqomah', reward: '+150 XP +35 Gems + Lencana', icon: '📅', badgeId: 'b2' },
-        { days: 30,  name: 'Sebulan Teguh',       reward: '+500 XP +50 Gems + Lencana', icon: '💎', badgeId: 'b4' },
-        { days: 100, name: 'Penghafal Setia',     reward: '+1.500 XP +75 Gems + Lencana', icon: '🛡️', badgeId: 'b5' },
+        { days: 3,   name: 'Langkah Pertama',    reward: '+1 Rukhsah Harian',              icon: '🔥', badgeId: 'b1' },
+        { days: 7,   name: 'Satu Pekan Istiqomah', reward: '+1 Rukhsah Harian + Lencana',  icon: '📅', badgeId: 'b2' },
+        { days: 30,  name: 'Sebulan Teguh',       reward: '+2 Rukhsah Harian + Lencana',   icon: '💎', badgeId: 'b4' },
+        { days: 100, name: 'Penghafal Setia',     reward: '+3 Rukhsah Harian + Lencana',   icon: '🛡️', badgeId: 'b5' },
         { days: 365, name: 'Istiqomah Sejati',    reward: 'Lencana Permanen + Hadiah Fisik', icon: '👑', badgeId: 'b6' },
     ];
 
@@ -119,6 +119,29 @@
                     {/if}
                 </div>
             {/each}
+        </div>
+    </div>
+
+    <!-- Target Streak Harian (Gems Energy) -->
+    <div class="section-block">
+        <div class="section-title">Hadiah Streak Pekanan</div>
+        <div class="streak-phases">
+            {#each [
+                { range: '1–7 hari',   gems: 3, active: streak >= 1 && streak <= 7 },
+                { range: '8–14 hari',  gems: 4, active: streak >= 8 && streak <= 14 },
+                { range: '15–21 hari', gems: 5, active: streak >= 15 && streak <= 21 },
+                { range: '22–30 hari', gems: 3, active: streak >= 22 && streak <= 30 },
+            ] as phase}
+                <div class="phase-row" class:phase-active={phase.active}>
+                    <span class="phase-range">{phase.range}</span>
+                    <span class="phase-gems">💎 +{phase.gems} Gems/pekan</span>
+                    {#if phase.active}<span class="phase-badge">Fase kamu</span>{/if}
+                </div>
+            {/each}
+        </div>
+        <div class="grace-info" style="margin-top: 10px;">
+            <i class="ti ti-info-circle"></i>
+            <span>Gems energy dari reward direset setiap tanggal 2 bulan baru.</span>
         </div>
     </div>
 
@@ -331,4 +354,25 @@
         line-height: 1.5;
     }
     .grace-info i { flex-shrink: 0; margin-top: 1px; }
+
+    /* Streak phases */
+    .streak-phases { display: flex; flex-direction: column; gap: 6px; }
+    .phase-row {
+        display: flex; align-items: center; gap: 8px;
+        padding: 8px 12px; border-radius: 10px;
+        background: #f8fafc; border: 1.5px solid #f1f5f9;
+        font-size: 12px; font-weight: 700; color: #64748b;
+        opacity: 0.6;
+    }
+    .phase-row.phase-active {
+        background: #fff7ed; border-color: #fed7aa; opacity: 1; color: #92400e;
+    }
+    .phase-range { flex: 1; }
+    .phase-gems { font-weight: 900; color: #00978A; }
+    .phase-row.phase-active .phase-gems { color: #d97706; }
+    .phase-badge {
+        font-size: 10px; font-weight: 900; color: #ff6200;
+        background: #fff; border: 1.5px solid #fed7aa;
+        padding: 2px 8px; border-radius: 6px; white-space: nowrap;
+    }
 </style>

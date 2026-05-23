@@ -78,7 +78,7 @@
                                             <div class="quest-title {quest.claimed ? 'completed-text' : ''}">{quest.text}</div>
                                             
                                             {#if quest.claimed}
-                                                <div class="reward-pill">+{#if quest.id === 'q1'}10{:else if quest.id === 'q2'}15{:else}20{/if} XP</div>
+                                                <div class="reward-pill">+{quest.xp} XP</div>
                                             {:else if quest.current >= quest.max}
                                                 <button class="claim-quest-btn" onclick={() => appState.claimQuestReward(quest.id)}>Klaim</button>
                                             {:else}
@@ -88,12 +88,35 @@
                                                             <span class="progress-text">{quest.current} / {quest.max}</span>
                                                         </div>
                                                     </div>
-                                                    <div class="reward-tag">+{#if quest.id === 'q1'}10{:else if quest.id === 'q2'}15{:else}20{/if} XP</div>
+                                                    <div class="reward-tag">+{quest.xp} XP</div>
                                                 </div>
                                             {/if}
                                         </div>
                                     </div>
                                 {/each}
+
+                                <!-- Bonus all-complete info -->
+                                {#if !appState.user.dailyQuests.completedAll}
+                                    <div class="quest-card" style="background: linear-gradient(135deg, #f0fdf4, #fff); border-color: #bbf7d0; border-style: dashed;">
+                                        <div class="card-icon">
+                                            <div style="background: #d1fae5; border: 2px solid #6ee7b7; border-radius: 12px; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; font-size: 22px;">🎯</div>
+                                        </div>
+                                        <div class="card-content">
+                                            <div style="font-size:14px; font-weight:900; color:#065f46;">Selesaikan semua misi</div>
+                                            <div style="font-size:12px; font-weight:700; color:#10b981; margin-top:4px;">Total hadiah: <strong>35 XP</strong></div>
+                                        </div>
+                                    </div>
+                                {:else}
+                                    <div class="quest-card" style="background: linear-gradient(135deg, #ecfdf5, #f0fdf4); border-color: #6ee7b7;">
+                                        <div class="card-icon">
+                                            <div style="background: #d1fae5; border: 2px solid #6ee7b7; border-radius: 12px; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; font-size: 22px;">✅</div>
+                                        </div>
+                                        <div class="card-content">
+                                            <div style="font-size:14px; font-weight:900; color:#065f46;">Semua misi selesai!</div>
+                                            <div class="reward-pill" style="margin-top:4px;">35 XP diklaim</div>
+                                        </div>
+                                    </div>
+                                {/if}
                             {/if}
 
                             <!-- Locked Quest Placeholder -->

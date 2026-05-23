@@ -4,26 +4,44 @@
 
     let { onClaim } = $props();
 
-    // Reward schedule for 7-day display strip:
-    // Days 1-6: 5 XP, Day 7 (milestone): 15 XP
-    const rewardSchedule = [5, 5, 5, 5, 5, 5, 15];
+    // Reward schedule berdasarkan target streak (STREAK.md):
+    // 1-7 hari: 3 gems, 8-14 hari: 4 gems, 15-21 hari: 5 gems, 22-30 hari: 3 gems
+    function getGemsForStreak(streakDay) {
+        if (streakDay >= 22) return 3;
+        if (streakDay >= 15) return 5;
+        if (streakDay >= 8) return 4;
+        return 3;
+    }
 
     let rewardInfo = $state(null); // { gemsReward, streakDay }
     let showModal = $state(false);
     let claiming = $state(false);
 
-    onMount(() => {
-        const info = appState.checkLoginReward();
+    const pendingRewardInfo = $derived(appState.pendingRewardInfo);
+
+    function refreshRewardInfo() {
+        const info = appState.pendingRewardInfo || appState.checkLoginReward();
         if (info) {
             rewardInfo = info;
-            setTimeout(() => { showModal = true; }, 400); // short delay for page load
+            showModal = true;
+        }
+    }
+
+    onMount(() => {
+        refreshRewardInfo();
+    });
+
+    $effect(() => {
+        if (pendingRewardInfo && !showModal) {
+            rewardInfo = pendingRewardInfo;
+            showModal = true;
         }
     });
 
     function handleClaim() {
         if (!rewardInfo || claiming) return;
         claiming = true;
-        appState.claimLoginReward(rewardInfo.xpReward, rewardInfo.streakDay);
+        appState.claimLoginReward(rewardInfo.gemsReward, rewardInfo.streakDay);
         setTimeout(() => {
             showModal = false;
             rewardInfo = null;
@@ -36,16 +54,19 @@
         return labels[dayIdx % 7];
     }
 
-    // Get display reward for a given display day index (0-6)
-    function getDisplayReward(dayIdx, currentStreak) {
-        // The 7th day slot always shows milestone reward
-        if (dayIdx === 6) return 15;
-        return 5;
-    }
+    // Fase streak: tentukan label fase berdasarkan hari
+    const streakPhaseLabel = $derived(() => {
+        if (!rewardInfo) return '';
+        const d = rewardInfo.streakDay;
+        if (d >= 22) return 'Pekan 4: 22–30 Hari';
+        if (d >= 15) return 'Pekan 3: 15–21 Hari';
+        if (d >= 8)  return 'Pekan 2: 8–14 Hari';
+        return 'Pekan 1: 1–7 Hari';
+    });
 
-    // Is the day a milestone day? (Only specific days: 7, 14, 30)
+    // Apakah ini hari milestone (7, 14, 21, 30)?
     const isMilestone = $derived(
-        rewardInfo && (rewardInfo.streakDay === 7 || rewardInfo.streakDay === 14 || rewardInfo.streakDay === 30)
+        rewardInfo && [7, 14, 21, 30].includes(rewardInfo.streakDay)
     );
 </script>
 
@@ -55,8 +76,8 @@
             <!-- Header -->
             <div class="login-header">
                 <div class="fire-icon">🔥</div>
-                <h2 class="login-title">Hadiah Login Harian!</h2>
-                <p class="login-sub">Login {rewardInfo.streakDay} hari berturut-turut</p>
+                <h2 class="login-title">Hadiah Streak Pekanan!</h2>
+                <p class="login-sub">Selesaikan 1 target setiap hari selama {rewardInfo.streakDay} hari berturut-turut</p>
             </div>
 
             <!-- 7-day calendar strip -->
@@ -65,7 +86,7 @@
                     {@const dayNum = i + 1}
                     {@const isCurrent = dayNum === Math.min(rewardInfo.streakDay, 7)}
                     {@const isPast = dayNum < Math.min(rewardInfo.streakDay, 7)}
-                    {@const reward = rewardSchedule[i]}
+                    {@const gems = getGemsForStreak(rewardInfo.streakDay - (Math.min(rewardInfo.streakDay, 7) - dayNum))}
                     <div class="day-cell {isCurrent ? 'current' : ''} {isPast ? 'past' : ''} {!isCurrent && !isPast ? 'future' : ''}">
                         <div class="day-label">{getDayLabel(i)}</div>
                         <div class="day-reward-icon">
@@ -77,7 +98,7 @@
                                 <i class="ti ti-lock"></i>
                             {/if}
                         </div>
-                        <div class="day-gems">+{reward}</div>
+                        <div class="day-gems">+{gems}</div>
                     </div>
                 {/each}
             </div>
@@ -85,16 +106,12 @@
             <!-- Big reward display -->
             <div class="big-reward {isMilestone ? 'milestone' : ''}">
                 {#if isMilestone}
-                    <div class="milestone-badge">🏆 Hadiah Milestone!</div>
+                    <div class="milestone-badge">🏆 Hari Milestone!</div>
                 {/if}
                 <div class="big-gems-icon">💎</div>
                 <div class="big-gems-text">+{rewardInfo.gemsReward} Gems</div>
                 <p class="big-gems-sub">
-                    {#if isMilestone}
-                        Bonus istiqomah {rewardInfo.streakDay} hari berturut-turut!
-                    {:else}
-                        Terus jaga keistiqomahanmu!
-                    {/if}
+                    {streakPhaseLabel()} — {isMilestone ? 'Bonus milestone istiqomah!' : 'Terus jaga keistiqomahanmu!'}
                 </p>
             </div>
 

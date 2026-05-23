@@ -3,7 +3,6 @@
     import RoadmapPath from '$lib/components/learn/RoadmapPath.svelte';
     import LearnSidebar from '$lib/components/learn/LearnSidebar.svelte';
     import BottomNav from '../components/BottomNav.svelte';
-    import DailyLoginReward from '$lib/components/learn/DailyLoginReward.svelte';
     import StreakModal from '$lib/components/learn/StreakModal.svelte';
 
     let showStreakModal = $state(false);
@@ -26,9 +25,6 @@
     </div>
 
     <BottomNav active="learn" />
-
-    <!-- Daily Login Reward Modal (auto-shows on new day) -->
-    <DailyLoginReward />
 
     <!-- Streak Modal -->
     {#if showStreakModal}

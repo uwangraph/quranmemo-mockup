@@ -1181,7 +1181,8 @@
             const isLastVerse = selectedVerseIndex === totalVerses - 1;
             const surahJustCompleted = isLastVerse && appState.user.progress.surah_094 === selectedVerseIndex;
 
-            const xpEarned = 20;
+            // XP: 4 XP per step benar (sesuai XP.md: "1 step hafalan jika benar = 4 XP")
+            const xpEarned = correctAttempts * 4;
             let gemsEarned = nodeType === 'checkpoint' ? 150 : 55; // Per target: 55, per checkpoint: 150
             const breakdownLines = [];
 
@@ -1190,6 +1191,7 @@
             } else {
                 breakdownLines.push(`+${gemsEarned} Gems — Satu target selesai`);
             }
+            breakdownLines.push(`+${xpEarned} XP — ${correctAttempts} step benar × 4 XP`);
 
             // Bonus: Surah selesai (Al-Insyirah < 30 ayat → +75 Gems)
             let surahBonus = 0;
@@ -1210,6 +1212,7 @@
                 appState.user.progress.surah_094 += 1;
             }
             appState.updateQuestProgress('q1', 1); // trigger quest
+            appState.triggerLoginRewardCheck();
             appState.saveUser();
 
             showCompletion = true;
