@@ -585,13 +585,11 @@
 
         // Auto-play full ayat as reward
         if (audio) {
-            setTimeout(() => {
-                audio.currentTime = 0;
-                audio.playbackRate = 1.0;
-                currentLoopIndex = 0;
-                audio.play().catch(() => {});
-                isPlaying = true;
-            }, 600);
+            audio.currentTime = 0;
+            audio.playbackRate = 1.0;
+            currentLoopIndex = 0;
+            audio.play().catch(() => {});
+            isPlaying = true;
         }
     }
 
@@ -611,13 +609,11 @@
 
         // Play full ayat as learning support when answer is wrong
         if (audio) {
-            setTimeout(() => {
-                audio.currentTime = 0;
-                audio.playbackRate = 1.0;
-                currentLoopIndex = 0;
-                audio.play().catch(() => {});
-                isPlaying = true;
-            }, 600);
+            audio.currentTime = 0;
+            audio.playbackRate = 1.0;
+            currentLoopIndex = 0;
+            audio.play().catch(() => {});
+            isPlaying = true;
         }
     }
 
@@ -1170,23 +1166,17 @@
             if (audio) audio.pause();
             isPlaying = false;
             isPlayingRecorded = false;
-            isPlayingQari = false;
 
             // Auto-play murottal when opening a new step
             const nextStepConfig = stepsPipeline[currentStep];
             if (nextStepConfig && audio) {
-                setTimeout(() => {
-                    audio.currentTime = 0;
-                    audio.playbackRate = 1.0;
-                    currentLoopIndex = 0;
-                    audio.play().catch(() => {});
-                    isPlaying = true;
-                }, 450);
+                audio.currentTime = 0;
+                audio.playbackRate = 1.0;
+                currentLoopIndex = 0;
+                audio.play().catch(() => {});
+                isPlaying = true;
             }
-            
-            if (nextStepConfig && nextStepConfig.type !== 'read_listen' && nextStepConfig.type !== 'listen_repeat') {
-                playWordAudio('bloop'); 
-            }
+
         } else {
             // === Hitung reward berdasarkan tipe node ===
             const nodeType = appState.selectedNodeType || 'lesson'; // 'lesson' | 'checkpoint'
