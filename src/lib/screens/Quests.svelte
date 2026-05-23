@@ -1,18 +1,32 @@
 <script>
     import { appState } from '$lib/app.svelte.js';
     import { i18n } from '$lib/i18n.svelte.js';
-    import BottomNav from '$lib/components/BottomNav.svelte';
+    import BottomNav from '../components/BottomNav.svelte';
 
     let activeTab = $state('misi');
+    let showCustomAlert = $state(false);
+    let alertMessage = $state("");
+    let alertType = $state("alert");
+    let onConfirm = $state(() => {});
+
+    function customAlert(msg) {
+        alertMessage = msg;
+        alertType = "alert";
+        showCustomAlert = true;
+    }
+
+    function customConfirm(msg, callback) {
+        alertMessage = msg;
+        alertType = "confirm";
+        onConfirm = callback;
+        showCustomAlert = true;
+    }
 </script>
 
 <div class="screen quests-screen">
     <!-- Mobile & Desktop Header -->
     <div class="top-header">
         <div class="wallet-pills">
-            <div class="pill">
-                <i class="ti ti-bolt-filled" style="color:#ff9600"></i> <span style="color: #3c3c3c;">{appState.user.energy}</span>
-            </div>
             <div class="pill">
                 <i class="ti ti-star-filled" style="color:#ff9600"></i> <span style="color: #3c3c3c;">{appState.user.xp}</span>
             </div>
@@ -93,6 +107,33 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- Watch Ads Section -->
+                    <div class="quests-section" style="margin-top: 32px;">
+                        <div class="section-header">
+                            <h3>Gems Gratis</h3>
+                        </div>
+                        <div class="quest-card" style="background: linear-gradient(135deg, #e0f2f1, #ffffff); border-color: #b2dfdb;">
+                            <div class="card-icon">
+                                <div style="background: #e0f2f1; border: 2px solid #b2dfdb; border-radius: 12px; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; color: #00978A; font-size: 22px;">
+                                    <i class="ti ti-video"></i>
+                                </div>
+                            </div>
+                            <div class="card-content" style="flex-direction: row; align-items: center; justify-content: space-between;">
+                                <div>
+                                    <div style="font-size:16px; font-weight:900; color:#3c3c3c;">Tonton Iklan (Ads)</div>
+                                    <div style="font-size:13px; font-weight:700; color:#afafaf; margin-top:4px;">Dapatkan +50 Gems</div>
+                                </div>
+                                <button class="btn-watch-ads" onclick={() => {
+                                    customConfirm('Tonton iklan berdurasi pendek untuk mendapatkan 50 Gems?', () => {
+                                        appState.user.gems += 50;
+                                        appState.saveUser();
+                                        customAlert('Terima kasih telah menonton iklan! Anda mendapatkan 50 Gems.');
+                                    });
+                                }}>Tonton</button>
+                            </div>
+                        </div>
+                    </div>
                 {:else if activeTab === 'pencapaian'}
                     <!-- Mobile Pencapaian (Badges/Monthly Challenge) Tab Content -->
                     <div class="mobile-pencapaian-tab">
@@ -144,6 +185,30 @@
 
     <!-- Mobile Navigation -->
     <BottomNav active="quests" />
+
+    <!-- Custom Alert Modal -->
+    {#if showCustomAlert}
+        <div class="alert-overlay" onclick={() => {
+            if (alertType === 'alert') showCustomAlert = false;
+        }}>
+            <div class="alert-card" onclick={(e) => e.stopPropagation()}>
+                <div class="alert-title">{alertMessage}</div>
+                {#if alertType === 'confirm'}
+                    <div class="alert-buttons">
+                        <button class="btn-cancel" onclick={() => showCustomAlert = false}>Batal</button>
+                        <button class="btn-confirm" onclick={() => {
+                            onConfirm();
+                            showCustomAlert = false;
+                        }}>Ya</button>
+                    </div>
+                {:else}
+                    <div class="alert-buttons">
+                        <button class="btn-confirm full-width" onclick={() => showCustomAlert = false}>OK</button>
+                    </div>
+                {/if}
+            </div>
+        </div>
+    {/if}
 </div>
 
 <style>
@@ -646,5 +711,99 @@
     /* Hide desktop Side Column when Pencapaian tab is active on desktop (if ever visible) */
     :global(.desktop-browser) .mobile-tabs {
         display: none !important;
+    }
+
+    /* Alert Modal Styles */
+    .alert-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(4px);
+        z-index: 400;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        animation: fadeIn 0.3s ease;
+    }
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+    .alert-card {
+        background: #fff;
+        border-radius: 20px;
+        padding: 32px 24px;
+        max-width: 320px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        animation: slideUp 0.3s ease-out;
+    }
+    @keyframes slideUp {
+        from { transform: translateY(20px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+    }
+    .alert-title {
+        font-size: 16px;
+        font-weight: 800;
+        color: #3c3c3c;
+        margin-bottom: 24px;
+        text-align: center;
+        line-height: 1.4;
+    }
+    .alert-buttons {
+        display: flex;
+        gap: 12px;
+    }
+    .btn-cancel {
+        flex: 1;
+        background: #f1f5f9;
+        border: 2px solid #e5e5e5;
+        color: #afafaf;
+        padding: 12px;
+        border-radius: 12px;
+        font-size: 14px;
+        font-weight: 800;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    .btn-cancel:hover {
+        background: #e5e5e5;
+    }
+    .btn-confirm {
+        flex: 1;
+        background: #00978A;
+        border: 2px solid #00978A;
+        color: #fff;
+        padding: 12px;
+        border-radius: 12px;
+        font-size: 14px;
+        font-weight: 800;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    .btn-confirm:hover {
+        background: #007a6f;
+        border-color: #007a6f;
+    }
+    .btn-confirm.full-width {
+        width: 100%;
+    }
+
+    /* Watch Ads Button */
+    .btn-watch-ads {
+        background: #1cb0f6;
+        color: #fff;
+        border: 2px solid #0ea5e9;
+        padding: 10px 20px;
+        border-radius: 10px;
+        font-size: 13px;
+        font-weight: 900;
+        cursor: pointer;
+        box-shadow: 0 4px 0 #0284c7;
+        text-transform: uppercase;
+        transition: all 0.15s;
+    }
+    .btn-watch-ads:active {
+        transform: translateY(4px);
+        box-shadow: none;
     }
 </style>

@@ -33,6 +33,8 @@
 
     // ── Sertifikat ──
     const certs = $derived(user.certificates ?? []);
+    
+    let activeTab = $state('badge');
 </script>
 
 <div class="screen">
@@ -77,6 +79,11 @@
                 <div class="hero-stat">
                     <span class="hs-val">🏅 {earnedBadges.length}</span>
                     <span class="hs-label">Lencana</span>
+                </div>
+                <div class="hs-divider"></div>
+                <div class="hero-stat">
+                    <span class="hs-val">📜 {certs.length}</span>
+                    <span class="hs-label">Sertifikat</span>
                 </div>
             </div>
         </div>
@@ -226,67 +233,71 @@
         </div>
 
         <!-- ══════════════════════════════════
-             4. BADGE
+             4. PENCAPAIAN (TABS)
         ══════════════════════════════════ -->
-        <div class="section-label">🎖️ Koleksi Lencana</div>
-        <div class="section-pad">
-            <!-- Earned badges -->
-            {#if earnedBadges.length > 0}
-                <div class="badge-grid">
-                    {#each earnedBadges as badge}
-                        <div class="badge-card earned">
-                            <div class="badge-icon-wrap earned">{badge.icon}</div>
-                            <div class="badge-name">{badge.name}</div>
-                            <div class="badge-desc">{badge.desc}</div>
-                        </div>
-                    {/each}
-                </div>
-            {/if}
-
-            <!-- Locked badges -->
-            {#if lockedBadges.length > 0}
-                <div class="locked-label">Belum Terbuka</div>
-                <div class="badge-grid">
-                    {#each lockedBadges as badge}
-                        <div class="badge-card locked">
-                            <div class="badge-icon-wrap locked">{badge.icon}</div>
-                            <div class="badge-name locked-text">{badge.name}</div>
-                            <div class="badge-desc">{badge.desc}</div>
-                        </div>
-                    {/each}
-                </div>
-            {/if}
+        <div class="profile-tabs" style="margin: 20px 16px 0; display: flex; background: #f1f5f9; border-radius: 12px; padding: 4px;">
+            <button class="p-tab {activeTab === 'badge' ? 'active' : ''}" onclick={() => activeTab = 'badge'}>
+                🎖️ Lencana ({earnedBadges.length})
+            </button>
+            <button class="p-tab {activeTab === 'cert' ? 'active' : ''}" onclick={() => activeTab = 'cert'}>
+                📜 Sertifikat ({certs.length})
+            </button>
         </div>
 
-        <!-- ══════════════════════════════════
-             5. SERTIFIKAT
-        ══════════════════════════════════ -->
-        <div class="section-label">📜 Sertifikat</div>
-        <div class="section-pad">
-            {#if certs.length > 0}
-                <div class="certs-list">
-                    {#each certs as cert}
-                        <div class="cert-card">
-                            <div class="cert-icon">{cert.icon}</div>
-                            <div class="cert-info">
-                                <div class="cert-title">{cert.title}</div>
-                                <div class="cert-meta">
-                                    <span class="cert-type-pill">{cert.type}</span>
-                                    <span class="cert-date">{new Date(cert.date).toLocaleDateString('id-ID', { day:'numeric', month:'long', year:'numeric' })}</span>
-                                </div>
+        <div class="section-pad" style="margin-top: 16px;">
+            {#if activeTab === 'badge'}
+                <!-- Earned badges -->
+                {#if earnedBadges.length > 0}
+                    <div class="badge-grid">
+                        {#each earnedBadges as badge}
+                            <div class="badge-card earned">
+                                <div class="badge-icon-wrap earned">{badge.icon}</div>
+                                <div class="badge-name">{badge.name}</div>
+                                <div class="badge-desc">{badge.desc}</div>
                             </div>
-                            <button class="cert-download-btn" title="Unduh sertifikat">
-                                <i class="ti ti-download"></i>
-                            </button>
-                        </div>
-                    {/each}
-                </div>
+                        {/each}
+                    </div>
+                {/if}
+
+                <!-- Locked badges -->
+                {#if lockedBadges.length > 0}
+                    <div class="locked-label">Belum Terbuka</div>
+                    <div class="badge-grid">
+                        {#each lockedBadges as badge}
+                            <div class="badge-card locked">
+                                <div class="badge-icon-wrap locked">{badge.icon}</div>
+                                <div class="badge-name locked-text">{badge.name}</div>
+                                <div class="badge-desc">{badge.desc}</div>
+                            </div>
+                        {/each}
+                    </div>
+                {/if}
             {:else}
-                <div class="empty-cert">
-                    <span style="font-size:36px">🎓</span>
-                    <span>Belum ada sertifikat</span>
-                    <span style="font-size:11px; color:#94a3b8;">Selesaikan hafalan untuk mendapatkan sertifikat pertamamu!</span>
-                </div>
+                {#if certs.length > 0}
+                    <div class="certs-list">
+                        {#each certs as cert}
+                            <div class="cert-card">
+                                <div class="cert-icon">{cert.icon}</div>
+                                <div class="cert-info">
+                                    <div class="cert-title">{cert.title}</div>
+                                    <div class="cert-meta">
+                                        <span class="cert-type-pill">{cert.type}</span>
+                                        <span class="cert-date">{new Date(cert.date).toLocaleDateString('id-ID', { day:'numeric', month:'long', year:'numeric' })}</span>
+                                    </div>
+                                </div>
+                                <button class="cert-download-btn" title="Unduh sertifikat">
+                                    <i class="ti ti-download"></i>
+                                </button>
+                            </div>
+                        {/each}
+                    </div>
+                {:else}
+                    <div class="empty-cert">
+                        <span style="font-size:36px">🎓</span>
+                        <span>Belum ada sertifikat</span>
+                        <span style="font-size:11px; color:#94a3b8;">Selesaikan hafalan untuk mendapatkan sertifikat pertamamu!</span>
+                    </div>
+                {/if}
             {/if}
         </div>
 
@@ -535,5 +546,14 @@
         padding: 28px 16px; background: #f8fafc; border-radius: 16px;
         border: 2px dashed #e2e8f0; text-align: center; color: #64748b;
         font-size: 13px; font-weight: 700;
+    }
+    
+    .p-tab {
+        flex: 1; padding: 12px 0; border: none; background: none;
+        font-size: 13px; font-weight: 800; color: #94a3b8; cursor: pointer;
+        border-radius: 8px; transition: all 0.2s;
+    }
+    .p-tab.active {
+        background: #fff; color: #1e293b; box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     }
 </style>

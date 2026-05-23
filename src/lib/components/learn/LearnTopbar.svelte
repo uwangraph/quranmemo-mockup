@@ -28,10 +28,6 @@
     <div class="gems-pill" onclick={() => appState.go('murojaah')}>
         <i class="ti ti-diamond-filled"></i> {appState.user.gems}
     </div>
-    
-    <div class="energy-pill">
-        <i class="ti ti-bolt-filled"></i> {appState.user.energy}
-    </div>
 </div>
 
 {#if showToast}
@@ -75,5 +71,4 @@
     }
     .streak-pill:hover { background: #ffedd5; transform: scale(1.05); }
     .gems-pill { display: flex; align-items: center; gap: 4px; font-size: 14px; font-weight: 800; color: #00978A; cursor: pointer; border: 2px solid #e0f2f1; padding: 4px 10px; border-radius: 100px; background: #e0f2f1; }
-    .energy-pill { display: flex; align-items: center; gap: 4px; font-size: 14px; font-weight: 800; color: #ff9600; cursor: pointer; border: 2px solid #fff7e6; padding: 4px 10px; border-radius: 100px; background: #fffbf2; }
 </style>

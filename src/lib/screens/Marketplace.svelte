@@ -8,7 +8,7 @@
     let selectedGender = $state("all");
     let showDropdown = $state(false);
     let hasSearched = $state(false);
-    let activeTab = $state("instant");
+    let activeTab = $state("toko");
 
     let showCustomAlert = $state(false);
     let alertMessage = $state("");
@@ -124,9 +124,7 @@
 <div class="screen">
     <div class="topbar wallet-header">
         <div class="wallet-pills">
-            <div class="pill energy-pill" style="color: #ff9600; border-color: #fff7e6; background: #fffbf2;">
-                <i class="ti ti-bolt-filled"></i> <span>{appState.user.energy}</span>
-            </div>
+
             <div class="pill xp-pill" style="color: #ff9600; border-color: #fff7e6; background: #fffbf2;">
                 <i class="ti ti-star-filled"></i> <span>{appState.user.xp}</span>
             </div>
@@ -142,9 +140,11 @@
     <div class="market-tabs">
         <button class="m-tab" class:active={activeTab === 'instant'} onclick={() => {activeTab = 'instant'; hasSearched = false;}}>Setoran Instan</button>
         <button class="m-tab" class:active={activeTab === 'booking'} onclick={() => {activeTab = 'booking'; hasSearched = false;}}>Booking Jadwal</button>
+        <button class="m-tab" class:active={activeTab === 'toko'} onclick={() => {activeTab = 'toko'; hasSearched = false;}}>Toko</button>
     </div>
 
     <div class="scroll-content" style="padding: 0 16px;">
+        {#if activeTab === 'instant' || activeTab === 'booking'}
         <div class="hero-card">
             <div style="flex:1">
                 <div style="display: flex; justify-content: space-between; align-items: flex-start;">
@@ -238,6 +238,67 @@
                 </div>
             {/each}
         </div>
+        {/if}
+        {/if}
+        
+        {#if activeTab === 'toko'}
+            <div class="hero-card" style="background: linear-gradient(135deg, #00978A, #007a6f); margin-top: 16px;">
+                <div style="flex:1">
+                    <div style="font-size:18px; font-weight:900; color:#fff;">Toko</div>
+                    <div style="font-size:12px; font-weight:700; color:rgba(255,255,255,0.8); margin-top:4px;">Dapatkan Gems dan item menarik</div>
+                </div>
+                <i class="ti ti-shopping-cart" style="font-size: 40px; color: rgba(255,255,255,0.3)"></i>
+            </div>
+            
+            <div class="section-header">
+                <span class="section-label" style="padding:0">Gems Gratis</span>
+            </div>
+            
+            <div class="musyrif-card" style="flex-direction: row; align-items: center; justify-content: space-between;">
+                <div style="display: flex; align-items: center; gap: 16px;">
+                    <div class="m-avatar" style="background: #e0f2f1; border-color: #b2dfdb; color: #00978A;"><i class="ti ti-video"></i></div>
+                    <div>
+                        <div style="font-size:16px; font-weight:900; color:#3c3c3c;">Tonton Iklan (Ads)</div>
+                        <div style="font-size:13px; font-weight:700; color:#afafaf; margin-top:4px;">Dapatkan +50 Gems</div>
+                    </div>
+                </div>
+                <button class="btn-duo" style="background: #fff; color: #1cb0f6; border-color: #e5e5e5;" onclick={() => {
+                    customConfirm('Tonton iklan berdurasi pendek untuk mendapatkan 50 Gems?', () => {
+                        appState.user.gems += 50;
+                        appState.saveUser();
+                        customAlert('Terima kasih telah menonton iklan! Anda mendapatkan 50 Gems.');
+                    });
+                }}>Tonton</button>
+            </div>
+            
+            <div class="section-header" style="margin-top: 24px;">
+                <span class="section-label" style="padding:0">Power-Ups</span>
+            </div>
+            
+            <div class="musyrif-card" style="flex-direction: row; align-items: center; justify-content: space-between;">
+                <div style="display: flex; align-items: center; gap: 16px;">
+                    <div class="m-avatar" style="background: #fffbf2; border-color: #fff7e6; color: #ff9600;"><i class="ti ti-snowflake"></i></div>
+                    <div>
+                        <div style="font-size:16px; font-weight:900; color:#3c3c3c;">Streak Freeze</div>
+                        <div style="font-size:13px; font-weight:700; color:#afafaf; margin-top:4px;">Bekukan streak Anda selama 1 hari</div>
+                        <div style="font-size:11px; font-weight:800; color:#1cb0f6; margin-top:4px;">Milik Anda: {appState.user.streakFreezes || 0}</div>
+                    </div>
+                </div>
+                <button class="btn-duo" style="background: #ff9600; color: #fff; border-color: #cc7800; font-size: 13px;" onclick={() => {
+                    // Harga meningkat (fee 5, 10)
+                    const cost = (appState.user.streakFreezes || 0) > 0 ? 10 : 5;
+                    if (appState.user.gems >= cost) {
+                        customConfirm(`Beli Streak Freeze seharga ${cost} Gems?`, () => {
+                            appState.user.gems -= cost;
+                            appState.user.streakFreezes = (appState.user.streakFreezes || 0) + 1;
+                            appState.saveUser();
+                            customAlert('Berhasil membeli Streak Freeze!');
+                        });
+                    } else {
+                        customAlert(`Gems tidak cukup! Butuh ${cost} Gems, Anda hanya memiliki ${appState.user.gems}.`);
+                    }
+                }}>{(appState.user.streakFreezes || 0) > 0 ? '10' : '5'} <i class="ti ti-diamond-filled"></i></button>
+            </div>
         {/if}
     </div>
 

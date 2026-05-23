@@ -193,7 +193,7 @@
     let incorrectQueue = $state([]);
     let pendingStreakAnimation = $state(false);
     let showStreakOverlay = $state(false);
-    let showEnergyModal = $state(false);
+
 
     // Audio & Voice Recording States
     let audio = null;
@@ -588,8 +588,10 @@
             audio.currentTime = 0;
             audio.playbackRate = 1.0;
             currentLoopIndex = 0;
-            audio.play().catch(() => {});
-            isPlaying = true;
+            setTimeout(() => {
+                audio.play().catch(() => {});
+                isPlaying = true;
+            }, 50);
         }
     }
 
@@ -612,8 +614,10 @@
             audio.currentTime = 0;
             audio.playbackRate = 1.0;
             currentLoopIndex = 0;
-            audio.play().catch(() => {});
-            isPlaying = true;
+            setTimeout(() => {
+                audio.play().catch(() => {});
+                isPlaying = true;
+            }, 50);
         }
     }
 
@@ -1138,16 +1142,7 @@
         }
     }
 
-    function buyEnergy(gemsCost, energyGained) {
-        if (appState.user.gems >= gemsCost) {
-            appState.user.gems -= gemsCost;
-            appState.user.energy += energyGained;
-            appState.saveUser();
-            showEnergyModal = false;
-        } else {
-            alert(`Gems tidak cukup! Butuh ${gemsCost} Gems, Anda hanya punya ${appState.user.gems}.`);
-        }
-    }
+
 
     function advanceStep() {
         recordState = 'idle';
@@ -1173,8 +1168,10 @@
                 audio.currentTime = 0;
                 audio.playbackRate = 1.0;
                 currentLoopIndex = 0;
-                audio.play().catch(() => {});
-                isPlaying = true;
+                setTimeout(() => {
+                    audio.play().catch(() => {});
+                    isPlaying = true;
+                }, 50);
             }
 
         } else {
@@ -1234,15 +1231,7 @@
             return;
         }
 
-        // Before checking answer, make sure they have energy
-        if (appState.user.energy <= 0) {
-            showEnergyModal = true;
-            return; // Block checking until they buy energy
-        }
-
-        // Deduct energy for this question
-        appState.user.energy -= 1;
-        appState.saveUser();
+        // Removed energy logic
 
         // Logic to validate answer based on step type
         const type = currentStepConfig.type;
@@ -1304,8 +1293,7 @@
                     appState.updateQuestProgress('q2', 1); // trigger quest
                     streakCount += 1;
                     if (streakCount === 5) {
-                        appState.user.energy += 4;
-                        appState.saveUser();
+                        // Removed energy reward
                         streakCount = 0;
                         pendingStreakAnimation = true;
                     }
@@ -1350,9 +1338,7 @@
             <i class="ti ti-info-circle" style="font-size: 18px; color: #00978a;"></i>
         </button>
         
-        <div class="energy-pill">
-            <i class="ti ti-bolt-filled"></i> {appState.user.energy} Energy
-        </div>
+
     </div>
 
     <div class="scroll-content no-scrollbar" style="background: #fff; display: flex; flex-direction: column;">
@@ -1671,7 +1657,7 @@
                 <p class="streak-desc">5 Jawaban benar berturut-turut. Terus pertahankan fokusmu!</p>
                 <div class="streak-reward">
                     <span class="plus-text">+4</span>
-                    <span class="energy-text">Energy</span>
+                    <span class="streak-label">Streak</span>
                 </div>
             </div>
             <div class="streak-footer">
@@ -1682,32 +1668,6 @@
         </div>
     {/if}
 
-    {#if showEnergyModal}
-        <div class="modal-overlay" onclick={() => showEnergyModal = false}>
-            <div class="modal-content" onclick={(e) => e.stopPropagation()}>
-                <div class="modal-header">
-                    <h3>Energy Habis! ⚡</h3>
-                    <button class="close-btn" onclick={() => showEnergyModal = false}>✕</button>
-                </div>
-                <div class="modal-body">
-                    <p>Setiap soal membutuhkan 1 Energy. Tunggu hingga pukul 03.00 untuk reset harian, atau gunakan Gems kamu.</p>
-                    
-                    <div class="conversion-options">
-                        <button class="convert-btn" onclick={() => buyEnergy(100, 15)}>
-                            <div class="energy-gain"><i class="ti ti-bolt-filled"></i> +15 Energy</div>
-                            <div class="gems-cost"><i class="ti ti-diamond-filled"></i> 100</div>
-                        </button>
-                        
-                        <button class="convert-btn recommended" onclick={() => buyEnergy(200, 35)}>
-                            <div class="recommended-badge">Paling Hemat</div>
-                            <div class="energy-gain"><i class="ti ti-bolt-filled"></i> +35 Energy</div>
-                            <div class="gems-cost"><i class="ti ti-diamond-filled"></i> 200</div>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    {/if}
 </div>
 
 <style>
@@ -1781,7 +1741,7 @@
         font-weight: 900;
         color: #ff9600;
     }
-    .streak-reward .energy-text {
+    .streak-reward .streak-label {
         font-size: 20px;
         font-weight: 800;
         color: #d97706;
@@ -1942,23 +1902,6 @@
     .close-btn { background: none; border: none; font-size: 18px; font-weight: bold; color: #94a3b8; cursor: pointer; }
     .modal-body { padding: 20px; text-align: center; }
     .modal-body p { margin: 0 0 20px 0; font-size: 14px; color: #475569; font-weight: 600; line-height: 1.5; }
-    
-    .conversion-options { display: flex; flex-direction: column; gap: 12px; }
-    .convert-btn {
-        display: flex; justify-content: space-between; align-items: center;
-        padding: 14px 20px; border-radius: 16px; border: 2px solid #e2e8f0;
-        background: #f8fafc; cursor: pointer; position: relative; transition: all 0.2s;
-    }
-    .convert-btn:active { transform: translateY(2px); }
-    .convert-btn.recommended { border-color: #00978a; background: #e0f2f1; margin-top: 10px; }
-    
-    .recommended-badge {
-        position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
-        background: #00978a; color: #fff; font-size: 10px; font-weight: 800;
-        padding: 2px 8px; border-radius: 100px; text-transform: uppercase; letter-spacing: 0.5px;
-    }
-    .energy-gain { font-size: 16px; font-weight: 900; color: #ff9600; display: flex; align-items: center; gap: 6px; }
-    .gems-cost { font-size: 15px; font-weight: 800; color: #00978a; display: flex; align-items: center; gap: 4px; }
 
     /* Lesson Content Area */
     .lesson-content-wrapper {

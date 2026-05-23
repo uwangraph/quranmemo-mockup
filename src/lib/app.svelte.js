@@ -46,8 +46,6 @@ export function createAppState() {
         streakHistory: [true, true, false, true, true, true, true], // 7 hari terakhir (index 0 = paling lama)
         streakFreezes: 1,       // Jumlah Rukhsah Harian yang dimiliki
         streakRepairsUsed: 0,   // Berapa kali Tebus Hari dipakai bulan ini (maks 2)
-        energy: 25,
-        lastEnergyResetDate: new Date().toISOString(),
         inventory: [],
         progress: {
             surah_094: 2
@@ -91,8 +89,7 @@ export function createAppState() {
     if (user.showLatin === undefined) user.showLatin = true;
     if (user.learningPath === undefined) user.learningPath = 'beginner';
     if (user.gems === undefined) { user.gems = user.coins || 350; delete user.coins; }
-    if (user.energy === undefined) { user.energy = 25; delete user.hearts; delete user.maxHearts; }
-    if (user.lastEnergyResetDate === undefined) user.lastEnergyResetDate = new Date().toISOString();
+    if (user.gems === undefined) { user.gems = user.coins || 350; delete user.coins; }
     if (user.loginStreak === undefined) user.loginStreak = 1;
     if (user.lastLoginDate === undefined) user.lastLoginDate = null;
     if (user.maxStreak === undefined) user.maxStreak = user.streak || 1;
@@ -122,24 +119,11 @@ export function createAppState() {
         user.dailyQuests = { date: null, completedAll: false, quests: defaultQuests };
     }
 
-    // Check for daily energy reset (Reset at 03:00 Server Time — Mocked as UTC+7 Western Indonesian Time)
-    function checkEnergyReset() {
+    function checkDailyReset() {
         const now = new Date();
         const utcMs = now.getTime() + (now.getTimezoneOffset() * 60000);
         const serverNow = new Date(utcMs + (3600000 * 7)); // UTC+7
         const todayStr = serverNow.toISOString().split('T')[0];
-
-        // 1. Check Energy Reset
-        const lastReset = new Date(user.lastEnergyResetDate);
-        if (serverNow.getTime() > lastReset.getTime() && serverNow.getDate() !== lastReset.getDate() && serverNow.getHours() >= 3) {
-            user.energy = 25; 
-            user.lastEnergyResetDate = serverNow.toISOString();
-            saveUser();
-        } else if (serverNow.getTime() - lastReset.getTime() > 86400000) {
-            user.energy = 25; 
-            user.lastEnergyResetDate = serverNow.toISOString();
-            saveUser();
-        }
 
         // 2. Check Daily Quests Reset
         if (user.dailyQuests.date !== todayStr) {
@@ -149,7 +133,7 @@ export function createAppState() {
                 quests: [
                     { id: 'q1', text: 'Selesaikan 1 tahap hafalan', max: 1, current: 0, xp: 10, claimed: false },
                     { id: 'q2', text: 'Dapatkan 3 jawaban benar beruntun', max: 3, current: 0, xp: 15, claimed: false },
-                    { id: 'q3', text: 'Gunakan 1 Energy', max: 1, current: 0, xp: 10, claimed: false }
+                    { id: 'q3', text: 'Selesaikan 1 Murojaah instan', max: 1, current: 0, xp: 10, claimed: false }
                 ]
             };
             saveUser();
@@ -158,7 +142,7 @@ export function createAppState() {
     
     // Run check on initialization
     if (typeof window !== 'undefined') {
-        checkEnergyReset();
+        checkDailyReset();
     }
 
     // Method to save user state to localStorage
@@ -207,14 +191,17 @@ export function createAppState() {
 
         const newStreak = isConsecutive ? user.loginStreak + 1 : 1;
 
-        // Reward schedule: streak day → energy reward
-        const rewardSchedule = [3, 3, 5, 5, 7, 7, 10];
-        const energyReward = rewardSchedule[Math.min(newStreak - 1, rewardSchedule.length - 1)];
+        // Reward schedule: streak day → gems reward
+        // Milestone days: 7→15, 14→20, 30→30, other days (1-6)→5
+        let gemsReward = 5;
+        if (newStreak === 30) gemsReward = 30;
+        else if (newStreak === 14) gemsReward = 20;
+        else if (newStreak === 7) gemsReward = 15;
 
-        return { energyReward, streakDay: newStreak };
+        return { gemsReward, streakDay: newStreak };
     }
 
-    function claimLoginReward(energyReward, streakDay) {
+    function claimLoginReward(gemsReward, streakDay) {
         if (typeof window === 'undefined') return;
         const now = new Date();
         const utcMs = now.getTime() + (now.getTimezoneOffset() * 60000);
@@ -223,7 +210,7 @@ export function createAppState() {
 
         user.lastLoginDate = todayStr;
         user.loginStreak = streakDay;
-        user.energy += energyReward;
+        user.gems += gemsReward;
         saveUser();
     }
 

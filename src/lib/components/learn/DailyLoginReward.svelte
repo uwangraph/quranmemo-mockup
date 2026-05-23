@@ -4,10 +4,11 @@
 
     let { onClaim } = $props();
 
-    // Daily reward schedule (streak day 1-7+)
-    const rewardSchedule = [3, 3, 5, 5, 7, 7, 10];
+    // Reward schedule for 7-day display strip:
+    // Days 1-6: 5 gems, Day 7 (milestone): 15 gems
+    const rewardSchedule = [5, 5, 5, 5, 5, 5, 15];
 
-    let rewardInfo = $state(null); // { energyReward, streakDay }
+    let rewardInfo = $state(null); // { gemsReward, streakDay }
     let showModal = $state(false);
     let claiming = $state(false);
 
@@ -22,7 +23,7 @@
     function handleClaim() {
         if (!rewardInfo || claiming) return;
         claiming = true;
-        appState.claimLoginReward(rewardInfo.energyReward, rewardInfo.streakDay);
+        appState.claimLoginReward(rewardInfo.gemsReward, rewardInfo.streakDay);
         setTimeout(() => {
             showModal = false;
             rewardInfo = null;
@@ -34,6 +35,18 @@
         const labels = ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'];
         return labels[dayIdx % 7];
     }
+
+    // Get display reward for a given display day index (0-6)
+    function getDisplayReward(dayIdx, currentStreak) {
+        // The 7th day slot always shows milestone reward
+        if (dayIdx === 6) return 15;
+        return 5;
+    }
+
+    // Is the day a milestone day? (Only specific days: 7, 14, 30)
+    const isMilestone = $derived(
+        rewardInfo && (rewardInfo.streakDay === 7 || rewardInfo.streakDay === 14 || rewardInfo.streakDay === 30)
+    );
 </script>
 
 {#if showModal && rewardInfo}
@@ -50,30 +63,39 @@
             <div class="day-strip">
                 {#each Array(7) as _, i}
                     {@const dayNum = i + 1}
-                    {@const isCurrent = dayNum === rewardInfo.streakDay}
-                    {@const isPast = dayNum < rewardInfo.streakDay}
+                    {@const isCurrent = dayNum === Math.min(rewardInfo.streakDay, 7)}
+                    {@const isPast = dayNum < Math.min(rewardInfo.streakDay, 7)}
                     {@const reward = rewardSchedule[i]}
-                    <div class="day-cell {isCurrent ? 'current' : ''} {isPast ? 'past' : ''} {dayNum > rewardInfo.streakDay ? 'future' : ''}">
+                    <div class="day-cell {isCurrent ? 'current' : ''} {isPast ? 'past' : ''} {!isCurrent && !isPast ? 'future' : ''}">
                         <div class="day-label">{getDayLabel(i)}</div>
                         <div class="day-reward-icon">
                             {#if isPast}
                                 <i class="ti ti-check"></i>
                             {:else if isCurrent}
-                                ⚡
+                                💎
                             {:else}
                                 <i class="ti ti-lock"></i>
                             {/if}
                         </div>
-                        <div class="day-energy">+{reward}</div>
+                        <div class="day-gems">+{reward}</div>
                     </div>
                 {/each}
             </div>
 
             <!-- Big reward display -->
-            <div class="big-reward">
-                <div class="big-energy-icon">⚡</div>
-                <div class="big-energy-text">+{rewardInfo.energyReward} Energy</div>
-                <p class="big-energy-sub">Ditambahkan ke kuota harian kamu</p>
+            <div class="big-reward {isMilestone ? 'milestone' : ''}">
+                {#if isMilestone}
+                    <div class="milestone-badge">🏆 Hadiah Milestone!</div>
+                {/if}
+                <div class="big-gems-icon">💎</div>
+                <div class="big-gems-text">+{rewardInfo.gemsReward} Gems</div>
+                <p class="big-gems-sub">
+                    {#if isMilestone}
+                        Bonus istiqomah {rewardInfo.streakDay} hari berturut-turut!
+                    {:else}
+                        Terus jaga keistiqomahanmu!
+                    {/if}
+                </p>
             </div>
 
             <!-- CTA -->
@@ -165,11 +187,11 @@
     }
 
     .day-cell.current {
-        background: linear-gradient(135deg, #ff9600, #ff6600);
-        border-color: #ff6600;
+        background: linear-gradient(135deg, #00978A, #007a6f);
+        border-color: #007a6f;
         border-bottom-width: 4px;
         transform: scale(1.08);
-        box-shadow: 0 8px 20px rgba(255, 150, 0, 0.35);
+        box-shadow: 0 8px 20px rgba(0, 151, 138, 0.35);
     }
 
     .day-cell.future {
@@ -198,42 +220,64 @@
     .day-cell.past .day-reward-icon { color: #22c55e; }
     .day-cell.current .day-reward-icon { color: #fff; font-size: 18px; }
 
-    .day-energy {
+    .day-gems {
         font-size: 10px;
         font-weight: 800;
         color: #94a3b8;
     }
 
-    .day-cell.current .day-energy { color: #fff; }
-    .day-cell.past .day-energy { color: #16a34a; }
+    .day-cell.current .day-gems { color: #fff; }
+    .day-cell.past .day-gems { color: #16a34a; }
 
     /* Big reward */
     .big-reward {
-        background: linear-gradient(135deg, #fff7ed, #fffbf2);
-        border: 2px solid #ffe4b3;
+        background: linear-gradient(135deg, #e0f2f1, #f0fdf4);
+        border: 2px solid #99f6e4;
         border-radius: 20px;
         padding: 20px;
         text-align: center;
         margin-bottom: 24px;
+        position: relative;
         animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.2s both;
     }
 
-    .big-energy-icon {
+    .big-reward.milestone {
+        background: linear-gradient(135deg, #fffbeb, #fff7ed);
+        border-color: #fde68a;
+    }
+
+    .milestone-badge {
+        position: absolute;
+        top: -12px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: linear-gradient(135deg, #ff9600, #ff6600);
+        color: #fff;
+        font-size: 11px;
+        font-weight: 900;
+        padding: 3px 12px;
+        border-radius: 100px;
+        white-space: nowrap;
+        letter-spacing: 0.3px;
+        box-shadow: 0 4px 12px rgba(255, 150, 0, 0.4);
+    }
+
+    .big-gems-icon {
         font-size: 40px;
         margin-bottom: 4px;
     }
 
-    .big-energy-text {
+    .big-gems-text {
         font-size: 28px;
         font-weight: 900;
-        color: #ff9600;
+        color: #00978A;
         letter-spacing: -1px;
     }
 
-    .big-energy-sub {
+    .big-gems-sub {
         font-size: 12px;
         font-weight: 700;
-        color: #d97706;
+        color: #0d9488;
         margin: 4px 0 0 0;
     }
 
@@ -241,7 +285,7 @@
     .claim-btn {
         width: 100%;
         padding: 18px;
-        background: linear-gradient(135deg, #ff9600, #ff6600);
+        background: linear-gradient(135deg, #00978A, #007a6f);
         border: none;
         border-radius: 16px;
         color: #fff;
@@ -251,12 +295,13 @@
         cursor: pointer;
         transition: all 0.2s;
         text-transform: uppercase;
-        box-shadow: 0 6px 20px rgba(255, 150, 0, 0.4);
+        box-shadow: 0 6px 20px rgba(0, 151, 138, 0.4);
+        font-family: 'Nunito', sans-serif;
     }
 
     .claim-btn:active {
         transform: translateY(2px);
-        box-shadow: 0 2px 8px rgba(255, 150, 0, 0.3);
+        box-shadow: 0 2px 8px rgba(0, 151, 138, 0.3);
     }
 
     .claim-btn.claimed {
