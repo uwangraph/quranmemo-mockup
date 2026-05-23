@@ -40,7 +40,7 @@ export function createAppState() {
     let user = $state(getStoredData('quranmemo_user', {
         name: "Ahmad Fulan",
         xp: 2450,
-        gems: 350,
+        gems: 0,
         streak: 7,
         maxStreak: 12,          // Runtunan terbanyak sepanjang masa
         streakHistory: [true, true, false, true, true, true, true], // 7 hari terakhir (index 0 = paling lama)
@@ -79,7 +79,7 @@ export function createAppState() {
             quests: [
                 { id: 'q1', text: 'Selesaikan 1 tahap hafalan', max: 1, current: 0, xp: 10, claimed: false },
                 { id: 'q2', text: 'Dapatkan 3 jawaban benar', max: 3, current: 0, xp: 15, claimed: false },
-                { id: 'q3', text: 'Mulai sesi hari ini', max: 1, current: 0, xp: 10, claimed: false }
+                { id: 'q3', text: 'Mulai sesi hari ini', max: 1, current: 0, xp: 20, claimed: false }
             ]
         }
     }));
@@ -133,7 +133,7 @@ export function createAppState() {
                 quests: [
                     { id: 'q1', text: 'Selesaikan 1 tahap hafalan', max: 1, current: 0, xp: 10, claimed: false },
                     { id: 'q2', text: 'Dapatkan 3 jawaban benar beruntun', max: 3, current: 0, xp: 15, claimed: false },
-                    { id: 'q3', text: 'Selesaikan 1 Murojaah instan', max: 1, current: 0, xp: 10, claimed: false }
+                    { id: 'q3', text: 'Selesaikan 1 Murojaah instan', max: 1, current: 0, xp: 20, claimed: false }
                 ]
             };
             saveUser();
@@ -191,17 +191,17 @@ export function createAppState() {
 
         const newStreak = isConsecutive ? user.loginStreak + 1 : 1;
 
-        // Reward schedule: streak day → gems reward
+        // Reward schedule: streak day → XP reward
         // Milestone days: 7→15, 14→20, 30→30, other days (1-6)→5
-        let gemsReward = 5;
-        if (newStreak === 30) gemsReward = 30;
-        else if (newStreak === 14) gemsReward = 20;
-        else if (newStreak === 7) gemsReward = 15;
+        let xpReward = 5;
+        if (newStreak === 30) xpReward = 30;
+        else if (newStreak === 14) xpReward = 20;
+        else if (newStreak === 7) xpReward = 15;
 
-        return { gemsReward, streakDay: newStreak };
+        return { xpReward, streakDay: newStreak };
     }
 
-    function claimLoginReward(gemsReward, streakDay) {
+    function claimLoginReward(xpReward, streakDay) {
         if (typeof window === 'undefined') return;
         const now = new Date();
         const utcMs = now.getTime() + (now.getTimezoneOffset() * 60000);
@@ -210,7 +210,7 @@ export function createAppState() {
 
         user.lastLoginDate = todayStr;
         user.loginStreak = streakDay;
-        user.gems += gemsReward;
+        user.xp += xpReward;
         saveUser();
     }
 
@@ -228,7 +228,9 @@ export function createAppState() {
         const q = user.dailyQuests.quests.find(x => x.id === questId);
         if (q && !q.claimed && q.current >= q.max) {
             q.claimed = true;
-            user.xp += q.xp;
+            if (q.id === 'q1') user.xp += 10;
+            if (q.id === 'q2') user.xp += 15;
+            if (q.id === 'q3') user.xp += 20;
             
             // Check if all completed
             if (user.dailyQuests.quests.every(x => x.claimed)) {

@@ -5,7 +5,7 @@
     let { onClaim } = $props();
 
     // Reward schedule for 7-day display strip:
-    // Days 1-6: 5 gems, Day 7 (milestone): 15 gems
+    // Days 1-6: 5 XP, Day 7 (milestone): 15 XP
     const rewardSchedule = [5, 5, 5, 5, 5, 5, 15];
 
     let rewardInfo = $state(null); // { gemsReward, streakDay }
@@ -23,7 +23,7 @@
     function handleClaim() {
         if (!rewardInfo || claiming) return;
         claiming = true;
-        appState.claimLoginReward(rewardInfo.gemsReward, rewardInfo.streakDay);
+        appState.claimLoginReward(rewardInfo.xpReward, rewardInfo.streakDay);
         setTimeout(() => {
             showModal = false;
             rewardInfo = null;

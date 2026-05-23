@@ -78,7 +78,7 @@
                                             <div class="quest-title {quest.claimed ? 'completed-text' : ''}">{quest.text}</div>
                                             
                                             {#if quest.claimed}
-                                                <div class="reward-pill">+{quest.xp} XP</div>
+                                                <div class="reward-pill">+{#if quest.id === 'q1'}10{:else if quest.id === 'q2'}15{:else}20{/if} XP</div>
                                             {:else if quest.current >= quest.max}
                                                 <button class="claim-quest-btn" onclick={() => appState.claimQuestReward(quest.id)}>Klaim</button>
                                             {:else}
@@ -88,7 +88,7 @@
                                                             <span class="progress-text">{quest.current} / {quest.max}</span>
                                                         </div>
                                                     </div>
-                                                    <div class="reward-tag">+{quest.xp} XP</div>
+                                                    <div class="reward-tag">+{#if quest.id === 'q1'}10{:else if quest.id === 'q2'}15{:else}20{/if} XP</div>
                                                 </div>
                                             {/if}
                                         </div>

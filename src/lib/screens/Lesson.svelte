@@ -1231,7 +1231,7 @@
             return;
         }
 
-        // Removed energy logic
+
 
         // Logic to validate answer based on step type
         const type = currentStepConfig.type;
@@ -1293,7 +1293,7 @@
                     appState.updateQuestProgress('q2', 1); // trigger quest
                     streakCount += 1;
                     if (streakCount === 5) {
-                        // Removed energy reward
+
                         streakCount = 0;
                         pendingStreakAnimation = true;
                     }
