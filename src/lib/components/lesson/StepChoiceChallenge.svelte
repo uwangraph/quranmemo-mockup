@@ -1,7 +1,44 @@
 <script>
     import { appState } from '$lib/app.svelte.js';
 
-    let { 
+    const wordTransliterations = {
+        // Kata tunggal
+        "أَلَمْ": "alam",
+        "نَشْرَحْ": "nashrah",
+        "لَكَ": "laka",
+        "صَدْرَكَ": "shadrak",
+        "وَوَضَعْنَا": "wa wadha'na",
+        "عَنكَ": "'anka",
+        "وِزْرَكَ": "wizrak",
+        "ٱلَّذِىٓ": "alladzi",
+        "أَنقَضَ": "anqadha",
+        "ظَهْرَكَ": "zhahrak",
+        "وَرَفَعْنَا": "wa rafa'na",
+        "ذِكْرَكَ": "dzikrak",
+        "فَإِنَّ": "fa inna",
+        "مَعَ": "ma'a",
+        "ٱلْعُسْرِ": "al-'usri",
+        "يُسْرًا": "yusran",
+        "إِنَّ": "inna",
+        "فَإِذَا": "fa idza",
+        "فَرَغْتَ": "faraghta",
+        "فَٱنصَبْ": "fanshab",
+        "وَإِلَىٰ": "wa ila",
+        "رَبِّكَ": "rabbika",
+        "فَٱرْغَبْ": "farghab",
+        "فَٱرْغَب": "farghab",
+        // Frasa (untuk opsi gabungan)
+        "أَلَمْ نَشْرَحْ": "alam nashrah",
+        "وَوَضَعْنَا عَنكَ": "wa wadha'na 'anka",
+        "ٱلَّذِىٓ أَنقَضَ": "alladzi anqadha",
+        "وَرَفَعْنَا لَكَ": "wa rafa'na laka",
+        "فَإِنَّ مَعَ": "fa inna ma'a",
+        "إِنَّ مَعَ": "inna ma'a",
+        "فَإِذَا فَرَغْتَ": "fa idza faraghta",
+        "وَإِلَىٰ رَبِّكَ": "wa ila rabbika"
+    }; 
+
+    let {
         type, 
         activeVerse, 
         selectedOptionIdx = $bindable(), 
@@ -9,8 +46,13 @@
         isCorrect = false,
         getTajweedHTML,
         playWordAudio,
-        togglePlay
+        togglePlay,
+        togglePlaySlow,
+        isPlaying = false,
+        audio = null
     } = $props();
+
+    let showLatin = $state(false); // local state, tidak mempengaruhi soal lain
 
     let choices = $derived(type === 'fill_front' ? activeVerse.frontChoices : (type === 'fill_back' ? activeVerse.endChoices : activeVerse.middleChoices));
     let correctIdx = $derived(type === 'fill_front' ? 0 : (type === 'fill_back' ? 1 : 1));
@@ -33,6 +75,23 @@
 </script>
 
 <div class="choice-challenge-container">
+    <div class="choice-top-row">
+        <div class="audio-btn-group">
+            <button class="audio-circle-play small" class:playing={isPlaying && audio?.playbackRate === 1.0} onclick={togglePlay} disabled={isChecked} title="Putar Audio Qari (Normal)">
+                <i class="ti {isPlaying && audio?.playbackRate === 1.0 ? 'ti-player-pause' : 'ti-volume'}"></i>
+            </button>
+            <button class="audio-circle-play small slow-btn" class:playing={isPlaying && audio?.playbackRate < 1.0} onclick={togglePlaySlow} disabled={isChecked} title="Putar Audio Qari (Lambat)">
+                {#if isPlaying && audio?.playbackRate < 1.0}
+                    <i class="ti ti-player-pause"></i>
+                {:else}
+                    <img src="/snail.png" alt="Snail" class="snail-icon-small" />
+                {/if}
+            </button>
+        </div>
+        <button class="latin-toggle-badge" onclick={() => showLatin = !showLatin} title="Toggle Latin Transliterasi">
+            🔠 Latin: {showLatin ? 'ON' : 'OFF'}
+        </button>
+    </div>
     <div class="challenge-arabic-blank Amiri">
         
         {#each blankWords as part, idx}
@@ -77,8 +136,15 @@
                 }}
                 disabled={isChecked}
             >
-                <span class="choice-index-circle">{idx + 1}</span>
-                <span class="choice-text Amiri">{@html getTajweedHTML ? getTajweedHTML(choice) : choice}</span>
+                <div class="choice-card-inner">
+                    <span class="choice-index-circle">{idx + 1}</span>
+                    <div class="choice-card-text">
+                        <span class="choice-text Amiri">{@html getTajweedHTML ? getTajweedHTML(choice) : choice}</span>
+                        {#if showLatin && wordTransliterations[choice]}
+                            <span class="choice-latin">{wordTransliterations[choice]}</span>
+                        {/if}
+                    </div>
+                </div>
             </button>
         {/each}
     </div>
@@ -92,6 +158,27 @@
         width: 100%;
         box-sizing: border-box;
     }
+    .choice-top-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .audio-btn-group {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+    }
+    .audio-circle-play {
+        width: 44px; height: 44px; border-radius: 50%;
+        background: #00978A; border: none; border-bottom: 4px solid #007A70;
+        color: #fff; font-size: 18px; display: flex; align-items: center; justify-content: center;
+        cursor: pointer; transition: all 0.1s;
+    }
+    .audio-circle-play.small { width: 36px; height: 36px; font-size: 16px; border-bottom-width: 3px; }
+    .audio-circle-play.slow-btn { background: #10B981; border: none; border-bottom: 3px solid #059669; }
+    .audio-circle-play:active:not(:disabled) { transform: translateY(2px); border-bottom-width: 1px; }
+    .audio-circle-play:disabled { opacity: 0.5; cursor: not-allowed; }
+    .snail-icon-small { width: 18px; height: 18px; object-fit: contain; }
     .challenge-arabic-blank {
         font-size: 26px;
         line-height: 2.2;
@@ -128,7 +215,8 @@
     .choice-card-button {
         width: 100%;
         display: flex;
-        align-items: center;
+        flex-direction: column;
+        align-items: flex-end;
         background: #fff;
         border: 2px solid #e5e5e5;
         border-bottom-width: 4px;
@@ -187,12 +275,45 @@
         margin-right: 14px;
         flex-shrink: 0;
     }
+    .choice-card-inner {
+        width: 100%;
+        display: flex;
+        align-items: center;
+    }
+    .choice-card-text {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 2px;
+    }
     .choice-text {
         font-size: 20px;
         color: #3c3c3c;
-        flex: 1;
         text-align: right;
         direction: rtl;
+    }
+    .choice-latin {
+        font-size: 11px;
+        font-weight: 600;
+        color: #00978a;
+        font-style: italic;
+        text-align: right;
+    }
+    .latin-toggle-badge {
+        align-self: flex-end;
+        background: #f1f5f9;
+        border: 1.5px solid #e2e8f0;
+        border-radius: 20px;
+        padding: 4px 12px;
+        font-size: 11px;
+        font-weight: 800;
+        color: #64748b;
+        cursor: pointer;
+        transition: all 0.15s;
+    }
+    .latin-toggle-badge:hover {
+        background: #e2e8f0;
     }
 
     .Amiri {

@@ -69,6 +69,7 @@
     } = $props();
 
     let isLoopDropdownOpen = $state(false);
+    let showLatin = $state(false); // local state, tidak mempengaruhi soal lain
 
     // Drag and Drop & Touch Reordering states
     let draggedIndex = $state(null);
@@ -152,16 +153,20 @@
 </script>
 
 <div class="scramble-challenge-container" style="position: relative; padding-top: 30px;">
-    <button class="latin-toggle-badge" onclick={() => appState.toggleLatin()} title="Toggle Latin Transliterasi secara instan" style="top: -6px; right: 0;">
-        🔠 Latin: {appState.user.showLatin ? 'ON' : 'OFF'}
+    <button class="latin-toggle-badge" onclick={() => showLatin = !showLatin} title="Toggle Latin Transliterasi secara instan" style="top: -6px; right: 0;">
+        🔠 Latin: {showLatin ? 'ON' : 'OFF'}
     </button>
     {#if type === 'audio_scramble'}
         <div class="audio-control-row">
             <button class="audio-circle-play small" class:playing={isPlaying && audio?.playbackRate === 1.0} onclick={togglePlay} disabled={isChecked} title="Dengar Qari (Normal)">
-                <i class="ti ti-volume"></i>
+                <i class="ti {isPlaying && audio?.playbackRate === 1.0 ? 'ti-player-pause' : 'ti-volume'}"></i>
             </button>
             <button class="audio-circle-play small slow-btn" class:playing={isPlaying && audio?.playbackRate < 1.0} onclick={togglePlaySlow} disabled={isChecked} title="Dengar Qari (Lambat)">
-                <img src="/snail.png" alt="Snail" class="snail-icon-small" />
+                {#if isPlaying && audio?.playbackRate < 1.0}
+                    <i class="ti ti-player-pause"></i>
+                {:else}
+                    <img src="/snail.png" alt="Snail" class="snail-icon-small" />
+                {/if}
             </button>
         </div>
 
@@ -277,7 +282,7 @@
                     ontouchend={handleTouchEnd}
                 >
                     <span class="arabic-text">{@html getTajweedHTML ? getTajweedHTML(word.text) : word.text}</span>
-                    {#if appState.user.showLatin && wordTransliterations[word.text]}
+                    {#if showLatin && wordTransliterations[word.text]}
                         <span class="latin-text-mini">{wordTransliterations[word.text]}</span>
                     {/if}
                 </button>
@@ -296,7 +301,7 @@
                     disabled={isChecked || wordObj.selected}
                 >
                     <span class="arabic-text">{@html getTajweedHTML ? getTajweedHTML(choice) : choice}</span>
-                    {#if appState.user.showLatin && wordTransliterations[choice]}
+                    {#if showLatin && wordTransliterations[choice]}
                         <span class="latin-text-mini">{wordTransliterations[choice]}</span>
                     {/if}
                 </button>
@@ -310,7 +315,7 @@
                     disabled={isChecked || word.selected}
                 >
                     <span class="arabic-text">{@html getTajweedHTML ? getTajweedHTML(word.text) : word.text}</span>
-                    {#if appState.user.showLatin && wordTransliterations[word.text]}
+                    {#if showLatin && wordTransliterations[word.text]}
                         <span class="latin-text-mini">{wordTransliterations[word.text]}</span>
                     {/if}
                 </button>
