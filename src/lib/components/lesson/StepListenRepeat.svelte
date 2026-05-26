@@ -27,13 +27,30 @@
 <div class="verse-display-box" style="position: relative;">
     <div class="actions-row">
         <button class="audio-circle-play" class:playing={isPlaying && audio?.playbackRate === 1.0} onclick={togglePlay} disabled={isChecked} title="1. Dengar Qari (Normal)">
-            <i class="ti ti-volume"></i>
+            <i class="ti {isPlaying && audio?.playbackRate === 1.0 ? 'ti-player-pause' : 'ti-volume'}"></i>
         </button>
         <button class="audio-circle-play slow-btn" class:playing={isPlaying && audio?.playbackRate < 1.0} onclick={togglePlaySlow} disabled={isChecked} title="1. Dengar Qari (Lambat)">
-            <img src="/snail.png" alt="Snail" class="snail-icon" />
+            {#if isPlaying && audio?.playbackRate < 1.0}
+                <i class="ti ti-player-pause"></i>
+            {:else}
+                <img src="/snail.png" alt="Snail" class="snail-icon" />
+            {/if}
         </button>
-        <button class="mic-circle-btn" class:active={recordState === 'recording'} onclick={startSimulatedRecording} disabled={isChecked} title="2. Tiru Bacaan">
-            <i class="ti ti-microphone"></i>
+        <button 
+            class="mic-circle-btn" 
+            class:active={recordState === 'recording'}
+            class:recorded={recordState === 'recorded'}
+            onclick={startSimulatedRecording} 
+            disabled={isChecked} 
+            title={recordState === 'recording' ? 'Stop Rekaman' : recordState === 'recorded' ? 'Rekam Ulang' : 'Mulai Rekam'}
+        >
+            {#if recordState === 'recording'}
+                <i class="ti ti-player-stop-filled"></i>
+            {:else if recordState === 'recorded'}
+                <i class="ti ti-rotate-clockwise"></i>
+            {:else}
+                <i class="ti ti-microphone"></i>
+            {/if}
         </button>
     </div>
 
@@ -222,6 +239,12 @@
         color: #fff;
         transform: scale(1.08);
         box-shadow: 0 0 20px rgba(255, 75, 75, 0.4);
+    }
+    .mic-circle-btn.recorded {
+        background: #fff;
+        border-color: #00978a;
+        color: #00978a;
+        box-shadow: 0 4px 12px rgba(0, 151, 138, 0.15);
     }
     .arabic-focus-text {
         font-size: 28px;

@@ -20,13 +20,20 @@
 </script>
 
 <div class="verse-display-box" style="position: relative;">
+    {#if !activeVerse}
+        <div style="text-align:center; padding: 40px; color: #afafaf;">Memuat ayat...</div>
+    {:else}
 
     <div class="audio-circle-row">
         <button class="audio-circle-play" class:playing={isPlaying && audio?.playbackRate === 1.0} onclick={togglePlay} disabled={isChecked} title="Putar Audio Qari (Normal)">
-            <i class="ti {isPlaying && audio?.playbackRate === 1.0 ? 'ti-player-pause' : 'ti-player-play'}"></i>
+            <i class="ti {isPlaying && audio?.playbackRate === 1.0 ? 'ti-player-pause' : 'ti-volume'}"></i>
         </button>
         <button class="audio-circle-play slow-btn" class:playing={isPlaying && audio?.playbackRate < 1.0} onclick={togglePlaySlow} disabled={isChecked} title="Putar Audio Qari (Lambat)">
-            <img src="/snail.png" alt="Snail" class="snail-icon" />
+            {#if isPlaying && audio?.playbackRate < 1.0}
+                <i class="ti ti-player-pause"></i>
+            {:else}
+                <img src="/snail.png" alt="Snail" class="snail-icon" />
+            {/if}
         </button>
     </div>
 
@@ -94,6 +101,7 @@
             {/if}
         </div>
     </div>
+    {/if}
 </div>
 
 <style>
@@ -192,7 +200,7 @@
     .translit-focus-text {
         font-size: 13px;
         font-weight: 700;
-        color: #64748b;
+        color: #00978a;
         margin-bottom: 8px;
         font-style: italic;
     }
