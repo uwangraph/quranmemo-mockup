@@ -39,16 +39,16 @@ export function createAppState() {
     // Persistent User Data
     let user = $state(getStoredData('quranmemo_user', {
         name: "Ahmad Fulan",
-        xp: 2450,
+        xp: 0,
         gems: 0,
-        streak: 7,
-        maxStreak: 12,          // Runtunan terbanyak sepanjang masa
-        streakHistory: [true, true, false, true, true, true, true], // 7 hari terakhir (index 0 = paling lama)
+        streak: 0,
+        maxStreak: 0,          // Runtunan terbanyak sepanjang masa
+        streakHistory: [false, false, false, false, false, false, false], // 7 hari terakhir (index 0 = paling lama)
         streakFreezes: 1,       // Jumlah Rukhsah Harian yang dimiliki
         streakRepairsUsed: 0,   // Berapa kali Tebus Hari dipakai bulan ini (maks 2)
         inventory: [],
         progress: {
-            surah_094: 2
+            surah_094: 0
         },
         level: 'pemula',
         learningPath: 'beginner',
