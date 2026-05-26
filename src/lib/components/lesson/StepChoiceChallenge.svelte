@@ -54,7 +54,7 @@
 
     let showLatin = $state(false); // local state, tidak mempengaruhi soal lain
 
-    let choices = $derived(type === 'fill_front' ? activeVerse.frontChoices : (type === 'fill_back' ? activeVerse.endChoices : activeVerse.middleChoices));
+    let choices = $derived(activeVerse ? (type === 'fill_front' ? activeVerse.frontChoices : (type === 'fill_back' ? activeVerse.endChoices : activeVerse.middleChoices)) : []);
     let correctIdx = $derived(type === 'fill_front' ? 0 : (type === 'fill_back' ? 1 : 1));
 
     // Get the text to show in the blank
@@ -68,10 +68,32 @@
     });
 
     let blankWords = $derived(
+        !activeVerse ? [] :
         type === 'fill_front' ? activeVerse.frontBlank.split(' ') :
         (type === 'fill_back' ? activeVerse.endBlank.split(' ') : activeVerse.middleBlank.split(' '))
     );
     let firstBlankIdx = $derived(blankWords.indexOf('___'));
+
+    // Ambil latin blank langsung dari data, dan isi ___ dengan latin jawaban jika sudah dipilih
+    const latinBlankWords = $derived.by(() => {
+        if (!activeVerse) return '';
+        const base =
+            type === 'fill_front' ? (activeVerse.frontBlankLatin ?? '') :
+            type === 'fill_back' ? (activeVerse.endBlankLatin ?? '') :
+            (activeVerse.middleBlankLatin ?? '');
+
+        if (!base || blankText === null) return base;
+
+        // Cari latin dari jawaban — bisa frasa atau kata tunggal
+        const latinAnswer = wordTransliterations[blankText] ?? blankText;
+
+        // Untuk fill_front ada 2 blank (___ ___), ganti keduanya sekaligus
+        if (type === 'fill_front') {
+            return base.replace(/___ ___/, latinAnswer);
+        }
+        // Untuk lainnya ganti satu ___
+        return base.replace(/___/, latinAnswer);
+    });
 </script>
 
 <div class="choice-challenge-container">
@@ -93,7 +115,7 @@
         </button>
     </div>
     <div class="challenge-arabic-blank Amiri">
-        
+        <div class="arabic-row">
         {#each blankWords as part, idx}
             {#if part === '___'}
                 {#if blankText !== null}
@@ -118,6 +140,10 @@
             {/if}
             {' '}
         {/each}
+        </div>
+        {#if showLatin && latinBlankWords}
+            <div class="question-latin">{latinBlankWords}</div>
+        {/if}
     </div>
     
     <div class="choice-options-column">
@@ -187,8 +213,17 @@
         background: #fafafa;
         border: 2px dashed #cbd5e1;
         border-radius: 20px;
-        padding: 40px 24px;
+        padding: 24px 24px 20px;
         direction: rtl;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+    }
+    .arabic-row {
+        direction: rtl;
+        text-align: center;
+        width: 100%;
     }
     .filled-text {
         color: #00978a; 
@@ -314,6 +349,15 @@
     }
     .latin-toggle-badge:hover {
         background: #e2e8f0;
+    }
+    .question-latin {
+        font-size: 12px;
+        font-weight: 600;
+        color: #00978a;
+        font-style: italic;
+        text-align: center;
+        direction: ltr;
+        width: 100%;
     }
 
     .Amiri {

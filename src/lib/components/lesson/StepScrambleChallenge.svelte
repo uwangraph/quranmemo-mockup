@@ -214,9 +214,9 @@
         </div>
     {:else if type === 'puzzle_two'}
         <div class="challenge-arabic-blank Amiri inline-puzzle-container">
-            {#each activeVerse.twoBlank.split(' ') as part, i}
+            {#each (activeVerse?.twoBlank ?? '').split(' ') as part, i}
                 {@const isBlank = part === '___'}
-                {@const blankIndex = activeVerse.twoBlank.split(' ').slice(0, i).filter(p => p === '___').length}
+                {@const blankIndex = (activeVerse?.twoBlank ?? '').split(' ').slice(0, i).filter(p => p === '___').length}
                 {@const selectedWord = isBlank ? (isChecked && !isCorrect ? { text: activeVerse.twoCorrect[blankIndex] } : selectedWords[blankIndex]) : null}
 
                 {#if isBlank}
@@ -247,8 +247,14 @@
                 {' '}
             {/each}
         </div>
+        {#if showLatin && activeVerse?.transliteration}
+            <div class="question-latin">{activeVerse.transliteration}</div>
+        {/if}
     {/if}
-    
+
+    {#if showLatin && activeVerse?.transliteration && type === 'audio_scramble'}
+        <div class="question-latin">{activeVerse.transliteration}</div>
+    {/if}
     
     {#if type !== 'puzzle_two'}
         <div class="scramble-drop-shelf" class:correct={isChecked && isCorrect} class:wrong={isChecked && !isCorrect} class:two-blank={type === 'puzzle_two'}>
@@ -673,5 +679,15 @@
     }
     .latin-toggle-badge:active {
         transform: translateY(1px);
+    }
+    .question-latin {
+        font-size: 12px;
+        font-weight: 600;
+        color: #00978a;
+        font-style: italic;
+        text-align: center;
+        direction: ltr;
+        width: 100%;
+        margin-top: 8px;
     }
 </style>
