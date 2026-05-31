@@ -25,17 +25,28 @@
 
     let freezeResult = $state('');
     let repairResult = $state('');
+    let freezeTimer = -1;
+    let repairTimer = -1;
+
+    $effect(() => {
+        return () => {
+            clearTimeout(freezeTimer);
+            clearTimeout(repairTimer);
+        };
+    });
 
     function handleUseFreeze() {
         const ok = appState.useStreakFreeze();
         freezeResult = ok ? '✅ Rukhsah berhasil digunakan!' : '❌ Tidak ada Rukhsah tersisa.';
-        setTimeout(() => freezeResult = '', 3000);
+        clearTimeout(freezeTimer);
+        freezeTimer = setTimeout(() => (freezeResult = ''), 3000);
     }
 
     function handleRepair() {
         const ok = appState.repairStreak();
         repairResult = ok ? '✅ Streak berhasil ditebus!' : '❌ Tidak bisa menebus streak.';
-        setTimeout(() => repairResult = '', 3000);
+        clearTimeout(repairTimer);
+        repairTimer = setTimeout(() => (repairResult = ''), 3000);
     }
 </script>
 

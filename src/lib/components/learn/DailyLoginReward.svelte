@@ -4,7 +4,7 @@
 
     let { onClaim } = $props();
 
-    // Reward schedule berdasarkan target streak (STREAK.md):
+    // Reward schedule berdasarkan target streak (STREAK.md):                                                                                                                    
     // 1-7 hari: 3 gems, 8-14 hari: 4 gems, 15-21 hari: 5 gems, 22-30 hari: 3 gems
     function getGemsForStreak(streakDay) {
         if (streakDay >= 22) return 3;

@@ -2,7 +2,13 @@
 function getStoredData(key, defaultData) {
     if (typeof window !== 'undefined') {
         const stored = localStorage.getItem(key);
-        if (stored) return JSON.parse(stored);
+        if (stored) {
+            try {
+                return JSON.parse(stored);
+            } catch {
+                return defaultData;
+            }
+        }
     }
     return defaultData;
 }
@@ -14,7 +20,8 @@ function setStoredData(key, data) {
 }
 
 // Hard Refresh detection for Mockup (Cmd+Shift+R / Ctrl+Shift+R)
-if (typeof window !== 'undefined') {
+if (typeof window !== 'undefined' && !window.__quranmemoKeydownRegistered) {
+    window.__quranmemoKeydownRegistered = true;
     window.addEventListener('keydown', (e) => {
         if ((e.metaKey || e.ctrlKey) && e.shiftKey && e.key.toLowerCase() === 'r') {
             localStorage.removeItem('quranmemo_user');

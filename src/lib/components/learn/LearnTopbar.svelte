@@ -6,11 +6,15 @@
     let { onOpenStreakModal } = $props();
 
     $effect(() => {
-        const timer = setTimeout(() => {
+        let innerTimer;
+        const outerTimer = setTimeout(() => {
             showToast = true;
-            setTimeout(() => showToast = false, 4000);
+            innerTimer = setTimeout(() => (showToast = false), 4000);
         }, 800);
-        return () => clearTimeout(timer);
+        return () => {
+            clearTimeout(outerTimer);
+            clearTimeout(innerTimer);
+        };
     });
 </script>
 

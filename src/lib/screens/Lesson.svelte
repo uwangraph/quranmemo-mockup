@@ -232,6 +232,8 @@
     let recordedAudioUrl = $state(null);
     let recordedAudio = $state(null);
     let isPlayingRecorded = $state(false);
+    let drawWaveRafId = 0;
+    let activeVisCtx = null;
 
     // Scramble / Word Selection states
     let scrambledWords = $state([]);
@@ -456,6 +458,8 @@
                 osc.stop(startTime + 0.9);
             });
 
+            setTimeout(() => ctx.close(), 1300);
+
         } catch(e) {
             console.error(e);
         }
@@ -525,6 +529,8 @@
                 lfoWah.stop(startTime + 0.2);
                 osc.stop(startTime + 0.2);
             });
+
+            setTimeout(() => ctx.close(), 800);
 
         } catch(e) {
             console.error(e);
@@ -902,6 +908,22 @@
         };
     });
 
+    $effect(() => {
+        return () => {
+            cancelAnimationFrame(drawWaveRafId);
+            if (activeVisCtx && activeVisCtx.state !== 'closed') {
+                activeVisCtx.close();
+                activeVisCtx = null;
+            }
+            if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+                mediaRecorder.stop();
+            }
+            if (recordedAudio) {
+                recordedAudio.pause();
+            }
+        };
+    });
+
     function setupAudio() {
         if (!activeVerse) return;
         if (audio) {
@@ -1031,15 +1053,16 @@
                 
                 // Set up Real-time Audio Visualizer
                 const visCtx = new (window.AudioContext || window.webkitAudioContext)();
+                activeVisCtx = visCtx;
                 const analyser = visCtx.createAnalyser();
                 const micSource = visCtx.createMediaStreamSource(stream);
                 micSource.connect(analyser);
                 analyser.fftSize = 64;
                 const dataArray = new Uint8Array(analyser.frequencyBinCount);
-                
+
                 function drawWave() {
                     if (recordState !== 'recording') return;
-                    requestAnimationFrame(drawWave);
+                    drawWaveRafId = requestAnimationFrame(drawWave);
                     analyser.getByteFrequencyData(dataArray);
                     
                     let newWaves = [];
@@ -1116,7 +1139,9 @@
                     };
                     
                     // Stop all microphone tracks to turn off the recording light
-                    stream.getTracks().forEach(track => track.stop()); 
+                    stream.getTracks().forEach(track => track.stop());
+                    cancelAnimationFrame(drawWaveRafId);
+                    activeVisCtx = null;
                     if (visCtx.state !== 'closed') visCtx.close();
                 };
                 
@@ -1139,7 +1164,7 @@
         isPlayingRecorded = false;
         if (audio) {
             audio.currentTime = 0;
-            audio.play();
+            audio.play().catch((e) => console.warn('Playback failed:', e));
         }
     }
 
@@ -1148,7 +1173,7 @@
         if (isPlayingRecorded) {
             recordedAudio.pause();
         } else {
-            recordedAudio.play();
+            recordedAudio.play().catch((e) => console.warn('Playback failed:', e));
         }
     }
 
