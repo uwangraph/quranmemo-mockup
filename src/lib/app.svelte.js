@@ -96,7 +96,6 @@ export function createAppState() {
     if (user.showLatin === undefined) user.showLatin = true;
     if (user.learningPath === undefined) user.learningPath = 'beginner';
     if (user.gems === undefined) { user.gems = user.coins || 350; delete user.coins; }
-    if (user.gems === undefined) { user.gems = user.coins || 350; delete user.coins; }
     if (user.loginStreak === undefined) user.loginStreak = 1;
     if (user.lastLoginDate === undefined) user.lastLoginDate = null;
     if (user.maxStreak === undefined) user.maxStreak = user.streak || 1;
@@ -377,7 +376,9 @@ export function createAppState() {
         claimQuestReward,
         useStreakFreeze,
         repairStreak,
-        addStreak
+        addStreak,
+        triggerLoginRewardCheck,
+        clearPendingRewardInfo
     };
 }
 

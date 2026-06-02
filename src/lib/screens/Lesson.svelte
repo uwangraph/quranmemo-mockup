@@ -871,7 +871,7 @@
     let animationFrameId = null;
 
     function updateHighlight() {
-        if (!isPlaying || !audio || !audio.duration) {
+        if (!isPlaying || !audio || !audio.duration || !activeVerse) {
             return;
         }
         const wordsCount = activeVerse.words ? activeVerse.words.length : activeVerse.arabic.split(' ').length;
@@ -1286,6 +1286,7 @@
 
 
         // Logic to validate answer based on step type
+        if (!activeVerse) return;
         const type = currentStepConfig.type;
         if (type === 'recall_prev') {
             if (recallMethod === 'mushaf') {
