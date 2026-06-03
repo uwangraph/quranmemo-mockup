@@ -221,6 +221,7 @@
 
     // Audio & Voice Recording States
     let audio = null;
+    let wordAudioEl = null;
     let recordState = $state('idle'); // 'idle', 'recording', 'recorded'
     let isComparing = $state(false);
     let simulatedWaves = $state([]);
@@ -655,75 +656,43 @@
     let loopTimes = $state(1); // 1x, 2x, 3x, 5x, 10x, ∞
     let currentLoopIndex = $state(0);
 
-    // Audio per kata - menggunakan Web Speech API Saudi Arabian Arabic
+    // Audio per kata - pakai CDN audio.qurancdn.com (word-by-word), fallback ke TTS
     function playWordAudio(wordText) {
-        if ('speechSynthesis' in window) {
-            window.speechSynthesis.cancel(); // batalkan audio kata yang sedang jalan
-            
-            // Haptic vibration feedback ringan jika didukung browser
-            if (navigator.vibrate) {
-                navigator.vibrate(25);
-            }
+        if (navigator.vibrate) navigator.vibrate(25);
 
-            // Peta pengucapan kata (non-waqaf untuk tengah ayat, waqaf untuk akhir ayat)
-            const phoneticMap = {
-                // Kata Tengah Ayat (Di-washal / Dibaca sambung)
-                "أَلَمْ": "أَلَمْ",
-                "نَشْرَحْ": "نَشْرَحْ",
-                "لَكَ": "لَكَا",
-                "وَوَضَعْنَا": "وَوَضَعْنَا",
-                "عَنكَ": "عَنْكَا",
-                "ٱلَّذِىٓ": "ٱلَّذِي",
-                "أَنقَضَ": "أَنْقَضَا",
-                "وَرَفَعْنَا": "وَرَفَعْنَا",
-                "فَإِنَّ": "فَإِنَّ",
-                "إِنَّ": "إِنَّ",
-                "مَعَ": "مَعَا",
-                "ٱلْعُسْرِ": "ٱلْعُسْرِي",
-                "فَإِذَا": "فَإِذَا",
-                "فَرَغْتَ": "فَرَغْتَا",
-                "وَإِلَىٰ": "وَإِلَى",
-                "رَبِّكَ": "رَبِّكَا",
-
-                // Kata Akhir Ayat (Di-waqaf / Dihentikan sesuai tajwid asli)
-                "صَدْرَكَ": "صَدْرَكْ",
-                "وِزْرَكَ": "وِزْرَكْ",
-                "ظَهْرَكَ": "ظَهْرَكْ",
-                "ذِكْرَكَ": "ذِكْرَكْ",
-                "يُسْرًا": "يُسْرَا", // Mad 'Iwadh pada waqaf: dibaca yusraa, bukan yusran
-                "فَٱنصَبْ": "فَانْصَبْ",
-                "فَٱرْغَبْ": "فَارْغَبْ"
-            };
-
-            const ttsText = phoneticMap[wordText] || wordText;
-
-            const utterance = new SpeechSynthesisUtterance(ttsText);
-            utterance.lang = 'ar-SA';
-            utterance.rate = 0.55; // Kecepatan pelan agar pelafalan huruf & makhraj sangat presisi
-            utterance.pitch = 1.0;
-            
-            const voices = window.speechSynthesis.getVoices();
-            const arVoice = voices.find(voice => voice.lang.startsWith('ar') || voice.lang.includes('SA'));
-            if (arVoice) {
-                utterance.voice = arVoice;
-            }
-            window.speechSynthesis.speak(utterance);
-        } else {
-            // Fallback nada synthesizer Web Audio API jika Speech Synthesis tidak aktif
-            try {
-                const ctx = new (window.AudioContext || window.webkitAudioContext)();
-                const osc = ctx.createOscillator();
-                const gain = ctx.createGain();
-                osc.connect(gain);
-                gain.connect(ctx.destination);
-                osc.type = 'triangle';
-                osc.frequency.setValueAtTime(440 + Math.random() * 200, ctx.currentTime);
-                gain.gain.setValueAtTime(0.2, ctx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.2);
-                osc.start();
-                osc.stop(ctx.currentTime + 0.2);
-            } catch(e) {}
+        if (wordAudioEl) {
+            wordAudioEl.pause();
+            wordAudioEl.src = '';
+            wordAudioEl = null;
         }
+        if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+
+        if (activeVerse) {
+            const wordIdx = activeVerse.words.indexOf(wordText);
+            if (wordIdx !== -1) {
+                const s = '094';
+                const v = String(activeVerse.verseNumber).padStart(3, '0');
+                const w = String(wordIdx + 1).padStart(3, '0');
+                const url = `https://audio.qurancdn.com/wbw/${s}_${v}_${w}.mp3`;
+                wordAudioEl = new Audio(url);
+                wordAudioEl.play().catch(() => playWordAudioTTS(wordText));
+                return;
+            }
+        }
+
+        playWordAudioTTS(wordText);
+    }
+
+    function playWordAudioTTS(wordText) {
+        if (!('speechSynthesis' in window)) return;
+        const utterance = new SpeechSynthesisUtterance(wordText);
+        utterance.lang = 'ar-SA';
+        utterance.rate = 0.55;
+        utterance.pitch = 1.0;
+        const voices = window.speechSynthesis.getVoices();
+        const arVoice = voices.find(v => v.lang.startsWith('ar') || v.lang.includes('SA'));
+        if (arVoice) utterance.voice = arVoice;
+        window.speechSynthesis.speak(utterance);
     }
 
     // Tajwid diberi warna (Mushaf Tajwid Standar Kemenag)
@@ -920,6 +889,11 @@
             }
             if (recordedAudio) {
                 recordedAudio.pause();
+            }
+            if (wordAudioEl) {
+                wordAudioEl.pause();
+                wordAudioEl.src = '';
+                wordAudioEl = null;
             }
         };
     });
