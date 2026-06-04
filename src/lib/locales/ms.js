@@ -458,5 +458,17 @@ export default {
     "lesson.streak_overlay_title": "Luar Biasa!",
     "lesson.streak_overlay_desc": "5 jawaban betul berturut-turut. Terus kekalkan fokus anda!",
     "lesson.streak_overlay_label": "Rantaian",
-    "lesson.mic_error": "Gagal mengakses mikrofon. Sila berikan kebenaran mikrofon di pelayar anda."
+    "lesson.mic_error": "Gagal mengakses mikrofon. Sila berikan kebenaran mikrofon di pelayar anda.",
+    "lesson.instruct_listen_repeat": "Ketuk pembesar suara untuk mendengar, kemudian ketuk mikrofon untuk meniru!",
+    "lesson.pause": "Jeda",
+    "lesson.play_recorded": "Main Suara",
+    "lesson.step_record": "Rakam",
+    "lesson.step_qari": "Qari",
+    "lesson.step_compare": "Bandingkan",
+    "lesson.press_to_record": "Tekan butang di bawah untuk mula merakam",
+    "lesson.recording_active": "Sedang merakam suara anda...",
+    "lesson.comparison_done": "Perbandingan selesai! Sedia untuk diteruskan.",
+    "lesson.compare_btn": "Bandingkan",
+    "lesson.listening_qari": "Mendengar Qari...",
+    "lesson.retry_prefix": "(Ulang) "
 };

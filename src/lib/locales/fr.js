@@ -453,5 +453,17 @@ export default {
     "lesson.streak_overlay_title": "Incroyable!",
     "lesson.streak_overlay_desc": "5 bonnes réponses d'affilée. Continuez à maintenir votre concentration!",
     "lesson.streak_overlay_label": "Série",
-    "lesson.mic_error": "Échec d'accès au microphone. Veuillez accorder la permission du microphone dans votre navigateur."
+    "lesson.mic_error": "Échec d'accès au microphone. Veuillez accorder la permission du microphone dans votre navigateur.",
+    "lesson.instruct_listen_repeat": "Appuyez sur le haut-parleur pour écouter, puis sur le micro pour imiter!",
+    "lesson.pause": "Pause",
+    "lesson.play_recorded": "Jouer le Son",
+    "lesson.step_record": "Enregistrer",
+    "lesson.step_qari": "Qari",
+    "lesson.step_compare": "Comparer",
+    "lesson.press_to_record": "Appuyez sur le bouton ci-dessous pour commencer l'enregistrement",
+    "lesson.recording_active": "Enregistrement de votre voix...",
+    "lesson.comparison_done": "Comparaison terminée! Prêt à continuer.",
+    "lesson.compare_btn": "Comparer",
+    "lesson.listening_qari": "Écoute du Qari...",
+    "lesson.retry_prefix": "(Reprise) "
 };

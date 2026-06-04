@@ -1,5 +1,6 @@
 <script>
     import { appState } from '$lib/app.svelte.js';
+    import { i18n } from '$lib/i18n.svelte.js';
     
     let { 
         activeVerse, 
@@ -26,10 +27,10 @@
 
 <div class="verse-display-box" style="position: relative;">
     <div class="actions-row">
-        <button class="audio-circle-play" class:playing={isPlaying && audio?.playbackRate === 1.0} onclick={togglePlay} disabled={isChecked} title="1. Dengar Qari (Normal)">
+        <button class="audio-circle-play" class:playing={isPlaying && audio?.playbackRate === 1.0} onclick={togglePlay} disabled={isChecked} title={i18n.t('scramble.play_normal')}>
             <i class="ti {isPlaying && audio?.playbackRate === 1.0 ? 'ti-player-pause' : 'ti-volume'}"></i>
         </button>
-        <button class="audio-circle-play slow-btn" class:playing={isPlaying && audio?.playbackRate < 1.0} onclick={togglePlaySlow} disabled={isChecked} title="1. Dengar Qari (Lambat)">
+        <button class="audio-circle-play slow-btn" class:playing={isPlaying && audio?.playbackRate < 1.0} onclick={togglePlaySlow} disabled={isChecked} title={i18n.t('scramble.play_slow')}>
             {#if isPlaying && audio?.playbackRate < 1.0}
                 <i class="ti ti-player-pause"></i>
             {:else}
@@ -42,7 +43,7 @@
             class:recorded={recordState === 'recorded'}
             onclick={startSimulatedRecording} 
             disabled={isChecked} 
-            title={recordState === 'recording' ? 'Stop Rekaman' : recordState === 'recorded' ? 'Rekam Ulang' : 'Mulai Rekam'}
+            title={recordState === 'recording' ? i18n.t('lesson.mic_stop') : recordState === 'recorded' ? i18n.t('lesson.mic_re_record') : i18n.t('lesson.mic_start')}
         >
             {#if recordState === 'recording'}
                 <i class="ti ti-player-stop-filled"></i>
@@ -64,7 +65,7 @@
                 onkeydown={(e) => { if (e.key === 'Enter' && !isChecked) playWordAudio(word); }}
                 role="button"
                 tabindex={isChecked ? "-1" : "0"}
-                title={isChecked ? "" : "Klik untuk putar audio kata ini"}
+                title={isChecked ? '' : i18n.t('lesson.tap_word_audio')}
             >
                 {@html getTajweedHTML(word)}
             </span>{' '}
@@ -80,7 +81,7 @@
     <!-- Looping Selector Dropdown (Custom) -->
     <div class="loop-selector-row">
         <label class="loop-label" for="loop-select-repeat">
-            <i class="ti ti-repeat"></i> Loop:
+            <i class="ti ti-repeat"></i> {i18n.t('scramble.loop_label')}
         </label>
         
         <div class="custom-dropdown-container">
@@ -127,7 +128,7 @@
                 <span class="wave-bar" style="height: {wave}px"></span>
             {/each}
         </div>
-        <span class="action-helper-txt pulsing">Merekam suara Anda... Silakan membaca ayat di atas!</span>
+        <span class="action-helper-txt pulsing">{i18n.t('lesson.recording_status')}</span>
     {:else if recordState === 'recorded'}
         {#if isPlayingRecorded}
             <div class="simulated-wave-container with-margin">
@@ -137,20 +138,20 @@
             </div>
         {/if}
         <div class="success-recording-box">
-            <span class="action-helper-txt text-success">✓ Suara berhasil direkam!</span>
+            <span class="action-helper-txt text-success">{i18n.t('lesson.voice_recorded')}</span>
             <div style="display: flex; gap: 8px; width: 100%; justify-content: center; margin-top: 4px;">
                 <button class="btn-duo" style="flex: 1; color: #00978A; border-color: #ccfbf1;" onclick={togglePlayRecorded} disabled={isChecked}>
                     <i class="ti {isPlayingRecorded ? 'ti-player-pause' : 'ti-player-play'}"></i> 
-                    {isPlayingRecorded ? 'Pause' : 'Putar Suara'}
+                    {isPlayingRecorded ? i18n.t('lesson.pause') : i18n.t('lesson.play_my_record')}
                 </button>
                 <button class="btn-duo" style="flex: 1; color: #ff4b4b; border-color: #fee2e2;" onclick={startSimulatedRecording} disabled={isChecked}>
                     <i class="ti ti-microphone"></i> 
-                    Rekam Ulang
+                    {i18n.t('lesson.mic_re_record')}
                 </button>
             </div>
         </div>
     {:else}
-        <span class="action-helper-txt">Ketuk speaker untuk mendengar, lalu ketuk mikrofon untuk meniru!</span>
+        <span class="action-helper-txt">{i18n.t('lesson.instruct_listen_repeat')}</span>
     {/if}
 </div>
 

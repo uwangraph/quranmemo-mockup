@@ -8,8 +8,8 @@
         { id: 'learn', icon: 'ti-home', label: i18n.t('nav.learn') },
         { id: 'murojaah', icon: 'ti-refresh', label: i18n.t('nav.murojaah') },
         { id: 'tadabbur', icon: 'ti-book', label: i18n.t('nav.tadabbur') },
-        { id: 'quests', icon: 'ti-gift', label: 'Quests' },
-        { id: 'halaqah', icon: 'ti-users', label: 'Halaqah' },
+        { id: 'quests', icon: 'ti-gift', label: i18n.t('nav.quests') },
+        { id: 'halaqah', icon: 'ti-users', label: i18n.t('nav.halaqah') },
         { id: 'league', icon: 'ti-trophy', label: i18n.t('nav.league') },
         { id: 'profile', icon: 'ti-user', label: i18n.t('nav.profile') }
     ]);

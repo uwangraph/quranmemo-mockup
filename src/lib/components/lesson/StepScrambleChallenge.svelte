@@ -1,5 +1,6 @@
 <script>
     import { appState } from '$lib/app.svelte.js';
+    import { i18n } from '$lib/i18n.svelte.js';
 
     const wordTransliterations = {
         // Ayat 1
@@ -153,15 +154,15 @@
 </script>
 
 <div class="scramble-challenge-container" style="position: relative; padding-top: 30px;">
-    <button class="latin-toggle-badge" onclick={() => showLatin = !showLatin} title="Toggle Latin Transliterasi secara instan" style="top: -6px; right: 0;">
-        🔠 Latin: {showLatin ? 'ON' : 'OFF'}
+    <button class="latin-toggle-badge" onclick={() => showLatin = !showLatin} title={i18n.t('scramble.latin_toggle')} style="top: -6px; right: 0;">
+        {i18n.t('scramble.latin_toggle')}: {showLatin ? i18n.t('scramble.latin_on') : i18n.t('scramble.latin_off')}
     </button>
     {#if type === 'audio_scramble'}
         <div class="audio-control-row">
-            <button class="audio-circle-play small" class:playing={isPlaying && audio?.playbackRate === 1.0} onclick={togglePlay} disabled={isChecked} title="Dengar Qari (Normal)">
+            <button class="audio-circle-play small" class:playing={isPlaying && audio?.playbackRate === 1.0} onclick={togglePlay} disabled={isChecked} title={i18n.t('scramble.play_normal')}>
                 <i class="ti {isPlaying && audio?.playbackRate === 1.0 ? 'ti-player-pause' : 'ti-volume'}"></i>
             </button>
-            <button class="audio-circle-play small slow-btn" class:playing={isPlaying && audio?.playbackRate < 1.0} onclick={togglePlaySlow} disabled={isChecked} title="Dengar Qari (Lambat)">
+            <button class="audio-circle-play small slow-btn" class:playing={isPlaying && audio?.playbackRate < 1.0} onclick={togglePlaySlow} disabled={isChecked} title={i18n.t('scramble.play_slow')}>
                 {#if isPlaying && audio?.playbackRate < 1.0}
                     <i class="ti ti-player-pause"></i>
                 {:else}
@@ -173,7 +174,7 @@
         <!-- Looping Selector Dropdown (Custom) in Puzzle Mode -->
         <div class="loop-selector-row">
             <label class="loop-label" for="loop-select-scramble">
-                <i class="ti ti-repeat"></i> Loop:
+                <i class="ti ti-repeat"></i> {i18n.t('scramble.loop_label')}
             </label>
             
             <div class="custom-dropdown-container">
@@ -225,7 +226,7 @@
                                 class:correct-revealed={isChecked && !isCorrect}
                                 onclick={() => { if (!isChecked && !isCorrect) toggleWordSelection(selectedWord); }} 
                                 disabled={isChecked}
-                                title={isChecked ? "" : "Ketuk untuk membatalkan pilihan"}>
+                                title={isChecked ? '' : i18n.t('scramble.tap_cancel')}>
                             {@html getTajweedHTML ? getTajweedHTML(selectedWord.text) : selectedWord.text}
                         </button>
                     {:else}
@@ -239,7 +240,7 @@
                         onkeydown={(e) => { if (e.key === 'Enter') { e.stopPropagation(); if (!isChecked) playWordAudio(part); } }}
                         role="button"
                         tabindex={isChecked ? "-1" : "0"}
-                        title={isChecked ? "" : "Klik untuk mendengar pelafalan kata ini"}
+                        title={isChecked ? '' : i18n.t('scramble.tap_word_audio')}
                     >
                         {@html getTajweedHTML ? getTajweedHTML(part) : part}
                     </span>
@@ -261,9 +262,9 @@
             {#if selectedWords.length === 0}
                 <span class="drop-shelf-placeholder">
                     {#if type === 'puzzle_total'}
-                        Susun seluruh ayat Al-Insyirah dari hafalanmu...
+                        {i18n.t('scramble.placeholder_total')}
                     {:else}
-                        Ketuk kata-kata di bawah untuk menyusun ayat...
+                        {i18n.t('scramble.placeholder_default')}
                     {/if}
                 </span>
             {/if}

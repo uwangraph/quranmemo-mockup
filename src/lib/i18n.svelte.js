@@ -19,8 +19,14 @@ const dicts = { id, en, ms, ha, fr, ar };
 export function createI18n() {
     let locale = $state('en');
     
-    function t(key) { 
-        return dicts[locale]?.[key] || dicts['en']?.[key] || key; 
+    function t(key, params = {}) { 
+        let text = dicts[locale]?.[key] || dicts['en']?.[key] || key; 
+        if (params) {
+            Object.keys(params).forEach(k => {
+                text = text.split(`{${k}}`).join(params[k]);
+            });
+        }
+        return text; 
     }
     
     function getDir() { 

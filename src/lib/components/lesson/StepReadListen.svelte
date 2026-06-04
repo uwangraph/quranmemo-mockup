@@ -1,5 +1,6 @@
 <script>
     import { appState } from '$lib/app.svelte.js';
+    import { i18n } from '$lib/i18n.svelte.js';
     
     let { 
         activeVerse, 
@@ -21,14 +22,14 @@
 
 <div class="verse-display-box" style="position: relative;">
     {#if !activeVerse}
-        <div style="text-align:center; padding: 40px; color: #afafaf;">Memuat ayat...</div>
+        <div style="text-align:center; padding: 40px; color: #afafaf;">{i18n.t('lesson.loading_verse')}</div>
     {:else}
 
     <div class="audio-circle-row">
-        <button class="audio-circle-play" class:playing={isPlaying && audio?.playbackRate === 1.0} onclick={togglePlay} disabled={isChecked} title="Putar Audio Qari (Normal)">
+        <button class="audio-circle-play" class:playing={isPlaying && audio?.playbackRate === 1.0} onclick={togglePlay} disabled={isChecked} title={i18n.t('scramble.play_normal')}>
             <i class="ti {isPlaying && audio?.playbackRate === 1.0 ? 'ti-player-pause' : 'ti-volume'}"></i>
         </button>
-        <button class="audio-circle-play slow-btn" class:playing={isPlaying && audio?.playbackRate < 1.0} onclick={togglePlaySlow} disabled={isChecked} title="Putar Audio Qari (Lambat)">
+        <button class="audio-circle-play slow-btn" class:playing={isPlaying && audio?.playbackRate < 1.0} onclick={togglePlaySlow} disabled={isChecked} title={i18n.t('scramble.play_slow')}>
             {#if isPlaying && audio?.playbackRate < 1.0}
                 <i class="ti ti-player-pause"></i>
             {:else}
@@ -47,7 +48,7 @@
                 onkeydown={(e) => { if (e.key === 'Enter' && !isChecked) playWordAudio(word); }}
                 role="button"
                 tabindex={isChecked ? "-1" : "0"}
-                title={isChecked ? "" : "Klik untuk putar audio kata ini"}
+                title={isChecked ? '' : i18n.t('lesson.tap_word_audio')}
             >
                 {@html getTajweedHTML(word)}
             </span>{' '}
@@ -61,7 +62,7 @@
     <!-- Looping Selector Dropdown (Custom) -->
     <div class="loop-selector-row">
         <label class="loop-label" for="loop-select">
-            <i class="ti ti-repeat"></i> Loop:
+            <i class="ti ti-repeat"></i> {i18n.t('scramble.loop_label')}
         </label>
         
         <div class="custom-dropdown-container">

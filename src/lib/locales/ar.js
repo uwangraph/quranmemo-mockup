@@ -454,5 +454,17 @@ export default {
     "lesson.streak_overlay_title": "رائع!",
     "lesson.streak_overlay_desc": "5 إجابات صحيحة متتالية. استمر في الحفاظ على تركيزك!",
     "lesson.streak_overlay_label": "تسلسل",
-    "lesson.mic_error": "فشل الوصول إلى الميكروفون. يرجى منح إذن الميكروفون في متصفحك."
+    "lesson.mic_error": "فشل الوصول إلى الميكروفون. يرجى منح إذن الميكروفون في متصفحك.",
+    "lesson.instruct_listen_repeat": "اضغط على مكبر الصوت للاستماع، ثم اضغط على الميكروفون للتقليد!",
+    "lesson.pause": "إيقاف مؤقت",
+    "lesson.play_recorded": "تشغيل الصوت",
+    "lesson.step_record": "تسجيل",
+    "lesson.step_qari": "القارئ",
+    "lesson.step_compare": "مقارنة",
+    "lesson.press_to_record": "اضغط الزر أدناه لبدء التسجيل",
+    "lesson.recording_active": "جارٍ تسجيل صوتك...",
+    "lesson.comparison_done": "اكتملت المقارنة! جاهز للمتابعة.",
+    "lesson.compare_btn": "قارن",
+    "lesson.listening_qari": "يستمع إلى القارئ...",
+    "lesson.retry_prefix": "(إعادة) "
 };

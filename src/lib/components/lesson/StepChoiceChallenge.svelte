@@ -1,5 +1,6 @@
 <script>
     import { appState } from '$lib/app.svelte.js';
+    import { i18n } from '$lib/i18n.svelte.js';
 
     const wordTransliterations = {
         // Kata tunggal
@@ -99,10 +100,10 @@
 <div class="choice-challenge-container">
     <div class="choice-top-row">
         <div class="audio-btn-group">
-            <button class="audio-circle-play small" class:playing={isPlaying && audio?.playbackRate === 1.0} onclick={togglePlay} disabled={isChecked} title="Putar Audio Qari (Normal)">
+            <button class="audio-circle-play small" class:playing={isPlaying && audio?.playbackRate === 1.0} onclick={togglePlay} disabled={isChecked} title={i18n.t('scramble.play_normal')}>
                 <i class="ti {isPlaying && audio?.playbackRate === 1.0 ? 'ti-player-pause' : 'ti-volume'}"></i>
             </button>
-            <button class="audio-circle-play small slow-btn" class:playing={isPlaying && audio?.playbackRate < 1.0} onclick={togglePlaySlow} disabled={isChecked} title="Putar Audio Qari (Lambat)">
+            <button class="audio-circle-play small slow-btn" class:playing={isPlaying && audio?.playbackRate < 1.0} onclick={togglePlaySlow} disabled={isChecked} title={i18n.t('scramble.play_slow')}>
                 {#if isPlaying && audio?.playbackRate < 1.0}
                     <i class="ti ti-player-pause"></i>
                 {:else}
@@ -110,8 +111,8 @@
                 {/if}
             </button>
         </div>
-        <button class="latin-toggle-badge" onclick={() => showLatin = !showLatin} title="Toggle Latin Transliterasi">
-            🔠 Latin: {showLatin ? 'ON' : 'OFF'}
+        <button class="latin-toggle-badge" onclick={() => showLatin = !showLatin} title={i18n.t('scramble.latin_toggle')}>
+            {i18n.t('scramble.latin_toggle')}: {showLatin ? i18n.t('scramble.latin_on') : i18n.t('scramble.latin_off')}
         </button>
     </div>
     <div class="challenge-arabic-blank Amiri">
@@ -133,7 +134,7 @@
                     onkeydown={(e) => { if (e.key === 'Enter') { e.stopPropagation(); if (!isChecked) playWordAudio(part); } }}
                     role="button"
                     tabindex={isChecked ? "-1" : "0"}
-                    title={isChecked ? "" : "Klik untuk mendengar pelafalan kata ini"}
+                    title={isChecked ? '' : i18n.t('scramble.tap_word_audio')}
                 >
                     {@html getTajweedHTML ? getTajweedHTML(part) : part}
                 </span>

@@ -399,5 +399,17 @@ export default {
     "break.title": "Huta Kadan",
     "break.description": "Huta kadan domin kiyaye ranka sabo. Haddace da aka ci gaba da shi cikin natsuwa zai fi tsayawa a ƙwaƙwalwa. 🌙",
     "break.continue": "CI GABA DA HADDACE",
-    "break.exit": "KOMA ZUWA DASHBOARD"
+    "break.exit": "KOMA ZUWA DASHBOARD",
+    "lesson.instruct_listen_repeat": "Danna mai ƙara don sauraro, sannan danna makirofon don kwaikwayo!",
+    "lesson.pause": "Tsaya",
+    "lesson.play_recorded": "Kunna Sauti",
+    "lesson.step_record": "Yi Rikodi",
+    "lesson.step_qari": "Qari",
+    "lesson.step_compare": "Kwatanta",
+    "lesson.press_to_record": "Danna maɓallin da ke ƙasa don fara rikodin",
+    "lesson.recording_active": "Ana rikodin muryarka...",
+    "lesson.comparison_done": "Kwatantawa ya ƙare! Shirye don ci gaba.",
+    "lesson.compare_btn": "Kwatanta",
+    "lesson.listening_qari": "Ana sauraron Qari...",
+    "lesson.retry_prefix": "(Sake) "
 };

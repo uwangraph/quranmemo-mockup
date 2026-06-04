@@ -63,18 +63,23 @@
         }
     });
 
-    const defaultSchedule = ["Besok, 10:00", "Lusa, 14:00", "Lusa, 19:30"];
-    const allMusyrifs = [
-        { name: "Ust. Ahmad Fauzi", gender: "ustadz", rating: 4.9, status: "online", tier: "bersanad", icon: "👳", schedule: ["Hari ini, 20:00", ...defaultSchedule] },
+    const defaultSchedule = $derived([
+        i18n.t('market.day_tomorrow') + ", 10:00", 
+        i18n.t('market.day_after_tomorrow') + ", 14:00", 
+        i18n.t('market.day_after_tomorrow') + ", 19:30"
+    ]);
+    
+    const allMusyrifs = $derived([
+        { name: "Ust. Ahmad Fauzi", gender: "ustadz", rating: 4.9, status: "online", tier: "bersanad", icon: "👳", schedule: [i18n.t('market.day_today') + ", 20:00", ...defaultSchedule] },
         { name: "Ust. Ridwan Hakim", gender: "ustadz", rating: 4.8, status: "online", tier: "reguler", icon: "👨‍🏫", schedule: defaultSchedule },
-        { name: "Ustadzah Siti Aminah", gender: "ustadzah", rating: 5.0, status: "offline", tier: "bersanad", icon: "🧕", schedule: ["Besok, 09:00", "Besok, 16:00", "Lusa, 10:00"] },
+        { name: "Ustadzah Siti Aminah", gender: "ustadzah", rating: 5.0, status: "offline", tier: "bersanad", icon: "🧕", schedule: [i18n.t('market.day_tomorrow') + ", 09:00", i18n.t('market.day_tomorrow') + ", 16:00", i18n.t('market.day_after_tomorrow') + ", 10:00"] },
         { name: "Ust. Budi Santoso", gender: "ustadz", rating: 4.7, status: "online", tier: "reguler", icon: "🧔", schedule: defaultSchedule },
-        { name: "Ustadzah Aisyah", gender: "ustadzah", rating: 4.9, status: "online", tier: "reguler", icon: "🧕", schedule: ["Hari ini, 19:00", ...defaultSchedule] },
+        { name: "Ustadzah Aisyah", gender: "ustadzah", rating: 4.9, status: "online", tier: "reguler", icon: "🧕", schedule: [i18n.t('market.day_today') + ", 19:00", ...defaultSchedule] },
         { name: "Ust. Hasanuddin", gender: "ustadz", rating: 5.0, status: "online", tier: "bersanad", icon: "👳", schedule: defaultSchedule },
         { name: "Ustadzah Fatimah", gender: "ustadzah", rating: 4.6, status: "offline", tier: "reguler", icon: "🧕", schedule: defaultSchedule },
         { name: "Ust. Zulkifli", gender: "ustadz", rating: 4.8, status: "online", tier: "bersanad", icon: "👨‍🏫", schedule: defaultSchedule },
         { name: "Ustadzah Khadijah", gender: "ustadzah", rating: 4.9, status: "online", tier: "bersanad", icon: "🧕", schedule: defaultSchedule }
-    ];
+    ]);
 
     const musyrifs = $derived(
         selectedGender === 'all' 
@@ -90,31 +95,31 @@
 
     function bookMusyrif(m, time) {
         if (!selectedAyah) {
-            customAlert("Silakan tentukan Surah dan Ayat yang ingin disetorkan terlebih dahulu.");
+            customAlert(i18n.t('market.alert_select_target'));
             return;
         }
         
         if (m.status === 'offline' && !time) {
-            customAlert("Musyrif sedang offline, tidak bisa melakukan setoran instan saat ini. Silakan booking jadwal yang tersedia.");
+            customAlert(i18n.t('status.offline'));
             return;
         }
         
         const cost = 15;
         if (appState.user.gems >= cost) {
-            const timeText = time ? ` untuk jadwal ${time}` : " sekarang (Instan)";
-            customConfirm(`Booking setoran hafalan ${selectedSurah} ayat ${selectedAyah} ke ${m.name}${timeText} seharga ${cost} Gems?`, () => {
+            const timeText = time ? ` (${time})` : ` (${i18n.t('market.day_today')} - ${i18n.t('market.start_now')})`;
+            customConfirm(i18n.t('market.confirm_booking', { surah: selectedSurah, ayah: selectedAyah, name: m.name, time: timeText, cost }), () => {
                 appState.user.gems -= cost;
                 appState.saveUser();
                 appState.go('livemarking');
             });
         } else {
-            customAlert(`Gems tidak cukup! Butuh ${cost} Gems, kamu hanya punya ${appState.user.gems}. Selesaikan quest dan rajin murajaah untuk mendapatkan lebih banyak Gems.`);
+            customAlert(i18n.t('market.alert_not_enough_gems', { cost, have: appState.user.gems }));
         }
     }
 
     function quickFind() {
         if (!selectedAyah) {
-            customAlert("Silakan tentukan Surah dan Ayat yang ingin disetorkan terlebih dahulu.");
+            customAlert(i18n.t('market.alert_select_target'));
             return;
         }
         hasSearched = true;
@@ -138,9 +143,9 @@
     </div>
 
     <div class="market-tabs">
-        <button class="m-tab" class:active={activeTab === 'instant'} onclick={() => {activeTab = 'instant'; hasSearched = false;}}>Setoran Instan</button>
-        <button class="m-tab" class:active={activeTab === 'booking'} onclick={() => {activeTab = 'booking'; hasSearched = false;}}>Booking Jadwal</button>
-        <button class="m-tab" class:active={activeTab === 'toko'} onclick={() => {activeTab = 'toko'; hasSearched = false;}}>Toko</button>
+        <button class="m-tab" class:active={activeTab === 'instant'} onclick={() => {activeTab = 'instant'; hasSearched = false;}}>{i18n.t('market.tab_instant')}</button>
+        <button class="m-tab" class:active={activeTab === 'booking'} onclick={() => {activeTab = 'booking'; hasSearched = false;}}>{i18n.t('market.tab_booking')}</button>
+        <button class="m-tab" class:active={activeTab === 'toko'} onclick={() => {activeTab = 'toko'; hasSearched = false;}}>{i18n.t('market.tab_shop')}</button>
     </div>
 
     <div class="scroll-content" style="padding: 0 16px;">
@@ -149,11 +154,11 @@
             <div style="flex:1">
                 <div style="display: flex; justify-content: space-between; align-items: flex-start;">
                     <div>
-                        <div style="font-size:18px; font-weight:900; color:#fff;">{activeTab === 'instant' ? i18n.t('market.instant') : 'Pesan Jadwal'}</div>
-                        <div style="font-size:12px; font-weight:700; color:rgba(255,255,255,0.8); margin-top:4px;">{activeTab === 'instant' ? i18n.t('market.instant_d') : 'Pilih jadwal setoran yang sesuai'}</div>
+                        <div style="font-size:18px; font-weight:900; color:#fff;">{activeTab === 'instant' ? i18n.t('market.instant') : i18n.t('market.book_schedule')}</div>
+                        <div style="font-size:12px; font-weight:700; color:rgba(255,255,255,0.8); margin-top:4px;">{activeTab === 'instant' ? i18n.t('market.instant_d') : i18n.t('market.book_schedule_d')}</div>
                     </div>
                     <div style="background: rgba(255,255,255,0.2); padding: 4px 10px; border-radius: 12px; display: flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 800;">
-                        Biaya: 15 <i class="ti ti-diamond-filled" style="color:#fff;"></i>
+                        {i18n.t('market.price_label')} 15 <i class="ti ti-diamond-filled" style="color:#fff;"></i>
                     </div>
                 </div>
                 
@@ -182,7 +187,7 @@
                         </div>
                     </div>
                     <div class="target-field">
-                        <label>Ayat</label>
+                        <label>{i18n.t('learn.verse')}</label>
                         <input type="text" placeholder="Cth: 1-8" bind:value={selectedAyah} />
                     </div>
                 </div>
@@ -196,7 +201,7 @@
         <div class="section-header">
             <span class="section-label" style="padding:0">{i18n.t('market.available')}</span>
             <div class="gender-filter">
-                <button class:active={selectedGender === 'all'} onclick={() => selectedGender = 'all'}>Semua</button>
+                <button class:active={selectedGender === 'all'} onclick={() => selectedGender = 'all'}>{i18n.t('lb.tab_global_user')}</button>
                 <button class:active={selectedGender === 'ustadz'} onclick={() => selectedGender = 'ustadz'}>Ustadz</button>
                 <button class:active={selectedGender === 'ustadzah'} onclick={() => selectedGender = 'ustadzah'}>Ustadzah</button>
             </div>
@@ -227,7 +232,7 @@
                         <div style="font-size: 11px; font-weight: 800; color: #64748b; margin-bottom: 8px;">{activeTab === 'instant' ? 'AKSI:' : 'JADWAL TERSEDIA:'}</div>
                         <div style="display: flex; gap: 6px; flex-wrap: wrap;">
                             {#if activeTab === 'instant'}
-                                <button class="schedule-chip instant" style="width: 100%; text-align: center; padding: 10px;" onclick={() => bookMusyrif(m, null)}>Mulai Setoran Sekarang</button>
+                                <button class="schedule-chip instant" style="width: 100%; text-align: center; padding: 10px;" onclick={() => bookMusyrif(m, null)}>{i18n.t('market.start_now')}</button>
                             {:else}
                                 {#each m.schedule as time}
                                     <button class="schedule-chip" onclick={() => bookMusyrif(m, time)}>{time}</button>
@@ -244,31 +249,31 @@
         {#if activeTab === 'toko'}
             <div class="hero-card" style="background: linear-gradient(135deg, #00978A, #007a6f); margin-top: 16px;">
                 <div style="flex:1">
-                    <div style="font-size:18px; font-weight:900; color:#fff;">Toko</div>
-                    <div style="font-size:12px; font-weight:700; color:rgba(255,255,255,0.8); margin-top:4px;">Dapatkan Gems dan item menarik</div>
+                    <div style="font-size:18px; font-weight:900; color:#fff;">{i18n.t('market.shop_title')}</div>
+                    <div style="font-size:12px; font-weight:700; color:rgba(255,255,255,0.8); margin-top:4px;">{i18n.t('market.shop_desc')}</div>
                 </div>
                 <i class="ti ti-shopping-cart" style="font-size: 40px; color: rgba(255,255,255,0.3)"></i>
             </div>
             
             <div class="section-header">
-                <span class="section-label" style="padding:0">Gems Gratis</span>
+                <span class="section-label" style="padding:0">{i18n.t('learn.free_points_target')}</span>
             </div>
             
             <div class="musyrif-card" style="flex-direction: row; align-items: center; justify-content: space-between;">
                 <div style="display: flex; align-items: center; gap: 16px;">
                     <div class="m-avatar" style="background: #e0f2f1; border-color: #b2dfdb; color: #00978A;"><i class="ti ti-video"></i></div>
                     <div>
-                        <div style="font-size:16px; font-weight:900; color:#3c3c3c;">Tonton Iklan (Ads)</div>
-                        <div style="font-size:13px; font-weight:700; color:#afafaf; margin-top:4px;">Dapatkan +50 Gems</div>
+                        <div style="font-size:16px; font-weight:900; color:#3c3c3c;">{i18n.t('market.ads_title')}</div>
+                        <div style="font-size:13px; font-weight:700; color:#afafaf; margin-top:4px;">{i18n.t('market.ads_desc')}</div>
                     </div>
                 </div>
                 <button class="btn-duo" style="background: #fff; color: #1cb0f6; border-color: #e5e5e5;" onclick={() => {
-                    customConfirm('Tonton iklan berdurasi pendek untuk mendapatkan 50 Gems?', () => {
+                    customConfirm(i18n.t('market.ads_confirm'), () => {
                         appState.user.gems += 50;
                         appState.saveUser();
-                        customAlert('Terima kasih telah menonton iklan! Anda mendapatkan 50 Gems.');
+                        customAlert(i18n.t('market.ads_success'));
                     });
-                }}>Tonton</button>
+                }}>{i18n.t('market.ads_btn')}</button>
             </div>
             
             <div class="section-header" style="margin-top: 24px;">
@@ -279,23 +284,23 @@
                 <div style="display: flex; align-items: center; gap: 16px;">
                     <div class="m-avatar" style="background: #fffbf2; border-color: #fff7e6; color: #ff9600;"><i class="ti ti-snowflake"></i></div>
                     <div>
-                        <div style="font-size:16px; font-weight:900; color:#3c3c3c;">Streak Freeze</div>
-                        <div style="font-size:13px; font-weight:700; color:#afafaf; margin-top:4px;">Bekukan streak Anda selama 1 hari</div>
-                        <div style="font-size:11px; font-weight:800; color:#1cb0f6; margin-top:4px;">Milik Anda: {appState.user.streakFreezes || 0}</div>
+                        <div style="font-size:16px; font-weight:900; color:#3c3c3c;">{i18n.t('market.freeze_title')}</div>
+                        <div style="font-size:13px; font-weight:700; color:#afafaf; margin-top:4px;">{i18n.t('market.freeze_desc')}</div>
+                        <div style="font-size:11px; font-weight:800; color:#1cb0f6; margin-top:4px;">{i18n.t('market.freeze_owned', { count: appState.user.streakFreezes || 0 })}</div>
                     </div>
                 </div>
                 <button class="btn-duo" style="background: #ff9600; color: #fff; border-color: #cc7800; font-size: 13px;" onclick={() => {
                     // Harga meningkat (fee 5, 10)
                     const cost = (appState.user.streakFreezes || 0) > 0 ? 10 : 5;
                     if (appState.user.gems >= cost) {
-                        customConfirm(`Beli Streak Freeze seharga ${cost} Gems?`, () => {
+                        customConfirm(i18n.t('market.freeze_confirm', { cost }), () => {
                             appState.user.gems -= cost;
                             appState.user.streakFreezes = (appState.user.streakFreezes || 0) + 1;
                             appState.saveUser();
-                            customAlert('Berhasil membeli Streak Freeze!');
+                            customAlert(i18n.t('market.freeze_success'));
                         });
                     } else {
-                        customAlert(`Gems tidak cukup! Butuh ${cost} Gems, Anda hanya memiliki ${appState.user.gems}.`);
+                        customAlert(i18n.t('market.alert_not_enough_gems', { cost, have: appState.user.gems }));
                     }
                 }}>{(appState.user.streakFreezes || 0) > 0 ? '10' : '5'} <i class="ti ti-diamond-filled"></i></button>
             </div>
@@ -320,10 +325,10 @@
             <div class="alert-text">{alertMessage}</div>
             <div class="alert-actions">
                 {#if alertType === 'confirm'}
-                    <button class="alert-btn secondary" onclick={() => showCustomAlert = false}>Batal</button>
-                    <button class="alert-btn primary" onclick={() => { onConfirm(); showCustomAlert = false; }}>Ya, Lanjutkan</button>
+                    <button class="alert-btn secondary" onclick={() => showCustomAlert = false}>{i18n.t('market.btn_cancel')}</button>
+                    <button class="alert-btn primary" onclick={() => { onConfirm(); showCustomAlert = false; }}>{i18n.t('market.btn_confirm')}</button>
                 {:else}
-                    <button class="alert-btn primary" onclick={() => showCustomAlert = false}>Mengerti</button>
+                    <button class="alert-btn primary" onclick={() => showCustomAlert = false}>{i18n.t('market.btn_understand')}</button>
                 {/if}
             </div>
         </div>
@@ -687,8 +692,8 @@
         background: #fff;
         border: 2px solid #e2e8f0;
         border-bottom-width: 3px;
-        border-radius: 10px;
-        padding: 6px 10px;
+        border-radius: 100px;
+        padding: 6px 12px;
         font-size: 11px;
         font-weight: 800;
         color: #475569;

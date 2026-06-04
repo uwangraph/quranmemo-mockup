@@ -1,5 +1,6 @@
 <script>
     import { fade, fly } from 'svelte/transition';
+    import { i18n } from '$lib/i18n.svelte.js';
     let { showCompletion, activeVerse, selectedVerseIndex, lessonEarnedXP, lessonEarnedGems, accuracy = '100%', breakdown = '', onFinish } = $props();
 </script>
 
@@ -7,12 +8,12 @@
 <div class="completion-overlay" transition:fade={{duration: 200}}>
     <div class="completion-card" transition:fly={{y: 20, duration: 300}}>
         <div class="completed-trophy-img">🏆</div>
-        <div class="congrats-headline">✅ TARGET SELESAI!</div>
+        <div class="congrats-headline">{i18n.t('lesson.target_done')}</div>
         <div class="congrats-sub">
             {#if selectedVerseIndex > 0}
-                Satu ayat benar-benar hafal bersambung dengan ayat sebelumnya.
+                {i18n.t('lesson.congrats_link')}
             {:else}
-                Selamat! Ayat {activeVerse.verseNumber} dari Surah Al-Insyirah sudah benar-benar hafal di luar kepala!
+                {i18n.t('lesson.congrats_verse', { verse: activeVerse.verseNumber })}
             {/if}
         </div>
         
@@ -20,17 +21,17 @@
             <div class="reward-item">
                 <span class="reward-icon gold">⚡</span>
                 <span class="reward-value">+{lessonEarnedXP} XP</span>
-                <span class="reward-label">EXPERIENCE</span>
+                <span class="reward-label">{i18n.t('lesson.xp_label')}</span>
             </div>
             <div class="reward-item memo-gems">
                 <span class="reward-icon diamond">💎</span>
-                <span class="reward-value-gems">+{lessonEarnedGems} Gems</span>
-                <span class="reward-label-gems">REWARD</span>
+                <span class="reward-value-gems">+{lessonEarnedGems} {i18n.t('profile.gems')}</span>
+                <span class="reward-label-gems">{i18n.t('lesson.reward_label')}</span>
             </div>
             <div class="reward-item memo-cashback">
                 <span class="reward-icon teal">🎯</span>
                 <span class="reward-value-teal">{accuracy}</span>
-                <span class="reward-label-teal">AKURASI JAWABAN</span>
+                <span class="reward-label-teal">{i18n.t('lesson.accuracy_label')}</span>
             </div>
         </div>
 
@@ -48,10 +49,10 @@
         
         <div class="button-column">
             <button class="btn-duo btn-green" onclick={onFinish}>
-                HAFAL AYAT LAINNYA
+                {i18n.t('lesson.btn_memorize_more')}
             </button>
             <button class="btn-duo btn-outline" onclick={onFinish}>
-                KEMBALI KE ROADMAP
+                {i18n.t('lesson.btn_back_roadmap')}
             </button>
         </div>
     </div>

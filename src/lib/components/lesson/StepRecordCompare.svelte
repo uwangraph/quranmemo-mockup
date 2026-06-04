@@ -1,4 +1,6 @@
 <script>
+    import { i18n } from '$lib/i18n.svelte.js';
+
     let { 
         isPlaying, 
         recordState, 
@@ -33,7 +35,7 @@
                     <i class="ti ti-microphone" style="font-size: 14px;"></i>
                 {/if}
             </div>
-            <span class="flow-step-label">Rekam</span>
+            <span class="flow-step-label">{i18n.t('lesson.step_record')}</span>
         </div>
 
         <div class="flow-connector" class:lit={phase === 'qari_playing' || phase === 'user_playing' || phase === 'done'}></div>
@@ -46,7 +48,7 @@
                     <i class="ti ti-user" style="font-size: 14px;"></i>
                 {/if}
             </div>
-            <span class="flow-step-label">Qari</span>
+            <span class="flow-step-label">{i18n.t('lesson.step_qari')}</span>
         </div>
 
         <div class="flow-connector" class:lit={phase === 'user_playing' || phase === 'done'}></div>
@@ -59,7 +61,7 @@
                     <i class="ti ti-headphones" style="font-size: 14px;"></i>
                 {/if}
             </div>
-            <span class="flow-step-label">Bandingkan</span>
+            <span class="flow-step-label">{i18n.t('lesson.step_compare')}</span>
         </div>
     </div>
 
@@ -72,15 +74,15 @@
         {phase === 'done' ? 'status-done' : ''}
     ">
         {#if phase === 'idle'}
-            <i class="ti ti-microphone"></i> Tekan tombol di bawah untuk mulai merekam
+            <i class="ti ti-microphone"></i> {i18n.t('lesson.press_to_record')}
         {:else if phase === 'recording'}
-            <i class="ti ti-point-filled" style="color: #ff4b4b; animation: blink 1s infinite;"></i> Sedang merekam suara Anda...
+            <i class="ti ti-point-filled" style="color: #ff4b4b; animation: blink 1s infinite;"></i> {i18n.t('lesson.recording_active')}
         {:else if phase === 'qari_playing'}
-            <i class="ti ti-volume"></i> Bacaan Qari sedang diputar...
+            <i class="ti ti-volume"></i> {i18n.t('lesson.playing_qari')}
         {:else if phase === 'user_playing'}
-            <i class="ti ti-player-play"></i> Rekaman Anda sedang diputar...
+            <i class="ti ti-player-play"></i> {i18n.t('lesson.playing_my_record')}
         {:else if phase === 'done'}
-            <i class="ti ti-circle-check"></i> Perbandingan selesai! Siap dilanjutkan.
+            <i class="ti ti-circle-check"></i> {i18n.t('lesson.comparison_done')}
         {/if}
     </div>
 
@@ -135,29 +137,29 @@
     {#if phase === 'idle'}
         <button class="main-action-btn btn-record" onclick={startSimulatedRecording} disabled={isChecked}>
             <i class="ti ti-microphone" style="font-size: 22px;"></i>
-            <span>Mulai Rekam</span>
+            <span>{i18n.t('lesson.mic_start')}</span>
         </button>
     {:else if phase === 'recording'}
         <button class="main-action-btn btn-stop" onclick={startSimulatedRecording} disabled={isChecked}>
             <i class="ti ti-player-stop-filled" style="font-size: 22px;"></i>
-            <span>Stop Rekam</span>
+            <span>{i18n.t('lesson.mic_stop')}</span>
         </button>
     {:else if phase === 'qari_playing' || phase === 'user_playing'}
         <button class="main-action-btn btn-loading" disabled>
             <div class="loading-dots">
                 <span></span><span></span><span></span>
             </div>
-            <span>{phase === 'qari_playing' ? 'Mendengarkan Qari...' : 'Memutar Rekaman Anda...'}</span>
+            <span>{phase === 'qari_playing' ? i18n.t('lesson.listening_qari') : i18n.t('lesson.playing_my_record')}</span>
         </button>
     {:else if phase === 'done'}
         <div class="done-btn-row">
             <button class="main-action-btn btn-retry" onclick={startSimulatedRecording} disabled={isChecked}>
                 <i class="ti ti-refresh" style="font-size: 18px;"></i>
-                <span>Rekam Ulang</span>
+                <span>{i18n.t('lesson.mic_re_record')}</span>
             </button>
             <button class="main-action-btn btn-compare" onclick={startComparePlay} disabled={isChecked}>
                 <i class="ti ti-headphones" style="font-size: 18px;"></i>
-                <span>Bandingkan</span>
+                <span>{i18n.t('lesson.compare_btn')}</span>
             </button>
         </div>
     {/if}
