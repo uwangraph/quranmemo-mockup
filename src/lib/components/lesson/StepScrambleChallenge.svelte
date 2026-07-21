@@ -154,9 +154,6 @@
 </script>
 
 <div class="scramble-challenge-container" style="position: relative; padding-top: 30px;">
-    <button class="latin-toggle-badge" onclick={() => showLatin = !showLatin} title={i18n.t('scramble.latin_toggle')} style="top: -6px; right: 0;">
-        {i18n.t('scramble.latin_toggle')}: {showLatin ? i18n.t('scramble.latin_on') : i18n.t('scramble.latin_off')}
-    </button>
     {#if type === 'audio_scramble'}
         <div class="audio-control-row">
             <button class="audio-circle-play small" class:playing={isPlaying && audio?.playbackRate === 1.0} onclick={togglePlay} disabled={isChecked} title={i18n.t('scramble.play_normal')}>
@@ -214,6 +211,9 @@
             </div>
         </div>
     {:else if type === 'puzzle_two'}
+        <button class="latin-toggle-badge" onclick={() => showLatin = !showLatin} title="Toggle Latin Transliterasi secara instan" style="align-self: flex-end; margin-bottom: 4px;">
+            🔠 Latin: {showLatin ? 'ON' : 'OFF'}
+        </button>
         <div class="challenge-arabic-blank Amiri inline-puzzle-container">
             {#each (activeVerse?.twoBlank ?? '').split(' ') as part, i}
                 {@const isBlank = part === '___'}
