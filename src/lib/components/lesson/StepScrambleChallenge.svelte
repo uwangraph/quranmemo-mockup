@@ -154,6 +154,12 @@
 </script>
 
 <div class="scramble-challenge-container" style="position: relative; padding-top: 30px;">
+<<<<<<< Updated upstream
+    <button class="latin-toggle-badge" onclick={() => showLatin = !showLatin} title={i18n.t('scramble.latin_toggle')} style="top: -6px; right: 0;">
+        {i18n.t('scramble.latin_toggle')}: {showLatin ? i18n.t('scramble.latin_on') : i18n.t('scramble.latin_off')}
+    </button>
+=======
+>>>>>>> Stashed changes
     {#if type === 'audio_scramble'}
         <div class="audio-control-row">
             <button class="audio-circle-play small" class:playing={isPlaying && audio?.playbackRate === 1.0} onclick={togglePlay} disabled={isChecked} title={i18n.t('scramble.play_normal')}>
