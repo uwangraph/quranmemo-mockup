@@ -754,11 +754,10 @@
             { id: 3, stage: 1, title: "3. Rekam & Bandingkan", type: "record_compare", desc: "Dengarkan ayat, rekam suaramu sendiri, lalu bandingkan dengan pelafalan qari untuk mengoreksi tajwid." },
             { id: 4, stage: 2, title: "4. Mushaf segmentasi - Hilang di depan", type: "fill_front", desc: "Memori Mushaf! Tebak dan lengkapi bagian awal ayat yang sengaja dihilangkan." },
             { id: 5, stage: 2, title: "5. Mushaf segmentasi - Hilang di belakang", type: "fill_back", desc: "Memori Visual! Tebak dan lengkapi kata di bagian paling belakang ayat ini." },
-            { id: 6, stage: 2, title: "6. Audio to text - Susun kata", type: "audio_scramble", desc: "Dengarkan lantunan potongan ayat, lalu susun kata-kata acak di bawah menjadi urutan yang benar." },
-            { id: 7, stage: 3, title: "7. Puzzle 01 - 1 kata hilang", type: "puzzle_one", desc: "Uji ketelitian! Satu kata di bagian tengah hilang, pilih opsi yang tepat untuk melengkapinya." },
-            { id: 8, stage: 3, title: "8. Puzzle 02 - 2 kata hilang", type: "puzzle_two", desc: "Tantangan menengah! Dua kata hilang di tengah ayat, pilih kedua kata secara berurutan." },
-            { id: 9, stage: 3, title: "9. Puzzle 03 - Semua kata hilang", type: "puzzle_total", desc: "Tantangan akhir! Semua kata diacak secara total. Susun kembali menjadi ayat yang utuh tanpa bantuan." },
-            { id: 10, stage: 3, title: "10. One Ayat!", type: "setor_full", desc: "Ujian Kelulusan! Setor hafalan ayat ini sepenuhnya lewat mic tanpa bantuan teks atau audio visual!" }
+            { id: 6, stage: 3, title: "6. Puzzle 01 - 1 kata hilang", type: "puzzle_one", desc: "Uji ketelitian! Satu kata di bagian tengah hilang, pilih opsi yang tepat untuk melengkapinya." },
+            { id: 7, stage: 3, title: "7. Puzzle 02 - 2 kata hilang", type: "puzzle_two", desc: "Tantangan menengah! Dua kata hilang di tengah ayat, pilih kedua kata secara berurutan." },
+            { id: 8, stage: 3, title: "8. Puzzle 03 - Semua kata hilang", type: "puzzle_total", desc: "Tantangan akhir! Semua kata diacak secara total. Susun kembali menjadi ayat yang utuh tanpa bantuan." },
+            { id: 9, stage: 3, title: "9. One Ayat!", type: "setor_full", desc: "Ujian Kelulusan! Setor hafalan ayat ini sepenuhnya lewat mic tanpa bantuan teks atau audio visual!" }
         ];
 
         let pipeline = [];
