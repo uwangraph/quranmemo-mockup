@@ -255,8 +255,8 @@
                         {#each earnedBadges as badge}
                             <div class="badge-card earned">
                                 <div class="badge-icon-wrap earned">{badge.icon}</div>
-                                <div class="badge-name">{badge.name}</div>
-                                <div class="badge-desc">{badge.desc}</div>
+                                <div class="badge-name">{i18n.t(`badge.${badge.id}.name`)}</div>
+                                <div class="badge-desc">{i18n.t(`badge.${badge.id}.desc`)}</div>
                             </div>
                         {/each}
                     </div>
@@ -269,8 +269,8 @@
                         {#each lockedBadges as badge}
                             <div class="badge-card locked">
                                 <div class="badge-icon-wrap locked">{badge.icon}</div>
-                                <div class="badge-name locked-text">{badge.name}</div>
-                                <div class="badge-desc">{badge.desc}</div>
+                                <div class="badge-name locked-text">{i18n.t(`badge.${badge.id}.name`)}</div>
+                                <div class="badge-desc">{i18n.t(`badge.${badge.id}.desc`)}</div>
                             </div>
                         {/each}
                     </div>

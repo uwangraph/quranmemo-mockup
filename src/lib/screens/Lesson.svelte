@@ -749,15 +749,15 @@
     // Dynamic Steps Pipeline based on the active verse index
     const stepsPipeline = $derived.by(() => {
         const baseSteps = [
-            { id: 1, stage: 1, title: "1. Lihat & Dengar", type: "read_listen", desc: "Perhatikan lafal ayat, dengerin qari secara saksama, lalu ulangi berkali-kali sampai lancar!" },
-            { id: 2, stage: 1, title: "2. Tiru & Ikuti", type: "listen_repeat", desc: "Dengarkan lantunan ayat qari, lalu ikuti pelafalannya dengan suara lantang." },
-            { id: 3, stage: 1, title: "3. Rekam & Bandingkan", type: "record_compare", desc: "Dengarkan ayat, rekam suaramu sendiri, lalu bandingkan dengan pelafalan qari untuk mengoreksi tajwid." },
-            { id: 4, stage: 2, title: "4. Mushaf segmentasi - Hilang di depan", type: "fill_front", desc: "Memori Mushaf! Tebak dan lengkapi bagian awal ayat yang sengaja dihilangkan." },
-            { id: 5, stage: 2, title: "5. Mushaf segmentasi - Hilang di belakang", type: "fill_back", desc: "Memori Visual! Tebak dan lengkapi kata di bagian paling belakang ayat ini." },
-            { id: 6, stage: 3, title: "6. Puzzle 01 - 1 kata hilang", type: "puzzle_one", desc: "Uji ketelitian! Satu kata di bagian tengah hilang, pilih opsi yang tepat untuk melengkapinya." },
-            { id: 7, stage: 3, title: "7. Puzzle 02 - 2 kata hilang", type: "puzzle_two", desc: "Tantangan menengah! Dua kata hilang di tengah ayat, pilih kedua kata secara berurutan." },
-            { id: 8, stage: 3, title: "8. Puzzle 03 - Semua kata hilang", type: "puzzle_total", desc: "Tantangan akhir! Semua kata diacak secara total. Susun kembali menjadi ayat yang utuh tanpa bantuan." },
-            { id: 9, stage: 3, title: "9. One Ayat!", type: "setor_full", desc: "Ujian Kelulusan! Setor hafalan ayat ini sepenuhnya lewat mic tanpa bantuan teks atau audio visual!" }
+            { id: 1, stage: 1, title: "lesson.step1_title", type: "read_listen", desc: "lesson.step1_desc" },
+            { id: 2, stage: 1, title: "lesson.step2_title", type: "listen_repeat", desc: "lesson.step2_desc" },
+            { id: 3, stage: 1, title: "lesson.step3_title", type: "record_compare", desc: "lesson.step3_desc" },
+            { id: 4, stage: 2, title: "lesson.step4_title", type: "fill_front", desc: "lesson.step4_desc" },
+            { id: 5, stage: 2, title: "lesson.step5_title", type: "fill_back", desc: "lesson.step5_desc" },
+            { id: 6, stage: 3, title: "lesson.step6_title", type: "puzzle_one", desc: "lesson.step6_desc" },
+            { id: 7, stage: 3, title: "lesson.step7_title", type: "puzzle_two", desc: "lesson.step7_desc" },
+            { id: 8, stage: 3, title: "lesson.step8_title", type: "puzzle_total", desc: "lesson.step8_desc" },
+            { id: 9, stage: 3, title: "lesson.step9_title", type: "setor_full", desc: "lesson.step9_desc" }
         ];
 
         let pipeline = [];
@@ -767,9 +767,9 @@
             pipeline.push({
                 id: 0,
                 stage: 0,
-                title: "0. RECALL (Sebelum Mulai)",
+                title: "lesson.step0_title",
                 type: "recall_prev",
-                desc: "Sebelum mulai ayat baru, yuk ulang ayat sebelumnya dengan salah satu metode agar ingatanmu tetap segar!"
+                desc: "lesson.step0_desc"
             });
         }
 
@@ -780,18 +780,18 @@
         pipeline.push({
             id: 11,
             stage: 4,
-            title: "11. RECALL - Level 1",
+            title: "lesson.recall_level1_title",
             type: "recall_level1",
-            desc: "Mantap! Yuk setor (baca dari hafalan) ayat baru yang baru saja kamu selesaikan."
+            desc: "lesson.recall_level1_desc"
         });
 
         if (selectedVerseIndex > 0) {
             pipeline.push({
                 id: 12,
                 stage: 4,
-                title: "11. RECALL - Level 2",
+                title: "lesson.recall_level2_title",
                 type: "recall_level2",
-                desc: "Ujian Sempurna! Sambungkan dan setor ayat sebelumnya + ayat baru secara berurutan."
+                desc: "lesson.recall_level2_desc"
             });
         }
 
@@ -804,9 +804,9 @@
         pipeline.push({
             id: 13,
             stage: 5,
-            title: "Setor ke Musyrif",
+            title: "lesson.musyrif_submission_title",
             type: "musyrif_submission",
-            desc: "Latihan mandiri selesai. Lanjutkan setoran langsung bersama musyrif untuk mendapatkan bimbingan dan koreksi bacaan."
+            desc: "lesson.musyrif_submission_desc"
         });
 
         return pipeline;
@@ -1338,7 +1338,7 @@
                     incorrectQueue.push({
                         ...currentStepConfig,
                         id: currentStepConfig.id + '_' + Date.now(),
-                        title: "(Ulang) " + currentStepConfig.title
+                        title: "lesson.retry_prefix|" + currentStepConfig.title
                     });
                 }
             }
@@ -1390,8 +1390,8 @@
         <div class="lesson-step-wrapper" style="padding: 16px; flex: 1; display: flex; flex-direction: column;">
                 
 
-                <h3 class="step-title-display">{currentStepConfig.title}</h3>
-                <p class="step-description">{currentStepConfig.desc}</p>
+                <h3 class="step-title-display">{currentStepConfig.title.startsWith('lesson.retry_prefix|') ? i18n.t('lesson.retry_prefix') + i18n.t(currentStepConfig.title.split('|')[1]) : i18n.t(currentStepConfig.title)}</h3>
+                <p class="step-description">{i18n.t(currentStepConfig.desc)}</p>
                 
                 <div class="exercise-card-container">
                     {#if currentStepConfig.type === 'recall_prev'}

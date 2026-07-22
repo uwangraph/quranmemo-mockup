@@ -16,11 +16,27 @@ export const locales = [
 
 const dicts = { id, en, ms, ha, fr, ar };
 
+// Older localStorage records stored Indonesian copy instead of translation keys.
+// Resolve those values transparently so existing progress also follows the active locale.
+const legacyKeys = {
+    'Selesaikan 1 tahap hafalan': 'quest.complete_step',
+    'Dapatkan 3 jawaban benar': 'quest.three_correct',
+    'Mulai sesi hari ini': 'quest.start_today',
+    'Dapatkan 3 jawaban benar tanpa salah': 'quest.three_correct_no_mistake',
+    'Dapatkan 3 jawaban benar beruntun': 'quest.three_correct_streak',
+    'Selesaikan 1 Murojaah instan': 'quest.complete_instant_review',
+    'Sertifikat Hafalan Juz 30': 'certificate.juz30_title',
+    'Sertifikat Tahsin Dasar': 'certificate.tahsin_title',
+    'Hafalan': 'certificate.memorization',
+    'Tahsin': 'certificate.tahsin'
+};
+
 export function createI18n() {
     let locale = $state('en');
     
     function t(key, params = {}) { 
-        let text = dicts[locale]?.[key] || dicts['en']?.[key] || key; 
+        const resolvedKey = legacyKeys[key] || key;
+        let text = dicts[locale]?.[resolvedKey] || dicts['en']?.[resolvedKey] || resolvedKey; 
         if (params) {
             Object.keys(params).forEach(k => {
                 text = text.split(`{${k}}`).join(params[k]);
