@@ -41,6 +41,7 @@ export function createAppState() {
     let mockupMode = $state('mobile'); // mobile, desktop
     let selectedVerseIndex = $state(0); 
     let selectedNodeType = $state('lesson'); // 'lesson' | 'checkpoint'
+    let marketplaceTab = $state('toko');
     let musyrifBalance = $state(1250); // In-memory only — resets on every page load/refresh
     
     // Persistent User Data
@@ -357,6 +358,8 @@ export function createAppState() {
         set selectedVerseIndex(val) { selectedVerseIndex = val; },
         get selectedNodeType() { return selectedNodeType; },
         set selectedNodeType(val) { selectedNodeType = val; },
+        get marketplaceTab() { return marketplaceTab; },
+        set marketplaceTab(val) { marketplaceTab = val; },
         get screenLabels() { return screenLabels; },
         get user() { return user; },
         get pendingRewardInfo() { return pendingRewardInfo; },

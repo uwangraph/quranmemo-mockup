@@ -8,7 +8,7 @@
     let selectedGender = $state("all");
     let showDropdown = $state(false);
     let hasSearched = $state(false);
-    let activeTab = $state("toko");
+    let activeTab = $state(appState.marketplaceTab);
 
     let showCustomAlert = $state(false);
     let alertMessage = $state("");

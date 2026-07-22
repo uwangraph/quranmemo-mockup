@@ -1361,6 +1361,7 @@
         // Menyelesaikan lesson dan memberikan reward sebelum membuka halaman
         // pemilihan jadwal setoran musyrif.
         advanceStep();
+        appState.marketplaceTab = 'instant';
         appState.go('murojaah');
     }
 </script>
