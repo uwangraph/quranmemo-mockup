@@ -799,6 +799,16 @@
             pipeline.push(...incorrectQueue);
         }
 
+        // Tahap penutup: setelah seluruh latihan dan pengulangan selesai,
+        // pengguna dapat melanjutkan setoran langsung bersama musyrif.
+        pipeline.push({
+            id: 13,
+            stage: 5,
+            title: "Setor ke Musyrif",
+            type: "musyrif_submission",
+            desc: "Latihan mandiri selesai. Lanjutkan setoran langsung bersama musyrif untuk mendapatkan bimbingan dan koreksi bacaan."
+        });
+
         return pipeline;
     });
 
@@ -1346,6 +1356,13 @@
         clearInterval(waveInterval);
         appState.go('learn');
     }
+
+    function goToMusyrifSubmission() {
+        // Menyelesaikan lesson dan memberikan reward sebelum membuka halaman
+        // pemilihan jadwal setoran musyrif.
+        advanceStep();
+        appState.go('murojaah');
+    }
 </script>
 
 <div class="screen theme-user" class:shake={screenShaking}>
@@ -1605,6 +1622,15 @@
                             {isChecked}
                             {getTajweedHTML}
                         />
+
+                    <!-- ==================== TAHAP PENUTUP: SETOR KE MUSYRIF ==================== -->
+                    {:else if currentStepConfig.type === 'musyrif_submission'}
+                        <div class="musyrif-submission-card">
+                            <div class="musyrif-submission-icon"><i class="ti ti-user-check"></i></div>
+                            <h4>Siap Setor ke Musyrif?</h4>
+                            <p>Pilih musyrif dan jadwal setoran untuk melanjutkan hafalanmu dengan bimbingan langsung.</p>
+                            <div class="musyrif-submission-note"><i class="ti ti-circle-check"></i> Latihan mandiri sudah selesai</div>
+                        </div>
                     {/if}
                     
                 </div>
@@ -1638,7 +1664,11 @@
                 
                 <!-- Action Footer Buttons -->
                 <div class="lesson-footer-actions" style="margin-top: auto; padding: 12px 0 0;">
-                    {#if currentStepConfig.type === 'read_listen'}
+                    {#if currentStepConfig.type === 'musyrif_submission'}
+                        <button class="btn-duo btn-green" onclick={goToMusyrifSubmission}>
+                            <i class="ti ti-calendar-event"></i> LANJUT KE SETORAN MUSYRIF
+                        </button>
+                    {:else if currentStepConfig.type === 'read_listen'}
                         <button class="btn-duo btn-green" onclick={checkAnswer}>
                             SAYA SUDAH HAFAL & PAHAM
                         </button>
@@ -2055,6 +2085,53 @@
         color: #afafaf;
         border-color: #d4d4d4;
         cursor: not-allowed;
+    }
+
+    .musyrif-submission-card {
+        margin: auto 0;
+        padding: 32px 24px;
+        text-align: center;
+        border: 2px solid #cceeea;
+        border-bottom-width: 5px;
+        border-radius: 28px;
+        background: linear-gradient(180deg, #f0fdfa 0%, #ffffff 100%);
+    }
+    .musyrif-submission-icon {
+        width: 72px;
+        height: 72px;
+        margin: 0 auto 16px;
+        display: grid;
+        place-items: center;
+        border-radius: 50%;
+        background: #00978A;
+        color: #fff;
+        font-size: 34px;
+        box-shadow: 0 8px 0 #007A70;
+    }
+    .musyrif-submission-card h4 {
+        margin: 0 0 8px;
+        color: #115e59;
+        font-size: 22px;
+        font-weight: 950;
+    }
+    .musyrif-submission-card p {
+        margin: 0;
+        color: #64748b;
+        font-size: 14px;
+        font-weight: 700;
+        line-height: 1.55;
+    }
+    .musyrif-submission-note {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        margin-top: 20px;
+        padding: 8px 12px;
+        border-radius: 999px;
+        background: #dcfce7;
+        color: #15803d;
+        font-size: 12px;
+        font-weight: 800;
     }
 
     /* Screen Shake Animation for wrong answers */
