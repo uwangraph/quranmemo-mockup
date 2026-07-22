@@ -1360,8 +1360,11 @@
     function goToMusyrifSubmission() {
         // Menyelesaikan lesson dan memberikan reward sebelum membuka halaman
         // pemilihan jadwal setoran musyrif.
+        const verseNumber = activeVerse?.verseNumber ?? selectedVerseIndex + 1;
         advanceStep();
         appState.marketplaceTab = 'instant';
+        appState.marketplaceSurah = 'Al-Insyirah';
+        appState.marketplaceAyah = String(verseNumber);
         appState.go('murojaah');
     }
 </script>

@@ -3,8 +3,8 @@
     import { i18n } from '$lib/i18n.svelte.js';
     import BottomNav from '../components/BottomNav.svelte';
 
-    let selectedSurah = $state("Al-Insyirah");
-    let selectedAyah = $state("");
+    let selectedSurah = $state(appState.marketplaceSurah);
+    let selectedAyah = $state(appState.marketplaceAyah);
     let selectedGender = $state("all");
     let showDropdown = $state(false);
     let hasSearched = $state(false);

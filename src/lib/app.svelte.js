@@ -42,6 +42,8 @@ export function createAppState() {
     let selectedVerseIndex = $state(0); 
     let selectedNodeType = $state('lesson'); // 'lesson' | 'checkpoint'
     let marketplaceTab = $state('toko');
+    let marketplaceSurah = $state('Al-Insyirah');
+    let marketplaceAyah = $state('');
     let musyrifBalance = $state(1250); // In-memory only — resets on every page load/refresh
     
     // Persistent User Data
@@ -360,6 +362,10 @@ export function createAppState() {
         set selectedNodeType(val) { selectedNodeType = val; },
         get marketplaceTab() { return marketplaceTab; },
         set marketplaceTab(val) { marketplaceTab = val; },
+        get marketplaceSurah() { return marketplaceSurah; },
+        set marketplaceSurah(val) { marketplaceSurah = val; },
+        get marketplaceAyah() { return marketplaceAyah; },
+        set marketplaceAyah(val) { marketplaceAyah = val; },
         get screenLabels() { return screenLabels; },
         get user() { return user; },
         get pendingRewardInfo() { return pendingRewardInfo; },
