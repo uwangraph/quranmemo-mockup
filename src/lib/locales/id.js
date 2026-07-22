@@ -554,6 +554,13 @@ export default {
     "lesson.streak_overlay_title": "Luar Biasa!",
     "lesson.streak_overlay_desc": "5 Jawaban benar berturut-turut. Terus pertahankan fokusmu!",
     "lesson.streak_overlay_label": "Streak",
-    "lesson.mic_error": "Gagal mengakses mikrofon. Pastikan Anda memberikan izin akses mikrofon di browser."
+    "lesson.mic_error": "Gagal mengakses mikrofon. Pastikan Anda memberikan izin akses mikrofon di browser.",
+
+    "lesson.step_record": "Rekam",
+    "lesson.step_qari": "Dengar Qari",
+    "lesson.step_compare": "Bandingkan",
+    "lesson.press_to_record": "Tekan untuk merekam suara",
+    "lesson.recording_active": "Sedang merekam suara Anda...",
+    "lesson.comparison_done": "Perbandingan selesai!"
 
 };

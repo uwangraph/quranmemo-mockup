@@ -552,6 +552,13 @@ export default {
     "lesson.streak_overlay_title": "Amazing!",
     "lesson.streak_overlay_desc": "5 correct answers in a row. Keep maintaining your focus!",
     "lesson.streak_overlay_label": "Streak",
-    "lesson.mic_error": "Failed to access microphone. Please grant microphone permission in your browser."
+    "lesson.mic_error": "Failed to access microphone. Please grant microphone permission in your browser.",
+
+    "lesson.step_record": "Record",
+    "lesson.step_qari": "Listen to Qari",
+    "lesson.step_compare": "Compare",
+    "lesson.press_to_record": "Press to record your voice",
+    "lesson.recording_active": "Recording your voice...",
+    "lesson.comparison_done": "Comparison complete!"
 
 };
