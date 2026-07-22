@@ -25,7 +25,7 @@ export default {
     "screen.admin-musyrif": "مراقبة المشرفين",
 
     "marking.you": "أنت",
-    "marking.live_tasmi": "تسميع الذكاء الاصطناعي المباشر",
+    "marking.live_tasmi": "التسميع المباشر بالنظام",
 
     "learn.title": "قرآن ميمو",
     "learn.unit": "الوحدة ١",
@@ -121,9 +121,9 @@ export default {
     "lesson.instruct_setor_full": "اضغط على زر الميكروفون، ثم احفظ الآية {verse} كاملة دون الاستعانة بالنص.",
     "lesson.instruct_recall": "اضغط على الميكروفون واقرأ الآية {verse} التي حفظتها للتو بالكامل من ذاكرتك.",
     "lesson.instruct_link": "اضغط على الميكروفون واقرأ <strong>الآية {prev}</strong> متبوعة <strong>بالآية {curr}</strong> بالتتابع دون انقطاع.",
-    "lesson.tasmi_listening_full": "تسميع الذكاء الاصطناعي يستمع إلى قراءتك...",
-    "lesson.tasmi_listening_recall": "تسميع الذكاء الاصطناعي يستمع إلى حفظك الجديد...",
-    "lesson.tasmi_listening_link": "تسميع الذكاء الاصطناعي يستمع إلى ربط الآيات...",
+    "lesson.tasmi_listening_full": "نظام التسميع يستمع إلى قراءتك...",
+    "lesson.tasmi_listening_recall": "نظام التسميع يستمع إلى حفظك الجديد...",
+    "lesson.tasmi_listening_link": "نظام التسميع يستمع إلى ربط الآيات...",
     "lesson.badge_mushaf": "قراءة المصحف",
     "lesson.badge_transcription": "نسخ الحفظ",
     "lesson.badge_linking": "الحفظ المتصل",

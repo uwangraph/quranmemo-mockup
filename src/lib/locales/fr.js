@@ -25,7 +25,7 @@ export default {
     "screen.admin-musyrif": "Surveiller Musyrif",
 
     "marking.you": "Vous",
-    "marking.live_tasmi": "TASMI' AI EN DIRECT",
+    "marking.live_tasmi": "TASMI' SYSTÈME EN DIRECT",
 
     "learn.title": "QuranMemo",
     "learn.unit": "Unité 1",
@@ -121,9 +121,9 @@ export default {
     "lesson.instruct_setor_full": "Appuyez sur le micro, puis récitez le verset {verse} entièrement sans aide textuelle.",
     "lesson.instruct_recall": "Appuyez sur le micro et récitez de mémoire le verset {verse} que vous venez d'apprendre.",
     "lesson.instruct_link": "Appuyez sur le micro et récitez le <strong>verset {prev}</strong> suivi du <strong>verset {curr}</strong> à la suite sans interruption.",
-    "lesson.tasmi_listening_full": "Tasmi AI écoute votre récitation...",
-    "lesson.tasmi_listening_recall": "Tasmi AI écoute votre nouvelle mémorisation...",
-    "lesson.tasmi_listening_link": "Tasmi AI écoute la liaison des versets...",
+    "lesson.tasmi_listening_full": "Le système Tasmi écoute votre récitation...",
+    "lesson.tasmi_listening_recall": "Le système Tasmi écoute votre nouvelle mémorisation...",
+    "lesson.tasmi_listening_link": "Le système Tasmi écoute la liaison des versets...",
     "lesson.badge_mushaf": "RÉCITATION DU MUSHAF",
     "lesson.badge_transcription": "TRANSCRIPTION DE LA MÉMORISATION",
     "lesson.badge_linking": "MÉMORISATION LIÉE",

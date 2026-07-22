@@ -27,7 +27,7 @@ export default {
     "screen.admin-musyrif": "Monitor Musyrif",
 
     "marking.you": "You",
-    "marking.live_tasmi": "LIVE TASMI' AI",
+    "marking.live_tasmi": "LIVE TASMI' SYSTEM",
 
     "learn.title": "QuranMemo",
     "learn.unit": "Unit 1",
@@ -132,9 +132,9 @@ export default {
     "lesson.instruct_setor_full": "Press the mic button, then memorize verse {verse} completely without text assistance.",
     "lesson.instruct_recall": "Press the mic and recite verse {verse} that you just memorized fully from memory.",
     "lesson.instruct_link": "Press the mic and recite <strong>verse {prev}</strong> followed by <strong>verse {curr}</strong> sequentially without pausing.",
-    "lesson.tasmi_listening_full": "Tasmi AI is listening to your recitation...",
-    "lesson.tasmi_listening_recall": "Tasmi AI is listening to your new memorization...",
-    "lesson.tasmi_listening_link": "Tasmi AI is listening to the connected verses...",
+    "lesson.tasmi_listening_full": "The Tasmi system is listening to your recitation...",
+    "lesson.tasmi_listening_recall": "The Tasmi system is listening to your new memorization...",
+    "lesson.tasmi_listening_link": "The Tasmi system is listening to the connected verses...",
     "lesson.badge_mushaf": "MUSHAF RECITATION",
     "lesson.badge_transcription": "MEMORIZATION TRANSCRIPT",
     "lesson.badge_linking": "CONNECTED MEMORIZATION",

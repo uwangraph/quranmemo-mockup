@@ -29,7 +29,7 @@ export default {
     "screen.admin-musyrif": "Pemantau Musyrif",
 
     "marking.you": "Anda",
-    "marking.live_tasmi": "TASMI' AI LANGSUNG",
+    "marking.live_tasmi": "TASMI' SISTEM LANGSUNG",
 
     "learn.title": "QuranMemo",
     "learn.unit": "Unit 1",
@@ -134,9 +134,9 @@ export default {
     "lesson.instruct_setor_full": "Tekan tombol mic, lalu hafalkan ayat {verse} secara lengkap tanpa bantuan teks.",
     "lesson.instruct_recall": "Tekan mic dan bacakan ayat {verse} yang baru saja kamu hafal secara penuh dari ingatanmu.",
     "lesson.instruct_link": "Tekan mic dan bacakan <strong>ayat {prev}</strong> dilanjutkan <strong>ayat {curr}</strong> secara berurutan tanpa putus.",
-    "lesson.tasmi_listening_full": "Tasmi AI sedang menyimak bacaan Anda...",
-    "lesson.tasmi_listening_recall": "Tasmi AI sedang menyimak hafalan barumu...",
-    "lesson.tasmi_listening_link": "Tasmi AI menyimak sambungan ayat...",
+    "lesson.tasmi_listening_full": "Sistem Tasmi sedang menyimak bacaan Anda...",
+    "lesson.tasmi_listening_recall": "Sistem Tasmi sedang menyimak hafalan barumu...",
+    "lesson.tasmi_listening_link": "Sistem Tasmi sedang menyimak sambungan ayat...",
     "lesson.badge_mushaf": "BACAAN MUSHAF",
     "lesson.badge_transcription": "TRANSKRIPSI HAFALAN",
     "lesson.badge_linking": "HAFALAN BERSAMBUNG",

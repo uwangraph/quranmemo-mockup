@@ -25,7 +25,7 @@ export default {
     "screen.admin-musyrif": "Duba Musyrif",
 
     "marking.you": "Kai",
-    "marking.live_tasmi": "TASMI' AI KAI TSAYE",
+    "marking.live_tasmi": "TASMI' TSARI KAI TSAYE",
 
     "learn.title": "QuranMemo",
     "learn.unit": "Sashi na 1",
@@ -121,9 +121,9 @@ export default {
     "lesson.instruct_setor_full": "Danna mic, sannan ku karanta aya ta {verse} gabaɗaya ba tare da taimakon rubutu ba.",
     "lesson.instruct_recall": "Danna mic kuma karanta aya ta {verse} da kuka haddace yanzu daga ƙwaƙwalwarku.",
     "lesson.instruct_link": "Danna mic kuma karanta <strong>aya ta {prev}</strong> sannan <strong>aya ta {curr}</strong> a jere ba tare da tsayawa ba.",
-    "lesson.tasmi_listening_full": "Tasmi AI tana sauraron karatunku...",
-    "lesson.tasmi_listening_recall": "Tasmi AI tana sauraron sabuwar haddace ku...",
-    "lesson.tasmi_listening_link": "Tasmi AI tana sauraron haɗin ayoyi...",
+    "lesson.tasmi_listening_full": "Tsarin Tasmi yana sauraron karatunku...",
+    "lesson.tasmi_listening_recall": "Tsarin Tasmi yana sauraron sabuwar haddace ku...",
+    "lesson.tasmi_listening_link": "Tsarin Tasmi yana sauraron haɗin ayoyi...",
     "lesson.badge_mushaf": "KARATUN MUSHAF",
     "lesson.badge_transcription": "NUNA HADDACE",
     "lesson.badge_linking": "HADDA MAI HAƊE",
