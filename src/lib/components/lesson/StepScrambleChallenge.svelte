@@ -212,7 +212,7 @@
         </div>
     {:else if type === 'puzzle_two'}
         <button class="latin-toggle-badge" onclick={() => showLatin = !showLatin} title={i18n.t('lesson.toggle_latin')} style="align-self: flex-end; margin-bottom: 4px;">
-            🔠 Latin: {showLatin ? 'ON' : 'OFF'}
+            {i18n.t('scramble.latin_toggle')}: {showLatin ? i18n.t('scramble.latin_on') : i18n.t('scramble.latin_off')}
         </button>
         <div class="challenge-arabic-blank Amiri inline-puzzle-container">
             {#each (activeVerse?.twoBlank ?? '').split(' ') as part, i}

@@ -1667,25 +1667,25 @@
                 <div class="lesson-footer-actions" style="margin-top: auto; padding: 12px 0 0;">
                     {#if currentStepConfig.type === 'musyrif_submission'}
                         <button class="btn-duo btn-green" onclick={goToMusyrifSubmission}>
-                            <i class="ti ti-calendar-event"></i> LANJUT KE SETORAN MUSYRIF
+                            <i class="ti ti-calendar-event"></i> {i18n.t('lesson.btn_musyrif_submission')}
                         </button>
                     {:else if currentStepConfig.type === 'read_listen'}
                         <button class="btn-duo btn-green" onclick={checkAnswer}>
-                            SAYA SUDAH HAFAL & PAHAM
+                            {i18n.t('lesson.btn_understood')}
                         </button>
                     {:else if (currentStepConfig.type === 'setor_full' || currentStepConfig.type === 'recall_level1' || currentStepConfig.type === 'recall_level2') && recordState === 'recorded'}
                         {#if !isChecked}
                             <div style="display: flex; gap: 12px; width: 100%;">
                                 <button class="btn-duo" style="flex: 1; background: #fee2e2; border-color: #fca5a5; color: #b91c1c; border-bottom-width: 4px; padding: 12px 8px; font-size: 13px; text-transform: uppercase;" onclick={() => { recordState = 'idle'; isPlayingRecorded = false; if (audio) audio.pause(); isPlaying = false; }}>
-                                    ULANG REKAM
+                                    {i18n.t('lesson.btn_re_record')}
                                 </button>
                                 <button class="btn-duo btn-green" style="flex: 1; padding: 12px 8px; font-size: 13px; text-transform: uppercase;" onclick={() => { isCorrect = true; checkAnswer(); }}>
-                                    CUKUP & LANJUT
+                                    {i18n.t('lesson.btn_done_continue')}
                                 </button>
                             </div>
                         {:else}
                             <button class="btn-duo btn-green" onclick={checkAnswer}>
-                                LANJUTKAN
+                                {i18n.t('lesson.btn_continue')}
                             </button>
                         {/if}
                     {:else}
@@ -1697,7 +1697,7 @@
                             onclick={checkAnswer}
                             disabled={!isChecked && selectedOptionIdx === null && recallSelectedOptionIdx === null && selectedWords.length === 0 && recordState !== 'recorded'}
                         >
-                            {isChecked ? (isCorrect ? 'LANJUTKAN' : 'COBA LAGI') : 'PERIKSA JAWABAN'}
+                            {isChecked ? (isCorrect ? i18n.t('lesson.btn_continue') : i18n.t('lesson.btn_try_again')) : i18n.t('lesson.btn_check_answer')}
                         </button>
                     {/if}
                 </div>
@@ -1728,7 +1728,7 @@
             </div>
             <div class="streak-footer">
                 <button class="btn-duo btn-green streak-continue-btn" onclick={() => { showStreakOverlay = false; advanceStep(); }}>
-                    LANJUTKAN
+                    {i18n.t('lesson.btn_continue')}
                 </button>
             </div>
         </div>

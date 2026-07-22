@@ -26,7 +26,7 @@
             {#if type === 'setor_full'}📖{:else if type === 'recall_level1'}🏆{:else}🔗{/if}
         </div>
         <div class="mic-container">
-            <button class="mic-circle-btn giant" onclick={startSimulatedRecording} disabled={isChecked} title={i18n.t('lesson.mic_title') || 'Mulai Setoran'}>
+            <button class="mic-circle-btn giant" onclick={startSimulatedRecording} disabled={isChecked} title={i18n.t('lesson.mic_title')}>
                 <i class="ti ti-microphone"></i>
             </button>
         </div>
@@ -103,7 +103,7 @@
                         disabled={isChecked}
                     >
                         <i class="ti {isPlaying || isPlayingRecorded ? 'ti-player-pause-filled' : 'ti-headphones-filled'}"></i>
-                        {isPlaying ? i18n.t('lesson.playing_qari') : (isPlayingRecorded ? i18n.t('lesson.playing_my_record') : 'Bandingkan Bacaan')}
+                        {isPlaying ? i18n.t('lesson.playing_qari') : (isPlayingRecorded ? i18n.t('lesson.playing_my_record') : i18n.t('lesson.compare_reading'))}
                     </button>
                 {:else}
                     <button 

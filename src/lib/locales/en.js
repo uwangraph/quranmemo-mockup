@@ -469,14 +469,14 @@ export default {
     "lesson.step4_desc": "Guess and complete the beginning of the verse that has been intentionally removed.",
     "lesson.step5_title": "5. Mushaf Memory - Missing Back",
     "lesson.step5_desc": "Visual Memory! Guess and complete the word at the very end of this verse.",
-    "lesson.step6_title": "6. Audio to Text - Arrange Words",
-    "lesson.step6_desc": "Listen to the verse excerpt, then arrange the scrambled words below into the correct order.",
-    "lesson.step7_title": "7. Puzzle 01 - 1 Missing Word",
-    "lesson.step7_desc": "Test your precision! One word in the middle is missing, choose the right option to complete it.",
-    "lesson.step8_title": "8. Puzzle 02 - 2 Missing Words",
-    "lesson.step8_desc": "Intermediate challenge! Two words are missing in the middle, choose both words in order.",
-    "lesson.step9_title": "9. Puzzle 03 - All Words Scrambled",
-    "lesson.step9_desc": "Final challenge! All words are completely scrambled. Rearrange them into a complete verse without help.",
+    "lesson.step6_title": "6. Puzzle 01 - 1 Missing Word",
+    "lesson.step6_desc": "Test your precision! One word in the middle is missing, choose the right option to complete it.",
+    "lesson.step7_title": "7. Puzzle 02 - 2 Missing Words",
+    "lesson.step7_desc": "Intermediate challenge! Two words are missing in the middle, choose both words in order.",
+    "lesson.step8_title": "8. Puzzle 03 - All Words Scrambled",
+    "lesson.step8_desc": "Final challenge! All words are completely scrambled. Rearrange them into a complete verse without help.",
+    "lesson.step9_title": "9. One Verse!",
+    "lesson.step9_desc": "Graduation Test! Submit this verse's memorization fully via mic without text or visual audio assistance.",
     "lesson.step10_title": "10. One Verse!",
     "lesson.step10_desc": "Graduation Test! Submit this verse's memorization fully via mic without text or visual audio assistance!",
     "lesson.step11_title": "11. Recall - Level 1",
@@ -773,5 +773,7 @@ export default {
     ,"lesson.ready_submission": "Ready to submit to a Musyrif?"
     ,"lesson.submission_desc": "Choose a Musyrif and submission schedule to continue memorization with direct guidance."
     ,"lesson.self_practice_done": "Independent practice completed"
+    ,"lesson.btn_musyrif_submission": "Continue to Musyrif Submission"
+    ,"lesson.compare_reading": "Compare Recitations"
 
 };

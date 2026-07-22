@@ -48,7 +48,7 @@
         </p>
         
         <div class="mic-container">
-            <button class="mic-circle-btn giant" class:active={recordState === 'recording'} onclick={startSimulatedRecording} disabled={isChecked} title={i18n.t('lesson.mic_title_voice') || 'Mulai Setoran Suara'}>
+            <button class="mic-circle-btn giant" class:active={recordState === 'recording'} onclick={startSimulatedRecording} disabled={isChecked} title={i18n.t('lesson.mic_title_voice')}>
                 <i class="ti ti-microphone"></i>
             </button>
         </div>

@@ -471,14 +471,14 @@ export default {
     "lesson.step4_desc": "Tebak dan lengkapi bagian awal ayat yang sengaja dihilangkan.",
     "lesson.step5_title": "5. Memori Mushaf - Hilang di Belakang",
     "lesson.step5_desc": "Memori Visual! Tebak dan lengkapi kata di bagian paling belakang ayat ini.",
-    "lesson.step6_title": "6. Audio ke Teks - Susun Kata",
-    "lesson.step6_desc": "Dengarkan lantunan potongan ayat, lalu susun kata-kata acak di bawah menjadi urutan yang benar.",
-    "lesson.step7_title": "7. Puzzle 01 - 1 Kata Hilang",
-    "lesson.step7_desc": "Uji ketelitian! Satu kata di bagian tengah hilang, pilih opsi yang tepat untuk melengkapinya.",
-    "lesson.step8_title": "8. Puzzle 02 - 2 Kata Hilang",
-    "lesson.step8_desc": "Tantangan menengah! Dua kata hilang di tengah ayat, pilih kedua kata secara berurutan.",
-    "lesson.step9_title": "9. Puzzle 03 - Semua Kata Diacak",
-    "lesson.step9_desc": "Tantangan akhir! Semua kata diacak secara total. Susun kembali menjadi ayat yang utuh tanpa bantuan.",
+    "lesson.step6_title": "6. Puzzle 01 - 1 Kata Hilang",
+    "lesson.step6_desc": "Uji ketelitian! Satu kata di bagian tengah hilang, pilih opsi yang tepat untuk melengkapinya.",
+    "lesson.step7_title": "7. Puzzle 02 - 2 Kata Hilang",
+    "lesson.step7_desc": "Tantangan menengah! Dua kata hilang di tengah ayat, pilih kedua kata secara berurutan.",
+    "lesson.step8_title": "8. Puzzle 03 - Semua Kata Diacak",
+    "lesson.step8_desc": "Tantangan akhir! Semua kata diacak secara total. Susun kembali menjadi ayat yang utuh tanpa bantuan.",
+    "lesson.step9_title": "9. Satu Ayat Utuh!",
+    "lesson.step9_desc": "Ujian Kelulusan! Setor hafalan ayat ini sepenuhnya lewat mic tanpa bantuan teks atau audio visual.",
     "lesson.step10_title": "10. Satu Ayat Utuh!",
     "lesson.step10_desc": "Ujian Kelulusan! Setor hafalan ayat ini sepenuhnya lewat mic tanpa bantuan teks atau audio visual!",
     "lesson.step11_title": "11. Ulang Memori - Level 1",
@@ -773,5 +773,7 @@ export default {
     ,"lesson.ready_submission": "Siap Setor ke Musyrif?"
     ,"lesson.submission_desc": "Pilih musyrif dan jadwal setoran untuk melanjutkan hafalanmu dengan bimbingan langsung."
     ,"lesson.self_practice_done": "Latihan mandiri sudah selesai"
+    ,"lesson.btn_musyrif_submission": "Lanjut ke Setoran Musyrif"
+    ,"lesson.compare_reading": "Bandingkan Bacaan"
 
 };
