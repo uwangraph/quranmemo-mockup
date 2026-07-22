@@ -465,5 +465,13 @@ export default {
     "lesson.comparison_done": "Comparaison terminée! Prêt à continuer.",
     "lesson.compare_btn": "Comparer",
     "lesson.listening_qari": "Écoute du Qari...",
-    "lesson.retry_prefix": "(Reprise) "
+    "lesson.retry_prefix": "(Reprise) ",
+    "quran.94_1_translation": "Ne t'avons-Nous pas ouvert ta poitrine ?",
+    "quran.94_2_translation": "Et ne t'avons-Nous pas déchargé de ton fardeau,",
+    "quran.94_3_translation": "qui accablait ton dos,",
+    "quran.94_4_translation": "et élevé pour toi ta renommée ?",
+    "quran.94_5_translation": "Certes, avec la difficulté vient la facilité,",
+    "quran.94_6_translation": "certes, avec la difficulté vient la facilité.",
+    "quran.94_7_translation": "Lorsque tu as achevé ta tâche, efforce-toi encore,",
+    "quran.94_8_translation": "et tourne ton espérance vers ton Seigneur seul."
 };

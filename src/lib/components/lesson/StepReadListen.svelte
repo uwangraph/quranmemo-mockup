@@ -57,7 +57,7 @@
     {#if appState.user.showLatin}
         <div class="translit-focus-text">"{activeVerse.transliteration}"</div>
     {/if}
-    <div class="trans-focus-text">{activeVerse.translation}</div>
+    <div class="trans-focus-text">{i18n.t(activeVerse.translationKey)}</div>
 
     <!-- Looping Selector Dropdown (Custom) -->
     <div class="loop-selector-row">

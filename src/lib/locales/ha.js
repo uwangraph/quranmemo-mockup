@@ -411,5 +411,13 @@ export default {
     "lesson.comparison_done": "Kwatantawa ya ƙare! Shirye don ci gaba.",
     "lesson.compare_btn": "Kwatanta",
     "lesson.listening_qari": "Ana sauraron Qari...",
-    "lesson.retry_prefix": "(Sake) "
+    "lesson.retry_prefix": "(Sake) ",
+    "quran.94_1_translation": "Shin, ba Mu yalwata ƙirjinka ba?",
+    "quran.94_2_translation": "Kuma Mun sauke maka nauyinka,",
+    "quran.94_3_translation": "wanda ya nauyaya bayanka,",
+    "quran.94_4_translation": "Kuma Mun ɗaukaka ambatanka a gare ka.",
+    "quran.94_5_translation": "Lalle tare da wahala akwai sauƙi,",
+    "quran.94_6_translation": "lalle tare da wahala akwai sauƙi.",
+    "quran.94_7_translation": "Idan ka gama, sai ka yi ƙoƙari,",
+    "quran.94_8_translation": "kuma ga Ubangijinka ka mai da bege."
 };

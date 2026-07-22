@@ -466,5 +466,13 @@ export default {
     "lesson.comparison_done": "اكتملت المقارنة! جاهز للمتابعة.",
     "lesson.compare_btn": "قارن",
     "lesson.listening_qari": "يستمع إلى القارئ...",
-    "lesson.retry_prefix": "(إعادة) "
+    "lesson.retry_prefix": "(إعادة) ",
+    "quran.94_1_translation": "ألم نشرح لك صدرك؟",
+    "quran.94_2_translation": "ووضعنا عنك وزرك،",
+    "quran.94_3_translation": "الذي أنقض ظهرك،",
+    "quran.94_4_translation": "ورفعنا لك ذكرك،",
+    "quran.94_5_translation": "فإن مع العسر يسراً،",
+    "quran.94_6_translation": "إن مع العسر يسراً،",
+    "quran.94_7_translation": "فإذا فرغت فانصب،",
+    "quran.94_8_translation": "وإلى ربك فارغب."
 };

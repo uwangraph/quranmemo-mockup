@@ -775,5 +775,13 @@ export default {
     ,"lesson.self_practice_done": "Latihan mandiri sudah selesai"
     ,"lesson.btn_musyrif_submission": "Lanjut ke Setoran Musyrif"
     ,"lesson.compare_reading": "Bandingkan Bacaan"
+    ,"quran.94_1_translation": "Bukankah Kami telah melapangkan dadamu (untukmu)?"
+    ,"quran.94_2_translation": "Dan Kami pun telah menurunkan bebanmu darimu,"
+    ,"quran.94_3_translation": "yang memberatkan punggungmu,"
+    ,"quran.94_4_translation": "dan Kami tinggikan sebutan (nama)mu bagimu."
+    ,"quran.94_5_translation": "Maka sesungguhnya beserta kesulitan ada kemudahan,"
+    ,"quran.94_6_translation": "sesungguhnya beserta kesulitan ada kemudahan."
+    ,"quran.94_7_translation": "Maka apabila engkau telah selesai dari suatu urusan, tetaplah bekerja keras untuk urusan yang lain,"
+    ,"quran.94_8_translation": "dan hanya kepada Tuhanmulah engkau berharap."
 
 };

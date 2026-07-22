@@ -20,7 +20,7 @@
         {
             verseNumber: 1,
             arabic: "أَلَمْ نَشْرَحْ لَكَ صَدْرَكَ",
-            translation: "Bukankah Kami telah melapangkan dadamu (untukmu)?",
+            translationKey: "quran.94_1_translation",
             transliteration: "Alam nashrah laka shadrak",
             audio: "https://everyayah.com/data/Husary_128kbps/094001.mp3",
             words: ["أَلَمْ", "نَشْرَحْ", "لَكَ", "صَدْرَكَ"],
@@ -43,7 +43,7 @@
         {
             verseNumber: 2,
             arabic: "وَوَضَعْنَا عَنكَ وِزْرَكَ",
-            translation: "dan Kami pun telah menurunkan bebanmu darimu,",
+            translationKey: "quran.94_2_translation",
             transliteration: "Wa wadha'na 'anka wizrak",
             audio: "https://everyayah.com/data/Husary_128kbps/094002.mp3",
             words: ["وَوَضَعْنَا", "عَنكَ", "وِزْرَكَ"],
@@ -66,7 +66,7 @@
         {
             verseNumber: 3,
             arabic: "ٱلَّذِىٓ أَنقَضَ ظَهْرَكَ",
-            translation: "yang memberatkan punggungmu,",
+            translationKey: "quran.94_3_translation",
             transliteration: "Alladzi anqadha zhahrak",
             audio: "https://everyayah.com/data/Husary_128kbps/094003.mp3",
             words: ["ٱلَّذِىٓ", "أَنقَضَ", "ظَهْرَكَ"],
@@ -89,7 +89,7 @@
         {
             verseNumber: 4,
             arabic: "وَرَفَعْنَا لَكَ ذِكْرَكَ",
-            translation: "dan Kami tinggikan sebutan (nama)mu bagimu.",
+            translationKey: "quran.94_4_translation",
             transliteration: "Wa rafa'na laka dzikrak",
             audio: "https://everyayah.com/data/Husary_128kbps/094004.mp3",
             words: ["وَرَفَعْنَا", "لَكَ", "ذِكْرَكَ"],
@@ -112,7 +112,7 @@
         {
             verseNumber: 5,
             arabic: "فَإِنَّ مَعَ ٱلْعُسْرِ يُسْرًا",
-            translation: "Maka sesungguhnya beserta kesulitan ada kemudahan,",
+            translationKey: "quran.94_5_translation",
             transliteration: "Fa inna ma'al 'usri yusra",
             audio: "https://everyayah.com/data/Husary_128kbps/094005.mp3",
             words: ["فَإِنَّ", "مَعَ", "ٱلْعُسْرِ", "يُسْرًا"],
@@ -135,7 +135,7 @@
         {
             verseNumber: 6,
             arabic: "إِنَّ مَعَ ٱلْعُسْرِ يُسْرًا",
-            translation: "sesungguhnya beserta kesulitan ada kemudahan.",
+            translationKey: "quran.94_6_translation",
             transliteration: "Inna ma'al 'usri yusra",
             audio: "https://everyayah.com/data/Husary_128kbps/094006.mp3",
             words: ["إِنَّ", "مَعَ", "ٱلْعُسْرِ", "يُسْرًا"],
@@ -158,7 +158,7 @@
         {
             verseNumber: 7,
             arabic: "فَإِذَا فَرَغْتَ فَٱنصَبْ",
-            translation: "Maka apabila engkau telah selesai (dari sesuatu urusan), tetaplah bekerja keras (untuk urusan yang lain),",
+            translationKey: "quran.94_7_translation",
             transliteration: "Fa idza faraghta fanshab",
             audio: "https://everyayah.com/data/Husary_128kbps/094007.mp3",
             words: ["فَإِذَا", "فَرَغْتَ", "فَٱنصَبْ"],
@@ -181,7 +181,7 @@
         {
             verseNumber: 8,
             arabic: "وَإِلَىٰ رَبِّكَ فَٱرْغَبْ",
-            translation: "dan hanya kepada Tuhanmulah engkau berharap.",
+            translationKey: "quran.94_8_translation",
             transliteration: "Wa ila rabbika farghab",
             audio: "https://everyayah.com/data/Husary_128kbps/094008.mp3",
             words: ["وَإِلَىٰ", "رَبِّكَ", "فَٱرْغَبْ"],

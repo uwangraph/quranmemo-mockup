@@ -775,5 +775,13 @@ export default {
     ,"lesson.self_practice_done": "Independent practice completed"
     ,"lesson.btn_musyrif_submission": "Continue to Musyrif Submission"
     ,"lesson.compare_reading": "Compare Recitations"
+    ,"quran.94_1_translation": "Have We not expanded your chest for you?"
+    ,"quran.94_2_translation": "And removed from you your burden,"
+    ,"quran.94_3_translation": "which weighed heavily upon your back,"
+    ,"quran.94_4_translation": "and raised high your renown for you?"
+    ,"quran.94_5_translation": "So surely with hardship comes ease."
+    ,"quran.94_6_translation": "Surely with hardship comes ease."
+    ,"quran.94_7_translation": "So when you have finished your duties, strive diligently,"
+    ,"quran.94_8_translation": "and turn your hopes to your Lord alone."
 
 };

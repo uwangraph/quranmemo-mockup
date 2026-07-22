@@ -470,5 +470,13 @@ export default {
     "lesson.comparison_done": "Perbandingan selesai! Sedia untuk diteruskan.",
     "lesson.compare_btn": "Bandingkan",
     "lesson.listening_qari": "Mendengar Qari...",
-    "lesson.retry_prefix": "(Ulang) "
+    "lesson.retry_prefix": "(Ulang) ",
+    "quran.94_1_translation": "Bukankah Kami telah melapangkan dadamu?",
+    "quran.94_2_translation": "Dan Kami telah mengangkat bebanmu daripadamu,",
+    "quran.94_3_translation": "yang memberatkan belakangmu,",
+    "quran.94_4_translation": "dan Kami tinggikan sebutanmu bagimu.",
+    "quran.94_5_translation": "Sesungguhnya bersama kesulitan ada kemudahan,",
+    "quran.94_6_translation": "sesungguhnya bersama kesulitan ada kemudahan.",
+    "quran.94_7_translation": "Maka apabila engkau telah selesai, bersungguh-sungguhlah,",
+    "quran.94_8_translation": "dan kepada Tuhanmu sahaja engkau berharap."
 };
