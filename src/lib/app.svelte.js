@@ -78,16 +78,16 @@ export function createAppState() {
             { id: 'b6', icon: '👑', name: 'Istiqomah Sejati', desc: 'Mencapai 365 hari streak berturut-turut. Lencana Permanen!', earned: false }
         ],
         certificates: [
-            { id: 'c1', title: 'Sertifikat Hafalan Juz 30', type: 'Hafalan', date: '2026-01-15', icon: '📜' },
-            { id: 'c2', title: 'Sertifikat Tahsin Dasar', type: 'Tahsin', date: '2025-11-20', icon: '🎓' }
+            { id: 'c1', title: 'certificate.juz30_title', type: 'certificate.memorization', date: '2026-01-15', icon: '📜' },
+            { id: 'c2', title: 'certificate.tahsin_title', type: 'certificate.tahsin', date: '2025-11-20', icon: '🎓' }
         ],
         dailyQuests: {
             date: null,
             completedAll: false,
             quests: [
-                { id: 'q1', text: 'Selesaikan 1 tahap hafalan', max: 1, current: 0, xp: 10, claimed: false },
-                { id: 'q2', text: 'Dapatkan 3 jawaban benar', max: 3, current: 0, xp: 10, claimed: false },
-                { id: 'q3', text: 'Mulai sesi hari ini', max: 1, current: 0, xp: 15, claimed: false }
+                { id: 'q1', text: 'quest.complete_step', max: 1, current: 0, xp: 10, claimed: false },
+                { id: 'q2', text: 'quest.three_correct', max: 3, current: 0, xp: 10, claimed: false },
+                { id: 'q3', text: 'quest.start_today', max: 1, current: 0, xp: 15, claimed: false }
             ]
         }
     }));
@@ -113,14 +113,14 @@ export function createAppState() {
         { id: 'b6', icon: '👑', name: 'Istiqomah Sejati', desc: 'Mencapai 365 hari streak berturut-turut. Lencana Permanen!', earned: false }
     ];
     if (user.certificates === undefined) user.certificates = [
-        { id: 'c1', title: 'Sertifikat Hafalan Juz 30', type: 'Hafalan', date: '2026-01-15', icon: '📜' },
-        { id: 'c2', title: 'Sertifikat Tahsin Dasar', type: 'Tahsin', date: '2025-11-20', icon: '🎓' }
+        { id: 'c1', title: 'certificate.juz30_title', type: 'certificate.memorization', date: '2026-01-15', icon: '📜' },
+        { id: 'c2', title: 'certificate.tahsin_title', type: 'certificate.tahsin', date: '2025-11-20', icon: '🎓' }
     ];
     
     const defaultQuests = [
-        { id: 'q1', text: 'Selesaikan 1 tahap hafalan', max: 1, current: 0, xp: 10, claimed: false },
-        { id: 'q2', text: 'Dapatkan 3 jawaban benar tanpa salah', max: 3, current: 0, xp: 10, claimed: false },
-        { id: 'q3', text: 'Selesaikan 1 Murojaah instan', max: 1, current: 0, xp: 15, claimed: false }
+        { id: 'q1', text: 'quest.complete_step', max: 1, current: 0, xp: 10, claimed: false },
+        { id: 'q2', text: 'quest.three_correct_no_mistake', max: 3, current: 0, xp: 10, claimed: false },
+        { id: 'q3', text: 'quest.complete_instant_review', max: 1, current: 0, xp: 15, claimed: false }
     ];
     if (user.dailyQuests === undefined || user.dailyQuests.date === undefined) {
         user.dailyQuests = { date: null, completedAll: false, quests: defaultQuests };
@@ -140,9 +140,9 @@ export function createAppState() {
                 date: todayStr,
                 completedAll: false,
                 quests: [
-                    { id: 'q1', text: 'Selesaikan 1 tahap hafalan', max: 1, current: 0, xp: 10, claimed: false },
-                    { id: 'q2', text: 'Dapatkan 3 jawaban benar beruntun', max: 3, current: 0, xp: 10, claimed: false },
-                    { id: 'q3', text: 'Selesaikan 1 Murojaah instan', max: 1, current: 0, xp: 15, claimed: false }
+                    { id: 'q1', text: 'quest.complete_step', max: 1, current: 0, xp: 10, claimed: false },
+                    { id: 'q2', text: 'quest.three_correct_streak', max: 3, current: 0, xp: 10, claimed: false },
+                    { id: 'q3', text: 'quest.complete_instant_review', max: 1, current: 0, xp: 15, claimed: false }
                 ]
             };
             saveUser();

@@ -25,7 +25,10 @@
     });
 
     // ── Streak: visualisasi 7 hari ──
-    const dayLabels = ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'];
+    const dayLabels = $derived([
+        i18n.t('profile.day_mon'), i18n.t('profile.day_tue'), i18n.t('profile.day_wed'),
+        i18n.t('profile.day_thu'), i18n.t('profile.day_fri'), i18n.t('profile.day_sat'), i18n.t('profile.day_sun')
+    ]);
 
     // ── Badges ──
     const earnedBadges = $derived(user.badges?.filter(b => b.earned) ?? []);
@@ -41,7 +44,7 @@
     <!-- Topbar -->
     <div class="topbar">
         <span style="font-size: 16px; font-weight: 900; color: #3c3c3c; flex: 1; text-align: center;">
-            Profil Saya
+            {i18n.t('profile.title')}
         </span>
         <button style="background:none; border:none; color:#afafaf; cursor:pointer;">
             <i class="ti ti-settings" style="font-size:20px;"></i>
@@ -62,28 +65,28 @@
             </div>
             <div style="text-align: center; margin-top: 16px;">
                 <div style="font-size: 22px; font-weight: 900; color: #1e293b;">{user.name}</div>
-                <div class="user-joined">Bergabung sejak 2024</div>
+                <div class="user-joined">{i18n.t('profile.joined_year', {year: 2024})}</div>
             </div>
             <!-- Mini stats row -->
             <div class="hero-stats">
                 <div class="hero-stat">
                     <span class="hs-val">🔥 {user.streak}</span>
-                    <span class="hs-label">Streak</span>
+                    <span class="hs-label">{i18n.t('profile.streak')}</span>
                 </div>
                 <div class="hs-divider"></div>
                 <div class="hero-stat">
                     <span class="hs-val">⚡ {user.xp.toLocaleString()}</span>
-                    <span class="hs-label">Total XP</span>
+                    <span class="hs-label">{i18n.t('profile.total_xp')}</span>
                 </div>
                 <div class="hs-divider"></div>
                 <div class="hero-stat">
                     <span class="hs-val">🏅 {earnedBadges.length}</span>
-                    <span class="hs-label">Lencana</span>
+                    <span class="hs-label">{i18n.t('profile.badges')}</span>
                 </div>
                 <div class="hs-divider"></div>
                 <div class="hero-stat">
                     <span class="hs-val">📜 {certs.length}</span>
-                    <span class="hs-label">Sertifikat</span>
+                    <span class="hs-label">{i18n.t('profile.certificates')}</span>
                 </div>
             </div>
         </div>
@@ -91,7 +94,7 @@
         <!-- ══════════════════════════════════
              1. SCHEDULED BOOKING
         ══════════════════════════════════ -->
-        <div class="section-label">📅 Jadwal Setoran</div>
+        <div class="section-label">📅 {i18n.t('profile.booking')}</div>
         <div class="section-pad">
             {#if booking}
                 <button class="booking-card" onclick={() => appState.go('musyrif')}>
@@ -110,7 +113,7 @@
                                 {new Date(booking.time).toLocaleDateString('id-ID', { weekday:'long', day:'numeric', month:'short' })}
                             </span>
                             <span class="booking-badge">
-                                {hoursLeft() !== null ? (hoursLeft() > 0 ? hoursLeft() + ' jam lagi' : 'Sekarang!') : ''}
+                                {hoursLeft() !== null ? (hoursLeft() > 0 ? i18n.t('profile.hours_left', {hours: hoursLeft()}) : i18n.t('profile.now')) : ''}
                             </span>
                         </div>
                     </div>
@@ -119,8 +122,8 @@
             {:else}
                 <div class="empty-booking">
                     <span style="font-size:32px;">📋</span>
-                    <span>Belum ada jadwal setoran</span>
-                    <button class="btn-create-booking">Buat Jadwal</button>
+                    <span>{i18n.t('profile.no_booking')}</span>
+                    <button class="btn-create-booking">{i18n.t('profile.create_booking')}</button>
                 </div>
             {/if}
         </div>
@@ -128,7 +131,7 @@
         <!-- ══════════════════════════════════
              2. LEVELLING
         ══════════════════════════════════ -->
-        <div class="section-label">📖 Level Hafalan</div>
+        <div class="section-label">📖 {i18n.t('profile.memorization_level')}</div>
         <div class="section-pad">
             <div class="level-card">
                 <div class="level-top">
@@ -144,29 +147,29 @@
                     <div class="level-stat-box" style="background:#eff6ff; border-color:#bfdbfe;">
                         <div class="lsb-icon">📖</div>
                         <div class="lsb-val">Juz {levelInfo.juz}</div>
-                        <div class="lsb-label">Juz</div>
+                        <div class="lsb-label">{i18n.t('profile.juz')}</div>
                     </div>
                     <div class="level-stat-box" style="background:#f0fdf4; border-color:#bbf7d0;">
                         <div class="lsb-icon">🌿</div>
                         <div class="lsb-val">{levelInfo.surah}</div>
-                        <div class="lsb-label">Surah</div>
+                        <div class="lsb-label">{i18n.t('profile.surah')}</div>
                     </div>
                     <div class="level-stat-box" style="background:#fff7ed; border-color:#fed7aa;">
                         <div class="lsb-icon">🎯</div>
                         <div class="lsb-val">{levelInfo.ayatSelesai}/{levelInfo.ayat}</div>
-                        <div class="lsb-label">Ayat</div>
+                        <div class="lsb-label">{i18n.t('profile.verse')}</div>
                     </div>
                 </div>
 
                 <div style="margin-top: 14px;">
                     <div class="progress-header">
-                        <span class="progress-title">Progres Surah {levelInfo.surah}</span>
+                        <span class="progress-title">{i18n.t('profile.surah_progress', {surah: levelInfo.surah})}</span>
                         <span class="progress-pct">{Math.round(levelInfo.progress)}%</span>
                     </div>
                     <div class="prog-bar-bg">
                         <div class="prog-bar-fill" style="width: {levelInfo.progress}%;"></div>
                     </div>
-                    <div class="progress-footer">Ayat {levelInfo.ayatSelesai} dari {levelInfo.ayat} selesai</div>
+                    <div class="progress-footer">{i18n.t('profile.verses_complete', {done: levelInfo.ayatSelesai, total: levelInfo.ayat})}</div>
                 </div>
             </div>
         </div>
@@ -174,29 +177,29 @@
         <!-- ══════════════════════════════════
              3. STREAK
         ══════════════════════════════════ -->
-        <div class="section-label">🔥 Streak Harian</div>
+        <div class="section-label">🔥 {i18n.t('profile.daily_streak')}</div>
         <div class="section-pad">
             <div class="streak-card">
                 <!-- Angka streak utama -->
                 <div class="streak-main-row">
                     <div class="streak-num-block">
                         <div class="streak-num">{user.streak}</div>
-                        <div class="streak-num-label">Hari Berturut-turut</div>
+                        <div class="streak-num-label">{i18n.t('streak.days_count')}</div>
                     </div>
                     <div class="streak-divider"></div>
                     <div class="streak-num-block">
                         <div class="streak-num terbanyak">{user.maxStreak}</div>
-                        <div class="streak-num-label">Terbanyak</div>
+                        <div class="streak-num-label">{i18n.t('profile.best')}</div>
                     </div>
                     <div class="streak-divider"></div>
                     <div class="streak-num-block">
                         <div class="streak-num rukhsah">{user.streakFreezes}</div>
-                        <div class="streak-num-label">Rukhsah</div>
+                        <div class="streak-num-label">{i18n.t('profile.rukhsah')}</div>
                     </div>
                 </div>
 
                 <!-- Visualisasi 7 hari -->
-                <div class="week-label">Pekan Ini</div>
+                <div class="week-label">{i18n.t('streak.this_week')}</div>
                 <div class="week-row">
                     {#each dayLabels as day, i}
                         {@const done = user.streakHistory?.[i] ?? false}
@@ -224,9 +227,9 @@
                     {@const nextMs = [3,7,30,100,365].find(m => m > user.streak) ?? 365}
                     <div class="streak-next-ms">
                         <div class="snm-left">
-                            <span>🎯 Target berikutnya: <strong>{nextMs} hari</strong></span>
+                            <span>🎯 {i18n.t('profile.next_target')}: <strong>{nextMs} {i18n.t('profile.days')}</strong></span>
                         </div>
-                        <div class="snm-right">{nextMs - user.streak} hari lagi</div>
+                        <div class="snm-right">{i18n.t('profile.days_left', {days: nextMs - user.streak})}</div>
                     </div>
                 {/if}
             </div>
@@ -237,10 +240,10 @@
         ══════════════════════════════════ -->
         <div class="profile-tabs" style="margin: 20px 16px 0; display: flex; background: #f1f5f9; border-radius: 12px; padding: 4px;">
             <button class="p-tab {activeTab === 'badge' ? 'active' : ''}" onclick={() => activeTab = 'badge'}>
-                🎖️ Lencana ({earnedBadges.length})
+                🎖️ {i18n.t('profile.badges')} ({earnedBadges.length})
             </button>
             <button class="p-tab {activeTab === 'cert' ? 'active' : ''}" onclick={() => activeTab = 'cert'}>
-                📜 Sertifikat ({certs.length})
+                📜 {i18n.t('profile.certificates')} ({certs.length})
             </button>
         </div>
 
@@ -261,7 +264,7 @@
 
                 <!-- Locked badges -->
                 {#if lockedBadges.length > 0}
-                    <div class="locked-label">Belum Terbuka</div>
+                    <div class="locked-label">{i18n.t('profile.locked')}</div>
                     <div class="badge-grid">
                         {#each lockedBadges as badge}
                             <div class="badge-card locked">
@@ -279,13 +282,13 @@
                             <div class="cert-card">
                                 <div class="cert-icon">{cert.icon}</div>
                                 <div class="cert-info">
-                                    <div class="cert-title">{cert.title}</div>
+                                    <div class="cert-title">{i18n.t(cert.title)}</div>
                                     <div class="cert-meta">
-                                        <span class="cert-type-pill">{cert.type}</span>
+                                        <span class="cert-type-pill">{i18n.t(cert.type)}</span>
                                         <span class="cert-date">{new Date(cert.date).toLocaleDateString('id-ID', { day:'numeric', month:'long', year:'numeric' })}</span>
                                     </div>
                                 </div>
-                                <button class="cert-download-btn" title="Unduh sertifikat">
+                                <button class="cert-download-btn" title={i18n.t('profile.download_certificate')}>
                                     <i class="ti ti-download"></i>
                                 </button>
                             </div>
@@ -294,8 +297,8 @@
                 {:else}
                     <div class="empty-cert">
                         <span style="font-size:36px">🎓</span>
-                        <span>Belum ada sertifikat</span>
-                        <span style="font-size:11px; color:#94a3b8;">Selesaikan hafalan untuk mendapatkan sertifikat pertamamu!</span>
+                        <span>{i18n.t('profile.no_certificates')}</span>
+                        <span style="font-size:11px; color:#94a3b8;">{i18n.t('profile.no_certificates_desc')}</span>
                     </div>
                 {/if}
             {/if}

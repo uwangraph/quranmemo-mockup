@@ -41,8 +41,8 @@
             <div class="main-column">
                 <!-- Mobile only Tabs -->
                 <div class="mobile-tabs">
-                    <button class="m-tab {activeTab === 'misi' ? 'active' : ''}" onclick={() => activeTab = 'misi'}>MISI</button>
-                    <button class="m-tab {activeTab === 'pencapaian' ? 'active' : ''}" onclick={() => activeTab = 'pencapaian'}>TANTANGAN</button>
+                    <button class="m-tab {activeTab === 'misi' ? 'active' : ''}" onclick={() => activeTab = 'misi'}>{i18n.t('quests.tab_missions')}</button>
+                    <button class="m-tab {activeTab === 'pencapaian' ? 'active' : ''}" onclick={() => activeTab = 'pencapaian'}>{i18n.t('quests.tab_challenges')}</button>
                 </div>
 
 {#if activeTab === 'misi'}
@@ -50,8 +50,8 @@
                     <div class="quests-banner">
                         <div class="banner-body">
                             <div class="banner-text">
-                                <h2>Ahlan wa Sahlan!</h2>
-                                <p>Selesaikan misi harian untuk meraih target hafalanmu. Misi akan direset setiap hari.</p>
+                            <h2>{i18n.t('quests.welcome')}</h2>
+                            <p>{i18n.t('quests.daily_desc')}</p>
                             </div>
                             <div class="banner-icon">
                                 <img src="https://cdn-icons-png.flaticon.com/512/3238/3238125.png" alt="Quran" />
@@ -62,7 +62,7 @@
                     <!-- Quests Section -->
                     <div class="quests-section">
                         <div class="section-header">
-                            <h3>Misi Harian</h3>
+                            <h3>{i18n.t('quests.daily')}</h3>
                             <span class="timer"><i class="ti ti-clock"></i> 23 JAM</span>
                         </div>
 
@@ -75,12 +75,12 @@
                                             <span class="check-icon">{quest.claimed ? '✓' : '○'}</span>
                                         </div>
                                         <div class="card-content">
-                                            <div class="quest-title {quest.claimed ? 'completed-text' : ''}">{quest.text}</div>
+                                            <div class="quest-title {quest.claimed ? 'completed-text' : ''}">{i18n.t(quest.text)}</div>
                                             
                                             {#if quest.claimed}
                                                 <div class="reward-pill">+{quest.xp} XP</div>
                                             {:else if quest.current >= quest.max}
-                                                <button class="claim-quest-btn" onclick={() => appState.claimQuestReward(quest.id)}>Klaim</button>
+                                                <button class="claim-quest-btn" onclick={() => appState.claimQuestReward(quest.id)}>{i18n.t('quests.claim')}</button>
                                             {:else}
                                                 <div class="quest-progress-container">
                                                     <div class="progress-bar-bg">
@@ -102,8 +102,8 @@
                                             <div style="background: #d1fae5; border: 2px solid #6ee7b7; border-radius: 12px; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; font-size: 22px;">🎯</div>
                                         </div>
                                         <div class="card-content">
-                                            <div style="font-size:14px; font-weight:900; color:#065f46;">Selesaikan semua misi</div>
-                                            <div style="font-size:12px; font-weight:700; color:#10b981; margin-top:4px;">Total hadiah: <strong>35 XP</strong></div>
+                                            <div style="font-size:14px; font-weight:900; color:#065f46;">{i18n.t('quests.complete_all')}</div>
+                                            <div style="font-size:12px; font-weight:700; color:#10b981; margin-top:4px;">{i18n.t('quests.total_reward', {xp: 35})}</div>
                                         </div>
                                     </div>
                                 {:else}
@@ -112,8 +112,8 @@
                                             <div style="background: #d1fae5; border: 2px solid #6ee7b7; border-radius: 12px; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; font-size: 22px;">✅</div>
                                         </div>
                                         <div class="card-content">
-                                            <div style="font-size:14px; font-weight:900; color:#065f46;">Semua misi selesai!</div>
-                                            <div class="reward-pill" style="margin-top:4px;">35 XP diklaim</div>
+                                            <div style="font-size:14px; font-weight:900; color:#065f46;">{i18n.t('quests.all_complete')}</div>
+                                            <div class="reward-pill" style="margin-top:4px;">{i18n.t('quests.claimed', {xp: 35})}</div>
                                         </div>
                                     </div>
                                 {/if}
@@ -125,7 +125,7 @@
                                     <i class="ti ti-lock"></i>
                                 </div>
                                 <div class="card-content">
-                                    <span class="locked-text">Misi hafalan esok hari</span>
+                                    <span class="locked-text">{i18n.t('quests.tomorrow')}</span>
                                 </div>
                             </div>
                         </div>
@@ -134,7 +134,7 @@
                     <!-- Watch Ads Section -->
                     <div class="quests-section" style="margin-top: 32px;">
                         <div class="section-header">
-                            <h3>Gems Gratis</h3>
+                            <h3>{i18n.t('quests.free_gems')}</h3>
                         </div>
                         <div class="quest-card" style="background: linear-gradient(135deg, #e0f2f1, #ffffff); border-color: #b2dfdb;">
                             <div class="card-icon">
@@ -144,16 +144,16 @@
                             </div>
                             <div class="card-content" style="flex-direction: row; align-items: center; justify-content: space-between;">
                                 <div>
-                                    <div style="font-size:16px; font-weight:900; color:#3c3c3c;">Tonton Iklan (Ads)</div>
-                                    <div style="font-size:13px; font-weight:700; color:#afafaf; margin-top:4px;">Dapatkan +50 Gems</div>
+                                    <div style="font-size:16px; font-weight:900; color:#3c3c3c;">{i18n.t('quests.watch_ad')}</div>
+                                    <div style="font-size:13px; font-weight:700; color:#afafaf; margin-top:4px;">{i18n.t('quests.get_gems', {gems: 50})}</div>
                                 </div>
                                 <button class="btn-watch-ads" onclick={() => {
-                                    customConfirm('Tonton iklan berdurasi pendek untuk mendapatkan 50 Gems?', () => {
+                                    customConfirm(i18n.t('quests.watch_confirm'), () => {
                                         appState.user.gems += 50;
                                         appState.saveUser();
-                                        customAlert('Terima kasih telah menonton iklan! Anda mendapatkan 50 Gems.');
+                                        customAlert(i18n.t('quests.ad_thanks'));
                                     });
-                                }}>Tonton</button>
+                                }}>{i18n.t('quests.watch')}</button>
                             </div>
                         </div>
                     </div>
@@ -167,8 +167,8 @@
                             </div>
                             <div class="badge-circle-large blue-badge"></div>
                         </div>
-                        <h2 class="pencapaian-title">Tantangan bulanan akan segera terbuka!</h2>
-                        <p class="pencapaian-desc">Selesaikan tantangan setiap bulan untuk mendapatkan lencana eksklusif</p>
+                        <h2 class="pencapaian-title">{i18n.t('quests.monthly_soon')}</h2>
+                        <p class="pencapaian-desc">{i18n.t('quests.monthly_desc')}</p>
                     </div>
                 {/if}
             </div>
@@ -178,8 +178,8 @@
                 <div class="monthly-challenge-card">
                     <div class="challenge-header">
                         <div class="challenge-text">
-                            <h3>Tantangan Tilawah Bulan Ini!</h3>
-                            <p>Selesaikan setoran 1 juz penuh bulan ini untuk mendapatkan lencana Khotmil Quran.</p>
+                            <h3>{i18n.t('quests.monthly_title')}</h3>
+                            <p>{i18n.t('quests.monthly_desc_full')}</p>
                         </div>
                         <div class="challenge-icon">
                             <div class="badge-cluster">
@@ -190,17 +190,17 @@
                             </div>
                         </div>
                     </div>
-                    <button class="start-lesson-btn" onclick={() => appState.go('learn')}>MULAI HAFALAN</button>
+                    <button class="start-lesson-btn" onclick={() => appState.go('learn')}>{i18n.t('quests.start_memorization')}</button>
                 </div>
                 
                 <div class="footer-links">
-                    <a href="#">TENTANG KAMI</a>
-                    <a href="#">FITUR</a>
-                    <a href="#">METODOLOGI</a>
-                    <a href="#">PREMIUM</a>
+                    <a href="#">{i18n.t('footer.about')}</a>
+                    <a href="#">{i18n.t('footer.features')}</a>
+                    <a href="#">{i18n.t('footer.methodology')}</a>
+                    <a href="#">{i18n.t('footer.premium')}</a>
                     <br>
-                    <a href="#">KETENTUAN LAYANAN</a>
-                    <a href="#">KEBIJAKAN PRIVASI</a>
+                    <a href="#">{i18n.t('footer.terms')}</a>
+                    <a href="#">{i18n.t('footer.privacy')}</a>
                 </div>
             </div>
         </div>
@@ -218,15 +218,15 @@
                 <div class="alert-title">{alertMessage}</div>
                 {#if alertType === 'confirm'}
                     <div class="alert-buttons">
-                        <button class="btn-cancel" onclick={() => showCustomAlert = false}>Batal</button>
+                        <button class="btn-cancel" onclick={() => showCustomAlert = false}>{i18n.t('common.cancel')}</button>
                         <button class="btn-confirm" onclick={() => {
                             onConfirm();
                             showCustomAlert = false;
-                        }}>Ya</button>
+                        }}>{i18n.t('common.yes')}</button>
                     </div>
                 {:else}
                     <div class="alert-buttons">
-                        <button class="btn-confirm full-width" onclick={() => showCustomAlert = false}>OK</button>
+                        <button class="btn-confirm full-width" onclick={() => showCustomAlert = false}>{i18n.t('common.ok')}</button>
                     </div>
                 {/if}
             </div>

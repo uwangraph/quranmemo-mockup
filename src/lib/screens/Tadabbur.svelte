@@ -58,7 +58,7 @@
         <div class="scroll-content" style="padding: 0 16px;">
             <div style="display: flex; gap: 8px; margin-bottom: 12px; margin-top: 10px;">
                 <button class="btn-duo btn-green small-btn" onclick={() => currentStep = 0}>{i18n.t('tadabbur.guided')}</button>
-                <button class="btn-duo btn-outline small-btn disabled" title="Unlock setelah 10 sesi">{i18n.t('tadabbur.free')}</button>
+                <button class="btn-duo btn-outline small-btn disabled" title={i18n.t('tadabbur.unlock_hint')}>{i18n.t('tadabbur.free')}</button>
             </div>
 
             <div class="verse-card">

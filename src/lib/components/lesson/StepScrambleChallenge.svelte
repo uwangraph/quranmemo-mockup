@@ -211,7 +211,7 @@
             </div>
         </div>
     {:else if type === 'puzzle_two'}
-        <button class="latin-toggle-badge" onclick={() => showLatin = !showLatin} title="Toggle Latin Transliterasi secara instan" style="align-self: flex-end; margin-bottom: 4px;">
+        <button class="latin-toggle-badge" onclick={() => showLatin = !showLatin} title={i18n.t('lesson.toggle_latin')} style="align-self: flex-end; margin-bottom: 4px;">
             🔠 Latin: {showLatin ? 'ON' : 'OFF'}
         </button>
         <div class="challenge-arabic-blank Amiri inline-puzzle-container">

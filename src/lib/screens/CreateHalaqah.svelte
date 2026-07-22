@@ -1,5 +1,6 @@
 <script>
     import { appState } from '$lib/app.svelte.js';
+    import { i18n } from '$lib/i18n.svelte.js';
 
     let halaqahName = $state('');
     let halaqahDesc = $state('');
@@ -7,13 +8,13 @@
     
     function publishHalaqah() {
         if (!halaqahName.trim()) {
-            alert('Nama Halaqah wajib diisi!');
+            alert(i18n.t('halaqah.name_required'));
             return;
         }
         const cap = Math.max(5, Math.min(20, parseInt(halaqahCap) || 20));
         
         // Here we would save to backend/appState
-        alert(`Halaqah Mandiri "${halaqahName}" berhasil dibuat dengan kapasitas ${cap} orang! Anda sekarang adalah Ketua Halaqah.`);
+        alert(i18n.t('halaqah.created', {name: halaqahName, capacity: cap}));
         appState.go('league'); // Navigate back to a relevant page
     }
     
@@ -29,7 +30,7 @@
             <i class="ti ti-arrow-left"></i>
         </button>
         <span style="font-size: 16px; font-weight: 900; color: #3c3c3c; flex: 1; text-align: center;">
-            Buat Halaqah Mandiri
+            {i18n.t('halaqah.create_title')}
         </span>
         <div style="width: 32px;"></div> <!-- Spacer -->
     </div>
@@ -37,28 +38,28 @@
     <div class="scroll-content no-scrollbar" style="padding: 20px;">
         
         <div class="info-alert">
-            <i class="ti ti-book"></i> Halaqah Mandiri adalah grup belajar independen tanpa terikat komunitas besar. Anda otomatis menjadi Ketua Halaqah.
+            <i class="ti ti-book"></i> {i18n.t('halaqah.info')}
         </div>
 
         <div class="step-content" style="margin-top: 24px;">
             <div class="form-group">
-                <label>Nama Halaqah</label>
-                <input type="text" class="input-field" placeholder="Contoh: Halaqah Al-Mulk" bind:value={halaqahName} />
+                <label>{i18n.t('halaqah.name')}</label>
+                <input type="text" class="input-field" placeholder={i18n.t('halaqah.name_placeholder')} bind:value={halaqahName} />
             </div>
             
             <div class="form-group">
-                <label>Deskripsi Singkat (Opsional)</label>
-                <textarea class="input-field" rows="3" placeholder="Fokus hafalan: Juz 30..." bind:value={halaqahDesc}></textarea>
+                <label>{i18n.t('halaqah.description')}</label>
+                <textarea class="input-field" rows="3" placeholder={i18n.t('halaqah.description_placeholder')} bind:value={halaqahDesc}></textarea>
             </div>
             
             <div class="form-group">
-                <label>Kapasitas Anggota</label>
+                <label>{i18n.t('halaqah.capacity')}</label>
                 <div class="cap-wrapper">
                     <input type="range" min="5" max="20" bind:value={halaqahCap} class="range-slider" />
-                    <div class="cap-value">{halaqahCap} Orang</div>
+                    <div class="cap-value">{halaqahCap} {i18n.t('halaqah.people')}</div>
                 </div>
                 <div style="font-size: 11px; color: #94a3b8; margin-top: 6px;">
-                    Jumlah ideal anggota halaqah adalah 10-15 orang agar musyrif bisa fokus.
+                    {i18n.t('halaqah.capacity_hint')}
                 </div>
             </div>
         </div>
@@ -67,7 +68,7 @@
 
     <!-- Bottom Action Bar -->
     <div class="bottom-action-bar">
-        <button class="btn-primary" onclick={publishHalaqah}>Buat Halaqah <i class="ti ti-check"></i></button>
+        <button class="btn-primary" onclick={publishHalaqah}>{i18n.t('halaqah.create')} <i class="ti ti-check"></i></button>
     </div>
 </div>
 

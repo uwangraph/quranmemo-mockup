@@ -112,16 +112,16 @@
         <!-- Balance Card -->
         <div class="balance-card" style="background: linear-gradient(135deg, #1cb0f6, #0898dc); box-shadow: 0 10px 20px rgba(28, 176, 246, 0.2);">
             <div class="balance-info">
-                <div style="font-size: 11px; font-weight: 800; color: #ffffff; opacity: 0.8; text-transform: uppercase;">Total Gems</div>
+                <div style="font-size: 11px; font-weight: 800; color: #ffffff; opacity: 0.8; text-transform: uppercase;">{i18n.t('earnings.total_gems')}</div>
                 <div style="font-size: 32px; font-weight: 900; color: #ffffff; margin: 4px 0;">{appState.musyrifBalance} <i class="ti ti-diamond-filled"></i></div>
                 <div style="display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 800; color: #ffffff;">
                     <span style="background: rgba(255,255,255,0.2); padding: 4px 8px; border-radius: 6px;">≈ Rp {(appState.musyrifBalance * 672).toLocaleString('id-ID')}</span>
-                    <span style="opacity: 0.8;">Estimasi Rupiah</span>
+                    <span style="opacity: 0.8;">{i18n.t('earnings.rupiah_estimate')}</span>
                 </div>
             </div>
             <button class="withdraw-btn" onclick={() => showWithdrawModal = true} disabled={appState.musyrifBalance <= 0} style={appState.musyrifBalance <= 0 ? "opacity: 0.6; cursor: not-allowed;" : ""}>
                 <i class="ti ti-wallet" style="font-size: 18px;"></i>
-                <span>Cairkan ke Rupiah</span>
+                <span>{i18n.t('earnings.withdraw_rupiah')}</span>
             </button>
         </div>
 
@@ -190,7 +190,7 @@
         <div class="history-section">
             <div class="card-header" style="padding: 10px 0;">
                 <div style="font-size: 13px; font-weight: 900; color: #3c3c3c;">{i18n.t('earnings.history')}</div>
-                <button style="background: none; border: none; font-size: 11px; font-weight: 800; color: #ff9600;">SEE ALL</button>
+                <button style="background: none; border: none; font-size: 11px; font-weight: 800; color: #ff9600;">{i18n.t('common.view_all')}</button>
             </div>
             
             <div class="transaction-list">
@@ -222,18 +222,18 @@
             <div class="alert-icon" style="color: #1cb0f6; background: #e1f5fe;">
                 <i class="ti ti-wallet"></i>
             </div>
-            <div style="font-size: 16px; font-weight: 900; margin-bottom: 8px;">Cairkan Pendapatan</div>
+            <div style="font-size: 16px; font-weight: 900; margin-bottom: 8px;">{i18n.t('earnings.withdraw_title')}</div>
             <div style="font-size: 13px; color: #64748b; margin-bottom: 16px; line-height: 1.4;">
-                Saldo <b>{appState.musyrifBalance} Gems</b> Anda akan dikonversi menjadi <b>Rp {(appState.musyrifBalance * 672).toLocaleString('id-ID')}</b> dan ditransfer ke rekening yang terdaftar.
+                {i18n.t('earnings.withdraw_desc', {balance: appState.musyrifBalance, rupiah: (appState.musyrifBalance * 672).toLocaleString('id-ID')})}
             </div>
             <div style="background: #f8fafc; padding: 12px; border-radius: 12px; font-size: 12px; text-align: left; margin-bottom: 20px;">
-                <div style="color: #64748b; font-weight: 800; margin-bottom: 4px;">REKENING TUJUAN</div>
+                <div style="color: #64748b; font-weight: 800; margin-bottom: 4px;">{i18n.t('earnings.destination_account')}</div>
                 <div style="font-weight: 900; color: #334155; margin-bottom: 2px;">Bank BCA - 837192****</div>
                 <div style="font-weight: 700; color: #94a3b8;">a.n. Ustadz Malik</div>
             </div>
             <div class="alert-actions">
-                <button class="alert-btn secondary" onclick={() => showWithdrawModal = false}>Batal</button>
-                <button class="alert-btn primary" style="background: #1cb0f6; border-color: #1cb0f6;" onclick={confirmWithdrawal}>Konfirmasi</button>
+                <button class="alert-btn secondary" onclick={() => showWithdrawModal = false}>{i18n.t('common.cancel')}</button>
+                <button class="alert-btn primary" style="background: #1cb0f6; border-color: #1cb0f6;" onclick={confirmWithdrawal}>{i18n.t('common.confirm')}</button>
             </div>
         </div>
     </div>

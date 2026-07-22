@@ -1,69 +1,58 @@
 <script>
     import { appState } from '$lib/app.svelte.js';
+    import { i18n } from '$lib/i18n.svelte.js';
     import BottomNav from '$lib/components/BottomNav.svelte';
 
     const sections = [
         {
             icon: 'ti-book-2',
             color: '#00978A',
-            title: 'Apa itu QuranMemo?',
-            content: 'QuranMemo adalah aplikasi hafalan Al-Qur\'an berbasis teknologi spaced repetition yang membantu kamu menghafal dan menjaga hafalan dengan cara yang menyenangkan dan terstruktur.'
+            title: 'guide.about_title',
+            content: 'guide.about_content'
         },
         {
             icon: 'ti-route',
             color: '#ff9600',
-            title: 'Mulai Hafalan',
+            title: 'guide.start_title',
             steps: [
-                'Buka halaman Belajar (ikon 🏠)',
-                'Pilih surat yang ingin dihafal pada peta jalan belajar',
-                'Tekan tombol "Mulai" untuk memulai sesi hafalan',
-                'Ikuti setiap langkah: Baca → Dengar → Hafalkan → Uji'
+                'guide.start_1', 'guide.start_2', 'guide.start_3', 'guide.start_4'
             ]
         },
         {
             icon: 'ti-refresh',
             color: '#7c5cfc',
-            title: 'Murojaah (Mengulang Hafalan)',
+            title: 'guide.review_title',
             steps: [
-                'Buka halaman Murojaah (ikon 🤝)',
-                'Ayat-ayat yang perlu diulang akan muncul otomatis berdasarkan jadwal',
-                'Selesaikan sesi murojaah harian agar hafalan tetap kuat',
-                'Semakin sering diulang, semakin besar XP yang didapat'
+                'guide.review_1', 'guide.review_2', 'guide.review_3', 'guide.review_4'
             ]
         },
         {
             icon: 'ti-gift',
             color: '#e53935',
-            title: 'Misi & Tantangan',
+            title: 'guide.quests_title',
             steps: [
-                'Buka halaman Misi (ikon 🎁)',
-                'Selesaikan misi harian untuk mendapatkan XP tambahan',
-                'Cek tab Tantangan untuk target hafalan bulanan',
-                'Raih lencana eksklusif setiap bulan!'
+                'guide.quests_1', 'guide.quests_2', 'guide.quests_3', 'guide.quests_4'
             ]
         },
         {
             icon: 'ti-trophy',
             color: '#f59e0b',
-            title: 'Liga & Peringkat',
+            title: 'guide.league_title',
             steps: [
-                'Buka halaman Liga (ikon 🏆)',
-                'Kumpulkan XP sebanyak-banyaknya setiap minggu',
-                'Naiki peringkat dari Liga Perunggu hingga Berlian',
-                'Bersaing sehat dengan penghafal Al-Qur\'an lain'
+                'guide.league_1', 'guide.league_2', 'guide.league_3', 'guide.league_4'
             ]
         },
         {
             icon: 'ti-star',
             color: '#10b981',
-            title: 'Sistem Poin & XP',
-            content: 'Setiap aktivitas akan memberikanmu XP (poin pengalaman). XP digunakan untuk naik peringkat di Liga. Kamu juga mendapatkan Gems (💎) yang bisa ditukar dengan item spesial di Marketplace.'
+            title: 'guide.points_title',
+            content: 'guide.points_content'
         },
         {
             icon: 'ti-heart',
             color: '#ef4444',
-            title: 'Energi (❤️)',
-            content: 'Energi berkurang saat kamu melakukan kesalahan saat latihan. Jika energi habis, kamu perlu menunggu isi ulang otomatis atau menggunakan item dari Marketplace. Jawab dengan benar untuk menjaga energi tetap penuh!'
+            title: 'guide.energy_title',
+            content: 'guide.energy_content'
         }
     ];
 </script>
@@ -75,8 +64,8 @@
             <div class="header-ornament left"></div>
             <div class="header-content">
                 <div class="header-icon">📖</div>
-                <h1>Panduan QuranMemo</h1>
-                <p>Pelajari cara terbaik menggunakan aplikasi untuk hafalan yang optimal</p>
+                <h1>{i18n.t('guide.title')}</h1>
+                <p>{i18n.t('guide.subtitle')}</p>
             </div>
             <div class="header-ornament right"></div>
         </div>
@@ -92,11 +81,11 @@
                     <div class="card-icon-wrap" style="background: {section.color}15; border-color: {section.color}30;">
                         <i class="ti {section.icon}" style="color: {section.color};"></i>
                     </div>
-                    <h2 class="card-title" style="color: {section.color};">{section.title}</h2>
+                    <h2 class="card-title" style="color: {section.color};">{i18n.t(section.title)}</h2>
                 </div>
 
                 {#if section.content}
-                    <p class="card-text">{section.content}</p>
+                    <p class="card-text">{i18n.t(section.content)}</p>
                 {/if}
 
                 {#if section.steps}
@@ -104,7 +93,7 @@
                         {#each section.steps as step, j}
                             <li>
                                 <span class="step-num" style="background: {section.color}; color: #fff;">{j + 1}</span>
-                                <span>{step}</span>
+                                <span>{i18n.t(step)}</span>
                             </li>
                         {/each}
                     </ol>
@@ -117,7 +106,7 @@
 
         <div class="guide-footer">
             <div class="footer-arabic">جَزَاكَ اللَّهُ خَيْرًا</div>
-            <p>Semoga Allah memudahkan hafalan kita semua. Aamiin.</p>
+            <p>{i18n.t('guide.footer')}</p>
         </div>
 
         <div style="height: 80px;"></div>

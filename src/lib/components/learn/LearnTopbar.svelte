@@ -20,7 +20,7 @@
 
 <div class="topbar" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
     <!-- Streak pill — bisa diklik untuk detail -->
-    <button class="streak-pill" onclick={onOpenStreakModal} title="Lihat detail streak">
+    <button class="streak-pill" onclick={onOpenStreakModal} title={i18n.t('streak.view_details')}>
         <i class="ti ti-flame"></i>
         <span>{appState.user.streak}</span>
     </button>

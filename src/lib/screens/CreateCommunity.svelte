@@ -1,5 +1,6 @@
 <script>
     import { appState } from '$lib/app.svelte.js';
+    import { i18n } from '$lib/i18n.svelte.js';
 
     let currentStep = $state(1);
     
@@ -31,11 +32,11 @@
     
     function nextStep() {
         if (currentStep === 1 && !commName.trim()) {
-            alert('Nama Komunitas wajib diisi!');
+            alert(i18n.t('community.name_required'));
             return;
         }
         if (currentStep === 2 && halaqahs.length < 2) {
-            alert('Komunitas wajib memiliki minimal 2 halaqah!');
+            alert(i18n.t('community.min_halaqah'));
             return;
         }
         if (currentStep < 3) currentStep++;
@@ -47,7 +48,7 @@
     
     function publishCommunity() {
         // Here we would save to backend/appState
-        alert(`Komunitas "${commName}" berhasil dibuat dengan ${halaqahs.length} halaqah!`);
+        alert(i18n.t('community.created', {name: commName, count: halaqahs.length}));
         appState.go('league'); // Navigate back to a relevant page
     }
     
@@ -63,18 +64,18 @@
             <i class="ti ti-arrow-left"></i>
         </button>
         <span style="font-size: 16px; font-weight: 900; color: #3c3c3c; flex: 1; text-align: center;">
-            Buat Komunitas
+            {i18n.t('community.create_title')}
         </span>
         <div style="width: 32px;"></div> <!-- Spacer for center alignment -->
     </div>
 
     <!-- Stepper Indicator -->
     <div class="stepper-container">
-        <div class="step {currentStep >= 1 ? 'active' : ''}">1. Info</div>
+        <div class="step {currentStep >= 1 ? 'active' : ''}">1. {i18n.t('community.info')}</div>
         <div class="step-line {currentStep >= 2 ? 'active' : ''}"></div>
-        <div class="step {currentStep >= 2 ? 'active' : ''}">2. Halaqah</div>
+        <div class="step {currentStep >= 2 ? 'active' : ''}">2. {i18n.t('community.halaqah')}</div>
         <div class="step-line {currentStep >= 3 ? 'active' : ''}"></div>
-        <div class="step {currentStep >= 3 ? 'active' : ''}">3. Review</div>
+        <div class="step {currentStep >= 3 ? 'active' : ''}">3. {i18n.t('community.review')}</div>
     </div>
 
     <div class="scroll-content no-scrollbar" style="padding: 20px;">
@@ -83,24 +84,24 @@
             <!-- STEP 1: Info Komunitas -->
             <div class="step-content">
                 <div class="form-group">
-                    <label>Nama Komunitas</label>
-                    <input type="text" class="input-field" placeholder="Contoh: Pejuang Tahfiz Jakarta" bind:value={commName} />
+                    <label>{i18n.t('community.name')}</label>
+                    <input type="text" class="input-field" placeholder={i18n.t('community.name_placeholder')} bind:value={commName} />
                 </div>
                 
                 <div class="form-group">
-                    <label>Deskripsi Singkat</label>
-                    <textarea class="input-field" rows="3" placeholder="Tuliskan visi atau tujuan komunitas ini..." bind:value={commDesc}></textarea>
+                    <label>{i18n.t('community.description')}</label>
+                    <textarea class="input-field" rows="3" placeholder={i18n.t('community.description_placeholder')} bind:value={commDesc}></textarea>
                 </div>
                 
                 <div class="form-group">
-                    <label>Mode Komunitas</label>
+                    <label>{i18n.t('community.mode')}</label>
                     <div class="radio-group">
                         <label class="radio-card {commMode === 'open' ? 'selected' : ''}">
                             <input type="radio" name="mode" value="open" bind:group={commMode} class="hidden" />
                             <div class="icon">🌍</div>
                             <div class="details">
-                                <div class="title">Open (Terbuka)</div>
-                                <div class="desc">Siapa saja bisa bergabung langsung</div>
+                                <div class="title">{i18n.t('community.open')}</div>
+                                <div class="desc">{i18n.t('community.open_desc')}</div>
                             </div>
                             <div class="check"><i class="ti ti-check"></i></div>
                         </label>
@@ -109,8 +110,8 @@
                             <input type="radio" name="mode" value="private" bind:group={commMode} class="hidden" />
                             <div class="icon">🔒</div>
                             <div class="details">
-                                <div class="title">Privat (Tertutup)</div>
-                                <div class="desc">Butuh persetujuan Admin/Undangan</div>
+                                <div class="title">{i18n.t('community.private')}</div>
+                                <div class="desc">{i18n.t('community.private_desc')}</div>
                             </div>
                             <div class="check"><i class="ti ti-check"></i></div>
                         </label>
@@ -122,42 +123,42 @@
             <!-- STEP 2: Buat Halaqah -->
             <div class="step-content">
                 <div class="info-alert">
-                    <i class="ti ti-info-circle"></i> Komunitas yang baik butuh struktur. Tambahkan minimal 2 halaqah awal.
+                    <i class="ti ti-info-circle"></i> {i18n.t('community.structure_hint')}
                 </div>
                 
                 <!-- Add new halaqah form -->
                 <div class="add-halaqah-box">
                     <div class="form-row">
                         <div class="form-group" style="flex: 1; margin-bottom: 0;">
-                            <label style="font-size: 11px;">Nama Halaqah</label>
-                            <input type="text" class="input-field small" placeholder="Contoh: Halaqah Abu Bakar" bind:value={newHalaqahName} />
+                            <label style="font-size: 11px;">{i18n.t('halaqah.name')}</label>
+                            <input type="text" class="input-field small" placeholder={i18n.t('community.halaqah_placeholder')} bind:value={newHalaqahName} />
                         </div>
                         <div class="form-group" style="width: 80px; margin-bottom: 0;">
-                            <label style="font-size: 11px;">Kapasitas</label>
+                            <label style="font-size: 11px;">{i18n.t('halaqah.capacity')}</label>
                             <input type="number" class="input-field small" min="5" max="20" bind:value={newHalaqahCap} />
                         </div>
                     </div>
                     <button class="btn-outline" onclick={addHalaqah} style="margin-top: 12px; width: 100%;">
-                        <i class="ti ti-plus"></i> Tambah Halaqah
+                        <i class="ti ti-plus"></i> {i18n.t('community.add_halaqah')}
                     </button>
-                    <div style="font-size: 10px; color: #afafaf; text-align: center; margin-top: 6px;">Kapasitas: 5 - 20 orang</div>
+                    <div style="font-size: 10px; color: #afafaf; text-align: center; margin-top: 6px;">{i18n.t('community.capacity_range')}</div>
                 </div>
                 
                 <!-- List of halaqahs -->
                 <div class="halaqah-list">
-                    <h4>Daftar Halaqah ({halaqahs.length})</h4>
+                    <h4>{i18n.t('community.halaqah_list')} ({halaqahs.length})</h4>
                     {#each halaqahs as h}
                         <div class="halaqah-item">
                             <div class="h-icon">📖</div>
                             <div class="h-details">
                                 <div class="h-name">{h.name}</div>
-                                <div class="h-cap">Maks: {h.capacity} orang</div>
+                                <div class="h-cap">{i18n.t('community.max_capacity')}: {h.capacity} {i18n.t('halaqah.people')}</div>
                             </div>
                             <button class="h-del-btn" onclick={() => removeHalaqah(h.id)}><i class="ti ti-trash"></i></button>
                         </div>
                     {/each}
                     {#if halaqahs.length === 0}
-                        <div class="empty-state">Belum ada halaqah yang ditambahkan.</div>
+                        <div class="empty-state">{i18n.t('community.empty_halaqah')}</div>
                     {/if}
                 </div>
             </div>
@@ -166,25 +167,25 @@
             <!-- STEP 3: Review -->
             <div class="step-content">
                 <div class="review-card">
-                    <div class="r-badge">{commMode === 'open' ? '🌍 OPEN' : '🔒 PRIVAT'}</div>
+                    <div class="r-badge">{commMode === 'open' ? '🌍 ' + i18n.t('community.open_upper') : '🔒 ' + i18n.t('community.private_upper')}</div>
                     <div class="r-title">{commName}</div>
-                    <div class="r-desc">{commDesc || 'Tidak ada deskripsi.'}</div>
+                    <div class="r-desc">{commDesc || i18n.t('community.no_description')}</div>
                     
                     <div class="r-divider"></div>
                     
-                    <div class="r-section-title">Struktur Halaqah ({halaqahs.length})</div>
+                    <div class="r-section-title">{i18n.t('community.structure')} ({halaqahs.length})</div>
                     <div class="r-halaqahs">
                         {#each halaqahs as h}
                             <div class="r-h-item">
                                 <span class="r-h-name">{h.name}</span>
-                                <span class="r-h-cap">{h.capacity} org</span>
+                                <span class="r-h-cap">{h.capacity} {i18n.t('halaqah.people')}</span>
                             </div>
                         {/each}
                     </div>
                 </div>
                 
                 <div class="success-alert">
-                    <i class="ti ti-check"></i> Siap dipublish! Kamu akan otomatis menjadi Admin Komunitas ini.
+                    <i class="ti ti-check"></i> {i18n.t('community.ready')}
                 </div>
             </div>
         {/if}
@@ -194,9 +195,9 @@
     <!-- Bottom Action Bar -->
     <div class="bottom-action-bar">
         {#if currentStep < 3}
-            <button class="btn-primary" onclick={nextStep}>Lanjut <i class="ti ti-arrow-right"></i></button>
+            <button class="btn-primary" onclick={nextStep}>{i18n.t('common.next')} <i class="ti ti-arrow-right"></i></button>
         {:else}
-            <button class="btn-primary" onclick={publishCommunity}>Selesai & Publish</button>
+            <button class="btn-primary" onclick={publishCommunity}>{i18n.t('community.finish')}</button>
         {/if}
     </div>
 </div>

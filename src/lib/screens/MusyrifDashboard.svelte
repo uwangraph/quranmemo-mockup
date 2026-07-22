@@ -61,7 +61,7 @@
             </div>
         {/if}
 
-        <div class="section-label" style="margin-top: 24px">Jadwal Setoran Mendatang</div>
+        <div class="section-label" style="margin-top: 24px">{i18n.t('musyrif.upcoming_schedule')}</div>
         <div style="display: flex; flex-direction: column; gap: 12px;">
             <div class="booking-card">
                 <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">

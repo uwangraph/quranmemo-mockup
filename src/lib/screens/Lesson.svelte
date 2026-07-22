@@ -1369,16 +1369,16 @@
 <div class="screen theme-user" class:shake={screenShaking}>
     <!-- Topbar Header -->
     <div class="topbar">
-        <button onclick={exitLesson} style="background: none; border: none; cursor: pointer; display: flex; align-items: center;" title="Kembali ke Dashboard">
+        <button onclick={exitLesson} style="background: none; border: none; cursor: pointer; display: flex; align-items: center;" title={i18n.t('lesson.back_dashboard')}>
             <i class="ti ti-x" style="font-size: 22px; color: #afafaf;"></i>
         </button>
         <div class="prog-bar-bg" style="flex: 1; margin: 0 16px;">
             <div class="prog-bar-fill" style="width: {showCompletion ? 100 : ((currentStep + 1) / stepsPipeline.length) * 100}%"></div>
         </div>
-        <button onclick={toggleBreak} disabled={isChecked} style="background: none; border: none; cursor: pointer; display: flex; align-items: center; margin-right: 8px; opacity: {isChecked ? 0.5 : 1}; pointer-events: {isChecked ? 'none' : 'auto'};" title="Istirahat">
+        <button onclick={toggleBreak} disabled={isChecked} style="background: none; border: none; cursor: pointer; display: flex; align-items: center; margin-right: 8px; opacity: {isChecked ? 0.5 : 1}; pointer-events: {isChecked ? 'none' : 'auto'};" title={i18n.t('lesson.break')}>
             <i class="ti ti-coffee" style="font-size: 18px; color: #f59e0b;"></i>
         </button>
-        <button onclick={() => showTajwidModal = true} disabled={isChecked} style="background: none; border: none; cursor: pointer; display: flex; align-items: center; margin-right: 8px; opacity: {isChecked ? 0.5 : 1}; pointer-events: {isChecked ? 'none' : 'auto'};" title="Info Tajwid">
+        <button onclick={() => showTajwidModal = true} disabled={isChecked} style="background: none; border: none; cursor: pointer; display: flex; align-items: center; margin-right: 8px; opacity: {isChecked ? 0.5 : 1}; pointer-events: {isChecked ? 'none' : 'auto'};" title={i18n.t('tajwid.title')}>
             <i class="ti ti-info-circle" style="font-size: 18px; color: #00978a;"></i>
         </button>
         
@@ -1628,9 +1628,9 @@
                     {:else if currentStepConfig.type === 'musyrif_submission'}
                         <div class="musyrif-submission-card">
                             <div class="musyrif-submission-icon"><i class="ti ti-user-check"></i></div>
-                            <h4>Siap Setor ke Musyrif?</h4>
-                            <p>Pilih musyrif dan jadwal setoran untuk melanjutkan hafalanmu dengan bimbingan langsung.</p>
-                            <div class="musyrif-submission-note"><i class="ti ti-circle-check"></i> Latihan mandiri sudah selesai</div>
+                            <h4>{i18n.t('lesson.ready_submission')}</h4>
+                            <p>{i18n.t('lesson.submission_desc')}</p>
+                            <div class="musyrif-submission-note"><i class="ti ti-circle-check"></i> {i18n.t('lesson.self_practice_done')}</div>
                         </div>
                     {/if}
                     
@@ -1719,11 +1719,11 @@
         <div class="streak-overlay-page">
             <div class="streak-content">
                 <div class="streak-icon"><i class="ti ti-bolt-filled"></i></div>
-                <h2 class="streak-title">Luar Biasa!</h2>
-                <p class="streak-desc">5 Jawaban benar berturut-turut. Terus pertahankan fokusmu!</p>
+                <h2 class="streak-title">{i18n.t('lesson.streak_overlay_title')}</h2>
+                <p class="streak-desc">{i18n.t('lesson.streak_overlay_desc')}</p>
                 <div class="streak-reward">
                     <span class="plus-text">+4</span>
-                    <span class="streak-label">Streak</span>
+                    <span class="streak-label">{i18n.t('lesson.streak_overlay_label')}</span>
                 </div>
             </div>
             <div class="streak-footer">

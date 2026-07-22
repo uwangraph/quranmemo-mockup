@@ -113,13 +113,13 @@
                             >
                                 <span
                                     class="quest-text"
-                                    style="line-height:1.2;">{quest.text}</span
+                                        style="line-height:1.2;">{i18n.t(quest.text)}</span
                                 >
                                 {#if !quest.claimed}
                                     <span
                                         class="quest-reward"
                                         style="font-size:10px; margin-left:0; color:#ff9600; font-weight:800; margin-top:2px;"
-                                        >Hadiah: +{quest.xp} XP</span
+                                        >{i18n.t('common.reward')}: +{quest.xp} XP</span
                                     >
                                 {/if}
                             </div>
@@ -133,7 +133,7 @@
                                     class="claim-quest-btn"
                                     onclick={() =>
                                         appState.claimQuestReward(quest.id)}
-                                    >Klaim</button
+                                    >{i18n.t('quests.claim')}</button
                                 >
                             {:else}
                                 <span
@@ -165,7 +165,7 @@
                 <span
                     style="color: #1cb0f6; font-size: 13px; font-weight: 800; cursor: pointer; text-transform: uppercase;"
                     onclick={() => appState.go("quests")}
-                    >Lihat Semua <i
+                    >{i18n.t('common.view_all')} <i
                         class="ti ti-chevron-right"
                         style="font-size: 12px;"
                     ></i></span

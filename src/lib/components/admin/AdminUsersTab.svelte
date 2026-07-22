@@ -1,4 +1,5 @@
 <script>
+    import { i18n } from '$lib/i18n.svelte.js';
     const activeUserData = [60, 78, 65, 82, 74, 85, 91];
 </script>
 
@@ -6,10 +7,10 @@
 <div class="stat-banner" style="background: #ede8ff;">
     <div class="stat-banner-row">
         {#each [
-            { icon: '👥', label: 'Total', val: '1.240', color: '#7c5cfc' },
-            { icon: '🟢', label: 'Aktif Skrg', val: '85', color: '#22c55e' },
-            { icon: '🆕', label: 'Baru Bulan Ini', val: '56', color: '#3b82f6' },
-            { icon: '⚠️', label: 'Butuh Perhatian', val: '14', color: '#ef4444' },
+            { icon: '👥', label: i18n.t('admin.total_user'), val: '1.240', color: '#7c5cfc' },
+            { icon: '🟢', label: i18n.t('admin.active_now'), val: '85', color: '#22c55e' },
+            { icon: '🆕', label: i18n.t('admin.new_this_month'), val: '56', color: '#3b82f6' },
+            { icon: '⚠️', label: i18n.t('admin.need_attention'), val: '14', color: '#ef4444' },
         ] as s}
             <div class="stat-cell">
                 <div style="font-size: 16px;">{s.icon}</div>
@@ -20,7 +21,7 @@
     </div>
 </div>
 
-<div class="section-label" style="font-size: 13px; font-weight: 800; color: #3c3c3c; margin-top: 16px; margin-bottom: 8px;">⏰ Aktivitas 7 Hari Terakhir</div>
+<div class="section-label" style="font-size: 13px; font-weight: 800; color: #3c3c3c; margin-top: 16px; margin-bottom: 8px;">⏰ {i18n.t('admin.activity_7d')}</div>
 <div class="chart-card">
     <div style="display: flex; align-items: flex-end; gap: 2px; height: 60px; padding: 0 4px;">
         {#each activeUserData as v, i}
@@ -36,7 +37,7 @@
     </div>
 </div>
 
-<div class="section-label" style="font-size: 13px; font-weight: 800; color: #3c3c3c; margin-top: 16px; margin-bottom: 8px;">📉 Perlu Ditindak</div>
+<div class="section-label" style="font-size: 13px; font-weight: 800; color: #3c3c3c; margin-top: 16px; margin-bottom: 8px;">📉 {i18n.t('admin.need_action')}</div>
 {#each [
     { name: 'Budi Santoso', info: 'Streak putus · Terakhir aktif 8 hari lalu', icon: '📉', tag: 'RISIKO TINGGI', tagColor: '#ef4444', tagBg: '#fef2f2' },
     { name: 'Siti Aminah', info: 'Tidak ada submisi minggu ini', icon: '⏳', tag: 'PERLU REMIND', tagColor: '#f59e0b', tagBg: '#fffbeb' },
@@ -50,12 +51,12 @@
         </div>
         <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 4px; flex-shrink: 0;">
             <span class="tag" style="color: {u.tagColor}; background: {u.tagBg};">{u.tag}</span>
-            <button class="mini-btn" style="background: var(--admin-purple); color: #fff;">Hubungi</button>
+            <button class="mini-btn" style="background: var(--admin-purple); color: #fff;">{i18n.t('admin.contact')}</button>
         </div>
     </div>
 {/each}
 
-<div class="section-label" style="font-size: 13px; font-weight: 800; color: #3c3c3c; margin-top: 16px; margin-bottom: 8px;">🏆 Santri Terbaik Bulan Ini</div>
+<div class="section-label" style="font-size: 13px; font-weight: 800; color: #3c3c3c; margin-top: 16px; margin-bottom: 8px;">🏆 {i18n.t('admin.top_students')}</div>
 {#each [
     { rank: 1, name: 'Ahmad Habibi', sesi: 48, ayat: 180, medal: '🥇' },
     { rank: 2, name: 'Fatimah Zahra', sesi: 41, ayat: 156, medal: '🥈' },

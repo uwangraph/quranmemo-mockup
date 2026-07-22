@@ -152,7 +152,7 @@
                         <div class="rank-name">
                             {r.name}
                             {#if r.isMe}
-                                <span class="me-badge">KAMU</span>
+                                <span class="me-badge">{i18n.t('lb.you_badge')}</span>
                             {/if}
                         </div>
                         {#if r.streak}

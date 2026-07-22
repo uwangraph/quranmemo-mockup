@@ -164,7 +164,7 @@
                 
                 <div class="target-selector">
                     <div class="target-field">
-                        <label>Surah</label>
+                        <label>{i18n.t('marketplace.surah')}</label>
                         <div class="custom-select-wrapper" style="position: relative;">
                             <div class="custom-select-box" onclick={() => showDropdown = !showDropdown}>
                                 <span>{selectedSurah}</span>
@@ -188,7 +188,7 @@
                     </div>
                     <div class="target-field">
                         <label>{i18n.t('learn.verse')}</label>
-                        <input type="text" placeholder="Cth: 1-8" bind:value={selectedAyah} />
+                        <input type="text" placeholder={i18n.t('marketplace.ayah_placeholder')} bind:value={selectedAyah} />
                     </div>
                 </div>
             </div>
@@ -202,8 +202,8 @@
             <span class="section-label" style="padding:0">{i18n.t('market.available')}</span>
             <div class="gender-filter">
                 <button class:active={selectedGender === 'all'} onclick={() => selectedGender = 'all'}>{i18n.t('lb.tab_global_user')}</button>
-                <button class:active={selectedGender === 'ustadz'} onclick={() => selectedGender = 'ustadz'}>Ustadz</button>
-                <button class:active={selectedGender === 'ustadzah'} onclick={() => selectedGender = 'ustadzah'}>Ustadzah</button>
+                <button class:active={selectedGender === 'ustadz'} onclick={() => selectedGender = 'ustadz'}>{i18n.t('marketplace.ustadz')}</button>
+                <button class:active={selectedGender === 'ustadzah'} onclick={() => selectedGender = 'ustadzah'}>{i18n.t('marketplace.ustadzah')}</button>
             </div>
         </div>
 
@@ -277,7 +277,7 @@
             </div>
             
             <div class="section-header" style="margin-top: 24px;">
-                <span class="section-label" style="padding:0">Power-Ups</span>
+                <span class="section-label" style="padding:0">{i18n.t('marketplace.powerups')}</span>
             </div>
             
             <div class="musyrif-card" style="flex-direction: row; align-items: center; justify-content: space-between;">

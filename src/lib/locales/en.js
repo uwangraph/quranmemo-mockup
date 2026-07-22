@@ -306,6 +306,7 @@ export default {
     "onboarding.q5o4": "Night Before Sleep",
 
     "admin.dash.title": "Admin Dashboard",
+    "admin.dash.analytics": "QuranMemo Analytics",
     "admin.dash.live": "LIVE",
     "admin.dash.tab_overview": "Overview",
     "admin.dash.tab_users": "Users",
@@ -366,6 +367,11 @@ export default {
     "admin.streak_broken": "Streak broken 3 days ago",
     "admin.no_submission_week": "No submission this week",
     "admin.contact": "CONTACT",
+    "admin.new_this_month": "New This Month",
+    "admin.need_attention": "Need Attention",
+    "admin.activity_7d": "Activity — Last 7 Days",
+    "admin.need_action": "Needs Action",
+    "admin.top_students": "Top Students This Month",
     "admin.remind": "REMIND",
 
     "musyrif.partner_tier": "Certified Partner (Tier 2)",
@@ -559,6 +565,191 @@ export default {
     "lesson.step_compare": "Compare",
     "lesson.press_to_record": "Press to record your voice",
     "lesson.recording_active": "Recording your voice...",
-    "lesson.comparison_done": "Comparison complete!"
+    "lesson.comparison_done": "Comparison complete!",
+
+    "quests.tab_missions": "MISSIONS",
+    "quests.tab_challenges": "CHALLENGES",
+    "quests.welcome": "Ahlan wa Sahlan!",
+    "quests.daily_desc": "Complete daily missions to reach your memorization target. Missions reset every day.",
+    "quests.daily": "Daily Missions",
+    "quests.claim": "Claim",
+    "quests.complete_all": "Complete all missions",
+    "quests.total_reward": "Total reward: {xp} XP",
+    "quests.all_complete": "All missions completed!",
+    "quests.claimed": "{xp} XP claimed",
+    "quests.tomorrow": "Tomorrow's memorization mission",
+    "quests.free_gems": "Free Gems",
+    "quests.watch_ad": "Watch Ad",
+    "quests.get_gems": "Get +{gems} Gems",
+    "quests.watch": "Watch",
+    "quests.watch_confirm": "Watch a short ad to get 50 Gems?",
+    "quests.ad_thanks": "Thanks for watching! You received 50 Gems.",
+    "quests.monthly_soon": "Monthly challenges will open soon!",
+    "quests.monthly_desc": "Complete challenges each month to earn exclusive badges",
+    "quests.monthly_title": "This Month's Recitation Challenge!",
+    "quests.monthly_desc_full": "Complete one full juz submission this month to earn the Khotmil Quran badge.",
+    "quests.start_memorization": "START MEMORIZATION",
+    "common.cancel": "Cancel",
+    "common.yes": "Yes",
+    "common.ok": "OK"
+    ,"common.reward": "Reward"
+    ,"common.view_all": "View All"
+    ,"nav.guide": "Guide"
+    ,"screen.guide": "Guide"
+    ,"halaqah.create_title": "Create Independent Halaqah"
+    ,"halaqah.info": "An independent study group not tied to a larger community. You automatically become the Halaqah Leader."
+    ,"halaqah.name": "Halaqah Name"
+    ,"halaqah.name_placeholder": "Example: Al-Mulk Halaqah"
+    ,"halaqah.description": "Short Description (Optional)"
+    ,"halaqah.description_placeholder": "Memorization focus: Juz 30..."
+    ,"halaqah.capacity": "Member Capacity"
+    ,"halaqah.people": "People"
+    ,"halaqah.capacity_hint": "The ideal Halaqah size is 10–15 people so the Musyrif can stay focused."
+    ,"halaqah.create": "Create Halaqah"
+    ,"halaqah.name_required": "Halaqah name is required!"
+    ,"halaqah.created": "Independent Halaqah \"{name}\" was created with a capacity of {capacity} people! You are now the Halaqah Leader."
+    ,"common.next": "Next"
+    ,"community.create_title": "Create Community"
+    ,"community.info": "Info"
+    ,"community.halaqah": "Halaqah"
+    ,"community.review": "Review"
+    ,"community.name": "Community Name"
+    ,"community.name_placeholder": "Example: Tahfiz Warriors Jakarta"
+    ,"community.description": "Short Description"
+    ,"community.description_placeholder": "Write this community's vision or purpose..."
+    ,"community.mode": "Community Mode"
+    ,"community.open": "Open (Public)"
+    ,"community.open_desc": "Anyone can join directly"
+    ,"community.private": "Private (Closed)"
+    ,"community.private_desc": "Requires Admin approval or an invitation"
+    ,"community.structure_hint": "A good community needs structure. Add at least 2 starter Halaqahs."
+    ,"community.halaqah_placeholder": "Example: Abu Bakar Halaqah"
+    ,"community.add_halaqah": "Add Halaqah"
+    ,"community.capacity_range": "Capacity: 5–20 people"
+    ,"community.halaqah_list": "Halaqah List"
+    ,"community.max_capacity": "Max"
+    ,"community.empty_halaqah": "No Halaqahs have been added."
+    ,"community.open_upper": "OPEN"
+    ,"community.private_upper": "PRIVATE"
+    ,"community.no_description": "No description."
+    ,"community.structure": "Halaqah Structure"
+    ,"community.ready": "Ready to publish! You will automatically become this community's Admin."
+    ,"community.finish": "Finish & Publish"
+    ,"community.name_required": "Community name is required!"
+    ,"community.min_halaqah": "A community must have at least 2 Halaqahs!"
+    ,"community.created": "Community \"{name}\" was created with {count} Halaqahs!"
+    ,"tajwid.title": "Tajwid Info"
+    ,"tajwid.subtitle": "Tap each rule to see its explanation and example"
+    ,"marketplace.surah": "Surah"
+    ,"marketplace.ayah_placeholder": "e.g. 1–8"
+    ,"marketplace.ustadz": "Ustadz"
+    ,"marketplace.ustadzah": "Ustadzah"
+    ,"marketplace.powerups": "Power-Ups"
+    ,"profile.joined_year": "Joined since {year}"
+    ,"profile.badges": "Badges"
+    ,"profile.certificates": "Certificates"
+    ,"profile.booking": "Submission Schedule"
+    ,"profile.hours_left": "{hours} hours left"
+    ,"profile.now": "Now!"
+    ,"profile.no_booking": "No submission schedule yet"
+    ,"profile.create_booking": "Create Schedule"
+    ,"profile.memorization_level": "Memorization Level"
+    ,"profile.juz": "Juz"
+    ,"profile.surah": "Surah"
+    ,"profile.verse": "Verse"
+    ,"profile.surah_progress": "{surah} Progress"
+    ,"profile.verses_complete": "{done} of {total} verses completed"
+    ,"profile.daily_streak": "Daily Streak"
+    ,"profile.best": "Best"
+    ,"profile.rukhsah": "Rukhsah"
+    ,"profile.next_target": "Next target"
+    ,"profile.days": "days"
+    ,"profile.days_left": "{days} days left"
+    ,"profile.locked": "Locked"
+    ,"profile.download_certificate": "Download certificate"
+    ,"profile.no_certificates": "No certificates yet"
+    ,"profile.no_certificates_desc": "Complete memorization to earn your first certificate!"
+    ,"profile.day_mon": "Mon"
+    ,"profile.day_tue": "Tue"
+    ,"profile.day_wed": "Wed"
+    ,"profile.day_thu": "Thu"
+    ,"profile.day_fri": "Fri"
+    ,"profile.day_sat": "Sat"
+    ,"profile.day_sun": "Sun"
+    ,"admin.monthly_revenue": "MONTHLY REVENUE"
+    ,"admin.total_sessions": "Total Sessions"
+    ,"admin.active_musyrif": "Active Musyrif"
+    ,"admin.live_status": "Live Status"
+    ,"admin.online_now": "Online Now"
+    ,"admin.marking_now": "Marking Now"
+    ,"admin.waiting_students": "Waiting for Students"
+    ,"admin.musyrif_performance": "Musyrif Performance"
+    ,"admin.needs_review": "Needs Review"
+    ,"admin.review": "Review"
+    ,"guide.title": "QuranMemo Guide"
+    ,"guide.subtitle": "Learn the best way to use the app for effective memorization"
+    ,"guide.about_title": "What is QuranMemo?"
+    ,"guide.about_content": "QuranMemo is a Quran memorization app powered by spaced repetition, helping you memorize and maintain your recitation in a fun, structured way."
+    ,"guide.start_title": "Start Memorizing"
+    ,"guide.start_1": "Open the Learn page (🏠 icon)"
+    ,"guide.start_2": "Choose a surah to memorize on the learning roadmap"
+    ,"guide.start_3": "Press Start to begin a memorization session"
+    ,"guide.start_4": "Follow each step: Read → Listen → Memorize → Test"
+    ,"guide.review_title": "Review Your Memorization"
+    ,"guide.review_1": "Open the Review page (🤝 icon)"
+    ,"guide.review_2": "Verses due for review appear automatically based on the schedule"
+    ,"guide.review_3": "Complete daily review sessions to keep your memorization strong"
+    ,"guide.review_4": "The more you review, the more XP you earn"
+    ,"guide.quests_title": "Missions & Challenges"
+    ,"guide.quests_1": "Open the Missions page (🎁 icon)"
+    ,"guide.quests_2": "Complete daily missions to earn extra XP"
+    ,"guide.quests_3": "Check the Challenges tab for monthly memorization targets"
+    ,"guide.quests_4": "Earn exclusive badges every month!"
+    ,"guide.league_title": "League & Rankings"
+    ,"guide.league_1": "Open the League page (🏆 icon)"
+    ,"guide.league_2": "Collect as much XP as possible each week"
+    ,"guide.league_3": "Climb from Bronze League to Diamond League"
+    ,"guide.league_4": "Compete healthily with other Quran memorizers"
+    ,"guide.points_title": "Points & XP System"
+    ,"guide.points_content": "Every activity gives you XP (experience points), used to climb the League rankings. You also earn Gems (💎), which can be exchanged for special Marketplace items."
+    ,"guide.energy_title": "Energy (❤️)"
+    ,"guide.energy_content": "Energy decreases when you make mistakes during practice. When it runs out, wait for an automatic refill or use an item from the Marketplace. Answer correctly to keep your energy full!"
+    ,"guide.footer": "May Allah make memorization easy for us all. Ameen."
+    ,"earnings.total_gems": "Total Gems"
+    ,"earnings.rupiah_estimate": "Rupiah Estimate"
+    ,"earnings.withdraw_rupiah": "Withdraw to Rupiah"
+    ,"earnings.withdraw_title": "Withdraw Earnings"
+    ,"earnings.withdraw_desc": "Your balance of {balance} Gems will be converted to Rp {rupiah} and transferred to your registered account."
+    ,"earnings.destination_account": "DESTINATION ACCOUNT"
+    ,"common.confirm": "Confirm"
+    ,"footer.about": "ABOUT US"
+    ,"footer.features": "FEATURES"
+    ,"footer.methodology": "METHODOLOGY"
+    ,"footer.premium": "PREMIUM"
+    ,"footer.terms": "TERMS OF SERVICE"
+    ,"footer.privacy": "PRIVACY POLICY"
+    ,"streak.view_details": "View streak details"
+    ,"tadabbur.unlock_hint": "Unlock after 10 sessions"
+    ,"tajwid.letters": "Letters"
+    ,"tajwid.example": "Example"
+    ,"lesson.toggle_latin": "Toggle Latin transliteration instantly"
+    ,"musyrif.upcoming_schedule": "Upcoming Submission Schedule"
+    ,"admin.rating_complaints": "Rating dropped to 3.9 · 4 complaints this month"
+    ,"lb.you_badge": "YOU"
+    ,"quest.complete_step": "Complete 1 memorization step"
+    ,"quest.three_correct": "Get 3 correct answers"
+    ,"quest.start_today": "Start today's session"
+    ,"quest.three_correct_no_mistake": "Get 3 correct answers without mistakes"
+    ,"quest.complete_instant_review": "Complete 1 instant review"
+    ,"quest.three_correct_streak": "Get 3 correct answers in a row"
+    ,"certificate.juz30_title": "Juz 30 Memorization Certificate"
+    ,"certificate.tahsin_title": "Basic Tahsin Certificate"
+    ,"certificate.memorization": "Memorization"
+    ,"certificate.tahsin": "Tahsin"
+    ,"lesson.back_dashboard": "Back to Dashboard"
+    ,"lesson.break": "Take a break"
+    ,"lesson.ready_submission": "Ready to submit to a Musyrif?"
+    ,"lesson.submission_desc": "Choose a Musyrif and submission schedule to continue memorization with direct guidance."
+    ,"lesson.self_practice_done": "Independent practice completed"
 
 };

@@ -14,13 +14,13 @@
         <div style="display: flex; align-items: center; gap: 8px;">
             <span style="font-size: 18px;">🛡️</span>
             <div>
-                <div style="font-size: 13px; font-weight: 900; letter-spacing: -0.3px;">Admin Dashboard</div>
-                <div style="font-size: 9px; font-weight: 700; opacity: 0.7; text-transform: uppercase;">QuranMemo Analytics</div>
+                <div style="font-size: 13px; font-weight: 900; letter-spacing: -0.3px;">{i18n.t('admin.dash.title')}</div>
+                <div style="font-size: 9px; font-weight: 700; opacity: 0.7; text-transform: uppercase;">{i18n.t('admin.dash.analytics')}</div>
             </div>
         </div>
         <div style="display: flex; gap: 8px; align-items: center;">
             <div class="live-badge">
-                <span class="live-dot"></span>LIVE
+                <span class="live-dot"></span>{i18n.t('admin.dash.live')}
             </div>
             <button class="icon-btn-white">
                 <i class="ti ti-bell"></i>
@@ -31,7 +31,7 @@
 
     <!-- Tab Nav -->
     <div class="tab-nav">
-        {#each [['overview','📊','Ikhtisar'], ['users','👥','Pengguna'], ['musyrif','👳','Musyrif']] as [id, icon, label]}
+        {#each [['overview','📊',i18n.t('admin.dash.tab_overview')], ['users','👥',i18n.t('admin.dash.tab_users')], ['musyrif','👳',i18n.t('admin.dash.tab_musyrif')]] as [id, icon, label]}
             <button
                 class="tab-btn"
                 class:active={activeTab === id}

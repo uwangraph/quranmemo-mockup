@@ -1,5 +1,6 @@
 <script>
     import { slide } from 'svelte/transition';
+    import { i18n } from '$lib/i18n.svelte.js';
     let { cat, isOpen, onToggle, openItem, onToggleItem } = $props();
 </script>
 
@@ -42,11 +43,11 @@
                             <p class="detail-description">{item.description}</p>
                             <div class="detail-meta">
                                 <div class="meta-row">
-                                    <span class="meta-label">Huruf</span>
+                                    <span class="meta-label">{i18n.t('tajwid.letters')}</span>
                                     <span class="meta-value mixed-text">{item.huruf}</span>
                                 </div>
                                 <div class="meta-row" style="margin-top: 4px;">
-                                    <span class="meta-label">Contoh</span>
+                                    <span class="meta-label">{i18n.t('tajwid.example')}</span>
                                     <div class="contoh-box" style="border-color: {cat.bgColor}20; background: {cat.bgColor}08;">
                                         <span class="contoh-arab">{@html item.contohArab}</span>
                                         <span class="contoh-latin">"{item.contohLatin}"</span>

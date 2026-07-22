@@ -308,6 +308,7 @@ export default {
     "onboarding.q5o4": "Malam Sebelum Tidur",
 
     "admin.dash.title": "Dasbor Admin",
+    "admin.dash.analytics": "Analitik QuranMemo",
     "admin.dash.live": "LIVE",
     "admin.dash.tab_overview": "Ikhtisar",
     "admin.dash.tab_users": "Pengguna",
@@ -368,6 +369,11 @@ export default {
     "admin.streak_broken": "Streak putus 3 hari lalu",
     "admin.no_submission_week": "Belum setor pekan ini",
     "admin.contact": "HUBUNGI",
+    "admin.new_this_month": "Baru Bulan Ini",
+    "admin.need_attention": "Butuh Perhatian",
+    "admin.activity_7d": "Aktivitas 7 Hari Terakhir",
+    "admin.need_action": "Perlu Ditindak",
+    "admin.top_students": "Santri Terbaik Bulan Ini",
     "admin.remind": "INGATKAN",
 
     "musyrif.partner_tier": "Mitra Bersanad (Tier 2)",
@@ -561,6 +567,189 @@ export default {
     "lesson.step_compare": "Bandingkan",
     "lesson.press_to_record": "Tekan untuk merekam suara",
     "lesson.recording_active": "Sedang merekam suara Anda...",
-    "lesson.comparison_done": "Perbandingan selesai!"
+    "lesson.comparison_done": "Perbandingan selesai!",
+
+    "quests.tab_missions": "MISI",
+    "quests.tab_challenges": "TANTANGAN",
+    "quests.welcome": "Ahlan wa Sahlan!",
+    "quests.daily_desc": "Selesaikan misi harian untuk meraih target hafalanmu. Misi akan direset setiap hari.",
+    "quests.daily": "Misi Harian",
+    "quests.claim": "Klaim",
+    "quests.complete_all": "Selesaikan semua misi",
+    "quests.total_reward": "Total hadiah: {xp} XP",
+    "quests.all_complete": "Semua misi selesai!",
+    "quests.claimed": "{xp} XP diklaim",
+    "quests.tomorrow": "Misi hafalan esok hari",
+    "quests.free_gems": "Gems Gratis",
+    "quests.watch_ad": "Tonton Iklan (Ads)",
+    "quests.get_gems": "Dapatkan +{gems} Gems",
+    "quests.watch": "Tonton",
+    "quests.watch_confirm": "Tonton iklan berdurasi pendek untuk mendapatkan 50 Gems?",
+    "quests.ad_thanks": "Terima kasih telah menonton iklan! Anda mendapatkan 50 Gems.",
+    "quests.monthly_soon": "Tantangan bulanan akan segera terbuka!",
+    "quests.monthly_desc": "Selesaikan tantangan setiap bulan untuk mendapatkan lencana eksklusif",
+    "quests.monthly_title": "Tantangan Tilawah Bulan Ini!",
+    "quests.monthly_desc_full": "Selesaikan setoran 1 juz penuh bulan ini untuk mendapatkan lencana Khotmil Quran.",
+    "quests.start_memorization": "MULAI HAFALAN",
+    "common.cancel": "Batal",
+    "common.yes": "Ya",
+    "common.ok": "OK"
+    ,"common.reward": "Hadiah"
+    ,"common.view_all": "Lihat Semua"
+    ,"halaqah.create_title": "Buat Halaqah Mandiri"
+    ,"halaqah.info": "Halaqah Mandiri adalah grup belajar independen tanpa terikat komunitas besar. Anda otomatis menjadi Ketua Halaqah."
+    ,"halaqah.name": "Nama Halaqah"
+    ,"halaqah.name_placeholder": "Contoh: Halaqah Al-Mulk"
+    ,"halaqah.description": "Deskripsi Singkat (Opsional)"
+    ,"halaqah.description_placeholder": "Fokus hafalan: Juz 30..."
+    ,"halaqah.capacity": "Kapasitas Anggota"
+    ,"halaqah.people": "Orang"
+    ,"halaqah.capacity_hint": "Jumlah ideal anggota halaqah adalah 10–15 orang agar musyrif bisa fokus."
+    ,"halaqah.create": "Buat Halaqah"
+    ,"halaqah.name_required": "Nama Halaqah wajib diisi!"
+    ,"halaqah.created": "Halaqah Mandiri \"{name}\" berhasil dibuat dengan kapasitas {capacity} orang! Anda sekarang adalah Ketua Halaqah."
+    ,"common.next": "Lanjut"
+    ,"community.create_title": "Buat Komunitas"
+    ,"community.info": "Info"
+    ,"community.halaqah": "Halaqah"
+    ,"community.review": "Review"
+    ,"community.name": "Nama Komunitas"
+    ,"community.name_placeholder": "Contoh: Pejuang Tahfiz Jakarta"
+    ,"community.description": "Deskripsi Singkat"
+    ,"community.description_placeholder": "Tuliskan visi atau tujuan komunitas ini..."
+    ,"community.mode": "Mode Komunitas"
+    ,"community.open": "Open (Terbuka)"
+    ,"community.open_desc": "Siapa saja bisa bergabung langsung"
+    ,"community.private": "Privat (Tertutup)"
+    ,"community.private_desc": "Butuh persetujuan Admin atau Undangan"
+    ,"community.structure_hint": "Komunitas yang baik butuh struktur. Tambahkan minimal 2 halaqah awal."
+    ,"community.halaqah_placeholder": "Contoh: Halaqah Abu Bakar"
+    ,"community.add_halaqah": "Tambah Halaqah"
+    ,"community.capacity_range": "Kapasitas: 5–20 orang"
+    ,"community.halaqah_list": "Daftar Halaqah"
+    ,"community.max_capacity": "Maks"
+    ,"community.empty_halaqah": "Belum ada halaqah yang ditambahkan."
+    ,"community.open_upper": "OPEN"
+    ,"community.private_upper": "PRIVAT"
+    ,"community.no_description": "Tidak ada deskripsi."
+    ,"community.structure": "Struktur Halaqah"
+    ,"community.ready": "Siap dipublish! Kamu akan otomatis menjadi Admin Komunitas ini."
+    ,"community.finish": "Selesai & Publish"
+    ,"community.name_required": "Nama Komunitas wajib diisi!"
+    ,"community.min_halaqah": "Komunitas wajib memiliki minimal 2 halaqah!"
+    ,"community.created": "Komunitas \"{name}\" berhasil dibuat dengan {count} halaqah!"
+    ,"tajwid.title": "Info Tajwid"
+    ,"tajwid.subtitle": "Tap setiap hukum untuk melihat penjelasan & contoh"
+    ,"marketplace.surah": "Surah"
+    ,"marketplace.ayah_placeholder": "Cth: 1–8"
+    ,"marketplace.ustadz": "Ustadz"
+    ,"marketplace.ustadzah": "Ustadzah"
+    ,"marketplace.powerups": "Power-Ups"
+    ,"profile.joined_year": "Bergabung sejak {year}"
+    ,"profile.badges": "Lencana"
+    ,"profile.certificates": "Sertifikat"
+    ,"profile.booking": "Jadwal Setoran"
+    ,"profile.hours_left": "{hours} jam lagi"
+    ,"profile.now": "Sekarang!"
+    ,"profile.no_booking": "Belum ada jadwal setoran"
+    ,"profile.create_booking": "Buat Jadwal"
+    ,"profile.memorization_level": "Level Hafalan"
+    ,"profile.juz": "Juz"
+    ,"profile.surah": "Surah"
+    ,"profile.verse": "Ayat"
+    ,"profile.surah_progress": "Progres Surah {surah}"
+    ,"profile.verses_complete": "Ayat {done} dari {total} selesai"
+    ,"profile.daily_streak": "Streak Harian"
+    ,"profile.best": "Terbanyak"
+    ,"profile.rukhsah": "Rukhsah"
+    ,"profile.next_target": "Target berikutnya"
+    ,"profile.days": "hari"
+    ,"profile.days_left": "{days} hari lagi"
+    ,"profile.locked": "Belum Terbuka"
+    ,"profile.download_certificate": "Unduh sertifikat"
+    ,"profile.no_certificates": "Belum ada sertifikat"
+    ,"profile.no_certificates_desc": "Selesaikan hafalan untuk mendapatkan sertifikat pertamamu!"
+    ,"profile.day_mon": "Sen"
+    ,"profile.day_tue": "Sel"
+    ,"profile.day_wed": "Rab"
+    ,"profile.day_thu": "Kam"
+    ,"profile.day_fri": "Jum"
+    ,"profile.day_sat": "Sab"
+    ,"profile.day_sun": "Min"
+    ,"admin.monthly_revenue": "PENDAPATAN BULAN INI"
+    ,"admin.total_sessions": "Total Sesi"
+    ,"admin.active_musyrif": "Musyrif Aktif"
+    ,"admin.live_status": "Status Live"
+    ,"admin.online_now": "Online Sekarang"
+    ,"admin.marking_now": "Sedang Menandai"
+    ,"admin.waiting_students": "Menunggu Santri"
+    ,"admin.musyrif_performance": "Performa Musyrif"
+    ,"admin.needs_review": "Perlu Evaluasi"
+    ,"admin.review": "Review"
+    ,"guide.title": "Panduan QuranMemo"
+    ,"guide.subtitle": "Pelajari cara terbaik menggunakan aplikasi untuk hafalan yang optimal"
+    ,"guide.about_title": "Apa itu QuranMemo?"
+    ,"guide.about_content": "QuranMemo adalah aplikasi hafalan Al-Qur'an berbasis teknologi spaced repetition yang membantu kamu menghafal dan menjaga hafalan dengan cara yang menyenangkan dan terstruktur."
+    ,"guide.start_title": "Mulai Hafalan"
+    ,"guide.start_1": "Buka halaman Belajar (ikon 🏠)"
+    ,"guide.start_2": "Pilih surat yang ingin dihafal pada peta jalan belajar"
+    ,"guide.start_3": "Tekan tombol Mulai untuk memulai sesi hafalan"
+    ,"guide.start_4": "Ikuti setiap langkah: Baca → Dengar → Hafalkan → Uji"
+    ,"guide.review_title": "Murojaah (Mengulang Hafalan)"
+    ,"guide.review_1": "Buka halaman Murojaah (ikon 🤝)"
+    ,"guide.review_2": "Ayat-ayat yang perlu diulang akan muncul otomatis berdasarkan jadwal"
+    ,"guide.review_3": "Selesaikan sesi murojaah harian agar hafalan tetap kuat"
+    ,"guide.review_4": "Semakin sering diulang, semakin besar XP yang didapat"
+    ,"guide.quests_title": "Misi & Tantangan"
+    ,"guide.quests_1": "Buka halaman Misi (ikon 🎁)"
+    ,"guide.quests_2": "Selesaikan misi harian untuk mendapatkan XP tambahan"
+    ,"guide.quests_3": "Cek tab Tantangan untuk target hafalan bulanan"
+    ,"guide.quests_4": "Raih lencana eksklusif setiap bulan!"
+    ,"guide.league_title": "Liga & Peringkat"
+    ,"guide.league_1": "Buka halaman Liga (ikon 🏆)"
+    ,"guide.league_2": "Kumpulkan XP sebanyak-banyaknya setiap minggu"
+    ,"guide.league_3": "Naiki peringkat dari Liga Perunggu hingga Berlian"
+    ,"guide.league_4": "Bersaing sehat dengan penghafal Al-Qur'an lain"
+    ,"guide.points_title": "Sistem Poin & XP"
+    ,"guide.points_content": "Setiap aktivitas akan memberikanmu XP (poin pengalaman). XP digunakan untuk naik peringkat di Liga. Kamu juga mendapatkan Gems (💎) yang bisa ditukar dengan item spesial di Marketplace."
+    ,"guide.energy_title": "Energi (❤️)"
+    ,"guide.energy_content": "Energi berkurang saat kamu melakukan kesalahan saat latihan. Jika energi habis, kamu perlu menunggu isi ulang otomatis atau menggunakan item dari Marketplace. Jawab dengan benar untuk menjaga energi tetap penuh!"
+    ,"guide.footer": "Semoga Allah memudahkan hafalan kita semua. Aamiin."
+    ,"earnings.total_gems": "Total Gems"
+    ,"earnings.rupiah_estimate": "Estimasi Rupiah"
+    ,"earnings.withdraw_rupiah": "Cairkan ke Rupiah"
+    ,"earnings.withdraw_title": "Cairkan Pendapatan"
+    ,"earnings.withdraw_desc": "Saldo {balance} Gems Anda akan dikonversi menjadi Rp {rupiah} dan ditransfer ke rekening yang terdaftar."
+    ,"earnings.destination_account": "REKENING TUJUAN"
+    ,"common.confirm": "Konfirmasi"
+    ,"footer.about": "TENTANG KAMI"
+    ,"footer.features": "FITUR"
+    ,"footer.methodology": "METODOLOGI"
+    ,"footer.premium": "PREMIUM"
+    ,"footer.terms": "KETENTUAN LAYANAN"
+    ,"footer.privacy": "KEBIJAKAN PRIVASI"
+    ,"streak.view_details": "Lihat detail streak"
+    ,"tadabbur.unlock_hint": "Terbuka setelah 10 sesi"
+    ,"tajwid.letters": "Huruf"
+    ,"tajwid.example": "Contoh"
+    ,"lesson.toggle_latin": "Aktif/nonaktifkan transliterasi Latin secara instan"
+    ,"musyrif.upcoming_schedule": "Jadwal Setoran Mendatang"
+    ,"admin.rating_complaints": "Rating turun ke 3.9 · 4 komplain bulan ini"
+    ,"lb.you_badge": "KAMU"
+    ,"quest.complete_step": "Selesaikan 1 tahap hafalan"
+    ,"quest.three_correct": "Dapatkan 3 jawaban benar"
+    ,"quest.start_today": "Mulai sesi hari ini"
+    ,"quest.three_correct_no_mistake": "Dapatkan 3 jawaban benar tanpa salah"
+    ,"quest.complete_instant_review": "Selesaikan 1 Murojaah instan"
+    ,"quest.three_correct_streak": "Dapatkan 3 jawaban benar beruntun"
+    ,"certificate.juz30_title": "Sertifikat Hafalan Juz 30"
+    ,"certificate.tahsin_title": "Sertifikat Tahsin Dasar"
+    ,"certificate.memorization": "Hafalan"
+    ,"certificate.tahsin": "Tahsin"
+    ,"lesson.back_dashboard": "Kembali ke Dashboard"
+    ,"lesson.break": "Istirahat"
+    ,"lesson.ready_submission": "Siap Setor ke Musyrif?"
+    ,"lesson.submission_desc": "Pilih musyrif dan jadwal setoran untuk melanjutkan hafalanmu dengan bimbingan langsung."
+    ,"lesson.self_practice_done": "Latihan mandiri sudah selesai"
 
 };

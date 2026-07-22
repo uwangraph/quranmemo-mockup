@@ -2,6 +2,7 @@
     import { appState } from '$lib/app.svelte.js';
     import { fade } from 'svelte/transition';
     import TajwidCard from '$lib/components/tajwid/TajwidCard.svelte';
+    import { i18n } from '$lib/i18n.svelte.js';
 
     let { onClose = null, isModal = false } = $props();
 
@@ -28,13 +29,13 @@
         <button class="icon-btn" onclick={() => { if (onClose) onClose(); else appState.go('lesson'); }}>
             <i class="ti ti-arrow-left"></i>
         </button>
-        <h1 class="page-title">Info Tajwid</h1>
+        <h1 class="page-title">{i18n.t('tajwid.title')}</h1>
         <div style="width: 40px;"></div>
     </header>
 
     <!-- Scrollable Content -->
     <main class="tajwid-content">
-        <p class="subtitle">Tap setiap hukum untuk melihat penjelasan & contoh</p>
+        <p class="subtitle">{i18n.t('tajwid.subtitle')}</p>
 
         {#each tajweedCategories as cat, catIdx}
             <div in:fade={{delay: catIdx * 60, duration: 300}}>

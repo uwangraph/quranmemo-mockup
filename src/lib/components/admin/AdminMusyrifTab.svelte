@@ -1,4 +1,5 @@
 <script>
+    import { i18n } from '$lib/i18n.svelte.js';
     const topMusyrif = [
         { name: 'Ust. Malik', sessions: 142, rating: 4.9, trend: '+8%' },
         { name: 'Ust. Hanafi', sessions: 118, rating: 4.8, trend: '+5%' },
@@ -8,47 +9,47 @@
 
 <!-- Musyrif Analytics Tab -->
 <div class="revenue-hero">
-    <div class="revenue-label">PENDAPATAN BULAN INI</div>
+    <div class="revenue-label">{i18n.t('admin.monthly_revenue')}</div>
     <div class="revenue-val">Rp 12.450.000</div>
     <div class="revenue-change">
-        <i class="ti ti-trending-up"></i> +12% dari bulan lalu
+        <i class="ti ti-trending-up"></i> +12% {i18n.t('admin.from_last_month')}
     </div>
     <div class="revenue-sub-row">
         <div class="revenue-sub">
-            <div style="font-size: 9px; opacity: 0.7; text-transform: uppercase;">Total Sesi</div>
+            <div style="font-size: 9px; opacity: 0.7; text-transform: uppercase;">{i18n.t('admin.total_sessions')}</div>
             <div style="font-size: 15px; font-weight: 900;">1.847</div>
         </div>
         <div style="width: 1px; background: rgba(255,255,255,0.2);"></div>
         <div class="revenue-sub">
-            <div style="font-size: 9px; opacity: 0.7; text-transform: uppercase;">Aktif Musyrif</div>
+            <div style="font-size: 9px; opacity: 0.7; text-transform: uppercase;">{i18n.t('admin.active_musyrif')}</div>
             <div style="font-size: 15px; font-weight: 900;">18</div>
         </div>
         <div style="width: 1px; background: rgba(255,255,255,0.2);"></div>
         <div class="revenue-sub">
-            <div style="font-size: 9px; opacity: 0.7; text-transform: uppercase;">Rata-Rata Rating</div>
+            <div style="font-size: 9px; opacity: 0.7; text-transform: uppercase;">{i18n.t('admin.avg_rating')}</div>
             <div style="font-size: 15px; font-weight: 900;">4.8 ★</div>
         </div>
     </div>
 </div>
 
 <!-- Live status -->
-<div class="section-label" style="font-size: 13px; font-weight: 800; color: #3c3c3c; margin-top: 16px; margin-bottom: 8px;">🔴 Status Live</div>
+<div class="section-label" style="font-size: 13px; font-weight: 800; color: #3c3c3c; margin-top: 16px; margin-bottom: 8px;">🔴 {i18n.t('admin.live_status')}</div>
 <div class="live-grid">
     <div class="live-stat-card" style="border-color: #22c55e30; background: #f0fdf4;">
         <div style="font-size: 22px; font-weight: 900; color: #22c55e;">6</div>
-        <div style="font-size: 9px; font-weight: 800; color: #166534; text-transform: uppercase;">Online Sekarang</div>
+        <div style="font-size: 9px; font-weight: 800; color: #166534; text-transform: uppercase;">{i18n.t('admin.online_now')}</div>
     </div>
     <div class="live-stat-card" style="border-color: #3b82f630; background: #eff6ff;">
         <div style="font-size: 22px; font-weight: 900; color: #3b82f6;">4</div>
-        <div style="font-size: 9px; font-weight: 800; color: #1d4ed8; text-transform: uppercase;">Sedang Menandai</div>
+        <div style="font-size: 9px; font-weight: 800; color: #1d4ed8; text-transform: uppercase;">{i18n.t('admin.marking_now')}</div>
     </div>
     <div class="live-stat-card" style="border-color: #f59e0b30; background: #fffbeb;">
         <div style="font-size: 22px; font-weight: 900; color: #f59e0b;">2</div>
-        <div style="font-size: 9px; font-weight: 800; color: #92400e; text-transform: uppercase;">Menunggu Santri</div>
+        <div style="font-size: 9px; font-weight: 800; color: #92400e; text-transform: uppercase;">{i18n.t('admin.waiting_students')}</div>
     </div>
 </div>
 
-<div class="section-label" style="font-size: 13px; font-weight: 800; color: #3c3c3c; margin-top: 16px; margin-bottom: 8px;">🏅 Performa Musyrif</div>
+<div class="section-label" style="font-size: 13px; font-weight: 800; color: #3c3c3c; margin-top: 16px; margin-bottom: 8px;">🏅 {i18n.t('admin.musyrif_performance')}</div>
 {#each topMusyrif as m, i}
     <div class="musyrif-perf-card">
         <div class="rank-badge" style="background: {i === 0 ? '#fef08a' : i === 1 ? '#e2e8f0' : '#fed7aa'}; color: {i === 0 ? '#854d0e' : i === 1 ? '#475569' : '#7c2d12'};">
@@ -66,14 +67,14 @@
     </div>
 {/each}
 
-<div class="section-label" style="font-size: 13px; font-weight: 800; color: #3c3c3c; margin-top: 16px; margin-bottom: 8px;">⚠️ Perlu Evaluasi</div>
+<div class="section-label" style="font-size: 13px; font-weight: 800; color: #3c3c3c; margin-top: 16px; margin-bottom: 8px;">⚠️ {i18n.t('admin.needs_review')}</div>
 <div class="warn-card">
     <div class="warn-icon">📉</div>
     <div style="flex: 1;">
         <div class="user-row-name">Ust. Ridwan</div>
-        <div class="user-row-info">Rating turun ke 3.9 · 4 komplain bulan ini</div>
+        <div class="user-row-info">{i18n.t('admin.rating_complaints')}</div>
     </div>
-    <button class="mini-btn" style="background: #ef4444; color: #fff;">Review</button>
+    <button class="mini-btn" style="background: #ef4444; color: #fff;">{i18n.t('admin.review')}</button>
 </div>
 
 <style>
