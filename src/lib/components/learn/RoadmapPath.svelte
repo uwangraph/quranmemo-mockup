@@ -75,7 +75,6 @@
         if (node.type === 'lesson' || node.type === 'checkpoint') {
             appState.selectedVerseIndex = node.verseIndex;
             appState.selectedNodeType = node.type;
-            appState.updateQuestProgress('q3', 1);
             appState.saveUser();
             appState.go('lesson');
         } else {
