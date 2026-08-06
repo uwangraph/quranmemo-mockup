@@ -30,6 +30,8 @@
         if (currentStep < tadabburSteps.length - 1) {
             currentStep++;
         } else {
+            // Catat penyelesaian agar node terjadwal di roadmap berubah menjadi selesai.
+            appState.completeTadabbur(appState.selectedTadabburKey);
             alert(i18n.t('tadabbur.complete'));
             currentStep = -1;
             appState.go('learn');

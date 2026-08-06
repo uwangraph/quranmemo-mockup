@@ -29,10 +29,12 @@
         const progress = appState.user.progress.surah_094;
         const getStatus = (idx) => progress > idx ? "completed" : (progress === idx ? "current" : "locked");
 
-        // Node sampingan seperti Tadabbur tidak punya catatan penyelesaian, jadi statusnya
-        // hanya "terbuka" atau "terkunci" — bukan "selesai". Menandainya selesai membuat
-        // pengguna mengira sudah mengerjakannya lalu melewatinya begitu saja.
-        const gate = (unlocked) => unlocked ? "available" : "locked";
+        // Node sampingan seperti Tadabbur punya tiga keadaan: terkunci, terbuka tapi
+        // belum dikerjakan, dan selesai. Menandainya selesai sebelum dikerjakan membuat
+        // pengguna mengira sudah melakukannya lalu melewatinya begitu saja.
+        const done = appState.user.progress.tadabbur ?? [];
+        const gate = (key, unlocked) =>
+            done.includes(key) ? "completed" : (unlocked ? "available" : "locked");
 
         const lp = appState.user.learningPath;
 
@@ -40,7 +42,7 @@
             return [
                 { id: 1, type: "lesson", verseIndex: 0, status: getStatus(0), title: `${i18n.t('learn.page')} 1` },
                 { id: 2, type: "lesson", verseIndex: 1, status: getStatus(1), title: `${i18n.t('learn.page')} 2` },
-                { id: 3, type: "tadabbur", status: gate(progress >= 2), title: `${i18n.t('learn.tadabbur_pages')} 1-2` },
+                { id: 3, type: "tadabbur", key: "pro_1", status: gate("pro_1", progress >= 2), title: `${i18n.t('learn.tadabbur_pages')} 1-2` },
                 { id: 4, type: "lesson", verseIndex: 2, status: getStatus(2), title: `${i18n.t('learn.page')} 3` },
                 { id: 5, type: "lesson", verseIndex: 3, status: getStatus(3), title: `${i18n.t('learn.page')} 4` },
                 { id: 6, type: "lesson", verseIndex: 4, status: getStatus(4), title: `${i18n.t('learn.page')} 5` },
@@ -53,7 +55,7 @@
                 { id: 3, type: "checkpoint", verseIndex: 1, status: progress >= 2 ? "completed" : "locked", title: `${i18n.t('learn.submit_part')} Al-Mulk` },
                 { id: 4, type: "lesson", verseIndex: 2, status: getStatus(2), title: "Al-Qalam" },
                 { id: 5, type: "lesson", verseIndex: 3, status: getStatus(3), title: "Al-Haqqah" },
-                { id: 6, type: "tadabbur", status: gate(progress >= 4), title: `Tadabbur T1` },
+                { id: 6, type: "tadabbur", key: "mid_1", status: gate("mid_1", progress >= 4), title: `Tadabbur T1` },
                 { id: 7, type: "checkpoint", verseIndex: 3, status: progress >= 5 ? "current" : "locked", title: `${i18n.t('learn.submit_ladder')} 1` }
             ];
         } else {
@@ -61,7 +63,7 @@
                 { id: 1, type: "lesson", verseIndex: 0, status: getStatus(0), title: `${i18n.t('learn.verse')} 1` },
                 { id: 2, type: "lesson", verseIndex: 1, status: getStatus(1), title: `${i18n.t('learn.verse')} 2` },
                 { id: 3, type: "lesson", verseIndex: 2, status: getStatus(2), title: `${i18n.t('learn.verse')} 3` },
-                { id: 4, type: "tadabbur", status: gate(progress >= 3), title: `Tadabbur 1-3` },
+                { id: 4, type: "tadabbur", key: "beginner_1", status: gate("beginner_1", progress >= 3), title: `Tadabbur 1-3` },
                 { id: 5, type: "lesson", verseIndex: 3, status: getStatus(3), title: `${i18n.t('learn.verse')} 4` },
                 { id: 6, type: "lesson", verseIndex: 4, status: getStatus(4), title: `${i18n.t('learn.verse')} 5` },
                 { id: 7, type: "lesson", verseIndex: 5, status: getStatus(5), title: `${i18n.t('learn.verse')} 6` },
@@ -83,8 +85,17 @@
             appState.saveUser();
             appState.go('lesson');
         } else {
+            // Node Tadabbur terjadwal: penyelesaiannya dicatat ke node ini.
+            appState.selectedTadabburKey = node.key ?? null;
             appState.go(node.type);
         }
+    }
+
+    // Tadabbur dari tombol banner: bisa dibuka kapan saja untuk merenung,
+    // tanpa menandai node terjadwal di roadmap sebagai selesai.
+    function openFreeTadabbur() {
+        appState.selectedTadabburKey = null;
+        appState.go('tadabbur');
     }
 
 
@@ -99,9 +110,16 @@
         <div class="unit-badge" style="position: relative; z-index: 2;">{pathConfig.badge}</div>
         <div style="font-size: 22px; font-weight: 900; color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.1); position: relative; z-index: 2;">{pathConfig.unitTitle}</div>
         <div style="font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.9); margin-top: 4px; position: relative; z-index: 2;">{pathConfig.unitDesc}</div>
-        <button class="unit-guide-btn" style="position: relative; z-index: 2; border: none; font-family: inherit;" onclick={() => appState.go('guide')}>
-            <i class="ti ti-notebook"></i> {i18n.t('learn.guide') || 'GUIDE'}
-        </button>
+        <div class="unit-actions">
+            <button class="unit-guide-btn" onclick={() => appState.go('guide')}>
+                <i class="ti ti-notebook"></i> {i18n.t('learn.guide') || 'GUIDE'}
+            </button>
+            <!-- Pintu masuk Tadabbur yang selalu tersedia. Node di roadmap baru terbuka
+                 setelah beberapa ayat selesai, sehingga di ponsel tidak ada jalan lain. -->
+            <button class="unit-guide-btn" onclick={openFreeTadabbur}>
+                <i class="ti ti-books"></i> {i18n.t('nav.tadabbur')}
+            </button>
+        </div>
     </div>
 
     <div class="path-container">
@@ -177,10 +195,21 @@
     .motif-2 { left: -50px; bottom: -50px; transform: rotate(45deg) scale(0.7); }
 
     .unit-badge { font-size: 11px; font-weight: 900; color: rgba(255,255,255,0.7); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
-    .unit-guide-btn {
-        display: inline-flex; align-items: center; gap: 6px; background: rgba(0,0,0,0.15); color: #fff;
-        padding: 6px 12px; border-radius: 12px; font-size: 12px; font-weight: 800; margin-top: 12px; cursor: pointer;
+    .unit-actions {
+        position: relative; z-index: 2;
+        display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px;
     }
+    .unit-guide-btn {
+        display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+        background: rgba(0,0,0,0.15); color: #fff; border: none; font-family: inherit;
+        padding: 8px 14px; border-radius: 12px; font-size: 12px; font-weight: 800; cursor: pointer;
+        /* Target sentuh nyaman untuk anak maupun lansia. */
+        min-height: 40px;
+        transition: background 0.15s;
+    }
+    .unit-guide-btn:hover { background: rgba(0,0,0,0.25); }
+    .unit-guide-btn:active { background: rgba(0,0,0,0.35); }
+    .unit-guide-btn:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
     .path-container { display: flex; flex-direction: column; align-items: center; padding-top: 30px; }
     .node-wrapper { display: flex; flex-direction: column; align-items: center; position: relative; z-index: 2; }
     .node-btn {

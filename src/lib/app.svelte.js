@@ -58,6 +58,7 @@ export function createAppState() {
     let mockupMode = $state('mobile'); // mobile, desktop
     let selectedVerseIndex = $state(0); 
     let selectedNodeType = $state('lesson'); // 'lesson' | 'checkpoint'
+    let selectedTadabburKey = $state(null);  // node Tadabbur yang sedang dibuka
     let marketplaceTab = $state('toko');
     let marketplaceSurah = $state('Al-Insyirah');
     let marketplaceAyah = $state('');
@@ -76,7 +77,8 @@ export function createAppState() {
         lastActiveDate: null,   // Hari terakhir menyelesaikan 1 step hafalan aktif (YYYY-MM-DD)
         inventory: [],
         progress: {
-            surah_094: 0
+            surah_094: 0,
+            tadabbur: []   // key node Tadabbur yang sudah diselesaikan
         },
         level: 'pemula',
         learningPath: 'beginner',
@@ -124,6 +126,7 @@ export function createAppState() {
     if (user.streakFreezes === undefined) user.streakFreezes = 1;
     if (user.streakRepairsUsed === undefined) user.streakRepairsUsed = 0;
     if (user.lastActiveDate === undefined) user.lastActiveDate = null;
+    if (!Array.isArray(user.progress?.tadabbur)) user.progress.tadabbur = [];
     if (user.scheduledBooking === undefined) user.scheduledBooking = { musyrifName: 'Ust. Ahmad Zaki', time: '2026-05-22T15:00:00', surah: 'Ad-Dhuha', juz: 30 };
     if (user.badges === undefined) user.badges = [
         { id: 'b1', icon: '🔥', name: 'Langkah Pertama', desc: 'Menyelesaikan 3 hari streak berturut-turut', earned: true },
@@ -278,6 +281,15 @@ export function createAppState() {
         }
     }
 
+    // Tandai satu node Tadabbur sebagai selesai. Idempoten agar membuka ulang
+    // node yang sama tidak menggandakan catatannya.
+    function completeTadabbur(key) {
+        if (!key || user.progress.tadabbur.includes(key)) return false;
+        user.progress.tadabbur = [...user.progress.tadabbur, key];
+        saveUser();
+        return true;
+    }
+
     // ====== Streak-related functions ======
 
     // Buka lencana milestone yang sudah terlampaui oleh runtunan saat ini.
@@ -407,6 +419,8 @@ export function createAppState() {
         set selectedVerseIndex(val) { selectedVerseIndex = val; },
         get selectedNodeType() { return selectedNodeType; },
         set selectedNodeType(val) { selectedNodeType = val; },
+        get selectedTadabburKey() { return selectedTadabburKey; },
+        set selectedTadabburKey(val) { selectedTadabburKey = val; },
         get marketplaceTab() { return marketplaceTab; },
         set marketplaceTab(val) { marketplaceTab = val; },
         get marketplaceSurah() { return marketplaceSurah; },
@@ -434,6 +448,7 @@ export function createAppState() {
         repairStreak,
         addStreak,
         markDailyProgress,
+        completeTadabbur,
         triggerLoginRewardCheck,
         clearPendingRewardInfo
     };
