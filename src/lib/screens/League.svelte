@@ -88,6 +88,11 @@
                     <span class="tab-label">{tab.label}</span>
                 </button>
             {/each}
+            <!-- Papan peringkat halaqah/komunitas punya layarnya sendiri (LEARDERBOARD.md). -->
+            <button class="tab-chip" onclick={() => appState.go('halaqah')}>
+                <span class="tab-icon">👥</span>
+                <span class="tab-label">{i18n.t('nav.halaqah')}</span>
+            </button>
         </div>
 
         <!-- Period Switcher -->

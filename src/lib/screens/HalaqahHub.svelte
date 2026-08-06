@@ -70,9 +70,13 @@
 <div class="screen">
     <!-- Top Bar -->
     <div class="topbar" style="background: linear-gradient(135deg, #0284c7, #0ea5e9); padding: 14px 16px 10px;">
+        <button onclick={() => appState.go('league')} style="background: none; border: none; cursor: pointer; display: flex; align-items: center;" title={i18n.t('nav.league')}>
+            <i class="ti ti-arrow-left" style="font-size: 20px; color: #fff;"></i>
+        </button>
         <span style="font-size: 16px; font-weight: 900; color: #fff; flex: 1; text-align: center;">
             🤝 Hub Komunitas & Halaqah
         </span>
+        <div style="width: 20px"></div>
     </div>
 
     <div class="scroll-content no-scrollbar">
@@ -168,7 +172,8 @@
     </div>
 
     <!-- We add halaqah as active to bottom nav -->
-    <BottomNav active="halaqah" />
+    <!-- Halaqah kini sub-layar dari Liga, jadi tab Liga yang disorot. -->
+    <BottomNav active="league" />
 </div>
 
 <style>

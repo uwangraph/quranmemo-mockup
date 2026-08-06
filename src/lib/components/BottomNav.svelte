@@ -3,13 +3,12 @@
     import { i18n } from '$lib/i18n.svelte.js';
     let { active = 'learn' } = $props();
 
-    // Make items reactive so they update when language changes
+    // Maksimal 5 tab agar label tetap terbaca di lebar ponsel.
+    // Tadabbur dicapai lewat node di roadmap, Halaqah lewat tab di layar Liga.
     const items = $derived([
         { id: 'learn', icon: 'ti-home', label: i18n.t('nav.learn') },
         { id: 'murojaah', icon: 'ti-refresh', label: i18n.t('nav.murojaah') },
-        { id: 'tadabbur', icon: 'ti-book', label: i18n.t('nav.tadabbur') },
         { id: 'quests', icon: 'ti-gift', label: i18n.t('nav.quests') },
-        { id: 'halaqah', icon: 'ti-users', label: i18n.t('nav.halaqah') },
         { id: 'league', icon: 'ti-trophy', label: i18n.t('nav.league') },
         { id: 'profile', icon: 'ti-user', label: i18n.t('nav.profile') }
     ]);
@@ -68,10 +67,15 @@
         color: #00978A;
     }
     .nav-item span {
-        font-size: 9px;
+        font-size: 10px;
         font-weight: 700;
         color: #afafaf;
         font-family: "Nunito", sans-serif;
+        max-width: 100%;
+        padding: 0 2px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
     .nav-item.active span {
         color: #00978A;

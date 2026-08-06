@@ -111,7 +111,8 @@
     {/if}
 
     {#if currentStep === -1}
-        <BottomNav active="tadabbur" />
+        <!-- Tadabbur bagian dari jalur belajar, jadi tab Belajar yang disorot. -->
+        <BottomNav active="learn" />
     {/if}
 </div>
 
