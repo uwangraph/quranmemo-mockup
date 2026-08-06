@@ -35,6 +35,23 @@ if (typeof window !== 'undefined' && !window.__quranmemoKeydownRegistered) {
     }
 }
 
+const DAY_MS = 86400000;
+
+// Semua batas hari memakai waktu server UTC+7 (WIB), bukan zona waktu perangkat.
+function serverNow() {
+    const now = new Date();
+    return new Date(now.getTime() + (now.getTimezoneOffset() * 60000) + (3600000 * 7));
+}
+
+function dayKey(date) {
+    return date.toISOString().split('T')[0];
+}
+
+// Jarak hari antara sebuah tanggal (YYYY-MM-DD) dan hari ini menurut waktu server.
+function daysSince(dayStr) {
+    return Math.round((Date.parse(dayKey(serverNow())) - Date.parse(dayStr)) / DAY_MS);
+}
+
 export function createAppState() {
     let currentScreen = $state('learn');
     let theme = $state('user'); // user, musyrif, admin
@@ -56,6 +73,7 @@ export function createAppState() {
         streakHistory: [false, false, false, false, false, false, false], // 7 hari terakhir (index 0 = paling lama)
         streakFreezes: 1,       // Jumlah Rukhsah Harian yang dimiliki
         streakRepairsUsed: 0,   // Berapa kali Tebus Hari dipakai bulan ini (maks 2)
+        lastActiveDate: null,   // Hari terakhir menyelesaikan 1 step hafalan aktif (YYYY-MM-DD)
         inventory: [],
         progress: {
             surah_094: 0
@@ -105,6 +123,7 @@ export function createAppState() {
     if (user.streakHistory === undefined) user.streakHistory = [true, true, false, true, true, true, true];
     if (user.streakFreezes === undefined) user.streakFreezes = 1;
     if (user.streakRepairsUsed === undefined) user.streakRepairsUsed = 0;
+    if (user.lastActiveDate === undefined) user.lastActiveDate = null;
     if (user.scheduledBooking === undefined) user.scheduledBooking = { musyrifName: 'Ust. Ahmad Zaki', time: '2026-05-22T15:00:00', surah: 'Ad-Dhuha', juz: 30 };
     if (user.badges === undefined) user.badges = [
         { id: 'b1', icon: '🔥', name: 'Langkah Pertama', desc: 'Menyelesaikan 3 hari streak berturut-turut', earned: true },
@@ -131,10 +150,7 @@ export function createAppState() {
     let pendingRewardInfo = $state(null);
 
     function checkDailyReset() {
-        const now = new Date();
-        const utcMs = now.getTime() + (now.getTimezoneOffset() * 60000);
-        const serverNow = new Date(utcMs + (3600000 * 7)); // UTC+7
-        const todayStr = serverNow.toISOString().split('T')[0];
+        const todayStr = dayKey(serverNow());
 
         // 2. Check Daily Quests Reset
         if (user.dailyQuests.date !== todayStr) {
@@ -154,6 +170,7 @@ export function createAppState() {
     // Run check on initialization
     if (typeof window !== 'undefined') {
         checkDailyReset();
+        evaluateStreak();
     }
 
     // Method to save user state to localStorage
@@ -185,10 +202,7 @@ export function createAppState() {
     // Returns reward info if a new-day streak continuation is detected after daily target completion.
     function checkLoginReward() {
         if (typeof window === 'undefined') return null;
-        const now = new Date();
-        const utcMs = now.getTime() + (now.getTimezoneOffset() * 60000);
-        const serverNow = new Date(utcMs + (3600000 * 7)); // UTC+7
-        const todayStr = serverNow.toISOString().split('T')[0]; // YYYY-MM-DD
+        const todayStr = dayKey(serverNow());
 
         if (user.lastLoginDate === todayStr) {
             return null; // Already claimed today
@@ -200,10 +214,7 @@ export function createAppState() {
         }
 
         // Check if yesterday was logged in (for streak continuation)
-        const yesterday = new Date(serverNow);
-        yesterday.setDate(yesterday.getDate() - 1);
-        const yesterdayStr = yesterday.toISOString().split('T')[0];
-        const isConsecutive = user.lastLoginDate === yesterdayStr;
+        const isConsecutive = !!user.lastLoginDate && daysSince(user.lastLoginDate) === 1;
 
         const newStreak = isConsecutive ? user.loginStreak + 1 : 1;
 
@@ -223,12 +234,7 @@ export function createAppState() {
 
     function claimLoginReward(gemsReward, streakDay) {
         if (typeof window === 'undefined') return;
-        const now = new Date();
-        const utcMs = now.getTime() + (now.getTimezoneOffset() * 60000);
-        const serverNow = new Date(utcMs + (3600000 * 7));
-        const todayStr = serverNow.toISOString().split('T')[0];
-
-        user.lastLoginDate = todayStr;
+        user.lastLoginDate = dayKey(serverNow());
         user.loginStreak = streakDay;
         user.gems += gemsReward;
         pendingRewardInfo = null;
@@ -274,6 +280,54 @@ export function createAppState() {
 
     // ====== Streak-related functions ======
 
+    // Buka lencana milestone yang sudah terlampaui oleh runtunan saat ini.
+    function unlockStreakBadges() {
+        const milestones = [3, 7, 30, 100, 365];
+        const badgeIds = ['b1', 'b2', 'b4', 'b5', 'b6'];
+        milestones.forEach((m, i) => {
+            if (user.streak >= m) {
+                const badge = user.badges.find(b => b.id === badgeIds[i]);
+                if (badge) badge.earned = true;
+            }
+        });
+    }
+
+    // Evaluasi runtunan saat aplikasi dibuka: putuskan jika ada hari yang terlewat.
+    // Rukhsah Harian menutup tepat satu hari bolong secara otomatis (STREAK.md).
+    function evaluateStreak() {
+        if (!user.lastActiveDate) return;
+        const gap = daysSince(user.lastActiveDate);
+        if (gap <= 1) return; // hari ini atau kemarin — runtunan masih aman
+
+        if (gap === 2 && user.streakFreezes > 0) {
+            user.streakFreezes -= 1;
+            // Majukan penanda agar rukhsah tidak terpakai dua kali untuk hari yang sama.
+            user.lastActiveDate = dayKey(new Date(serverNow().getTime() - DAY_MS));
+            saveUser();
+            return;
+        }
+
+        user.streak = 0;
+        saveUser();
+    }
+
+    // Dipanggil ketika pengguna menyelesaikan minimal 1 step hafalan aktif.
+    // Hanya menambah runtunan satu kali per hari (STREAK.md).
+    function markDailyProgress() {
+        const todayStr = dayKey(serverNow());
+        if (user.lastActiveDate === todayStr) return false;
+
+        evaluateStreak(); // pastikan hari bolong sudah diperhitungkan sebelum menambah
+
+        user.streak = Math.min(user.streak + 1, 999);
+        if (user.streak > user.maxStreak) user.maxStreak = user.streak;
+        user.streakHistory = [...user.streakHistory.slice(1), true];
+        user.lastActiveDate = todayStr;
+        unlockStreakBadges();
+        saveUser();
+        return true;
+    }
+
     // Gunakan Rukhsah Harian (Streak Freeze) — cegah streak putus 1 hari
     function useStreakFreeze() {
         if (user.streakFreezes > 0) {
@@ -289,6 +343,8 @@ export function createAppState() {
         if (user.streakRepairsUsed < 2 && user.streak === 0) {
             user.streak = 1;
             user.streakRepairsUsed += 1;
+            // Tandai hari ini sudah aktif agar runtunan tidak langsung putus lagi.
+            user.lastActiveDate = dayKey(serverNow());
             saveUser();
             return true;
         }
@@ -299,18 +355,9 @@ export function createAppState() {
     function addStreak(days = 1) {
         user.streak = Math.min(user.streak + days, 999);
         if (user.streak > user.maxStreak) user.maxStreak = user.streak;
-        // Geser streak history
-        const newHistory = [...user.streakHistory.slice(1), true];
-        user.streakHistory = newHistory;
-        // Cek milestone badge
-        const milestones = [3, 7, 30, 100, 365];
-        const badgeIds = ['b1', 'b2', 'b4', 'b5', 'b6'];
-        milestones.forEach((m, i) => {
-            if (user.streak >= m) {
-                const badge = user.badges.find(b => b.id === badgeIds[i]);
-                if (badge) badge.earned = true;
-            }
-        });
+        user.streakHistory = [...user.streakHistory.slice(1), true];
+        user.lastActiveDate = dayKey(serverNow());
+        unlockStreakBadges();
         saveUser();
     }
 
@@ -386,6 +433,7 @@ export function createAppState() {
         useStreakFreeze,
         repairStreak,
         addStreak,
+        markDailyProgress,
         triggerLoginRewardCheck,
         clearPendingRewardInfo
     };

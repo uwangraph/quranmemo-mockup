@@ -1244,6 +1244,7 @@
                 appState.user.progress.surah_094 += 1;
             }
             appState.updateQuestProgress('q1', 1); // trigger quest
+            appState.markDailyProgress();          // runtunan bertambah setelah step hafalan aktif selesai
             appState.triggerLoginRewardCheck();
             appState.saveUser();
 
