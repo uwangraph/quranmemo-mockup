@@ -20,6 +20,7 @@ export default {
     "screen.tadabbur": "Tadabbur",
     "screen.profile": "Profil",
     "screen.language": "Bahasa",
+    "screen.quests": "Misi",
     "screen.admin-dashboard": "Papan Pemuka Admin",
     "screen.admin-users": "Pantau Pengguna",
     "screen.admin-musyrif": "Pantau Musyrif",

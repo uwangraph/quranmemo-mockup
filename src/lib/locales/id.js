@@ -24,6 +24,7 @@ export default {
     "screen.guide": "Panduan",
     "screen.profile": "Profil",
     "screen.language": "Bahasa",
+    "screen.quests": "Misi",
     "screen.admin-dashboard": "Dasbor Admin",
     "screen.admin-users": "Pemantau Pengguna",
     "screen.admin-musyrif": "Pemantau Musyrif",

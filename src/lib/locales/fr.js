@@ -20,6 +20,7 @@ export default {
     "screen.tadabbur": "Méditer",
     "screen.profile": "Profil",
     "screen.language": "Langue",
+    "screen.quests": "Missions",
     "screen.admin-dashboard": "Tableau Admin",
     "screen.admin-users": "Surveiller Utilisateurs",
     "screen.admin-musyrif": "Surveiller Musyrif",

@@ -22,6 +22,7 @@ export default {
     "screen.tadabbur": "Reflect",
     "screen.profile": "Profile",
     "screen.language": "Language",
+    "screen.quests": "Quests",
     "screen.admin-dashboard": "Admin Dashboard",
     "screen.admin-users": "Monitor Users",
     "screen.admin-musyrif": "Monitor Musyrif",

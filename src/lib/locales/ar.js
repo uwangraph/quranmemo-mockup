@@ -20,6 +20,7 @@ export default {
     "screen.tadabbur": "تدبر",
     "screen.profile": "ملفي",
     "screen.language": "اللغة",
+    "screen.quests": "المهام",
     "screen.admin-dashboard": "لوحة المسؤول",
     "screen.admin-users": "مراقبة المستخدمين",
     "screen.admin-musyrif": "مراقبة المشرفين",

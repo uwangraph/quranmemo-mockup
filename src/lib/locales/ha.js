@@ -20,6 +20,7 @@ export default {
     "screen.tadabbur": "Tadabbur",
     "screen.profile": "Bayanan",
     "screen.language": "Harshe",
+    "screen.quests": "Ayyuka",
     "screen.admin-dashboard": "Dashboard Admin",
     "screen.admin-users": "Duba Masu Amfani",
     "screen.admin-musyrif": "Duba Musyrif",
