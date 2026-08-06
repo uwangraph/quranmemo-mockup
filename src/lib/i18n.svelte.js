@@ -31,9 +31,17 @@ const legacyKeys = {
     'Tahsin': 'certificate.tahsin'
 };
 
+const LOCALE_KEY = 'quranmemo_locale';
+
+function getStoredLocale() {
+    if (typeof window === 'undefined') return 'en';
+    const stored = localStorage.getItem(LOCALE_KEY);
+    return stored && dicts[stored] ? stored : 'en';
+}
+
 export function createI18n() {
-    let locale = $state('en');
-    
+    let locale = $state(getStoredLocale());
+
     function t(key, params = {}) { 
         const resolvedKey = legacyKeys[key] || key;
         let text = dicts[locale]?.[resolvedKey] || dicts['en']?.[resolvedKey] || resolvedKey; 
@@ -51,8 +59,10 @@ export function createI18n() {
     
     return {
         get locale() { return locale; },
-        set locale(v) { 
-            if (dicts[v]) locale = v; 
+        set locale(v) {
+            if (!dicts[v]) return;
+            locale = v;
+            if (typeof window !== 'undefined') localStorage.setItem(LOCALE_KEY, v);
         },
         t, 
         getDir
