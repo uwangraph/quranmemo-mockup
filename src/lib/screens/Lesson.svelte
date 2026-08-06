@@ -12,6 +12,7 @@
     import StepChoiceChallenge from '$lib/components/lesson/StepChoiceChallenge.svelte';
     import StepScrambleChallenge from '$lib/components/lesson/StepScrambleChallenge.svelte';
     import StepSetorFull from '$lib/components/lesson/StepSetorFull.svelte';
+    import BreakModal from '$lib/components/lesson/BreakModal.svelte';
     import MotivationalFooter from '$lib/components/lesson/MotivationalFooter.svelte';
     import TajwidInfo from '$lib/screens/TajwidInfo.svelte';
 
@@ -210,6 +211,7 @@
     let currentWordIndex = $state(-1);
     let selectedOptionIdx = $state(null);
     let isChecked = $state(false);
+    let showBreakModal = $state(false);
     let isCorrect = $state(false);
     
     let showTajwidModal = $state(false);
@@ -1004,10 +1006,9 @@
     }
 
     function toggleBreak() {
-        // Toggle break/check state
-        isChecked = !isChecked;
-        // If entering break, pause audio and stop playing
-        if (isChecked && audio && isPlaying) {
+        showBreakModal = !showBreakModal;
+        // Jeda murottal saat modal istirahat terbuka.
+        if (showBreakModal && audio && isPlaying) {
             audio.pause();
             isPlaying = false;
         }
@@ -1714,6 +1715,12 @@
     {#if showTajwidModal}
         <TajwidInfo isModal={true} onClose={() => showTajwidModal = false} />
     {/if}
+
+    <BreakModal
+        {showBreakModal}
+        onContinue={() => (showBreakModal = false)}
+        onExit={exitLesson}
+    />
 
     <!-- 3. COMPLETED ALL STAGES SCREEN OVERLAY -->
     <canvas bind:this={confettiCanvas} class="confetti-canvas"></canvas>
