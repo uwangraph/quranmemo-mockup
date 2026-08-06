@@ -3,6 +3,7 @@ export default {
     "nav.musyrif": "Musyrif",
     "nav.admin": "Admin",
     "nav.learn": "Learn",
+    "nav.main": "Main navigation",
     "nav.murojaah": "Review",
     "nav.tadabbur": "Reflect",
     "nav.quests": "Quests",

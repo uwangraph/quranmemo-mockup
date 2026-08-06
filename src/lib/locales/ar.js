@@ -3,6 +3,8 @@ export default {
     "nav.musyrif": "مشرف",
     "nav.admin": "مسؤول",
     "nav.learn": "تعلم",
+    "nav.quests": "المهام",
+    "nav.main": "التنقل الرئيسي",
     "nav.murojaah": "مراجعة",
     "nav.tadabbur": "تدبر",
     "nav.league": "الدوري",

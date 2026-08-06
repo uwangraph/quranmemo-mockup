@@ -3,6 +3,8 @@ export default {
     "nav.musyrif": "Musyrif",
     "nav.admin": "Admin",
     "nav.learn": "Apprendre",
+    "nav.quests": "Missions",
+    "nav.main": "Navigation principale",
     "nav.murojaah": "Révision",
     "nav.tadabbur": "Méditer",
     "nav.league": "Ligue",

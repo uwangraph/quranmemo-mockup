@@ -3,6 +3,8 @@ export default {
     "nav.musyrif": "Musyrif",
     "nav.admin": "Admin",
     "nav.learn": "Koya",
+    "nav.quests": "Ayyuka",
+    "nav.main": "Babban kewayawa",
     "nav.murojaah": "Bita",
     "nav.tadabbur": "Tadabbur",
     "nav.league": "Gasar",

@@ -3,6 +3,8 @@ export default {
     "nav.musyrif": "Musyrif",
     "nav.admin": "Admin",
     "nav.learn": "Belajar",
+    "nav.quests": "Misi",
+    "nav.main": "Navigasi utama",
     "nav.murojaah": "Ulangkaji",
     "nav.tadabbur": "Tadabbur",
     "nav.league": "Liga",
