@@ -28,14 +28,19 @@
     const nodes = $derived.by(() => {
         const progress = appState.user.progress.surah_094;
         const getStatus = (idx) => progress > idx ? "completed" : (progress === idx ? "current" : "locked");
-        
+
+        // Node sampingan seperti Tadabbur tidak punya catatan penyelesaian, jadi statusnya
+        // hanya "terbuka" atau "terkunci" — bukan "selesai". Menandainya selesai membuat
+        // pengguna mengira sudah mengerjakannya lalu melewatinya begitu saja.
+        const gate = (unlocked) => unlocked ? "available" : "locked";
+
         const lp = appState.user.learningPath;
 
         if (lp === 'pro') {
             return [
                 { id: 1, type: "lesson", verseIndex: 0, status: getStatus(0), title: `${i18n.t('learn.page')} 1` },
                 { id: 2, type: "lesson", verseIndex: 1, status: getStatus(1), title: `${i18n.t('learn.page')} 2` },
-                { id: 3, type: "tadabbur", status: progress >= 2 ? "completed" : "locked", title: `${i18n.t('learn.tadabbur_pages')} 1-2` },
+                { id: 3, type: "tadabbur", status: gate(progress >= 2), title: `${i18n.t('learn.tadabbur_pages')} 1-2` },
                 { id: 4, type: "lesson", verseIndex: 2, status: getStatus(2), title: `${i18n.t('learn.page')} 3` },
                 { id: 5, type: "lesson", verseIndex: 3, status: getStatus(3), title: `${i18n.t('learn.page')} 4` },
                 { id: 6, type: "lesson", verseIndex: 4, status: getStatus(4), title: `${i18n.t('learn.page')} 5` },
@@ -48,15 +53,15 @@
                 { id: 3, type: "checkpoint", verseIndex: 1, status: progress >= 2 ? "completed" : "locked", title: `${i18n.t('learn.submit_part')} Al-Mulk` },
                 { id: 4, type: "lesson", verseIndex: 2, status: getStatus(2), title: "Al-Qalam" },
                 { id: 5, type: "lesson", verseIndex: 3, status: getStatus(3), title: "Al-Haqqah" },
-                { id: 6, type: "tadabbur", status: progress >= 4 ? "current" : "locked", title: `Tadabbur T1` },
-                { id: 7, type: "checkpoint", verseIndex: 3, status: progress >= 5 ? "locked" : "locked", title: `${i18n.t('learn.submit_ladder')} 1` }
+                { id: 6, type: "tadabbur", status: gate(progress >= 4), title: `Tadabbur T1` },
+                { id: 7, type: "checkpoint", verseIndex: 3, status: progress >= 5 ? "current" : "locked", title: `${i18n.t('learn.submit_ladder')} 1` }
             ];
         } else {
             return [
                 { id: 1, type: "lesson", verseIndex: 0, status: getStatus(0), title: `${i18n.t('learn.verse')} 1` },
                 { id: 2, type: "lesson", verseIndex: 1, status: getStatus(1), title: `${i18n.t('learn.verse')} 2` },
                 { id: 3, type: "lesson", verseIndex: 2, status: getStatus(2), title: `${i18n.t('learn.verse')} 3` },
-                { id: 4, type: "tadabbur", status: progress >= 3 ? "completed" : "locked", title: `Tadabbur 1-3` },
+                { id: 4, type: "tadabbur", status: gate(progress >= 3), title: `Tadabbur 1-3` },
                 { id: 5, type: "lesson", verseIndex: 3, status: getStatus(3), title: `${i18n.t('learn.verse')} 4` },
                 { id: 6, type: "lesson", verseIndex: 4, status: getStatus(4), title: `${i18n.t('learn.verse')} 5` },
                 { id: 7, type: "lesson", verseIndex: 5, status: getStatus(5), title: `${i18n.t('learn.verse')} 6` },
@@ -189,7 +194,17 @@
     .node-btn.current { background: var(--duo-green); border-bottom-color: var(--duo-green-dark); color: #fff; animation: pulse 2s infinite; }
     .node-btn.locked { background: #e5e5e5; border-bottom-color: #afafaf; color: #afafaf; cursor: not-allowed; }
 
+    /* Terbuka tapi belum dikerjakan: berongga, untuk membedakannya dari node
+       terisi penuh yang berarti sudah selesai. */
+    .node-btn.available {
+        background: #fff;
+        border: 3px solid var(--duo-green);
+        border-bottom: 6px solid var(--duo-green-dark);
+        color: var(--duo-green-dark);
+    }
+
     .node-btn.tadabbur.completed { background: #ce82ff; border-bottom-color: #a52adb; }
+    .node-btn.tadabbur.available { border-color: #ce82ff; border-bottom-color: #a52adb; color: #a52adb; }
     .node-btn.checkpoint.completed { background: #ffc800; border-bottom-color: #e5a000; }
     
     @keyframes pulse {
@@ -208,7 +223,7 @@
     }
     .node-title { font-size: 13px; font-weight: 800; color: #3c3c3c; margin-top: 8px; }
     .connector { width: 8px; height: 40px; background: #e5e5e5; margin: 4px 0; z-index: 1; }
-    .connector.completed, .connector.current { background: #d7ffb2; }
+    .connector.completed, .connector.current, .connector.available { background: #d7ffb2; }
 
     .daily-goal-card { background: #fff; border: 2px solid #e5e5e5; border-radius: 16px; padding: 14px; margin-top: 20px; }
     .mobile-only-card { margin: 0 16px 20px; display: block; }
