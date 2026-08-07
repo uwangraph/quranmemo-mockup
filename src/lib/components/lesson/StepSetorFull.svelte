@@ -26,7 +26,7 @@
             {#if type === 'setor_full'}📖{:else if type === 'recall_level1'}🏆{:else}🔗{/if}
         </div>
         <div class="mic-container">
-            <button class="mic-circle-btn giant" onclick={startSimulatedRecording} disabled={isChecked} title={i18n.t('lesson.mic_title')}>
+            <button class="mic-circle-btn giant" onclick={(e) => { e.preventDefault(); e.stopPropagation(); startSimulatedRecording(); }} disabled={isChecked} title={i18n.t('lesson.mic_title')}>
                 <i class="ti ti-microphone"></i>
             </button>
         </div>
@@ -43,7 +43,7 @@
     {:else if recordState === 'recording'}
         <!-- Recording State -->
         <div class="mic-container pulsing-container">
-            <button class="mic-circle-btn giant active" onclick={startSimulatedRecording} disabled={isChecked}>
+            <button class="mic-circle-btn giant active" onclick={(e) => { e.preventDefault(); e.stopPropagation(); startSimulatedRecording(); }} disabled={isChecked}>
                 <i class="ti ti-microphone"></i>
             </button>
         </div>

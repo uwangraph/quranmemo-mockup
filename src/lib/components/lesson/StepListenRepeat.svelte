@@ -41,7 +41,7 @@
             class="mic-circle-btn" 
             class:active={recordState === 'recording'}
             class:recorded={recordState === 'recorded'}
-            onclick={startSimulatedRecording} 
+            onclick={(e) => { e.preventDefault(); e.stopPropagation(); startSimulatedRecording(); }} 
             disabled={isChecked} 
             title={recordState === 'recording' ? i18n.t('lesson.mic_stop') : recordState === 'recorded' ? i18n.t('lesson.mic_re_record') : i18n.t('lesson.mic_start')}
         >
@@ -144,7 +144,7 @@
                     <i class="ti {isPlayingRecorded ? 'ti-player-pause' : 'ti-player-play'}"></i> 
                     {isPlayingRecorded ? i18n.t('lesson.pause') : i18n.t('lesson.play_my_record')}
                 </button>
-                <button class="btn-duo" style="flex: 1; color: #ff4b4b; border-color: #fee2e2;" onclick={startSimulatedRecording} disabled={isChecked}>
+                <button class="btn-duo" style="flex: 1; color: #ff4b4b; border-color: #fee2e2;" onclick={(e) => { e.preventDefault(); e.stopPropagation(); startSimulatedRecording(); }} disabled={isChecked}>
                     <i class="ti ti-microphone"></i> 
                     {i18n.t('lesson.mic_re_record')}
                 </button>

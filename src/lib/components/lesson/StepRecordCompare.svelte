@@ -13,6 +13,11 @@
         isChecked = false
     } = $props();
 
+    // true setelah user menekan tombol "Compare" (startComparePlay dipanggil).
+    // Dipakai supaya step "Compare" tidak dicentang sebelum tombol compare diklik,
+    // walaupun rekaman sudah selesai (recordState === 'recorded').
+    let hasCompared = $state(false);
+
     // Current phase in the single-button flow
     const phase = $derived.by(() => {
         if (recordState === 'recording') return 'recording';
@@ -20,6 +25,21 @@
         if (isPlayingRecorded) return 'user_playing';
         if (recordState === 'recorded' && !isComparing && !isPlayingRecorded) return 'done';
         return 'idle';
+    });
+
+    function handleCompare() {
+        hasCompared = true;
+        startComparePlay();
+    }
+
+    // Rekaman baru (lewat tombol Re-record) = perbandingan sebelumnya dibatalkan,
+    // jadi step "Compare" tidak lagi tercoret sampai tombol Compare ditekan lagi.
+    // Guard !isPlayingRecorded supaya tidak reset saat memutar rekaman user di
+    // tengah alur perbandingan (recordState sempat jadi 'recording').
+    $effect(() => {
+        if (recordState === 'recording' && !isComparing && !isPlayingRecorded) {
+            hasCompared = false;
+        }
     });
 </script>
 
@@ -53,9 +73,9 @@
 
         <div class="flow-connector" class:lit={phase === 'user_playing' || phase === 'done'}></div>
 
-        <div class="flow-step" class:active={phase === 'user_playing'} class:done={phase === 'done'}>
+        <div class="flow-step" class:active={phase === 'user_playing'} class:done={hasCompared && phase === 'done'}>
             <div class="flow-step-dot">
-                {#if phase === 'done'}
+                {#if hasCompared && phase === 'done'}
                     <i class="ti ti-check" style="font-size: 14px;"></i>
                 {:else}
                     <i class="ti ti-headphones" style="font-size: 14px;"></i>
@@ -135,12 +155,12 @@
 
     <!-- Single Action Button -->
     {#if phase === 'idle'}
-        <button class="main-action-btn btn-record" onclick={startSimulatedRecording} disabled={isChecked}>
+        <button class="main-action-btn btn-record" onclick={(e) => { e.preventDefault(); e.stopPropagation(); startSimulatedRecording(); }} disabled={isChecked}>
             <i class="ti ti-microphone" style="font-size: 22px;"></i>
             <span>{i18n.t('lesson.mic_start')}</span>
         </button>
     {:else if phase === 'recording'}
-        <button class="main-action-btn btn-stop" onclick={startSimulatedRecording} disabled={isChecked}>
+        <button class="main-action-btn btn-stop" onclick={(e) => { e.preventDefault(); e.stopPropagation(); startSimulatedRecording(); }} disabled={isChecked}>
             <i class="ti ti-player-stop-filled" style="font-size: 22px;"></i>
             <span>{i18n.t('lesson.mic_stop')}</span>
         </button>
@@ -153,11 +173,11 @@
         </button>
     {:else if phase === 'done'}
         <div class="done-btn-row">
-            <button class="main-action-btn btn-retry" onclick={startSimulatedRecording} disabled={isChecked}>
+            <button class="main-action-btn btn-retry" onclick={(e) => { e.preventDefault(); e.stopPropagation(); startSimulatedRecording(); }} disabled={isChecked}>
                 <i class="ti ti-refresh" style="font-size: 18px;"></i>
                 <span>{i18n.t('lesson.mic_re_record')}</span>
             </button>
-            <button class="main-action-btn btn-compare" onclick={startComparePlay} disabled={isChecked}>
+            <button class="main-action-btn btn-compare" onclick={handleCompare} disabled={isChecked}>
                 <i class="ti ti-headphones" style="font-size: 18px;"></i>
                 <span>{i18n.t('lesson.compare_btn')}</span>
             </button>
