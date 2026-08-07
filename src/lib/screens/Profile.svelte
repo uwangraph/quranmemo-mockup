@@ -37,7 +37,16 @@
     // ── Sertifikat ──
     const certs = $derived(user.certificates ?? []);
     
-    let activeTab = $state('badge');
+    // PROFILE.md: Streak, Badge, dan Certification berada di satu grup tab.
+    let activeTab = $state('streak');
+
+    // Hasil Placement Test (ONBOARDING.md) — kategori ditentukan musyrif.
+    const placement = $derived(appState.user.placement);
+    const placementStyle = {
+        rbq: { icon: '🌱', color: '#b45309', bg: '#fffbeb', border: '#fde68a' },
+        rtq: { icon: '📖', color: '#0369a1', bg: '#eff6ff', border: '#bfdbfe' },
+        tahfidz: { icon: '🏅', color: '#0f766e', bg: '#f0fdfa', border: '#99f6e4' }
+    };
 </script>
 
 <div class="screen">
@@ -46,8 +55,10 @@
         <span style="font-size: 16px; font-weight: 900; color: #3c3c3c; flex: 1; text-align: center;">
             {i18n.t('profile.title')}
         </span>
-        <button style="background:none; border:none; color:#afafaf; cursor:pointer;">
             <i class="ti ti-settings" style="font-size:20px;"></i>
+        <button
+            style="background:none; border:none; color:#afafaf; cursor:pointer;"
+        >
         </button>
     </div>
 
@@ -129,7 +140,50 @@
         </div>
 
         <!-- ══════════════════════════════════
-             2. LEVELLING
+             2. HASIL PLACEMENT TEST
+        ══════════════════════════════════ -->
+        <div class="section-label">🎯 {i18n.t('placement.result_title')}</div>
+        <div class="section-pad">
+            {#if placement?.status === 'done' && placement.category}
+                {@const ps = placementStyle[placement.category]}
+                <div class="placement-card" style="background:{ps.bg}; border-color:{ps.border};">
+                    <div class="placement-top">
+                        <span class="placement-emoji">{ps.icon}</span>
+                        <div style="flex:1; min-width:0;">
+                            <div class="placement-cat" style="color:{ps.color}">{i18n.t(`placement.cat_${placement.category}`)}</div>
+                            <div class="placement-mod">{i18n.t(`placement.module_${placement.category}`)}</div>
+                        </div>
+                    </div>
+                    {#if placement.recommendation}
+                        <div class="placement-rec">
+                            <span class="placement-rec-label">{i18n.t('placement.rec_from_musyrif')}</span>
+                            <span class="placement-rec-target">📖 {placement.recommendation.surah} · Juz {placement.recommendation.juz}</span>
+                        </div>
+                    {/if}
+                    <div class="placement-by">
+                        {i18n.t('placement.verified_by')}: <strong>{placement.musyrifName ?? i18n.t('placement.musyrif_team')}</strong>
+                    </div>
+                </div>
+            {:else if placement?.status === 'pending'}
+                <button class="placement-pending" onclick={() => appState.go('onboarding')}>
+                    <span class="placement-emoji">⏳</span>
+                    <div style="flex:1; text-align:left;">
+                        <div class="placement-cat" style="color:#b45309;">{i18n.t('placement.pending_title')}</div>
+                        <div class="placement-mod">{i18n.t('placement.sla_left', { hours: appState.placementSlaHoursLeft() ?? 24 })}</div>
+                    </div>
+                    <i class="ti ti-chevron-right" style="color:#d97706;"></i>
+                </button>
+            {:else}
+                <button class="placement-empty" onclick={() => appState.go('onboarding')}>
+                    <span style="font-size:32px;">🎤</span>
+                    <span>{i18n.t('placement.not_taken')}</span>
+                    <span class="placement-cta">{i18n.t('placement.start')}</span>
+                </button>
+            {/if}
+        </div>
+
+        <!-- ══════════════════════════════════
+             3. LEVELLING
         ══════════════════════════════════ -->
         <div class="section-label">📖 {i18n.t('profile.memorization_level')}</div>
         <div class="section-pad">
@@ -175,11 +229,23 @@
         </div>
 
         <!-- ══════════════════════════════════
-             3. STREAK
+             4. PENCAPAIAN — STREAK, BADGE & SERTIFIKAT DALAM SATU TAB
         ══════════════════════════════════ -->
-        <div class="section-label">🔥 {i18n.t('profile.daily_streak')}</div>
-        <div class="section-pad">
-            <div class="streak-card">
+        <div class="profile-tabs" style="margin: 20px 16px 0; display: flex; background: #f1f5f9; border-radius: 12px; padding: 4px;">
+            <button class="p-tab {activeTab === 'streak' ? 'active' : ''}" onclick={() => activeTab = 'streak'}>
+                🔥 {i18n.t('profile.daily_streak')}
+            </button>
+            <button class="p-tab {activeTab === 'badge' ? 'active' : ''}" onclick={() => activeTab = 'badge'}>
+                🎖️ {i18n.t('profile.badges')} ({earnedBadges.length})
+            </button>
+            <button class="p-tab {activeTab === 'cert' ? 'active' : ''}" onclick={() => activeTab = 'cert'}>
+                📜 {i18n.t('profile.certificates')} ({certs.length})
+            </button>
+        </div>
+
+        <div class="section-pad" style="margin-top: 16px;">
+            {#if activeTab === 'streak'}
+                <div class="streak-card">
                 <!-- Angka streak utama -->
                 <div class="streak-main-row">
                     <div class="streak-num-block">
@@ -232,23 +298,27 @@
                         <div class="snm-right">{i18n.t('profile.days_left', {days: nextMs - user.streak})}</div>
                     </div>
                 {/if}
-            </div>
-        </div>
 
-        <!-- ══════════════════════════════════
-             4. PENCAPAIAN (TABS)
-        ══════════════════════════════════ -->
-        <div class="profile-tabs" style="margin: 20px 16px 0; display: flex; background: #f1f5f9; border-radius: 12px; padding: 4px;">
-            <button class="p-tab {activeTab === 'badge' ? 'active' : ''}" onclick={() => activeTab = 'badge'}>
-                🎖️ {i18n.t('profile.badges')} ({earnedBadges.length})
-            </button>
-            <button class="p-tab {activeTab === 'cert' ? 'active' : ''}" onclick={() => activeTab = 'cert'}>
-                📜 {i18n.t('profile.certificates')} ({certs.length})
-            </button>
-        </div>
+                <!-- Tebus Hari: jendelanya cuma 24 jam, jadi status ini muncul
+                     hanya selama penebusan masih bisa dilakukan (STREAK.md). -->
+                {#if appState.repairOffer}
+                    {@const done = Math.min(2, appState.repairOffer.targetsDone)}
+                    <div class="repair-box">
+                        <div class="repair-title">🩹 {i18n.t('streak.repair_title')}</div>
+                        <div class="repair-desc">{i18n.t('streak.repair_progress', { done, lost: appState.repairOffer.lostStreak })}</div>
+                        <div class="repair-dots">
+                            <span class="repair-dot" class:on={done >= 1}></span>
+                            <span class="repair-dot" class:on={done >= 2}></span>
+                        </div>
+                    </div>
+                {/if}
 
-        <div class="section-pad" style="margin-top: 16px;">
-            {#if activeTab === 'badge'}
+                <div class="grace-note">
+                    <i class="ti ti-moon"></i>
+                    <span>{i18n.t('streak.grace_msg')}</span>
+                </div>
+                </div>
+            {:else if activeTab === 'badge'}
                 <!-- Earned badges -->
                 {#if earnedBadges.length > 0}
                     <div class="badge-grid">
@@ -483,6 +553,54 @@
         font-size: 11px; font-weight: 900; color: #10b981;
         background: #d1fae5; padding: 2px 8px; border-radius: 6px; white-space: nowrap;
     }
+    .repair-box {
+        margin-top: 10px; background: #fef2f2; border: 1.5px solid #fecaca;
+        border-radius: 12px; padding: 12px;
+    }
+    .repair-title { font-size: 12px; font-weight: 900; color: #b91c1c; }
+    .repair-desc { font-size: 11px; font-weight: 700; color: #991b1b; margin-top: 4px; line-height: 1.4; }
+    .repair-dots { display: flex; gap: 6px; margin-top: 8px; }
+    .repair-dot {
+        width: 26px; height: 8px; border-radius: 99px; background: #fecaca;
+    }
+    .repair-dot.on { background: #ef4444; }
+    .grace-note {
+        display: flex; align-items: flex-start; gap: 6px; margin-top: 10px;
+        font-size: 10px; font-weight: 700; color: #94a3b8; line-height: 1.5;
+    }
+    .grace-note i { font-size: 13px; flex-shrink: 0; }
+
+    /* ── PLACEMENT ── */
+    .placement-card { border: 2px solid; border-bottom-width: 4px; border-radius: 18px; padding: 16px; }
+    .placement-top { display: flex; align-items: center; gap: 12px; }
+    .placement-emoji { font-size: 30px; }
+    .placement-cat { font-size: 16px; font-weight: 900; }
+    .placement-mod { font-size: 12px; font-weight: 700; color: #64748b; margin-top: 2px; }
+    .placement-rec {
+        display: flex; flex-direction: column; gap: 4px; margin-top: 12px;
+        background: rgba(255,255,255,0.7); border-radius: 12px; padding: 10px 12px;
+    }
+    .placement-rec-label {
+        font-size: 9px; font-weight: 900; color: #64748b;
+        text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .placement-rec-target { font-size: 14px; font-weight: 900; color: #1e293b; }
+    .placement-by { font-size: 11px; font-weight: 700; color: #64748b; margin-top: 10px; }
+    .placement-pending {
+        width: 100%; display: flex; align-items: center; gap: 12px;
+        background: #fffbeb; border: 2px solid #fde68a; border-bottom-width: 4px;
+        border-radius: 18px; padding: 16px; cursor: pointer;
+    }
+    .placement-empty {
+        width: 100%; display: flex; flex-direction: column; align-items: center; gap: 8px;
+        padding: 24px; background: #f8fafc; border-radius: 16px; border: 2px dashed #e2e8f0;
+        color: #94a3b8; font-size: 13px; font-weight: 700; cursor: pointer;
+        font-family: 'Nunito', sans-serif;
+    }
+    .placement-cta {
+        background: #00978A; color: #fff; border-radius: 10px;
+        padding: 8px 20px; font-size: 12px; font-weight: 900; margin-top: 4px;
+    }
 
     /* ── BADGE ── */
     .badge-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
@@ -552,9 +670,10 @@
     }
     
     .p-tab {
-        flex: 1; padding: 12px 0; border: none; background: none;
-        font-size: 13px; font-weight: 800; color: #94a3b8; cursor: pointer;
-        border-radius: 8px; transition: all 0.2s;
+        flex: 1; padding: 12px 2px; border: none; background: none;
+        font-size: 11px; font-weight: 800; color: #94a3b8; cursor: pointer;
+        border-radius: 8px; transition: all 0.2s; white-space: nowrap;
+        font-family: 'Nunito', sans-serif;
     }
     .p-tab.active {
         background: #fff; color: #1e293b; box-shadow: 0 2px 4px rgba(0,0,0,0.05);
