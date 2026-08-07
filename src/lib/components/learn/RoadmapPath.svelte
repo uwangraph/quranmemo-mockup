@@ -38,6 +38,15 @@
         return '';
     }
 
+    const passed = $derived(appState.user.progress.completedLadders ?? []);
+
+    // Gerbang terbuka begitu mini target terakhir tangga ini selesai; tertutup
+    // setelah dilewati. Sebelumnya selalu terkunci karena tidak ada yang menggerakkannya.
+    const gateStatus = $derived(
+        passed.includes(ladder.id) ? 'completed'
+        : (targetIndex >= ladderTargetCount(ladder) - 1 ? 'available' : 'locked')
+    );
+
     const targets = $derived(
         Array.from({ length: ladderTargetCount(ladder) }, (_, i) => ({
             index: i,
@@ -219,10 +228,10 @@
         {/each}
 
         <!-- Gerbang penutup tangga -->
-        <div class="connector locked"></div>
+        <div class="connector {gateStatus}"></div>
         <div class="node-wrapper">
-            <div class="node-btn gate locked">
-                <i class="ti {ladder.gate === 'badge' ? 'ti-award' : 'ti-flag-check'}"></i>
+            <div class="node-btn gate {gateStatus}">
+                <i class="ti {gateStatus === 'completed' ? 'ti-circle-check-filled' : ladder.gate === 'badge' ? 'ti-award' : 'ti-flag-check'}"></i>
             </div>
             <div class="node-title">{i18n.t(`learn.gate_${ladder.gate}`)} — {ladder.name}</div>
         </div>
@@ -390,7 +399,9 @@
     .node-btn.tadabbur.completed { background: #ce82ff; border-bottom-color: #a52adb; }
     .node-btn.tadabbur.available { border-color: #ce82ff; border-bottom-color: #a52adb; color: #a52adb; }
     .node-btn.checkpoint.completed { background: #ffc800; border-bottom-color: #e5a000; }
-    .node-btn.gate { background: #fef3c7; border-bottom-color: #fbbf24; color: #b45309; cursor: default; }
+    .node-btn.gate { background: #f1f5f9; border-bottom-color: #cbd5e1; color: #94a3b8; cursor: default; }
+    .node-btn.gate.available { background: #fef3c7; border-bottom-color: #fbbf24; color: #b45309; }
+    .node-btn.gate.completed { background: #ffc800; border-bottom-color: #e5a000; color: #fff; }
 
     @keyframes pulse {
         0% { box-shadow: 0 0 0 0 rgba(0, 151, 138, 0.4); }

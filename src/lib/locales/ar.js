@@ -885,4 +885,7 @@ export default {
     ,"feedback.grade_jayyid_jiddan": "جيد جدًا"
     ,"feedback.grade_jayyid": "جيد"
     ,"feedback.xp_already_claimed": "تم منح نقاط هذه الجلسة بالفعل"
+    ,"certificate.level_beginner": "حفظ جزء عمّ"
+    ,"certificate.level_mid": "حفظ المستوى المتوسط"
+    ,"certificate.level_pro": "حفظ المستوى المتقدم"
 };

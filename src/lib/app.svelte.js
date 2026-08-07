@@ -1,4 +1,5 @@
 // src/lib/app.svelte.js
+import { laddersFor, ladderTargetCount } from './data/levelling.js';
 function getStoredData(key, defaultData) {
     if (typeof window !== 'undefined') {
         const stored = localStorage.getItem(key);
@@ -165,6 +166,7 @@ export function createAppState() {
             // Posisi di struktur tangga LEVELLING.md, terpisah per level karena
             // pengguna bisa berpindah jalur tanpa kehilangan posisi jalur lamanya.
             // Beginner mulai di mini target ke-21 (Al-Insyirah), surah yang lessonnya ada.
+            completedLadders: [],  // id tangga yang gerbangnya sudah dilewati
             ladderProgress: {
                 beginner: { ladderIndex: 0, targetIndex: 20 },
                 mid: { ladderIndex: 0, targetIndex: 0 },
@@ -204,17 +206,15 @@ export function createAppState() {
             juz: 30
         },
         badges: [
-            { id: 'b1', icon: '🔥', name: 'Langkah Pertama', desc: 'Menyelesaikan 3 hari streak berturut-turut', earned: true },
-            { id: 'b2', icon: '📅', name: 'Satu Pekan Istiqomah', desc: 'Menyelesaikan 7 hari streak berturut-turut', earned: true },
-            { id: 'b3', icon: '🏅', name: 'Penghafal Juz 30', desc: 'Menyelesaikan seluruh hafalan Juz 30', earned: true },
+            { id: 'b1', icon: '🔥', name: 'Langkah Pertama', desc: 'Menyelesaikan 3 hari streak berturut-turut', earned: false },
+            { id: 'b2', icon: '📅', name: 'Satu Pekan Istiqomah', desc: 'Menyelesaikan 7 hari streak berturut-turut', earned: false },
+            { id: 'b3', icon: '🏅', name: 'Penghafal Juz 30', desc: 'Menyelesaikan seluruh hafalan Juz 30', earned: false },
             { id: 'b4', icon: '💎', name: 'Sebulan Teguh', desc: 'Menyelesaikan 30 hari streak berturut-turut', earned: false },
             { id: 'b5', icon: '🛡️', name: 'Penghafal Setia', desc: 'Mencapai 100 hari streak berturut-turut', earned: false },
             { id: 'b6', icon: '👑', name: 'Istiqomah Sejati', desc: 'Mencapai 365 hari streak berturut-turut. Lencana Permanen!', earned: false }
         ],
-        certificates: [
-            { id: 'c1', title: 'certificate.juz30_title', type: 'certificate.memorization', date: '2026-01-15', icon: '📜' },
-            { id: 'c2', title: 'certificate.tahsin_title', type: 'certificate.tahsin', date: '2025-11-20', icon: '🎓' }
-        ],
+        certificates: [],   // Diberikan saat seluruh tangga sebuah level tuntas
+
         dailyQuests: { date: null, completedAll: false, quests: makeDailyQuests() },
         monthlyMission: { month: null, loginDays: 0, versesMemorized: 0, xpEarned: 0 }
     }));
@@ -268,6 +268,7 @@ export function createAppState() {
     };
     if (user.monthlyMission === undefined) user.monthlyMission = { month: null, loginDays: 0, versesMemorized: 0, xpEarned: 0 };
     if (!Array.isArray(user.progress?.tadabbur)) user.progress.tadabbur = [];
+    if (!Array.isArray(user.progress.completedLadders)) user.progress.completedLadders = [];
     if (user.progress.ladderProgress === undefined) user.progress.ladderProgress = {
         beginner: { ladderIndex: 0, targetIndex: 20 },
         mid: { ladderIndex: 0, targetIndex: 0 },
@@ -275,17 +276,25 @@ export function createAppState() {
     };
     if (user.scheduledBooking === undefined) user.scheduledBooking = { musyrifName: 'Ust. Ahmad Zaki', time: '2026-05-22T15:00:00', surah: 'Ad-Dhuha', juz: 30 };
     if (user.badges === undefined) user.badges = [
-        { id: 'b1', icon: '🔥', name: 'Langkah Pertama', desc: 'Menyelesaikan 3 hari streak berturut-turut', earned: true },
-        { id: 'b2', icon: '📅', name: 'Satu Pekan Istiqomah', desc: 'Menyelesaikan 7 hari streak berturut-turut', earned: true },
-        { id: 'b3', icon: '🏅', name: 'Penghafal Juz 30', desc: 'Menyelesaikan seluruh hafalan Juz 30', earned: true },
+        { id: 'b1', icon: '🔥', name: 'Langkah Pertama', desc: 'Menyelesaikan 3 hari streak berturut-turut', earned: false },
+        { id: 'b2', icon: '📅', name: 'Satu Pekan Istiqomah', desc: 'Menyelesaikan 7 hari streak berturut-turut', earned: false },
+        { id: 'b3', icon: '🏅', name: 'Penghafal Juz 30', desc: 'Menyelesaikan seluruh hafalan Juz 30', earned: false },
         { id: 'b4', icon: '💎', name: 'Sebulan Teguh', desc: 'Menyelesaikan 30 hari streak berturut-turut', earned: false },
         { id: 'b5', icon: '🛡️', name: 'Penghafal Setia', desc: 'Mencapai 100 hari streak berturut-turut', earned: false },
         { id: 'b6', icon: '👑', name: 'Istiqomah Sejati', desc: 'Mencapai 365 hari streak berturut-turut. Lencana Permanen!', earned: false }
     ];
-    if (user.certificates === undefined) user.certificates = [
-        { id: 'c1', title: 'certificate.juz30_title', type: 'certificate.memorization', date: '2026-01-15', icon: '📜' },
-        { id: 'c2', title: 'certificate.tahsin_title', type: 'certificate.tahsin', date: '2025-11-20', icon: '🎓' }
-    ];
+    if (user.certificates === undefined) user.certificates = [];
+    // Data contoh lama menandai lencana dan sertifikat sebagai sudah diraih untuk
+    // setiap pengguna baru. Dibersihkan sekali agar profil tidak memamerkan
+    // pencapaian yang tidak pernah terjadi.
+    if (!user.achievementsReset) {
+        user.certificates = user.certificates.filter(c => c.id !== 'c1' && c.id !== 'c2');
+        ['b1', 'b2', 'b3'].forEach(id => {
+            const b = user.badges.find(x => x.id === id);
+            if (b) b.earned = false;
+        });
+        user.achievementsReset = true;
+    }
     
     // Misi lama (q1/q2/q3) diganti oleh set MISSION.md; misi yang ID atau nilai XP-nya
     // tidak lagi cocok dibuang, agar pengguna lama tidak tersangkut aturan yang sudah mati.
@@ -624,6 +633,72 @@ export function createAppState() {
         saveUser();
     }
 
+    // ====== Kemajuan tangga (LEVELLING.md) ======
+
+    // Dipanggil ketika checkpoint sebuah mini target selesai. Tanpa ini posisi tangga
+    // tidak pernah bergerak dan gerbang penutupnya terkunci selamanya.
+    function completeMiniTarget() {
+        const path = user.learningPath;
+        const ladders = laddersFor(path);
+        const pos = user.progress.ladderProgress[path];
+        if (!pos) return false;
+
+        const ladder = ladders[Math.min(pos.ladderIndex, ladders.length - 1)];
+        const total = ladderTargetCount(ladder);
+
+        if (pos.targetIndex + 1 < total) {
+            pos.targetIndex += 1;
+        } else {
+            // Mini target terakhir tuntas → gerbang tangga terlewati.
+            passLadderGate(ladder);
+            if (pos.ladderIndex + 1 < ladders.length) {
+                pos.ladderIndex += 1;
+                pos.targetIndex = 0;
+            }
+        }
+
+        // Mini target berikutnya punya progresnya sendiri, dikunci per surah.
+        saveUser();
+        return true;
+    }
+
+    // Gerbang tangga: checkpoint sudah dibayar XP-nya di layar lesson, sedangkan
+    // gerbang bertipe badge memberi lencana per juz sesuai LEVELLING.md.
+    function passLadderGate(ladder) {
+        if (user.progress.completedLadders.includes(ladder.id)) return;
+        user.progress.completedLadders = [...user.progress.completedLadders, ladder.id];
+
+        // Seluruh tangga level ini tuntas → lencana level dan sertifikatnya.
+        const all = laddersFor(user.learningPath);
+        if (all.every(l => user.progress.completedLadders.includes(l.id))) {
+            grantLevelCompletion(user.learningPath);
+        }
+
+        if (ladder.gate === 'badge') {
+            const id = `ladder_${ladder.id}`;
+            if (!user.badges.some(b => b.id === id)) {
+                user.badges = [...user.badges, {
+                    id, icon: '🏅', name: ladder.name,
+                    desc: `Menuntaskan ${ladder.name}`, earned: true, dynamic: true
+                }];
+            }
+        }
+    }
+
+    // Penyelesaian satu level penuh: lencana levelnya plus sertifikat.
+    function grantLevelCompletion(path) {
+        if (path === 'beginner') {
+            const b3 = user.badges.find(b => b.id === 'b3');
+            if (b3) b3.earned = true;
+        }
+        const id = `cert_${path}`;
+        if (user.certificates.some(c => c.id === id)) return;
+        user.certificates = [...user.certificates, {
+            id, title: `certificate.level_${path}`, type: 'certificate.memorization',
+            date: dayKey(serverNow()), icon: '📜'
+        }];
+    }
+
     // ====== Placement Test (ONBOARDING.md) ======
 
     function updatePlacement(patch) {
@@ -782,6 +857,7 @@ export function createAppState() {
         clearPendingRewardInfo,
         get repairOffer() { return repairOffer(); },
         get weekDays() { return weekDays(); },
+        completeMiniTarget,
         updatePlacement,
         submitPlacementRecording,
         setPlacementResult,

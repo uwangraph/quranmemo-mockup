@@ -906,4 +906,7 @@ export default {
     ,"feedback.grade_jayyid_jiddan": "Jayyid Jiddan — very good"
     ,"feedback.grade_jayyid": "Jayyid — good"
     ,"feedback.xp_already_claimed": "XP for this session has been credited"
+    ,"certificate.level_beginner": "Juz Amma Memorization"
+    ,"certificate.level_mid": "Mid Level Memorization"
+    ,"certificate.level_pro": "Pro Level Memorization"
 };

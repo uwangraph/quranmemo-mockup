@@ -37,6 +37,11 @@
 
     // ── Sertifikat ──
     const certs = $derived(user.certificates ?? []);
+
+    // Lencana tangga dibuat saat gerbang dilewati, jadi namanya sudah berupa teks
+    // (nama surah/juz) dan tidak punya kunci terjemahan.
+    const badgeName = (b) => b.dynamic ? b.name : i18n.t(`badge.${b.id}.name`);
+    const badgeDesc = (b) => b.dynamic ? b.desc : i18n.t(`badge.${b.id}.desc`);
     
     // PROFILE.md: Streak, Badge, dan Certification berada di satu grup tab.
     let activeTab = $state('streak');
@@ -326,8 +331,8 @@
                         {#each earnedBadges as badge}
                             <div class="badge-card earned">
                                 <div class="badge-icon-wrap earned">{badge.icon}</div>
-                                <div class="badge-name">{i18n.t(`badge.${badge.id}.name`)}</div>
-                                <div class="badge-desc">{i18n.t(`badge.${badge.id}.desc`)}</div>
+                                <div class="badge-name">{badgeName(badge)}</div>
+                                <div class="badge-desc">{badgeDesc(badge)}</div>
                             </div>
                         {/each}
                     </div>
@@ -340,8 +345,8 @@
                         {#each lockedBadges as badge}
                             <div class="badge-card locked">
                                 <div class="badge-icon-wrap locked">{badge.icon}</div>
-                                <div class="badge-name locked-text">{i18n.t(`badge.${badge.id}.name`)}</div>
-                                <div class="badge-desc">{i18n.t(`badge.${badge.id}.desc`)}</div>
+                                <div class="badge-name locked-text">{badgeName(badge)}</div>
+                                <div class="badge-desc">{badgeDesc(badge)}</div>
                             </div>
                         {/each}
                     </div>

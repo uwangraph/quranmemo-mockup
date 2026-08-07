@@ -906,4 +906,7 @@ export default {
     ,"feedback.grade_jayyid_jiddan": "Jayyid Jiddan — baik sekali"
     ,"feedback.grade_jayyid": "Jayyid — baik"
     ,"feedback.xp_already_claimed": "XP sesi ini sudah diberikan"
+    ,"certificate.level_beginner": "Hafalan Juz Amma"
+    ,"certificate.level_mid": "Hafalan Mid Level"
+    ,"certificate.level_pro": "Hafalan Pro Level"
 };

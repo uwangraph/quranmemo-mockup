@@ -1293,6 +1293,8 @@
             if (appState.user.progress.surah_094 === selectedVerseIndex) {
                 appState.user.progress.surah_094 += 1;
             }
+            if (nodeType === 'checkpoint') appState.completeMiniTarget();
+
             appState.updateQuestProgress('m_verse', 1); // misi harian "hafalkan 1 ayat" (MISSION.md)
             appState.markDailyProgress();          // runtunan bertambah setelah step hafalan aktif selesai
             appState.triggerLoginRewardCheck();

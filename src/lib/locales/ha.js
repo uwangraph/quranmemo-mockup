@@ -882,4 +882,7 @@ export default {
     ,"feedback.grade_jayyid_jiddan": "Jayyid Jiddan — mai kyau sosai"
     ,"feedback.grade_jayyid": "Jayyid — mai kyau"
     ,"feedback.xp_already_claimed": "An riga an ba da XP na wannan zaman"
+    ,"certificate.level_beginner": "Haddar Juz Amma"
+    ,"certificate.level_mid": "Haddar Matakin Tsakiya"
+    ,"certificate.level_pro": "Haddar Matakin Pro"
 };

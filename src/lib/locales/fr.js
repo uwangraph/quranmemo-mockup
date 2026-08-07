@@ -884,4 +884,7 @@ export default {
     ,"feedback.grade_jayyid_jiddan": "Jayyid Jiddan — très bien"
     ,"feedback.grade_jayyid": "Jayyid — bien"
     ,"feedback.xp_already_claimed": "Les XP de cette session ont déjà été crédités"
+    ,"certificate.level_beginner": "Mémorisation du Juz Amma"
+    ,"certificate.level_mid": "Mémorisation niveau intermédiaire"
+    ,"certificate.level_pro": "Mémorisation niveau avancé"
 };
