@@ -171,3 +171,33 @@ function weekDays(activeDays, today) {
     assert.deepEqual(w.map(d => d.done), [false, false, false, false, false, false, false]);
 }
 
+// ── LEVELLING.md: surah tanpa konten tidak boleh diganti diam-diam ────────
+{
+    // Replika surahByName(): pencocokan longgar terhadap penulisan nama di dokumen.
+    const SURAHS = { 'al-insyirah': { id: 'al-insyirah', verses: new Array(8) } };
+    const surahByName = (name) => {
+        if (!name) return null;
+        const key = String(name).toLowerCase().replace(/[^a-z]/g, '');
+        return Object.values(SURAHS).find(s => s.id.replace(/[^a-z]/g, '') === key) ?? null;
+    };
+
+    assert.ok(surahByName('Al-Insyirah'), 'surah dengan konten harus ketemu');
+    assert.equal(surahByName('Al-Mulk'), null, 'surah tanpa konten wajib null, bukan surah lain');
+    assert.equal(surahByName('An-Nas'), null);
+    assert.equal(surahByName(null), null);
+}
+
+// ── Progres dicatat per surah, tidak lagi satu penghitung global ──────────
+{
+    const progress = { surahs: {} };
+    const advance = (id, i) => { if ((progress.surahs[id] ?? 0) === i) progress.surahs[id] = i + 1; };
+    advance('al-insyirah', 0);
+    advance('al-insyirah', 1);
+    advance('al-mulk', 0);
+    assert.equal(progress.surahs['al-insyirah'], 2);
+    assert.equal(progress.surahs['al-mulk'], 1, 'progres surah lain terpisah');
+    advance('al-insyirah', 5);
+    assert.equal(progress.surahs['al-insyirah'], 2, 'lompat ayat tidak menambah progres');
+}
+
+console.log('rules: semua kasus lolos');

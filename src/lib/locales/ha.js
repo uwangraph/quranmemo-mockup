@@ -885,4 +885,6 @@ export default {
     ,"certificate.level_beginner": "Haddar Juz Amma"
     ,"certificate.level_mid": "Haddar Matakin Tsakiya"
     ,"certificate.level_pro": "Haddar Matakin Pro"
+    ,"learn.content_pending": "Abun ciki bai shirya ba tukuna"
+    ,"learn.content_pending_desc": "Ayoyin {target} na jiran tushen mushaf da aka tantance."
 };

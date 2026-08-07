@@ -1,5 +1,6 @@
 // src/lib/app.svelte.js
 import { laddersFor, ladderTargetCount } from './data/levelling.js';
+import { surahByName } from './data/surahs.js';
 function getStoredData(key, defaultData) {
     if (typeof window !== 'undefined') {
         const stored = localStorage.getItem(key);
@@ -269,6 +270,10 @@ export function createAppState() {
     if (user.monthlyMission === undefined) user.monthlyMission = { month: null, loginDays: 0, versesMemorized: 0, xpEarned: 0 };
     if (!Array.isArray(user.progress?.tadabbur)) user.progress.tadabbur = [];
     if (!Array.isArray(user.progress.completedLadders)) user.progress.completedLadders = [];
+    if (!user.progress.surahs) {
+        // Progres lama hanya mengenal satu surah; pindahkan ke kunci surahnya.
+        user.progress.surahs = user.progress.surah_094 ? { 'al-insyirah': user.progress.surah_094 } : {};
+    }
     if (user.progress.ladderProgress === undefined) user.progress.ladderProgress = {
         beginner: { ladderIndex: 0, targetIndex: 20 },
         mid: { ladderIndex: 0, targetIndex: 0 },
@@ -633,6 +638,39 @@ export function createAppState() {
         saveUser();
     }
 
+    // ====== Surah yang sedang dikerjakan ======
+
+    // Nama mini target yang sedang berjalan pada tangga aktif. Untuk Beginner ini
+    // nama surah; untuk Mid sekelompok surah; untuk Pro sebuah blok halaman.
+    function currentTargetName() {
+        const path = user.learningPath;
+        const ladders = laddersFor(path);
+        const pos = user.progress.ladderProgress?.[path];
+        if (!pos) return null;
+        const l = ladders[Math.min(pos.ladderIndex, ladders.length - 1)];
+        const i = Math.min(pos.targetIndex, ladderTargetCount(l) - 1);
+        if (l.surahs) return l.surahs[i];
+        if (l.groups) return l.groups[i][0];        // surah pertama kelompok
+        if (l.blocks) return null;                  // blok halaman, bukan satu surah
+        return null;
+    }
+
+    // Konten surah yang sedang dikerjakan, atau null bila belum tersedia.
+    function activeSurah() {
+        return surahByName(currentTargetName());
+    }
+
+    function surahProgress(id) {
+        return user.progress.surahs?.[id] ?? 0;
+    }
+
+    function advanceSurahProgress(id, verseIndex) {
+        if (surahProgress(id) === verseIndex) {
+            user.progress.surahs = { ...user.progress.surahs, [id]: verseIndex + 1 };
+            saveUser();
+        }
+    }
+
     // ====== Kemajuan tangga (LEVELLING.md) ======
 
     // Dipanggil ketika checkpoint sebuah mini target selesai. Tanpa ini posisi tangga
@@ -858,6 +896,10 @@ export function createAppState() {
         get repairOffer() { return repairOffer(); },
         get weekDays() { return weekDays(); },
         completeMiniTarget,
+        get currentTargetName() { return currentTargetName(); },
+        get activeSurah() { return activeSurah(); },
+        surahProgress,
+        advanceSurahProgress,
         updatePlacement,
         submitPlacementRecording,
         setPlacementResult,

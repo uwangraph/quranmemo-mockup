@@ -9,6 +9,7 @@
     import { appState } from '$lib/app.svelte.js';
     import { i18n } from '$lib/i18n.svelte.js';
     import { laddersFor, ladderTargetCount } from '$lib/data/levelling.js';
+    import { surahByName } from '$lib/data/surahs.js';
 
     const learningPath = $derived(appState.user.learningPath);
     const ladders = $derived(laddersFor(learningPath));
@@ -55,52 +56,45 @@
         }))
     );
 
-    // Node ayat/halaman untuk mini target yang sedang dibuka. Ini bagian yang
-    // benar-benar bisa dimainkan dan memakai progres per-ayat yang sudah ada.
+    // Node ayat untuk mini target yang sedang dibuka, dibangun dari konten surah
+    // yang sebenarnya. Kalau surahnya belum punya konten, roadmap mengatakannya
+    // terus terang alih-alih menyajikan ayat surah lain di bawah nama ini.
+    const targetName = $derived(targets[targetIndex]?.label ?? null);
+    const surah = $derived(learningPath === 'beginner' ? surahByName(targetName) : surahByName(targetName?.split(',')[0]));
+    const surahDone = $derived(surah ? appState.surahProgress(surah.id) : 0);
+
     const innerNodes = $derived.by(() => {
-        const progress = appState.user.progress.surah_094;
-        const getStatus = (idx) => (progress > idx ? 'completed' : progress === idx ? 'current' : 'locked');
+        if (!surah) return [];
+        const getStatus = (i) => (surahDone > i ? 'completed' : surahDone === i ? 'current' : 'locked');
 
         // Node sampingan seperti Tadabbur punya tiga keadaan: terkunci, terbuka tapi
         // belum dikerjakan, dan selesai. Menandainya selesai sebelum dikerjakan membuat
         // pengguna mengira sudah melakukannya lalu melewatinya begitu saja.
         const done = appState.user.progress.tadabbur ?? [];
+        const tadabburKey = `${surah.id}_1`;
         const gate = (key, unlocked) => (done.includes(key) ? 'completed' : unlocked ? 'available' : 'locked');
 
-        if (learningPath === 'pro') {
-            return [
-                { id: 1, type: 'lesson', verseIndex: 0, status: getStatus(0), title: `${i18n.t('learn.page')} 1` },
-                { id: 2, type: 'lesson', verseIndex: 1, status: getStatus(1), title: `${i18n.t('learn.page')} 2` },
-                { id: 3, type: 'tadabbur', key: 'pro_1', status: gate('pro_1', progress >= 2), title: `${i18n.t('learn.tadabbur_pages')} 1-2` },
-                { id: 4, type: 'lesson', verseIndex: 2, status: getStatus(2), title: `${i18n.t('learn.page')} 3` },
-                { id: 5, type: 'lesson', verseIndex: 3, status: getStatus(3), title: `${i18n.t('learn.page')} 4` },
-                { id: 6, type: 'lesson', verseIndex: 4, status: getStatus(4), title: `${i18n.t('learn.page')} 5` },
-                { id: 7, type: 'checkpoint', verseIndex: 4, status: progress >= 5 ? 'current' : 'locked', title: `${i18n.t('learn.submit_part')} 1` }
-            ];
-        }
-        if (learningPath === 'mid') {
-            return [
-                { id: 1, type: 'lesson', verseIndex: 0, status: getStatus(0), title: 'Al-Mulk (1-15)' },
-                { id: 2, type: 'lesson', verseIndex: 1, status: getStatus(1), title: 'Al-Mulk (16-30)' },
-                { id: 3, type: 'checkpoint', verseIndex: 1, status: progress >= 2 ? 'completed' : 'locked', title: `${i18n.t('learn.submit_part')} Al-Mulk` },
-                { id: 4, type: 'lesson', verseIndex: 2, status: getStatus(2), title: 'Al-Qalam' },
-                { id: 5, type: 'lesson', verseIndex: 3, status: getStatus(3), title: 'Al-Haqqah' },
-                { id: 6, type: 'tadabbur', key: 'mid_1', status: gate('mid_1', progress >= 4), title: 'Tadabbur T1' },
-                { id: 7, type: 'checkpoint', verseIndex: 3, status: progress >= 5 ? 'current' : 'locked', title: `${i18n.t('learn.submit_ladder')} 1` }
-            ];
-        }
-        return [
-            { id: 1, type: 'lesson', verseIndex: 0, status: getStatus(0), title: `${i18n.t('learn.verse')} 1` },
-            { id: 2, type: 'lesson', verseIndex: 1, status: getStatus(1), title: `${i18n.t('learn.verse')} 2` },
-            { id: 3, type: 'lesson', verseIndex: 2, status: getStatus(2), title: `${i18n.t('learn.verse')} 3` },
-            { id: 4, type: 'tadabbur', key: 'beginner_1', status: gate('beginner_1', progress >= 3), title: 'Tadabbur 1-3' },
-            { id: 5, type: 'lesson', verseIndex: 3, status: getStatus(3), title: `${i18n.t('learn.verse')} 4` },
-            { id: 6, type: 'lesson', verseIndex: 4, status: getStatus(4), title: `${i18n.t('learn.verse')} 5` },
-            { id: 7, type: 'lesson', verseIndex: 5, status: getStatus(5), title: `${i18n.t('learn.verse')} 6` },
-            { id: 8, type: 'lesson', verseIndex: 6, status: getStatus(6), title: `${i18n.t('learn.verse')} 7` },
-            { id: 9, type: 'lesson', verseIndex: 7, status: getStatus(7), title: `${i18n.t('learn.verse')} 8` },
-            { id: 10, type: 'checkpoint', verseIndex: 7, status: progress >= 8 ? 'current' : 'locked', title: i18n.t('learn.submit_full_surah') }
-        ];
+        const nodes = [];
+        surah.verses.forEach((v, i) => {
+            nodes.push({
+                id: `v${i}`, type: 'lesson', verseIndex: i, status: getStatus(i),
+                title: `${i18n.t('learn.verse')} ${v.verseNumber}`
+            });
+            // Satu perhentian Tadabbur di sepertiga awal surah.
+            if (i === Math.min(2, surah.verses.length - 2)) {
+                nodes.push({
+                    id: 't', type: 'tadabbur', key: tadabburKey,
+                    status: gate(tadabburKey, surahDone >= i + 1),
+                    title: `Tadabbur 1-${v.verseNumber}`
+                });
+            }
+        });
+        nodes.push({
+            id: 'cp', type: 'checkpoint', verseIndex: surah.verses.length - 1,
+            status: surahDone >= surah.verses.length ? 'current' : 'locked',
+            title: i18n.t('learn.submit_full_surah')
+        });
+        return nodes;
     });
 
     function handleNodeClick(node) {
@@ -200,6 +194,16 @@
     <div class="current-target-label">
         {i18n.t('learn.current_mini_target')}: <strong>{targets[targetIndex]?.label ?? ''}</strong>
     </div>
+
+    {#if !surah}
+        <!-- Jujur soal batas mockup: lebih baik menyatakan konten belum ada daripada
+             menyajikan ayat surah lain di bawah nama mini target ini. -->
+        <div class="no-content">
+            <span style="font-size:34px;">📝</span>
+            <div class="nc-title">{i18n.t('learn.content_pending')}</div>
+            <div class="nc-sub">{i18n.t('learn.content_pending_desc', { target: targetName ?? '—' })}</div>
+        </div>
+    {/if}
 
     <div class="path-container">
         {#each innerNodes as node, i}

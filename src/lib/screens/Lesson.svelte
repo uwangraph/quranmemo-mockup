@@ -17,192 +17,11 @@
     import TajwidInfo from '$lib/screens/TajwidInfo.svelte';
 
     // Al-Insyirah Verses Data (1 to 8)
-    const alInsyirahVerses = [
-        {
-            verseNumber: 1,
-            arabic: "أَلَمْ نَشْرَحْ لَكَ صَدْرَكَ",
-            translationKey: "quran.94_1_translation",
-            transliteration: "Alam nashrah laka shadrak",
-            audio: "https://everyayah.com/data/Husary_128kbps/094001.mp3",
-            words: ["أَلَمْ", "نَشْرَحْ", "لَكَ", "صَدْرَكَ"],
-            frontBlank: "___ ___ لَكَ صَدْرَكَ",
-            frontBlankLatin: "___ ___ laka shadrak",
-            frontCorrect: "أَلَمْ نَشْرَحْ",
-            frontChoices: ["أَلَمْ نَشْرَحْ", "وَوَضَعْنَا عَنكَ", "فَإِذَا فَرَغْتَ"],
-            endBlank: "أَلَمْ نَشْرَحْ لَكَ ___",
-            endBlankLatin: "alam nashrah laka ___",
-            endCorrect: "صَدْرَكَ",
-            endChoices: ["وِزْرَكَ", "صَدْرَكَ", "ظَهْرَكَ"],
-            middleBlank: "أَلَمْ ___ لَكَ صَدْرَكَ",
-            middleBlankLatin: "alam ___ laka shadrak",
-            middleCorrect: "نَشْرَحْ",
-            middleChoices: ["عَنكَ", "نَشْرَحْ", "وِزْرَكَ"],
-            twoBlank: "أَلَمْ ___ ___ صَدْرَكَ",
-            twoCorrect: ["نَشْرَحْ", "لَكَ"],
-            twoChoices: ["عَنكَ", "لَكَ", "نَشْرَحْ", "وِزْرَكَ"]
-        },
-        {
-            verseNumber: 2,
-            arabic: "وَوَضَعْنَا عَنكَ وِزْرَكَ",
-            translationKey: "quran.94_2_translation",
-            transliteration: "Wa wadha'na 'anka wizrak",
-            audio: "https://everyayah.com/data/Husary_128kbps/094002.mp3",
-            words: ["وَوَضَعْنَا", "عَنكَ", "وِزْرَكَ"],
-            frontBlank: "___ ___ وِزْرَكَ",
-            frontBlankLatin: "___ ___ wizrak",
-            frontCorrect: "وَوَضَعْنَا عَنكَ",
-            frontChoices: ["وَوَضَعْنَا عَنكَ", "أَلَمْ نَشْرَحْ", "ٱلَّذِىٓ أَنقَضَ"],
-            endBlank: "وَوَضَعْنَا عَنكَ ___",
-            endBlankLatin: "wa wadha'na 'anka ___",
-            endCorrect: "وِزْرَكَ",
-            endChoices: ["صَدْرَكَ", "وِزْرَكَ", "ظَهْرَكَ"],
-            middleBlank: "وَوَضَعْنَا ___ وِزْرَكَ",
-            middleBlankLatin: "wa wadha'na ___ wizrak",
-            middleCorrect: "عَنكَ",
-            middleChoices: ["لَكَ", "عَنكَ", "مَعَ"],
-            twoBlank: "___ ___ وِزْرَكَ",
-            twoCorrect: ["وَوَضَعْنَا", "عَنكَ"],
-            twoChoices: ["وَوَضَعْنَا", "عَنكَ", "أَلَمْ", "نَشْرَحْ"]
-        },
-        {
-            verseNumber: 3,
-            arabic: "ٱلَّذِىٓ أَنقَضَ ظَهْرَكَ",
-            translationKey: "quran.94_3_translation",
-            transliteration: "Alladzi anqadha zhahrak",
-            audio: "https://everyayah.com/data/Husary_128kbps/094003.mp3",
-            words: ["ٱلَّذِىٓ", "أَنقَضَ", "ظَهْرَكَ"],
-            frontBlank: "___ ___ ظَهْرَكَ",
-            frontBlankLatin: "___ ___ zhahrak",
-            frontCorrect: "ٱلَّذِىٓ أَنقَضَ",
-            frontChoices: ["ٱلَّذِىٓ أَنقَضَ", "وَوَضَعْنَا عَنكَ", "فَإِنَّ مَعَ"],
-            endBlank: "ٱلَّذِىٓ أَنقَضَ ___",
-            endBlankLatin: "alladzi anqadha ___",
-            endCorrect: "ظَهْرَكَ",
-            endChoices: ["وِزْرَكَ", "صَدْرَكَ", "ظَهْرَكَ"],
-            middleBlank: "ٱلَّذِىٓ ___ ظَهْرَكَ",
-            middleBlankLatin: "alladzi ___ zhahrak",
-            middleCorrect: "أَنقَضَ",
-            middleChoices: ["أَنقَضَ", "فَرَغْتَ", "عَنكَ"],
-            twoBlank: "___ ___ ظَهْرَكَ",
-            twoCorrect: ["ٱلَّذِىٓ", "أَنقَضَ"],
-            twoChoices: ["ٱلَّذِىٓ", "أَنقَضَ", "وَوَضَعْنَا", "صَدْرَكَ"]
-        },
-        {
-            verseNumber: 4,
-            arabic: "وَرَفَعْنَا لَكَ ذِكْرَكَ",
-            translationKey: "quran.94_4_translation",
-            transliteration: "Wa rafa'na laka dzikrak",
-            audio: "https://everyayah.com/data/Husary_128kbps/094004.mp3",
-            words: ["وَرَفَعْنَا", "لَكَ", "ذِكْرَكَ"],
-            frontBlank: "___ ___ ذِكْرَكَ",
-            frontBlankLatin: "___ ___ dzikrak",
-            frontCorrect: "وَرَفَعْنَا لَكَ",
-            frontChoices: ["وَرَفَعْنَا لَكَ", "فَإِنَّ مَعَ", "وَوَضَعْنَا عَنكَ"],
-            endBlank: "وَرَفَعْنَا لَكَ ___",
-            endBlankLatin: "wa rafa'na laka ___",
-            endCorrect: "ذِكْرَكَ",
-            endChoices: ["وِزْرَكَ", "ذِكْرَكَ", "يُسْرًا"],
-            middleBlank: "وَرَفَعْنَا ___ ذِكْرَكَ",
-            middleBlankLatin: "wa rafa'na ___ dzikrak",
-            middleCorrect: "لَكَ",
-            middleChoices: ["عَنكَ", "لَكَ", "مَعَ"],
-            twoBlank: "___ ___ ذِكْرَكَ",
-            twoCorrect: ["وَرَفَعْنَا", "لَكَ"],
-            twoChoices: ["وَرَفَعْنَا", "لَكَ", "ٱلَّذِىٓ", "أَنقَضَ"]
-        },
-        {
-            verseNumber: 5,
-            arabic: "فَإِنَّ مَعَ ٱلْعُسْرِ يُسْرًا",
-            translationKey: "quran.94_5_translation",
-            transliteration: "Fa inna ma'al 'usri yusra",
-            audio: "https://everyayah.com/data/Husary_128kbps/094005.mp3",
-            words: ["فَإِنَّ", "مَعَ", "ٱلْعُسْرِ", "يُسْرًا"],
-            frontBlank: "___ ___ ٱلْعُسْرِ يُسْرًا",
-            frontBlankLatin: "___ ___ al-'usri yusra",
-            frontCorrect: "فَإِنَّ مَعَ",
-            frontChoices: ["فَإِنَّ مَعَ", "إِنَّ مَعَ", "أَلَمْ نَشْرَحْ"],
-            endBlank: "فَإِنَّ مَعَ ٱلْعُسْرِ ___",
-            endBlankLatin: "fa inna ma'a al-'usri ___",
-            endCorrect: "يُسْرًا",
-            endChoices: ["يُسْرًا", "وِزْرَكَ", "فَٱنصَبْ"],
-            middleBlank: "فَإِنَّ مَعَ ___ يُسْرًا",
-            middleBlankLatin: "fa inna ma'a ___ yusra",
-            middleCorrect: "ٱلْعُسْرِ",
-            middleChoices: ["رَبِّكَ", "ٱلْعُسْرِ", "صَدْرَكَ"],
-            twoBlank: "فَإِنَّ ___ ___ يُسْرًا",
-            twoCorrect: ["مَعَ", "ٱلْعُسْرِ"],
-            twoChoices: ["مَعَ", "ٱلْعُسْرِ", "لَكَ", "عَنكَ"]
-        },
-        {
-            verseNumber: 6,
-            arabic: "إِنَّ مَعَ ٱلْعُسْرِ يُسْرًا",
-            translationKey: "quran.94_6_translation",
-            transliteration: "Inna ma'al 'usri yusra",
-            audio: "https://everyayah.com/data/Husary_128kbps/094006.mp3",
-            words: ["إِنَّ", "مَعَ", "ٱلْعُسْرِ", "يُسْرًا"],
-            frontBlank: "___ ___ ٱلْعُسْرِ يُسْرًا",
-            frontBlankLatin: "___ ___ al-'usri yusra",
-            frontCorrect: "إِنَّ مَعَ",
-            frontChoices: ["إِنَّ مَعَ", "فَإِنَّ مَعَ", "وَإِلَىٰ رَبِّكَ"],
-            endBlank: "إِنَّ مَعَ ٱلْعُسْرِ ___",
-            endBlankLatin: "inna ma'a al-'usri ___",
-            endCorrect: "يُسْرًا",
-            endChoices: ["يُسْرًا", "فَٱنصَبْ", "وِزْرَكَ"],
-            middleBlank: "إِنَّ مَعَ ___ يُسْرًا",
-            middleBlankLatin: "inna ma'a ___ yusra",
-            middleCorrect: "ٱلْعُسْرِ",
-            middleChoices: ["ٱلْعُسْرِ", "رَبِّكَ", "لَكَ"],
-            twoBlank: "إِنَّ ___ ___ يُسْرًا",
-            twoCorrect: ["مَعَ", "ٱلْعُسْرِ"],
-            twoChoices: ["مَعَ", "ٱلْعُسْرِ", "عَنكَ", "فَرَغْتَ"]
-        },
-        {
-            verseNumber: 7,
-            arabic: "فَإِذَا فَرَغْتَ فَٱنصَبْ",
-            translationKey: "quran.94_7_translation",
-            transliteration: "Fa idza faraghta fanshab",
-            audio: "https://everyayah.com/data/Husary_128kbps/094007.mp3",
-            words: ["فَإِذَا", "فَرَغْتَ", "فَٱنصَبْ"],
-            frontBlank: "___ ___ فَٱنصَبْ",
-            frontBlankLatin: "___ ___ fanshab",
-            frontCorrect: "فَإِذَا فَرَغْتَ",
-            frontChoices: ["فَإِذَا فَرَغْتَ", "وَإِلَىٰ رَبِّكَ", "وَوَضَعْنَا عَنكَ"],
-            endBlank: "فَإِذَا فَرَغْتَ ___",
-            endBlankLatin: "fa idza faraghta ___",
-            endCorrect: "فَٱنصَبْ",
-            endChoices: ["فَٱرْغَبْ", "فَٱنصَبْ", "صَدْرَكَ"],
-            middleBlank: "فَإِذَا ___ فَٱنصَبْ",
-            middleBlankLatin: "fa idza ___ fanshab",
-            middleCorrect: "فَرَغْتَ",
-            middleChoices: ["أَنقَضَ", "فَرَغْتَ", "مَعَ"],
-            twoBlank: "___ ___ فَٱنصَبْ",
-            twoCorrect: ["فَإِذَا", "فَرَغْتَ"],
-            twoChoices: ["فَإِذَا", "فَرَغْتَ", "إِنَّ", "وَإِلَىٰ"]
-        },
-        {
-            verseNumber: 8,
-            arabic: "وَإِلَىٰ رَبِّكَ فَٱرْغَبْ",
-            translationKey: "quran.94_8_translation",
-            transliteration: "Wa ila rabbika farghab",
-            audio: "https://everyayah.com/data/Husary_128kbps/094008.mp3",
-            words: ["وَإِلَىٰ", "رَبِّكَ", "فَٱرْغَبْ"],
-            frontBlank: "___ ___ فَٱرْغَبْ",
-            frontBlankLatin: "___ ___ farghab",
-            frontCorrect: "وَإِلَىٰ رَبِّكَ",
-            frontChoices: ["وَإِلَىٰ رَبِّكَ", "فَإِذَا فَرَغْتَ", "وَوَضَعْنَا عَنكَ"],
-            endBlank: "وَإِلَىٰ رَبِّكَ ___",
-            endBlankLatin: "wa ila rabbika ___",
-            endCorrect: "فَٱرْغَبْ",
-            endChoices: ["فَٱنصَبْ", "فَٱرْغَبْ", "يُسْرًا"],
-            middleBlank: "وَإِلَىٰ ___ فَٱرْغَبْ",
-            middleBlankLatin: "wa ila ___ farghab",
-            middleCorrect: "رَبِّكَ",
-            middleChoices: ["عَنكَ", "رَبِّكَ", "لَكَ"],
-            twoBlank: "___ ___ فَٱرْغَبْ",
-            twoCorrect: ["وَإِلَىٰ", "رَبِّكَ"],
-            twoChoices: ["وَإِلَىٰ", "رَبِّكَ", "فَإِذَا", "فَرَغْتَ"]
-        }
-    ];
+    // Ayat surah aktif dibaca dari registry konten, bukan ditulis di layar ini.
+    // Fallback ke Al-Insyirah menjaga layar tetap hidup bila dibuka di luar alur
+    // roadmap (mis. lewat navigasi mockup) saat mini target belum punya konten.
+    const activeSurah = $derived(appState.activeSurah ?? surahByName('Al-Insyirah'));
+    const alInsyirahVerses = $derived(activeSurah.verses);
 
     // State Variables bound to appState selectedVerseIndex
     const selectedVerseIndex = $derived(appState.selectedVerseIndex);
@@ -1247,9 +1066,9 @@
         } else {
             // === Hitung reward berdasarkan tipe node ===
             const nodeType = appState.selectedNodeType || 'lesson'; // 'lesson' | 'checkpoint'
-            const totalVerses = 8; // Al-Insyirah: 8 ayat
+            const totalVerses = alInsyirahVerses.length;
             const isLastVerse = selectedVerseIndex === totalVerses - 1;
-            const surahJustCompleted = isLastVerse && appState.user.progress.surah_094 === selectedVerseIndex;
+            const surahJustCompleted = isLastVerse && appState.surahProgress(activeSurah.id) === selectedVerseIndex;
 
             // XP: 4 XP per step benar (sesuai XP.md: "1 step hafalan jika benar = 4 XP").
             // Dihitung dari step unik, bukan jumlah percobaan, agar menjawab salah
@@ -1279,7 +1098,7 @@
                 gemsEarned += surahBonus;
                 const surahXp = surahCompletionXp(totalVerses);
                 xpEarned += surahXp;
-                breakdownLines.push(`+${surahBonus} Gems — Surah Al-Insyirah selesai!`);
+                breakdownLines.push(`+${surahBonus} Gems — Surah ${activeSurah.name} selesai!`);
                 breakdownLines.push(`+${surahXp} XP — Surah selesai (${totalVerses} ayat)`);
             }
 
@@ -1290,9 +1109,8 @@
             appState.user.xp += lessonEarnedXP;
             appState.user.gems += lessonEarnedGems;
 
-            if (appState.user.progress.surah_094 === selectedVerseIndex) {
-                appState.user.progress.surah_094 += 1;
-            }
+            appState.advanceSurahProgress(activeSurah.id, selectedVerseIndex);
+            // Checkpoint menutup satu mini target, jadi posisi tangga ikut maju (LEVELLING.md).
             if (nodeType === 'checkpoint') appState.completeMiniTarget();
 
             appState.updateQuestProgress('m_verse', 1); // misi harian "hafalkan 1 ayat" (MISSION.md)
