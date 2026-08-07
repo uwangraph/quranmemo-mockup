@@ -853,4 +853,9 @@ export default {
     ,"murajaah.review_now": "راجع"
     ,"murajaah.show_all": "عرض الكل ({count})"
     ,"murajaah.show_less": "عرض أقل"
+    ,"feedback.grade": "تقدير المشرف"
+    ,"feedback.grade_mumtaz": "ممتاز"
+    ,"feedback.grade_jayyid_jiddan": "جيد جدًا"
+    ,"feedback.grade_jayyid": "جيد"
+    ,"feedback.xp_already_claimed": "تم منح نقاط هذه الجلسة بالفعل"
 };

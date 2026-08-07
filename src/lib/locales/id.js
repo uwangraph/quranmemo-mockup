@@ -874,4 +874,9 @@ export default {
     ,"murajaah.review_now": "Murajaah"
     ,"murajaah.show_all": "Lihat semua {count}"
     ,"murajaah.show_less": "Tampilkan lebih sedikit"
+    ,"feedback.grade": "Nilai musyrif"
+    ,"feedback.grade_mumtaz": "Mumtaz — istimewa"
+    ,"feedback.grade_jayyid_jiddan": "Jayyid Jiddan — baik sekali"
+    ,"feedback.grade_jayyid": "Jayyid — baik"
+    ,"feedback.xp_already_claimed": "XP sesi ini sudah diberikan"
 };

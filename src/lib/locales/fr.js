@@ -852,4 +852,9 @@ export default {
     ,"murajaah.review_now": "Réviser"
     ,"murajaah.show_all": "Voir les {count}"
     ,"murajaah.show_less": "Voir moins"
+    ,"feedback.grade": "Note du moushrif"
+    ,"feedback.grade_mumtaz": "Mumtaz — excellent"
+    ,"feedback.grade_jayyid_jiddan": "Jayyid Jiddan — très bien"
+    ,"feedback.grade_jayyid": "Jayyid — bien"
+    ,"feedback.xp_already_claimed": "Les XP de cette session ont déjà été crédités"
 };

@@ -1,7 +1,21 @@
 <script>
-    import { appState } from '$lib/app.svelte.js';
+    import { appState, XP } from '$lib/app.svelte.js';
     import { i18n } from '$lib/i18n.svelte.js';
-    
+
+    // Sesi setoran yang baru selesai. Di mockup datanya statis; yang penting
+    // sessionId-nya stabil supaya XP tidak terbayar dua kali saat layar dibuka ulang.
+    const session = { id: 'setoran-almulk-12-16', surah: 'Al-Mulk', range: '12-16', grade: 'mumtaz' };
+
+    // Sudah dibayar? Berarti layar ini pernah diselesaikan sebelumnya.
+    const alreadyClaimed = $derived(appState.user.setoranIds.includes(session.id));
+    const gradeBonus = $derived(session.grade === 'mumtaz' ? XP.mumtaz : 0);
+
+    function submit() {
+        if (rating === 0) return;
+        appState.recordSetoran(session);
+        appState.go('learn');
+    }
+
     let rating = $state(0);
     let selectedTags = $state([]);
     let tipAmount = $state(0);
@@ -28,7 +42,7 @@
         <div class="feedback-header">
             <div class="success-icon">✨</div>
             <h1 style="font-size: 26px; font-weight: 900; color: #fff; margin: 16px 0 4px;">{i18n.t('feedback.title')}</h1>
-            <p style="font-size: 14px; font-weight: 700; color: rgba(255,255,255,0.8);">Al-Mulk: 12-16</p>
+            <p style="font-size: 14px; font-weight: 700; color: rgba(255,255,255,0.8);">{session.surah}: {session.range}</p>
         </div>
 
         <div style="padding: 0 20px;">
@@ -37,6 +51,37 @@
                 <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Malik" alt="Ustadz" class="avatar" />
                 <div style="font-size: 18px; font-weight: 900; color: #3c3c3c;">Ustadz Malik</div>
                 <div style="font-size: 11px; font-weight: 800; color: #ff9600; text-transform: uppercase;">{i18n.t('musyrif.partner_tier')}</div>
+            </div>
+
+            <!-- Nilai musyrif + XP yang didapat. Besarannya dari XP.md, bukan angka
+                 yang ditulis ulang di sini. -->
+            <div class="grade-card" class:mumtaz={session.grade === 'mumtaz'}>
+                <div class="grade-top">
+                    <span class="grade-emoji">{session.grade === 'mumtaz' ? '⭐' : '✅'}</span>
+                    <div style="flex:1; min-width:0;">
+                        <div class="grade-label">{i18n.t('feedback.grade')}</div>
+                        <div class="grade-value">{i18n.t(`feedback.grade_${session.grade}`)}</div>
+                    </div>
+                </div>
+                <div class="xp-lines">
+                    <div class="xp-line">
+                        <span>{i18n.t('lb.src_setoran')}</span>
+                        <strong>+{XP.setoran} XP</strong>
+                    </div>
+                    {#if gradeBonus > 0}
+                        <div class="xp-line bonus">
+                            <span>{i18n.t('lb.src_mumtaz')}</span>
+                            <strong>+{gradeBonus} XP</strong>
+                        </div>
+                    {/if}
+                    <div class="xp-line halaqah">
+                        <span>{i18n.t('lb.src_halaqah')}</span>
+                        <strong>+{XP.halaqahPerSetoran} XP</strong>
+                    </div>
+                </div>
+                {#if alreadyClaimed}
+                    <div class="grade-claimed">{i18n.t('feedback.xp_already_claimed')}</div>
+                {/if}
             </div>
 
         <!-- Rating Section -->
@@ -106,7 +151,7 @@
             class="btn-duo btn-green" 
             class:btn-disabled={rating === 0}
             disabled={rating === 0}
-            onclick={() => appState.go('learn')}
+            onclick={submit}
         >
             {i18n.t('feedback.submit')}
         </button>
@@ -153,6 +198,30 @@
         margin-bottom: 12px;
         box-shadow: 0 8px 16px rgba(0,0,0,0.15);
         object-fit: cover;
+    }
+
+    .grade-card {
+        background: #fff; border: 2px solid #e5e5e5; border-bottom-width: 4px;
+        border-radius: 20px; padding: 16px; margin-bottom: 28px;
+    }
+    .grade-card.mumtaz { background: #fffbeb; border-color: #fde68a; }
+    .grade-top { display: flex; align-items: center; gap: 12px; }
+    .grade-emoji { font-size: 28px; }
+    .grade-label {
+        font-size: 10px; font-weight: 900; color: #94a3b8;
+        text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .grade-value { font-size: 18px; font-weight: 900; color: #b45309; }
+    .xp-lines { margin-top: 12px; border-top: 1.5px solid rgba(0,0,0,0.06); padding-top: 8px; }
+    .xp-line {
+        display: flex; justify-content: space-between; align-items: center;
+        padding: 5px 0; font-size: 12px; font-weight: 700; color: #64748b;
+    }
+    .xp-line strong { color: #00978A; font-weight: 900; }
+    .xp-line.bonus strong { color: #f59e0b; }
+    .xp-line.halaqah strong { color: #7c3aed; }
+    .grade-claimed {
+        margin-top: 8px; font-size: 11px; font-weight: 800; color: #94a3b8; text-align: center;
     }
 
     .section {

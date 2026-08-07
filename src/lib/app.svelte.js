@@ -155,6 +155,8 @@ export function createAppState() {
             'Ad-Duha': dayKey(new Date(serverNow().getTime() - 22 * DAY_MS)),
             'Al-Insyirah': dayKey(new Date(serverNow().getTime() - 3 * DAY_MS))
         },
+        setoranIds: [],   // ID sesi setoran yang XP-nya sudah diberikan
+        halaqahXp: 0,     // XP yang disumbangkan ke halaqah (25 per setoran anggota)
         inventory: [],
         progress: {
             surah_094: 0,
@@ -223,6 +225,8 @@ export function createAppState() {
         'Ad-Duha': dayKey(new Date(serverNow().getTime() - 22 * DAY_MS)),
         'Al-Insyirah': dayKey(new Date(serverNow().getTime() - 3 * DAY_MS))
     };
+    if (!Array.isArray(user.setoranIds)) user.setoranIds = [];
+    if (user.halaqahXp === undefined) user.halaqahXp = 0;
     if (user.lastActiveDate === undefined) user.lastActiveDate = null;
     if (user.pathMode === undefined) user.pathMode = 'roadmap';
     if (user.selfPacedTarget === undefined) user.selfPacedTarget = null;
@@ -597,6 +601,30 @@ export function createAppState() {
         saveUser();
     }
 
+    // ====== Setoran ke musyrif (XP.md) ======
+
+    // Mencatat satu setoran yang sudah diverifikasi musyrif dan memberikan XP-nya.
+    // `sessionId` membuat fungsi ini idempoten — membuka ulang layar ulasan sesi
+    // yang sama tidak boleh membayar XP dua kali.
+    function recordSetoran({ sessionId, surah, grade = 'jayyid' }) {
+        if (!sessionId || user.setoranIds.includes(sessionId)) return null;
+
+        const bonus = grade === 'mumtaz' ? XP.mumtaz : 0;
+        const gained = XP.setoran + bonus;
+
+        user.xp += gained;
+        // Setiap anggota yang setoran menyumbang XP ke halaqahnya (XP.md — XP Halaqah).
+        user.halaqahXp += XP.halaqahPerSetoran;
+        user.setoranIds = [...user.setoranIds, sessionId];
+
+        // Setoran adalah verifikasi terbaru surah itu — sekaligus menyetel ulang
+        // hitungan Murajaah Alert untuknya.
+        if (surah) markSurahReviewed(surah);
+
+        saveUser();
+        return { setoran: XP.setoran, bonus, total: gained, halaqah: XP.halaqahPerSetoran };
+    }
+
     // ====== Murajaah & Revision Alert (STREAK.md) ======
 
     function markSurahReviewed(surah) {
@@ -696,6 +724,7 @@ export function createAppState() {
         setPlacementResult,
         placementSlaHoursLeft,
         setPathMode,
+        recordSetoran,
         markSurahReviewed,
         get murajaahDue() { return murajaahDue(); }
     };

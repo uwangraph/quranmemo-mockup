@@ -874,4 +874,9 @@ export default {
     ,"murajaah.review_now": "Revise"
     ,"murajaah.show_all": "See all {count}"
     ,"murajaah.show_less": "Show less"
+    ,"feedback.grade": "Musyrif's grade"
+    ,"feedback.grade_mumtaz": "Mumtaz — excellent"
+    ,"feedback.grade_jayyid_jiddan": "Jayyid Jiddan — very good"
+    ,"feedback.grade_jayyid": "Jayyid — good"
+    ,"feedback.xp_already_claimed": "XP for this session has been credited"
 };

@@ -850,4 +850,9 @@ export default {
     ,"murajaah.review_now": "Sake yi"
     ,"murajaah.show_all": "Duba duka {count}"
     ,"murajaah.show_less": "Nuna kaɗan"
+    ,"feedback.grade": "Darajar musyrif"
+    ,"feedback.grade_mumtaz": "Mumtaz — mai kyau ƙwarai"
+    ,"feedback.grade_jayyid_jiddan": "Jayyid Jiddan — mai kyau sosai"
+    ,"feedback.grade_jayyid": "Jayyid — mai kyau"
+    ,"feedback.xp_already_claimed": "An riga an ba da XP na wannan zaman"
 };
