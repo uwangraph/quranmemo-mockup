@@ -739,7 +739,7 @@ export default {
     "certificate.tahsin_title": "شهادة التحسين الأساسي",
     "certificate.memorization": "الحفظ",
     "certificate.tahsin": "التحسين",
-    "lesson.recall_level1_title": "11. الاسترجاع - المستوى 1",
+    "lesson.recall_level1_title": "10. الاسترجاع - المستوى 1",
     "lesson.recall_level1_desc": "أحسنت! سمِّع من حفظك الآية الجديدة التي أنهيتها للتو.",
     "lesson.recall_level2_title": "11. الاسترجاع - المستوى 2",
     "lesson.recall_level2_desc": "اختبار متكامل! صِل وسمِّع الآية السابقة مع الآية الجديدة بالترتيب.",

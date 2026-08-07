@@ -738,7 +738,7 @@ export default {
     "certificate.tahsin_title": "Certificat de tahsin élémentaire",
     "certificate.memorization": "Mémorisation",
     "certificate.tahsin": "Tahsin",
-    "lesson.recall_level1_title": "11. RAPPEL - Niveau 1",
+    "lesson.recall_level1_title": "10. RAPPEL - Niveau 1",
     "lesson.recall_level1_desc": "Très bien ! Récitez de mémoire le nouveau verset que vous venez de terminer.",
     "lesson.recall_level2_title": "11. RAPPEL - Niveau 2",
     "lesson.recall_level2_desc": "Épreuve complète ! Enchaînez et récitez le verset précédent puis le nouveau verset dans l'ordre.",

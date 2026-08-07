@@ -684,7 +684,7 @@ export default {
     "certificate.tahsin_title": "Shaidar Tahsin na Farko",
     "certificate.memorization": "Haddace",
     "certificate.tahsin": "Tahsin",
-    "lesson.recall_level1_title": "11. TUNAWA - Mataki 1",
+    "lesson.recall_level1_title": "10. TUNAWA - Mataki 1",
     "lesson.recall_level1_desc": "Madalla! Ka karanta daga haddarka ayar sabuwa da ka kammala yanzu.",
     "lesson.recall_level2_title": "11. TUNAWA - Mataki 2",
     "lesson.recall_level2_desc": "Cikakken gwaji! Ka haɗa ka karanta ayar da ta gabata tare da sabuwar aya bi da bi.",

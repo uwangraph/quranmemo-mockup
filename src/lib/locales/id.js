@@ -750,7 +750,7 @@ export default {
     ,"certificate.tahsin": "Tahsin"
     ,"lesson.instruct_listen_repeat": "Dengarkan lantunan ayat qari, lalu ikuti pelafalannya dengan suara lantang."
     ,"lesson.pause": "Jeda"
-    ,"lesson.recall_level1_title": "11. RECALL - Level 1"
+    ,"lesson.recall_level1_title": "10. RECALL - Level 1"
     ,"lesson.recall_level1_desc": "Mantap! Yuk setor (baca dari hafalan) ayat baru yang baru saja kamu selesaikan."
     ,"lesson.recall_level2_title": "11. RECALL - Level 2"
     ,"lesson.recall_level2_desc": "Ujian Sempurna! Sambungkan dan setor ayat sebelumnya + ayat baru secara berurutan."

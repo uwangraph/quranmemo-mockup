@@ -739,7 +739,7 @@ export default {
     "certificate.tahsin_title": "Sijil Tahsin Asas",
     "certificate.memorization": "Hafalan",
     "certificate.tahsin": "Tahsin",
-    "lesson.recall_level1_title": "11. RECALL - Tahap 1",
+    "lesson.recall_level1_title": "10. RECALL - Tahap 1",
     "lesson.recall_level1_desc": "Bagus! Bacakan ayat baharu yang baru anda selesaikan daripada hafalan.",
     "lesson.recall_level2_title": "11. RECALL - Tahap 2",
     "lesson.recall_level2_desc": "Ujian sempurna! Sambungkan dan bacakan ayat sebelumnya bersama ayat baharu mengikut urutan.",

@@ -750,7 +750,7 @@ export default {
     ,"certificate.tahsin": "Tahsin"
     ,"lesson.instruct_listen_repeat": "Listen to the Qari's recitation, then repeat it out loud."
     ,"lesson.pause": "Pause"
-    ,"lesson.recall_level1_title": "11. RECALL - Level 1"
+    ,"lesson.recall_level1_title": "10. RECALL - Level 1"
     ,"lesson.recall_level1_desc": "Great! Recite the new verse you just completed from memory."
     ,"lesson.recall_level2_title": "11. RECALL - Level 2"
     ,"lesson.recall_level2_desc": "Perfect test! Connect and recite the previous verse and the new verse in order."
