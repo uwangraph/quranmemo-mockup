@@ -1,80 +1,98 @@
 <script>
+    // Roadmap mengikuti struktur mini target di docs/LEVELLING.md.
+    //
+    // Tiap level adalah deretan "tangga". Satu tangga berisi beberapa mini target dan
+    // ditutup sebuah gerbang — checkpoint (setoran) atau badge per juz. Mini target
+    // yang sedang dikerjakan dibuka menjadi node ayat/halaman: di situlah lesson yang
+    // sebenarnya berjalan. Mini target lain cukup ditampilkan sebagai status, karena
+    // membuka semuanya sekaligus akan menghapus rasa berjenjang yang jadi inti dokumen.
     import { appState } from '$lib/app.svelte.js';
     import { i18n } from '$lib/i18n.svelte.js';
+    import { laddersFor, ladderTargetCount } from '$lib/data/levelling.js';
+
+    const learningPath = $derived(appState.user.learningPath);
+    const ladders = $derived(laddersFor(learningPath));
+
+    // Tangga & mini target yang sedang berjalan, dibaca per level.
+    const pos = $derived(appState.user.progress.ladderProgress?.[learningPath] ?? { ladderIndex: 0, targetIndex: 0 });
+    const ladderIndex = $derived(Math.min(pos.ladderIndex, ladders.length - 1));
+    const ladder = $derived(ladders[ladderIndex]);
+    const targetIndex = $derived(Math.min(pos.targetIndex, ladderTargetCount(ladder) - 1));
 
     const pathConfig = $derived.by(() => {
-        const lp = appState.user.learningPath;
-        if (lp === 'pro') {
-            return {
-                unitTitle: i18n.t('learn.unit_title_pro'),
-                unitDesc: i18n.t('learn.unit_desc_pro'),
-                badge: "PRO LEVEL"
-            };
-        } else if (lp === 'mid') {
-            return {
-                unitTitle: i18n.t('learn.unit_title_mid'),
-                unitDesc: i18n.t('learn.unit_desc_mid'),
-                badge: "MID LEVEL"
-            };
-        } else {
-            return {
-                unitTitle: i18n.t('learn.unit_title_beginner'),
-                unitDesc: i18n.t('learn.unit_desc_beginner'),
-                badge: "BEGINNER LEVEL"
-            };
+        if (learningPath === 'pro') {
+            return { unitTitle: i18n.t('learn.unit_title_pro'), unitDesc: i18n.t('learn.unit_desc_pro'), badge: 'PRO LEVEL' };
         }
+        if (learningPath === 'mid') {
+            return { unitTitle: i18n.t('learn.unit_title_mid'), unitDesc: i18n.t('learn.unit_desc_mid'), badge: 'MID LEVEL' };
+        }
+        return { unitTitle: i18n.t('learn.unit_title_beginner'), unitDesc: i18n.t('learn.unit_desc_beginner'), badge: 'BEGINNER LEVEL' };
     });
 
-    const nodes = $derived.by(() => {
+    // Nama tiap mini target, apa pun bentuk levelnya: surah, kelompok surah,
+    // atau blok lima halaman.
+    function targetLabel(l, i) {
+        if (l.surahs) return l.surahs[i];
+        if (l.groups) return l.groups[i].join(', ');
+        if (l.blocks) return `${i18n.t('learn.page')} ${l.blocks[i].from}-${l.blocks[i].to}`;
+        return '';
+    }
+
+    const targets = $derived(
+        Array.from({ length: ladderTargetCount(ladder) }, (_, i) => ({
+            index: i,
+            label: targetLabel(ladder, i),
+            status: i < targetIndex ? 'completed' : i === targetIndex ? 'current' : 'locked'
+        }))
+    );
+
+    // Node ayat/halaman untuk mini target yang sedang dibuka. Ini bagian yang
+    // benar-benar bisa dimainkan dan memakai progres per-ayat yang sudah ada.
+    const innerNodes = $derived.by(() => {
         const progress = appState.user.progress.surah_094;
-        const getStatus = (idx) => progress > idx ? "completed" : (progress === idx ? "current" : "locked");
+        const getStatus = (idx) => (progress > idx ? 'completed' : progress === idx ? 'current' : 'locked');
 
         // Node sampingan seperti Tadabbur punya tiga keadaan: terkunci, terbuka tapi
         // belum dikerjakan, dan selesai. Menandainya selesai sebelum dikerjakan membuat
         // pengguna mengira sudah melakukannya lalu melewatinya begitu saja.
         const done = appState.user.progress.tadabbur ?? [];
-        const gate = (key, unlocked) =>
-            done.includes(key) ? "completed" : (unlocked ? "available" : "locked");
+        const gate = (key, unlocked) => (done.includes(key) ? 'completed' : unlocked ? 'available' : 'locked');
 
-        const lp = appState.user.learningPath;
-
-        if (lp === 'pro') {
+        if (learningPath === 'pro') {
             return [
-                { id: 1, type: "lesson", verseIndex: 0, status: getStatus(0), title: `${i18n.t('learn.page')} 1` },
-                { id: 2, type: "lesson", verseIndex: 1, status: getStatus(1), title: `${i18n.t('learn.page')} 2` },
-                { id: 3, type: "tadabbur", key: "pro_1", status: gate("pro_1", progress >= 2), title: `${i18n.t('learn.tadabbur_pages')} 1-2` },
-                { id: 4, type: "lesson", verseIndex: 2, status: getStatus(2), title: `${i18n.t('learn.page')} 3` },
-                { id: 5, type: "lesson", verseIndex: 3, status: getStatus(3), title: `${i18n.t('learn.page')} 4` },
-                { id: 6, type: "lesson", verseIndex: 4, status: getStatus(4), title: `${i18n.t('learn.page')} 5` },
-                { id: 7, type: "checkpoint", verseIndex: 4, status: progress >= 5 ? "current" : "locked", title: `${i18n.t('learn.submit_part')} 1` }
-            ];
-        } else if (lp === 'mid') {
-            return [
-                { id: 1, type: "lesson", verseIndex: 0, status: getStatus(0), title: "Al-Mulk (1-15)" },
-                { id: 2, type: "lesson", verseIndex: 1, status: getStatus(1), title: "Al-Mulk (16-30)" },
-                { id: 3, type: "checkpoint", verseIndex: 1, status: progress >= 2 ? "completed" : "locked", title: `${i18n.t('learn.submit_part')} Al-Mulk` },
-                { id: 4, type: "lesson", verseIndex: 2, status: getStatus(2), title: "Al-Qalam" },
-                { id: 5, type: "lesson", verseIndex: 3, status: getStatus(3), title: "Al-Haqqah" },
-                { id: 6, type: "tadabbur", key: "mid_1", status: gate("mid_1", progress >= 4), title: `Tadabbur T1` },
-                { id: 7, type: "checkpoint", verseIndex: 3, status: progress >= 5 ? "current" : "locked", title: `${i18n.t('learn.submit_ladder')} 1` }
-            ];
-        } else {
-            return [
-                { id: 1, type: "lesson", verseIndex: 0, status: getStatus(0), title: `${i18n.t('learn.verse')} 1` },
-                { id: 2, type: "lesson", verseIndex: 1, status: getStatus(1), title: `${i18n.t('learn.verse')} 2` },
-                { id: 3, type: "lesson", verseIndex: 2, status: getStatus(2), title: `${i18n.t('learn.verse')} 3` },
-                { id: 4, type: "tadabbur", key: "beginner_1", status: gate("beginner_1", progress >= 3), title: `Tadabbur 1-3` },
-                { id: 5, type: "lesson", verseIndex: 3, status: getStatus(3), title: `${i18n.t('learn.verse')} 4` },
-                { id: 6, type: "lesson", verseIndex: 4, status: getStatus(4), title: `${i18n.t('learn.verse')} 5` },
-                { id: 7, type: "lesson", verseIndex: 5, status: getStatus(5), title: `${i18n.t('learn.verse')} 6` },
-                { id: 8, type: "lesson", verseIndex: 6, status: getStatus(6), title: `${i18n.t('learn.verse')} 7` },
-                { id: 9, type: "lesson", verseIndex: 7, status: getStatus(7), title: `${i18n.t('learn.verse')} 8` },
-                { id: 10, type: "checkpoint", verseIndex: 7, status: progress >= 8 ? "current" : "locked", title: `${i18n.t('learn.submit_full_surah')}` }
+                { id: 1, type: 'lesson', verseIndex: 0, status: getStatus(0), title: `${i18n.t('learn.page')} 1` },
+                { id: 2, type: 'lesson', verseIndex: 1, status: getStatus(1), title: `${i18n.t('learn.page')} 2` },
+                { id: 3, type: 'tadabbur', key: 'pro_1', status: gate('pro_1', progress >= 2), title: `${i18n.t('learn.tadabbur_pages')} 1-2` },
+                { id: 4, type: 'lesson', verseIndex: 2, status: getStatus(2), title: `${i18n.t('learn.page')} 3` },
+                { id: 5, type: 'lesson', verseIndex: 3, status: getStatus(3), title: `${i18n.t('learn.page')} 4` },
+                { id: 6, type: 'lesson', verseIndex: 4, status: getStatus(4), title: `${i18n.t('learn.page')} 5` },
+                { id: 7, type: 'checkpoint', verseIndex: 4, status: progress >= 5 ? 'current' : 'locked', title: `${i18n.t('learn.submit_part')} 1` }
             ];
         }
+        if (learningPath === 'mid') {
+            return [
+                { id: 1, type: 'lesson', verseIndex: 0, status: getStatus(0), title: 'Al-Mulk (1-15)' },
+                { id: 2, type: 'lesson', verseIndex: 1, status: getStatus(1), title: 'Al-Mulk (16-30)' },
+                { id: 3, type: 'checkpoint', verseIndex: 1, status: progress >= 2 ? 'completed' : 'locked', title: `${i18n.t('learn.submit_part')} Al-Mulk` },
+                { id: 4, type: 'lesson', verseIndex: 2, status: getStatus(2), title: 'Al-Qalam' },
+                { id: 5, type: 'lesson', verseIndex: 3, status: getStatus(3), title: 'Al-Haqqah' },
+                { id: 6, type: 'tadabbur', key: 'mid_1', status: gate('mid_1', progress >= 4), title: 'Tadabbur T1' },
+                { id: 7, type: 'checkpoint', verseIndex: 3, status: progress >= 5 ? 'current' : 'locked', title: `${i18n.t('learn.submit_ladder')} 1` }
+            ];
+        }
+        return [
+            { id: 1, type: 'lesson', verseIndex: 0, status: getStatus(0), title: `${i18n.t('learn.verse')} 1` },
+            { id: 2, type: 'lesson', verseIndex: 1, status: getStatus(1), title: `${i18n.t('learn.verse')} 2` },
+            { id: 3, type: 'lesson', verseIndex: 2, status: getStatus(2), title: `${i18n.t('learn.verse')} 3` },
+            { id: 4, type: 'tadabbur', key: 'beginner_1', status: gate('beginner_1', progress >= 3), title: 'Tadabbur 1-3' },
+            { id: 5, type: 'lesson', verseIndex: 3, status: getStatus(3), title: `${i18n.t('learn.verse')} 4` },
+            { id: 6, type: 'lesson', verseIndex: 4, status: getStatus(4), title: `${i18n.t('learn.verse')} 5` },
+            { id: 7, type: 'lesson', verseIndex: 5, status: getStatus(5), title: `${i18n.t('learn.verse')} 6` },
+            { id: 8, type: 'lesson', verseIndex: 6, status: getStatus(6), title: `${i18n.t('learn.verse')} 7` },
+            { id: 9, type: 'lesson', verseIndex: 7, status: getStatus(7), title: `${i18n.t('learn.verse')} 8` },
+            { id: 10, type: 'checkpoint', verseIndex: 7, status: progress >= 8 ? 'current' : 'locked', title: i18n.t('learn.submit_full_surah') }
+        ];
     });
-
-
 
     function handleNodeClick(node) {
         if (node.status === 'locked') return;
@@ -98,7 +116,7 @@
         appState.go('tadabbur');
     }
 
-
+    let showLadderMap = $state(false);
 </script>
 
 <div class="path-column">
@@ -106,29 +124,78 @@
         <!-- Islamic Pattern Background Elements -->
         <div class="islamic-motif motif-1"></div>
         <div class="islamic-motif motif-2"></div>
-        
+
         <div class="unit-badge" style="position: relative; z-index: 2;">{pathConfig.badge}</div>
         <div style="font-size: 22px; font-weight: 900; color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.1); position: relative; z-index: 2;">{pathConfig.unitTitle}</div>
         <div style="font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.9); margin-top: 4px; position: relative; z-index: 2;">{pathConfig.unitDesc}</div>
+
+        <!-- Tangga yang sedang ditempuh + gerbang penutupnya (LEVELLING.md) -->
+        <div class="ladder-strip">
+            <div class="ladder-strip-main">
+                <span class="ladder-eyebrow">
+                    {i18n.t('learn.ladder_n', { n: ladderIndex + 1 })} · {i18n.t(`learn.gate_${ladder.gate}`)}
+                </span>
+                <span class="ladder-name">{ladder.name}</span>
+            </div>
+            <span class="ladder-progress">{targetIndex}/{targets.length}</span>
+        </div>
+
         <div class="unit-actions">
             <button class="unit-guide-btn" onclick={() => appState.go('guide')}>
-                <i class="ti ti-notebook"></i> {i18n.t('learn.guide') || 'GUIDE'}
+                <i class="ti ti-notebook"></i> {i18n.t('learn.guide')}
             </button>
             <!-- Pintu masuk Tadabbur yang selalu tersedia. Node di roadmap baru terbuka
                  setelah beberapa ayat selesai, sehingga di ponsel tidak ada jalan lain. -->
             <button class="unit-guide-btn" onclick={openFreeTadabbur}>
                 <i class="ti ti-books"></i> {i18n.t('nav.tadabbur')}
             </button>
+            <button class="unit-guide-btn" onclick={() => (showLadderMap = !showLadderMap)}>
+                <i class="ti ti-map"></i> {i18n.t('learn.ladder_map')}
+            </button>
         </div>
     </div>
 
+    <!-- Peta seluruh tangga di level ini -->
+    {#if showLadderMap}
+        <div class="ladder-map">
+            <div class="ladder-map-title">{i18n.t('learn.ladder_map')} — {pathConfig.badge}</div>
+            {#each ladders as l, i}
+                {@const state = i < ladderIndex ? 'completed' : i === ladderIndex ? 'current' : 'locked'}
+                <div class="ladder-row {state}">
+                    <span class="ladder-row-num">{i + 1}</span>
+                    <div style="flex:1; min-width:0;">
+                        <div class="ladder-row-name">
+                            {l.name}
+                            {#if l.optional}<span class="opt-pill">{i18n.t('learn.optional')}</span>{/if}
+                        </div>
+                        <div class="ladder-row-meta">
+                            {i18n.t('learn.mini_targets', { count: ladderTargetCount(l) })} · {i18n.t(`learn.gate_${l.gate}`)}
+                        </div>
+                    </div>
+                    <i class="ti {state === 'completed' ? 'ti-circle-check-filled' : state === 'current' ? 'ti-player-play-filled' : 'ti-lock'}"></i>
+                </div>
+            {/each}
+        </div>
+    {/if}
+
+    <!-- Mini target dalam tangga berjalan -->
+    <div class="targets-strip">
+        {#each targets as t}
+            <div class="target-chip {t.status}" title={t.label}>
+                <span class="target-dot"></span>
+                <span class="target-label">{t.label}</span>
+            </div>
+        {/each}
+    </div>
+
+    <div class="current-target-label">
+        {i18n.t('learn.current_mini_target')}: <strong>{targets[targetIndex]?.label ?? ''}</strong>
+    </div>
+
     <div class="path-container">
-        {#each nodes as node, i}
+        {#each innerNodes as node, i}
             <div class="node-wrapper" style="margin-left: {i % 2 === 0 ? '20px' : '-20px'}">
-                <button 
-                    class="node-btn {node.type} {node.status}" 
-                    onclick={() => handleNodeClick(node)}
-                >
+                <button class="node-btn {node.type} {node.status}" onclick={() => handleNodeClick(node)}>
                     {#if node.type === 'review'}
                         <i class="ti ti-refresh"></i>
                     {:else if node.type === 'tadabbur'}
@@ -146,10 +213,19 @@
                 <div class="node-title">{node.title}</div>
             </div>
 
-            {#if i < nodes.length - 1}
-                <div class="connector {nodes[i+1].status}"></div>
+            {#if i < innerNodes.length - 1}
+                <div class="connector {innerNodes[i+1].status}"></div>
             {/if}
         {/each}
+
+        <!-- Gerbang penutup tangga -->
+        <div class="connector locked"></div>
+        <div class="node-wrapper">
+            <div class="node-btn gate locked">
+                <i class="ti {ladder.gate === 'badge' ? 'ti-award' : 'ti-flag-check'}"></i>
+            </div>
+            <div class="node-title">{i18n.t(`learn.gate_${ladder.gate}`)} — {ladder.name}</div>
+        </div>
     </div>
 
     <!-- Daily goal card: visible only in mobile phone mockup -->
@@ -182,7 +258,7 @@
         overflow: hidden;
     }
     :global(.desktop-browser) .unit-banner, :global(.tablet) .unit-banner { margin: 0; }
-    
+
     .islamic-motif {
         position: absolute;
         width: 180px;
@@ -195,6 +271,27 @@
     .motif-2 { left: -50px; bottom: -50px; transform: rotate(45deg) scale(0.7); }
 
     .unit-badge { font-size: 11px; font-weight: 900; color: rgba(255,255,255,0.7); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+
+    /* Tangga berjalan */
+    .ladder-strip {
+        position: relative; z-index: 2;
+        display: flex; align-items: center; gap: 10px; margin-top: 14px;
+        background: rgba(0,0,0,0.18); border-radius: 12px; padding: 10px 12px;
+    }
+    .ladder-strip-main { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+    .ladder-eyebrow {
+        font-size: 9px; font-weight: 900; color: rgba(255,255,255,0.75);
+        text-transform: uppercase; letter-spacing: 0.6px;
+    }
+    .ladder-name {
+        font-size: 14px; font-weight: 900; color: #fff;
+        overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+    .ladder-progress {
+        background: #fff; color: var(--duo-green-dark); font-size: 12px; font-weight: 900;
+        padding: 4px 10px; border-radius: 99px; flex-shrink: 0;
+    }
+
     .unit-actions {
         position: relative; z-index: 2;
         display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px;
@@ -210,6 +307,64 @@
     .unit-guide-btn:hover { background: rgba(0,0,0,0.25); }
     .unit-guide-btn:active { background: rgba(0,0,0,0.35); }
     .unit-guide-btn:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
+
+    /* Peta tangga */
+    .ladder-map {
+        margin: 0 16px 16px; background: #fff; border: 2px solid #e5e5e5;
+        border-radius: 16px; padding: 12px;
+    }
+    :global(.desktop-browser) .ladder-map, :global(.tablet) .ladder-map { margin: 16px 0; }
+    .ladder-map-title {
+        font-size: 10px; font-weight: 900; color: #94a3b8;
+        text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px;
+    }
+    .ladder-row {
+        display: flex; align-items: center; gap: 10px;
+        padding: 10px; border-radius: 12px; margin-bottom: 6px;
+        background: #f8fafc; border: 1.5px solid #e2e8f0;
+    }
+    .ladder-row.current { background: #f0fdfa; border-color: #99f6e4; }
+    .ladder-row.completed { background: #f0fdf4; border-color: #bbf7d0; }
+    .ladder-row.locked { opacity: 0.6; }
+    .ladder-row i { font-size: 18px; color: #94a3b8; flex-shrink: 0; }
+    .ladder-row.current i { color: var(--duo-green-dark); }
+    .ladder-row.completed i { color: #16a34a; }
+    .ladder-row-num {
+        width: 24px; height: 24px; border-radius: 50%; background: #e2e8f0;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 11px; font-weight: 900; color: #475569; flex-shrink: 0;
+    }
+    .ladder-row-name { font-size: 13px; font-weight: 900; color: #1e293b; }
+    .ladder-row-meta { font-size: 10px; font-weight: 700; color: #94a3b8; margin-top: 2px; }
+    .opt-pill {
+        margin-left: 6px; font-size: 9px; font-weight: 900; color: #7c3aed;
+        background: #ede9fe; border-radius: 5px; padding: 2px 6px; text-transform: uppercase;
+    }
+
+    /* Mini target dalam tangga berjalan */
+    .targets-strip {
+        display: flex; gap: 6px; overflow-x: auto; padding: 0 16px 4px;
+        scrollbar-width: none;
+    }
+    .targets-strip::-webkit-scrollbar { display: none; }
+    :global(.desktop-browser) .targets-strip, :global(.tablet) .targets-strip { padding: 0 0 4px; }
+    .target-chip {
+        display: flex; align-items: center; gap: 5px; flex-shrink: 0;
+        border: 1.5px solid #e5e5e5; background: #fff; border-radius: 99px;
+        padding: 5px 10px; font-size: 11px; font-weight: 800; color: #94a3b8;
+        max-width: 160px;
+    }
+    .target-chip.completed { border-color: #bbf7d0; background: #f0fdf4; color: #16a34a; }
+    .target-chip.current { border-color: var(--duo-green); background: #e6faf8; color: var(--duo-green-dark); }
+    .target-label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .target-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
+
+    .current-target-label {
+        padding: 10px 16px 0; font-size: 12px; font-weight: 700; color: #64748b;
+    }
+    .current-target-label strong { color: #1e293b; font-weight: 900; }
+    :global(.desktop-browser) .current-target-label, :global(.tablet) .current-target-label { padding: 10px 0 0; }
+
     .path-container { display: flex; flex-direction: column; align-items: center; padding-top: 30px; }
     .node-wrapper { display: flex; flex-direction: column; align-items: center; position: relative; z-index: 2; }
     .node-btn {
@@ -235,7 +390,8 @@
     .node-btn.tadabbur.completed { background: #ce82ff; border-bottom-color: #a52adb; }
     .node-btn.tadabbur.available { border-color: #ce82ff; border-bottom-color: #a52adb; color: #a52adb; }
     .node-btn.checkpoint.completed { background: #ffc800; border-bottom-color: #e5a000; }
-    
+    .node-btn.gate { background: #fef3c7; border-bottom-color: #fbbf24; color: #b45309; cursor: default; }
+
     @keyframes pulse {
         0% { box-shadow: 0 0 0 0 rgba(0, 151, 138, 0.4); }
         70% { box-shadow: 0 0 0 15px rgba(0, 151, 138, 0); }
@@ -250,7 +406,7 @@
         content: ''; position: absolute; bottom: -6px; left: 50%; transform: translateX(-50%);
         border-left: 6px solid transparent; border-right: 6px solid transparent; border-top: 6px solid #e5e5e5;
     }
-    .node-title { font-size: 13px; font-weight: 800; color: #3c3c3c; margin-top: 8px; }
+    .node-title { font-size: 13px; font-weight: 800; color: #3c3c3c; margin-top: 8px; text-align: center; }
     .connector { width: 8px; height: 40px; background: #e5e5e5; margin: 4px 0; z-index: 1; }
     .connector.completed, .connector.current, .connector.available { background: #d7ffb2; }
 
@@ -260,5 +416,4 @@
     :global(.tablet) .mobile-only-card { display: block; margin: 0 0 20px; }
     .goal-bar-bg { height: 8px; background: #e5e5e5; border-radius: 4px; overflow: hidden; }
     .goal-bar-fill { height: 100%; background: #ff9600; border-radius: 4px; }
-
 </style>

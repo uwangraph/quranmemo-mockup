@@ -160,7 +160,15 @@ export function createAppState() {
         inventory: [],
         progress: {
             surah_094: 0,
-            tadabbur: []   // key node Tadabbur yang sudah diselesaikan
+            tadabbur: [],  // key node Tadabbur yang sudah diselesaikan
+            // Posisi di struktur tangga LEVELLING.md, terpisah per level karena
+            // pengguna bisa berpindah jalur tanpa kehilangan posisi jalur lamanya.
+            // Beginner mulai di mini target ke-21 (Al-Insyirah), surah yang lessonnya ada.
+            ladderProgress: {
+                beginner: { ladderIndex: 0, targetIndex: 20 },
+                mid: { ladderIndex: 0, targetIndex: 0 },
+                pro: { ladderIndex: 0, targetIndex: 0 }
+            }
         },
         level: 'pemula',
         learningPath: 'beginner',
@@ -244,6 +252,11 @@ export function createAppState() {
     };
     if (user.monthlyMission === undefined) user.monthlyMission = { month: null, loginDays: 0, versesMemorized: 0, xpEarned: 0 };
     if (!Array.isArray(user.progress?.tadabbur)) user.progress.tadabbur = [];
+    if (user.progress.ladderProgress === undefined) user.progress.ladderProgress = {
+        beginner: { ladderIndex: 0, targetIndex: 20 },
+        mid: { ladderIndex: 0, targetIndex: 0 },
+        pro: { ladderIndex: 0, targetIndex: 0 }
+    };
     if (user.scheduledBooking === undefined) user.scheduledBooking = { musyrifName: 'Ust. Ahmad Zaki', time: '2026-05-22T15:00:00', surah: 'Ad-Dhuha', juz: 30 };
     if (user.badges === undefined) user.badges = [
         { id: 'b1', icon: '🔥', name: 'Langkah Pertama', desc: 'Menyelesaikan 3 hari streak berturut-turut', earned: true },
