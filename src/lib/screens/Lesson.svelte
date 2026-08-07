@@ -231,6 +231,7 @@
     
     // Real Audio Recording States
     let mediaRecorder = null;
+    let activeStream = null;   // stream mikrofon yang sedang dipakai, perlu dihentikan saat keluar
     let audioChunks = [];
     let recordedAudioUrl = $state(null);
     let recordedAudio = $state(null);
@@ -836,6 +837,7 @@
             totalAttempts = 0;
             correctAttempts = 0;
             correctStepIds = new Set();
+            releaseRecording(); // rekaman ayat sebelumnya tidak dipakai lagi
             setupAudio();
             setupScramble();
             // Auto-play for the first step
@@ -905,9 +907,13 @@
             if (mediaRecorder && mediaRecorder.state !== 'inactive') {
                 mediaRecorder.stop();
             }
-            if (recordedAudio) {
-                recordedAudio.pause();
+            // Lepaskan mikrofon, kalau tidak indikator "sedang merekam" tetap menyala
+            // di peramban meski pengguna sudah meninggalkan layar.
+            if (activeStream) {
+                activeStream.getTracks().forEach(track => track.stop());
+                activeStream = null;
             }
+            releaseRecording();
             if (wordAudioEl) {
                 wordAudioEl.pause();
                 wordAudioEl.src = '';
@@ -915,6 +921,19 @@
             }
         };
     });
+
+    // Hentikan pemutaran rekaman lalu bebaskan blob URL-nya. Aman dipanggil berulang.
+    function releaseRecording() {
+        if (recordedAudio) {
+            recordedAudio.pause();
+            recordedAudio.src = '';
+            recordedAudio = null;
+        }
+        if (recordedAudioUrl) {
+            URL.revokeObjectURL(recordedAudioUrl);
+            recordedAudioUrl = null;
+        }
+    }
 
     function setupAudio() {
         if (!activeVerse) return;
@@ -1031,13 +1050,13 @@
         } else {
             try {
                 // Disable browser's aggressive DSP (noise gate, AGC, echo cancellation) to prevent choppy/stuttering audio during recitation
-                const stream = await navigator.mediaDevices.getUserMedia({ 
+                const stream = activeStream = await navigator.mediaDevices.getUserMedia({
                     audio: {
                         echoCancellation: false,
                         noiseSuppression: false,
                         autoGainControl: false,
                         channelCount: 1 // Mono is fine for voice and lighter on processing
-                    } 
+                    }
                 });
                 mediaRecorder = new MediaRecorder(stream);
                 audioChunks = [];
@@ -1072,8 +1091,10 @@
                 
                 mediaRecorder.onstop = () => {
                     const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+                    // Blob URL rekaman sebelumnya harus dilepas, kalau tidak setiap
+                    // pengulangan rekam menyisakan blob yang tidak pernah dibebaskan.
+                    releaseRecording();
                     recordedAudioUrl = URL.createObjectURL(audioBlob);
-                    if (recordedAudio) recordedAudio.pause();
                     recordedAudio = new Audio(recordedAudioUrl);
                     
                     // Apply Mosque Reverb Effect + Playback Audio Visualizer
@@ -1131,6 +1152,7 @@
                     
                     // Stop all microphone tracks to turn off the recording light
                     stream.getTracks().forEach(track => track.stop());
+                    if (activeStream === stream) activeStream = null;
                     cancelAnimationFrame(drawWaveRafId);
                     activeVisCtx = null;
                     if (visCtx.state !== 'closed') visCtx.close();
