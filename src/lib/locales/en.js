@@ -791,6 +791,8 @@ export default {
     ,"quests.monthly": "Monthly Mission"
     ,"quests.per_day": "day"
     ,"quests.monthly_xp_total": "XP from missions this month"
+    ,"lb.event": "Event"
+    ,"lb.reset_event": "Runs for the duration of the event"
     ,"lb.src_step": "1 memorization step"
     ,"lb.src_daily_mission": "Daily missions"
     ,"lb.src_surah": "Surah completed"

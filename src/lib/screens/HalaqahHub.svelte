@@ -5,6 +5,19 @@
 
     let activeTab = $state('my-community');
     let communityView = $state('all-member');
+    // LEARDERBOARD.md: papan halaqah & komunitas punya versi Global dan Regional,
+    // masing-masing dalam empat periode.
+    let scope = $state('global');
+    let activePeriod = $state('weekly');
+
+    const MY_REGION = '🇮🇩';
+    const periods = $derived([
+        { id: 'weekly', label: i18n.t('lb.weekly') },
+        { id: 'monthly', label: i18n.t('lb.monthly') },
+        { id: 'alltime', label: i18n.t('lb.alltime') },
+        { id: 'event', label: i18n.t('lb.event') },
+    ]);
+    const isExplore = $derived(activeTab === 'explore-halaqah' || activeTab === 'explore-komunitas');
 
     const tabs = $derived([
         { id: 'my-community', label: i18n.t('lb.tab_my_community') || 'Komunitasku', icon: '👥' },
@@ -53,9 +66,16 @@
         { name: 'Hasan Ali', xp: 1400, avatar: '🧔' },
     ].sort((a, b) => b.xp - a.xp).map((u, i) => ({ ...u, rank: i + 1 })));
 
+    // Peringkat regional adalah daftar global yang disaring per negara, lalu
+    // dinomori ulang — kalau tidak, peringkat 1 regional bisa tampil sebagai #4.
+    function scoped(list) {
+        if (scope === 'global') return list;
+        return list.filter(x => x.region === MY_REGION).map((x, i) => ({ ...x, rank: i + 1 }));
+    }
+
     function getCurrentData() {
-        if (activeTab === 'explore-halaqah') return halaqahList;
-        if (activeTab === 'explore-komunitas') return komunitasList;
+        if (activeTab === 'explore-halaqah') return scoped(halaqahList);
+        if (activeTab === 'explore-komunitas') return scoped(komunitasList);
         if (activeTab === 'my-community') {
             return communityView === 'all-member' ? myCommunityMembers : myCommunityHalaqahs;
         }
@@ -90,6 +110,25 @@
                 >
                     <span class="tab-icon">{tab.icon}</span>
                     <span class="tab-label">{tab.label}</span>
+                </button>
+            {/each}
+        </div>
+
+        {#if isExplore}
+            <div class="scope-toggle">
+                <button class="ctog" class:active={scope === 'global'} onclick={() => scope = 'global'}>
+                    🌍 {i18n.t('lb.tab_global_user')}
+                </button>
+                <button class="ctog" class:active={scope === 'regional'} onclick={() => scope = 'regional'}>
+                    {MY_REGION} {i18n.t('lb.tab_regional')}
+                </button>
+            </div>
+        {/if}
+
+        <div class="period-bar">
+            {#each periods as p}
+                <button class="period-btn" class:active={activePeriod === p.id} onclick={() => activePeriod = p.id}>
+                    {p.label}
                 </button>
             {/each}
         </div>
@@ -177,6 +216,22 @@
 </div>
 
 <style>
+    .scope-toggle {
+        display: flex; gap: 8px; padding: 10px 16px 0; background: #fff;
+    }
+    .period-bar { display: flex; padding: 10px 16px; background: #fff; }
+    .period-btn {
+        flex: 1; min-width: 0; padding: 8px 0;
+        border: 2px solid #e5e5e5; background: #f7f7f7;
+        font-family: 'Nunito', sans-serif; font-size: 11px; font-weight: 800;
+        color: #afafaf; cursor: pointer; transition: all 0.2s;
+    }
+    .period-btn:first-child { border-radius: 10px 0 0 10px; }
+    .period-btn:last-child { border-radius: 0 10px 10px 0; }
+    .period-btn.active {
+        background: #0284c7; color: #fff; border-color: #0284c7; position: relative; z-index: 1;
+    }
+
     .tab-scroller {
         display: flex;
         gap: 6px;

@@ -13,10 +13,12 @@
         { id: 'regional-user', label: i18n.t('lb.tab_regional'), icon: '🏳️' },
     ]);
 
+    // Empat periode sesuai LEARDERBOARD.md — termasuk periode Event.
     const periods = $derived([
         { id: 'weekly', label: i18n.t('lb.weekly') },
         { id: 'monthly', label: i18n.t('lb.monthly') },
         { id: 'alltime', label: i18n.t('lb.alltime') },
+        { id: 'event', label: i18n.t('lb.event') },
     ]);
 
     // Besaran XP dibaca dari aturan bersama agar tidak pernah menyimpang dari XP.md.
@@ -60,6 +62,7 @@
     function getPeriodLabel() {
         if (activePeriod === 'weekly') return i18n.t('lb.reset_weekly');
         if (activePeriod === 'monthly') return i18n.t('lb.reset_monthly');
+        if (activePeriod === 'event') return i18n.t('lb.reset_event');
         return i18n.t('lb.reset_alltime');
     }
 
@@ -243,6 +246,7 @@
     .period-btn {
         flex: 1;
         padding: 8px 0;
+        min-width: 0;
         border: 2px solid #e5e5e5;
         background: #f7f7f7;
         font-family: 'Nunito', sans-serif;

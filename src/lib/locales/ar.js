@@ -770,6 +770,8 @@ export default {
     ,"quests.monthly": "مهمة الشهر"
     ,"quests.per_day": "يوم"
     ,"quests.monthly_xp_total": "نقاط الخبرة من مهام هذا الشهر"
+    ,"lb.event": "فعالية"
+    ,"lb.reset_event": "يستمر طوال مدة الفعالية"
     ,"lb.src_step": "خطوة حفظ واحدة"
     ,"lb.src_daily_mission": "المهام اليومية"
     ,"lb.src_surah": "إتمام سورة"

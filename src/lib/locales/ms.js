@@ -770,6 +770,8 @@ export default {
     ,"quests.monthly": "Misi Bulanan"
     ,"quests.per_day": "hari"
     ,"quests.monthly_xp_total": "XP misi bulan ini"
+    ,"lb.event": "Acara"
+    ,"lb.reset_event": "Berjalan sepanjang tempoh acara"
     ,"lb.src_step": "1 langkah hafalan"
     ,"lb.src_daily_mission": "Misi harian"
     ,"lb.src_surah": "Surah selesai"

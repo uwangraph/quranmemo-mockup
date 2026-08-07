@@ -769,6 +769,8 @@ export default {
     ,"quests.monthly": "Mission mensuelle"
     ,"quests.per_day": "jour"
     ,"quests.monthly_xp_total": "XP des missions ce mois-ci"
+    ,"lb.event": "Événement"
+    ,"lb.reset_event": "Court pendant toute la durée de l'événement"
     ,"lb.src_step": "1 étape de mémorisation"
     ,"lb.src_daily_mission": "Missions quotidiennes"
     ,"lb.src_surah": "Sourate terminée"

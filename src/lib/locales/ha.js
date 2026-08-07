@@ -767,6 +767,8 @@ export default {
     ,"quests.monthly": "Manufar Wata"
     ,"quests.per_day": "rana"
     ,"quests.monthly_xp_total": "XP na manufofin wannan wata"
+    ,"lb.event": "Taro"
+    ,"lb.reset_event": "Yana gudana kamar tsawon taron"
     ,"lb.src_step": "Mataki 1 na haddacewa"
     ,"lb.src_daily_mission": "Manufofin yau da kullum"
     ,"lb.src_surah": "An gama sura"
