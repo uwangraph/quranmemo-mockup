@@ -846,4 +846,10 @@ export default {
     ,"lb.src_halaqah": "Halaqah — par récitation d'un membre"
     ,"streak.repair_progress": "{done}/2 objectifs aujourd'hui — termines-en 2 pour retrouver ta série de {lost} jours"
     ,"common.back": "Retour"
+    ,"murajaah.title": "Priorité de révision"
+    ,"murajaah.subtitle": "Pas révisé depuis plus de {days} jours"
+    ,"murajaah.last_reviewed": "Dernière révision il y a {days} jours"
+    ,"murajaah.review_now": "Réviser"
+    ,"murajaah.show_all": "Voir les {count}"
+    ,"murajaah.show_less": "Voir moins"
 };

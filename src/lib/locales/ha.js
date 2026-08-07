@@ -844,4 +844,10 @@ export default {
     ,"lb.src_halaqah": "Halaƙa — kowane memba ya sadar"
     ,"streak.repair_progress": "Buri {done}/2 na yau — gama 2 don mayar da jerin kwanaki {lost}"
     ,"common.back": "Koma baya"
+    ,"murajaah.title": "Fifikon Murajaah"
+    ,"murajaah.subtitle": "Ya wuce kwana {days} ba a sake ba"
+    ,"murajaah.last_reviewed": "An sake shi kwana {days} da suka wuce"
+    ,"murajaah.review_now": "Sake yi"
+    ,"murajaah.show_all": "Duba duka {count}"
+    ,"murajaah.show_less": "Nuna kaɗan"
 };

@@ -847,4 +847,10 @@ export default {
     ,"lb.src_halaqah": "Halaqah — setiap ahli setoran"
     ,"streak.repair_progress": "{done}/2 sasaran hari ini — selesaikan 2 untuk memulihkan rentetan {lost} hari"
     ,"common.back": "Kembali"
+    ,"murajaah.title": "Keutamaan Murajaah"
+    ,"murajaah.subtitle": "Sudah lebih {days} hari tidak diulang"
+    ,"murajaah.last_reviewed": "Terakhir diulang {days} hari lalu"
+    ,"murajaah.review_now": "Murajaah"
+    ,"murajaah.show_all": "Lihat semua {count}"
+    ,"murajaah.show_less": "Tunjukkan kurang"
 };

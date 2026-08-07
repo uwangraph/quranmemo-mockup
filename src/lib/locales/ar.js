@@ -847,4 +847,10 @@ export default {
     ,"lb.src_halaqah": "الحلقة — عن كل تسميع عضو"
     ,"streak.repair_progress": "{done}/2 من أهداف اليوم — أكمل هدفين لاستعادة سلسلة {lost} يومًا"
     ,"common.back": "رجوع"
+    ,"murajaah.title": "أولوية المراجعة"
+    ,"murajaah.subtitle": "لم تُراجع منذ أكثر من {days} يومًا"
+    ,"murajaah.last_reviewed": "آخر مراجعة قبل {days} يومًا"
+    ,"murajaah.review_now": "راجع"
+    ,"murajaah.show_all": "عرض الكل ({count})"
+    ,"murajaah.show_less": "عرض أقل"
 };

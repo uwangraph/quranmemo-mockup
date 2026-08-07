@@ -868,4 +868,10 @@ export default {
     ,"lb.src_halaqah": "Halaqah — per member recitation"
     ,"streak.repair_progress": "{done}/2 targets today — finish 2 to restore your {lost}-day streak"
     ,"common.back": "Back"
+    ,"murajaah.title": "Revision priority"
+    ,"murajaah.subtitle": "Not revised for more than {days} days"
+    ,"murajaah.last_reviewed": "Last revised {days} days ago"
+    ,"murajaah.review_now": "Revise"
+    ,"murajaah.show_all": "See all {count}"
+    ,"murajaah.show_less": "Show less"
 };

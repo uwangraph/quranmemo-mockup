@@ -90,6 +90,10 @@ export function surahCompletionXp(ayatCount) {
     return 250;
 }
 
+// Murajaah & Revision Alert (STREAK.md): surah yang terakhir diverifikasi lebih dari
+// 14 hari lalu naik jadi prioritas revisi.
+export const MURAJAAH_DUE_DAYS = 14;
+
 // Hadiah gems per hari runtunan (STREAK.md).
 function streakGemsFor(day) {
     if (day >= 22) return 3;
@@ -144,6 +148,13 @@ export function createAppState() {
         monthlyResetKey: null,  // Bulan (YYYY-MM) terakhir reset bulanan dijalankan
         lastActiveDate: null,   // Hari terakhir menyelesaikan 1 step hafalan aktif (YYYY-MM-DD)
         dailyTargetsDone: { day: null, count: 0 }, // Jumlah target selesai pada hari berjalan
+        // Tanggal verifikasi terakhir tiap surah — dasar Murajaah Alert (STREAK.md).
+        // Data awal sengaja berisi surah yang sudah lewat 14 hari agar alurnya terlihat di mockup.
+        murajaahLog: {
+            'An-Nas': dayKey(new Date(serverNow().getTime() - 18 * DAY_MS)),
+            'Ad-Duha': dayKey(new Date(serverNow().getTime() - 22 * DAY_MS)),
+            'Al-Insyirah': dayKey(new Date(serverNow().getTime() - 3 * DAY_MS))
+        },
         inventory: [],
         progress: {
             surah_094: 0,
@@ -207,6 +218,11 @@ export function createAppState() {
     if (user.rewardGems === undefined) user.rewardGems = 0;
     if (user.monthlyResetKey === undefined) user.monthlyResetKey = null;
     if (user.dailyTargetsDone === undefined) user.dailyTargetsDone = { day: null, count: 0 };
+    if (user.murajaahLog === undefined) user.murajaahLog = {
+        'An-Nas': dayKey(new Date(serverNow().getTime() - 18 * DAY_MS)),
+        'Ad-Duha': dayKey(new Date(serverNow().getTime() - 22 * DAY_MS)),
+        'Al-Insyirah': dayKey(new Date(serverNow().getTime() - 3 * DAY_MS))
+    };
     if (user.lastActiveDate === undefined) user.lastActiveDate = null;
     if (user.pathMode === undefined) user.pathMode = 'roadmap';
     if (user.selfPacedTarget === undefined) user.selfPacedTarget = null;
@@ -581,6 +597,21 @@ export function createAppState() {
         saveUser();
     }
 
+    // ====== Murajaah & Revision Alert (STREAK.md) ======
+
+    function markSurahReviewed(surah) {
+        user.murajaahLog = { ...user.murajaahLog, [surah]: streakDayKey() };
+        saveUser();
+    }
+
+    // Surah yang lebih dari 14 hari tidak diulang, yang paling lama menganggur dulu.
+    function murajaahDue() {
+        return Object.entries(user.murajaahLog ?? {})
+            .map(([surah, date]) => ({ surah, date, days: daysSince(date) }))
+            .filter((x) => x.days > MURAJAAH_DUE_DAYS)
+            .sort((a, b) => b.days - a.days);
+    }
+
     // Initialize selectedVerseIndex based on progress
     selectedVerseIndex = user.progress.surah_094;
     
@@ -665,6 +696,8 @@ export function createAppState() {
         setPlacementResult,
         placementSlaHoursLeft,
         setPathMode,
+        markSurahReviewed,
+        get murajaahDue() { return murajaahDue(); }
     };
 }
 
