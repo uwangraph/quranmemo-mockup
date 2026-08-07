@@ -1,4 +1,4 @@
-# Streak & Lencana
+# Streak Harian & Lencana
 
 Streak adalah tulang punggung habit formation di Quran Memo. Streak adalah cerminan komitmen spiritual dan accountability seorang penghafal. Setiap hari yang konsisten adalah bukti kesungguhan, dan sistem ini dirancang untuk membuat konsistensi terasa bermakna, bukan memberatkan.
 
@@ -8,17 +8,17 @@ Streak bertambah setiap hari ketika pengguna menyelesaikan minimal **1 step hafa
 
 Streak ditampilkan secara prominent di halaman utama setelah pengguna menyelesaikan 1 step hafalan aktif. Total runtunan ditampilkan di halaman profil santri.
 
-### Reward Streak Pekanan
+### Target Streak
 
-Pekan pertama: selesai 1 target setiap hari selama 7 hari berturut-turut → **3 gems energy**
+1-7 hari: 3 gems energy 
 
-Pekan kedua: lanjutkan streak 8–14 hari berturut-turut → **4 gems energy**
+8-14 hari: 4 gems energy
 
-Pekan ketiga: lanjutkan streak 15–21 hari berturut-turut → **5 gems energy**
+15-21 hari: 5 gems energy 
 
-Pekan keempat: lanjutkan streak 22–30 hari berturut-turut → **3 gems energy**
+22-30: 3 gems energy 
 
-*Gems energy dari reward akan selalu direset pada tanggal 2 setiap bulan*
+*Gems energy dari reward akan selalu direset pada tanggal 2 setiap bulan
 
 - Target dibuat bertahap agar pengguna selalu punya milestone berikutnya yang terasa reachable — tidak langsung lompat ke 365 hari yang terasa jauh.
 - Apabila pengguna kehilangan streak yang telah dikumpulkan, maka streak direset — MULAI DARI 0 YA
@@ -29,7 +29,7 @@ Pekan keempat: lanjutkan streak 22–30 hari berturut-turut → **3 gems energy*
 Kehilangan streak bukan berarti kehilangan segalanya. Quran Memo paham bahwa kehidupan nyata kadang menghalangi — sakit, perjalanan, atau hari yang berat. Recovery dirancang sebagai bentuk keringanan. 
 
 1. **Streak Freeze — "Rukhsah Harian"**
-Pengguna mendapatkan 1 Rukhsah gratis per bulan. Rukhsah otomatis aktif jika pengguna melewatkan 1 hari, lalu streak dilanjutkan keesokan harinya seolah tidak terputus. Rukhsah tambahan bisa didapat dari milestone tertentu. Misal, 7 hari setoran tanpa 
+Pengguna mendapatkan 1 Rukhsah gratis per bulan. Rukhsah otomatis aktif jika pengguna melewatkan 1 hari, lalu streak dilanjutkan keesokan harinya seolah tidak terputus. Rukhsah tambahan bisa didapat dari milestone tertentu. Misal, 7 hari menghafal tanpa putus 
 2. **Streak Repair — "Tebus Hari"**
 Jika streak sudah putus dan pengguna baru sadar keesokan harinya, ada jeda 24 jam untuk menebus hari yang terlewat dengan menyelesaikan sesi double. 
     - Selesaikan dua target hari ini untuk mengembalikan streak.

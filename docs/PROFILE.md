@@ -33,3 +33,5 @@ Berisi informasi umum pengguna dan 4 elemen utama yang mencerminkan perjalanan h
 - Koleksi sertifikat yang sudah didapatkan pengguna
     - Sertifikat
     - Jenis sertifikat
+    
+    **STREAK, BADGE, & CERTIFICATION DI SATU TAB**
