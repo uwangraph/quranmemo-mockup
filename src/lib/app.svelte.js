@@ -139,7 +139,7 @@ export function createAppState() {
         gems: 0,
         streak: 0,
         maxStreak: 0,          // Runtunan terbanyak sepanjang masa
-        streakHistory: [false, false, false, false, false, false, false], // 7 hari terakhir (index 0 = paling lama)
+        activeDays: [],         // Tanggal (YYYY-MM-DD) yang punya minimal 1 step hafalan
         streakFreezes: 1,       // Jumlah Rukhsah Harian yang dimiliki
         streakRepairsUsed: 0,   // Berapa kali Tebus Hari dipakai bulan ini (maks 2)
         streakMilestonesGranted: [], // Milestone yang bonus rukhsahnya sudah diberikan
@@ -159,7 +159,8 @@ export function createAppState() {
         halaqahXp: 0,     // XP yang disumbangkan ke halaqah (25 per setoran anggota)
         inventory: [],
         progress: {
-            surah_094: 0,
+            surah_094: 0,       // dipertahankan untuk migrasi data lama
+            surahs: {},         // id surah -> jumlah ayat yang sudah selesai
             tadabbur: [],  // key node Tadabbur yang sudah diselesaikan
             // Posisi di struktur tangga LEVELLING.md, terpisah per level karena
             // pengguna bisa berpindah jalur tanpa kehilangan posisi jalur lamanya.
@@ -226,7 +227,22 @@ export function createAppState() {
     if (user.loginStreak === undefined) user.loginStreak = 1;
     if (user.lastLoginDate === undefined) user.lastLoginDate = null;
     if (user.maxStreak === undefined) user.maxStreak = user.streak || 1;
-    if (user.streakHistory === undefined) user.streakHistory = [true, true, false, true, true, true, true];
+    // streakHistory lama menyimpan tujuh slot posisi yang hanya bergeser saat ada hari
+    // berhasil, sehingga hari bolong tidak pernah tercatat dan grafik pekanan bisa
+    // menampilkan pekan yang tidak pernah terjadi. Diganti daftar tanggal aktif.
+    if (!Array.isArray(user.activeDays)) {
+        // Rekonstruksi dari data yang masih bisa dipercaya: runtunan sepanjang N hari
+        // yang berakhir di lastActiveDate berarti N hari terakhir itu aktif.
+        const days = [];
+        if (user.lastActiveDate) {
+            const end = Date.parse(user.lastActiveDate);
+            for (let i = 0; i < Math.max(1, user.streak || 0); i++) {
+                days.unshift(dayKey(new Date(end - i * DAY_MS)));
+            }
+        }
+        user.activeDays = days;
+    }
+    delete user.streakHistory;
     if (user.streakFreezes === undefined) user.streakFreezes = 1;
     if (user.streakRepairsUsed === undefined) user.streakRepairsUsed = 0;
     if (!Array.isArray(user.streakMilestonesGranted)) user.streakMilestonesGranted = [];
@@ -543,11 +559,31 @@ export function createAppState() {
 
         user.streak = Math.min(user.streak + 1, 999);
         if (user.streak > user.maxStreak) user.maxStreak = user.streak;
-        user.streakHistory = [...user.streakHistory.slice(1), true];
+        recordActiveDay(todayStr);
         user.lastActiveDate = todayStr;
         unlockStreakBadges();
         saveUser();
         return true;
+    }
+
+    // Catat satu hari aktif. Daftarnya dibatasi supaya tidak tumbuh tanpa henti;
+    // 400 hari cukup untuk menopang milestone terpanjang (365 hari).
+    function recordActiveDay(day) {
+        if (user.activeDays.includes(day)) return;
+        user.activeDays = [...user.activeDays, day].sort().slice(-400);
+    }
+
+    // Tujuh hari terakhir menurut hari hafalan, masing-masing dengan tanggal aslinya.
+    // Hari bolong ikut terwakili, karena posisinya ditentukan tanggal — bukan urutan
+    // kedatangan seperti pada streakHistory yang lama.
+    function weekDays() {
+        const today = Date.parse(streakDayKey());
+        const active = new Set(user.activeDays ?? []);
+        return Array.from({ length: 7 }, (_, i) => {
+            const d = new Date(today - (6 - i) * DAY_MS);
+            const key = dayKey(d);
+            return { date: key, dow: d.getUTCDay(), done: active.has(key), isToday: i === 6 };
+        });
     }
 
     // Gunakan Rukhsah Harian (Streak Freeze) — cegah streak putus 1 hari
@@ -582,7 +618,7 @@ export function createAppState() {
     function addStreak(days = 1) {
         user.streak = Math.min(user.streak + days, 999);
         if (user.streak > user.maxStreak) user.maxStreak = user.streak;
-        user.streakHistory = [...user.streakHistory.slice(1), true];
+        recordActiveDay(streakDayKey());
         user.lastActiveDate = streakDayKey();
         unlockStreakBadges();
         saveUser();
@@ -745,6 +781,7 @@ export function createAppState() {
         triggerLoginRewardCheck,
         clearPendingRewardInfo,
         get repairOffer() { return repairOffer(); },
+        get weekDays() { return weekDays(); },
         updatePlacement,
         submitPlacementRecording,
         setPlacementResult,

@@ -139,4 +139,35 @@ const daysAgo = (today, n) => new Date(Date.parse(today) - n * DAY_MS).toISOStri
     assert.equal(s.murajaahDue().length, 0, 'setoran menyetel ulang hitungan murajaah surah itu');
 }
 
-console.log('rules: 8/8 lolos');
+// ── STREAK.md: grafik pekanan harus mencerminkan tanggal, bukan urutan ────
+// Replika weekDays(): tujuh hari terakhir, tiap kolom ditentukan tanggalnya.
+function weekDays(activeDays, today) {
+    const t = Date.parse(today);
+    const active = new Set(activeDays);
+    return Array.from({ length: 7 }, (_, i) => {
+        const d = new Date(t - (6 - i) * DAY_MS);
+        const key = d.toISOString().split('T')[0];
+        return { date: key, dow: d.getUTCDay(), done: active.has(key), isToday: i === 6 };
+    });
+}
+
+{
+    const today = '2026-08-07';
+    // Aktif hari ini, lalu bolong tiga hari, lalu aktif tiga hari sebelumnya.
+    const active = [daysAgo(today,6), daysAgo(today,5), daysAgo(today,4), today];
+    const w = weekDays(active, today);
+    assert.deepEqual(w.map(d => d.done), [true, true, true, false, false, false, true],
+        'hari bolong wajib tampil sebagai bolong, bukan tergeser hilang');
+    assert.equal(w[6].isToday, true);
+    assert.equal(w[6].date, today);
+    // Kolom paling kiri adalah enam hari lalu, bukan slot tetap Senin.
+    assert.equal(w[0].date, daysAgo(today, 6));
+}
+
+{
+    // Pengguna yang lama tidak hafalan: seluruh pekan kosong, tidak ada sisa lama.
+    const today = '2026-08-07';
+    const w = weekDays([daysAgo(today, 30)], today);
+    assert.deepEqual(w.map(d => d.done), [false, false, false, false, false, false, false]);
+}
+

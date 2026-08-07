@@ -26,7 +26,10 @@
     const progressToNext = $derived(nextMilestone ? Math.min((streak / nextMilestone.days) * 100, 100) : 100);
 
     // Hari-hari dalam seminggu
-    const dayLabels = $derived((i18n.t('admin.dash.day_mon') + ',' + i18n.t('admin.dash.day_tue') + ',' + i18n.t('admin.dash.day_wed') + ',' + i18n.t('admin.dash.day_thu') + ',' + i18n.t('admin.dash.day_fri') + ',' + i18n.t('admin.dash.day_sat') + ',' + i18n.t('admin.dash.day_sun')).split(','));
+    // Kolom pekanan mengikuti tanggal asli, bukan posisi tetap Senin-Minggu.
+    const DOW = ['admin.dash.day_sun', 'admin.dash.day_mon', 'admin.dash.day_tue', 'admin.dash.day_wed',
+                 'admin.dash.day_thu', 'admin.dash.day_fri', 'admin.dash.day_sat'];
+    const week = $derived(appState.weekDays);
 
     let freezeResult = $state('');
     let repairResult = $state('');
@@ -90,20 +93,18 @@
             <h3 class="section-title">{i18n.t('streak.this_week')}</h3>
         </div>
         <div class="week-grid">
-            {#each dayLabels as day, i}
-                {@const done = appState.user.streakHistory[i]}
-                {@const isToday = i === 6}
-                <div class="day-item" class:isToday>
-                    <div class="day-circle" class:done class:isToday>
-                        {#if done}
+            {#each week as d}
+                <div class="day-item" class:isToday={d.isToday}>
+                    <div class="day-circle" class:done={d.done} class:isToday={d.isToday && !d.done}>
+                        {#if d.done}
                             <span class="day-icon">🔥</span>
-                        {:else if isToday}
+                        {:else if d.isToday}
                             <span class="day-icon">⏳</span>
                         {:else}
                             <span class="day-dot"></span>
                         {/if}
                     </div>
-                    <span class="day-label">{day}</span>
+                    <span class="day-label">{i18n.t(DOW[d.dow])}</span>
                 </div>
             {/each}
         </div>

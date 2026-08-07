@@ -410,6 +410,14 @@
     .connector { width: 8px; height: 40px; background: #e5e5e5; margin: 4px 0; z-index: 1; }
     .connector.completed, .connector.current, .connector.available { background: #d7ffb2; }
 
+    .no-content {
+        margin: 20px 16px 0; padding: 24px 16px; text-align: center;
+        background: #f8fafc; border: 2px dashed #e2e8f0; border-radius: 16px;
+    }
+    :global(.desktop-browser) .no-content, :global(.tablet) .no-content { margin: 20px 0 0; }
+    .nc-title { font-size: 14px; font-weight: 900; color: #475569; margin-top: 8px; }
+    .nc-sub { font-size: 12px; font-weight: 700; color: #94a3b8; margin-top: 4px; line-height: 1.5; }
+
     .daily-goal-card { background: #fff; border: 2px solid #e5e5e5; border-radius: 16px; padding: 14px; margin-top: 20px; }
     .mobile-only-card { margin: 0 16px 20px; display: block; }
     :global(.desktop-browser) .mobile-only-card { display: none; }

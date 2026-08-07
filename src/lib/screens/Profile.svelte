@@ -25,10 +25,11 @@
     });
 
     // ── Streak: visualisasi 7 hari ──
-    const dayLabels = $derived([
-        i18n.t('profile.day_mon'), i18n.t('profile.day_tue'), i18n.t('profile.day_wed'),
-        i18n.t('profile.day_thu'), i18n.t('profile.day_fri'), i18n.t('profile.day_sat'), i18n.t('profile.day_sun')
-    ]);
+    // Label mengikuti tanggal asli tiap kolom, bukan posisi tetap Senin-Minggu.
+    // Indeks 0 = Ahad, sesuai Date#getUTCDay().
+    const DOW = ['profile.day_sun', 'profile.day_mon', 'profile.day_tue', 'profile.day_wed',
+                 'profile.day_thu', 'profile.day_fri', 'profile.day_sat'];
+    const week = $derived(appState.weekDays);
 
     // ── Badges ──
     const earnedBadges = $derived(user.badges?.filter(b => b.earned) ?? []);
@@ -269,23 +270,21 @@
                 <!-- Visualisasi 7 hari -->
                 <div class="week-label">{i18n.t('streak.this_week')}</div>
                 <div class="week-row">
-                    {#each dayLabels as day, i}
-                        {@const done = user.streakHistory?.[i] ?? false}
-                        {@const isToday = i === 6}
+                    {#each week as d}
                         <div class="week-day">
                             <div class="week-dot"
-                                class:done
-                                class:today={isToday}
-                                class:missed={!done && !isToday}>
-                                {#if done}
+                                class:done={d.done}
+                                class:today={d.isToday && !d.done}
+                                class:missed={!d.done && !d.isToday}>
+                                {#if d.done}
                                     <span class="week-fire">🔥</span>
-                                {:else if isToday}
+                                {:else if d.isToday}
                                     <span>⏳</span>
                                 {:else}
                                     <span class="week-x">✕</span>
                                 {/if}
                             </div>
-                            <span class="week-day-lbl">{day}</span>
+                            <span class="week-day-lbl">{i18n.t(DOW[d.dow])}</span>
                         </div>
                     {/each}
                 </div>
