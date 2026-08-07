@@ -7,6 +7,8 @@
 		"dev": "vite dev",
 		"build": "vite build",
 		"preview": "vite preview",
+		"check:i18n": "node src/lib/i18n.check.js",
+		"test:streak": "node src/lib/streak.test.js",
 		"prepare": "svelte-kit sync || echo ''"
 	},
 	"devDependencies": {
