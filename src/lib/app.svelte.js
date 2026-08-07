@@ -151,6 +151,21 @@ export function createAppState() {
         },
         level: 'pemula',
         learningPath: 'beginner',
+        // Hasil Placement Test (ONBOARDING.md). Kategori ditentukan musyrif, bukan sistem.
+        placement: {
+            canRead: null,          // true | false — jawaban gate question
+            status: 'not_started',  // not_started | pending | done
+            category: null,         // 'rbq' | 'rtq' | 'tahfidz'
+            submittedAt: null,      // ISO — waktu rekaman Maryam 1-10 dikirim
+            musyrifName: null,
+            resultSeen: false,      // notifikasi hasil sudah dibaca user
+            everMemorized: null,    // pernah menghafal atau belum
+            memorizedSurahs: [],    // checklist surat/juz yang pernah dihafal
+            recommendation: null,   // { surah, juz, note } dari musyrif
+            followRecommendation: null // user ikut rekomendasi atau pilih sendiri
+        },
+        pathMode: 'roadmap',        // 'roadmap' (Roadmap Levelling) | 'self' (Self-paced)
+        selfPacedTarget: null,      // target pilihan sendiri saat pathMode === 'self'
         showLatin: true,
         loginStreak: 1,
         lastLoginDate: null,
@@ -193,6 +208,13 @@ export function createAppState() {
     if (user.monthlyResetKey === undefined) user.monthlyResetKey = null;
     if (user.dailyTargetsDone === undefined) user.dailyTargetsDone = { day: null, count: 0 };
     if (user.lastActiveDate === undefined) user.lastActiveDate = null;
+    if (user.pathMode === undefined) user.pathMode = 'roadmap';
+    if (user.selfPacedTarget === undefined) user.selfPacedTarget = null;
+    if (user.placement === undefined) user.placement = {
+        canRead: null, status: 'not_started', category: null, submittedAt: null,
+        musyrifName: null, resultSeen: false, everMemorized: null, memorizedSurahs: [],
+        recommendation: null, followRecommendation: null
+    };
     if (user.monthlyMission === undefined) user.monthlyMission = { month: null, loginDays: 0, versesMemorized: 0, xpEarned: 0 };
     if (!Array.isArray(user.progress?.tadabbur)) user.progress.tadabbur = [];
     if (user.scheduledBooking === undefined) user.scheduledBooking = { musyrifName: 'Ust. Ahmad Zaki', time: '2026-05-22T15:00:00', surah: 'Ad-Dhuha', juz: 30 };
@@ -526,6 +548,39 @@ export function createAppState() {
         saveUser();
     }
 
+    // ====== Placement Test (ONBOARDING.md) ======
+
+    function updatePlacement(patch) {
+        user.placement = { ...user.placement, ...patch };
+        saveUser();
+    }
+
+    // Kirim rekaman QS Maryam 1-10 untuk diverifikasi musyrif (SLA maks 1x24 jam).
+    function submitPlacementRecording() {
+        updatePlacement({ status: 'pending', submittedAt: new Date().toISOString(), musyrifName: 'Ust. Ahmad Zaki' });
+    }
+
+    // Keputusan musyrif. Sistem tidak pernah menentukan kategori sendiri —
+    // fungsi ini yang dipanggil ketika hasil verifikasi masuk.
+    function setPlacementResult(category, recommendation = null) {
+        updatePlacement({ status: 'done', category, recommendation, resultSeen: false });
+        // RBQ/RTQ artinya bacaan diperbaiki dulu; jalur hafalan tetap terbuka (free will).
+        setLearningPath(category === 'tahfidz' ? 'mid' : 'beginner');
+    }
+
+    // Sisa waktu SLA verifikasi dalam jam (null jika tidak sedang menunggu).
+    function placementSlaHoursLeft() {
+        if (user.placement?.status !== 'pending' || !user.placement.submittedAt) return null;
+        const elapsed = Date.now() - Date.parse(user.placement.submittedAt);
+        return Math.max(0, Math.ceil((DAY_MS - elapsed) / 3600000));
+    }
+
+    function setPathMode(mode, target = null) {
+        user.pathMode = mode; // 'roadmap' | 'self'
+        user.selfPacedTarget = target;
+        saveUser();
+    }
+
     // Initialize selectedVerseIndex based on progress
     selectedVerseIndex = user.progress.surah_094;
     
@@ -605,6 +660,11 @@ export function createAppState() {
         triggerLoginRewardCheck,
         clearPendingRewardInfo,
         get repairOffer() { return repairOffer(); },
+        updatePlacement,
+        submitPlacementRecording,
+        setPlacementResult,
+        placementSlaHoursLeft,
+        setPathMode,
     };
 }
 
