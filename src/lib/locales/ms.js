@@ -765,4 +765,5 @@ export default {
     "lesson.self_practice_done": "Latihan sendiri telah selesai",
     "lesson.btn_musyrif_submission": "Teruskan ke Setoran Musyrif",
     "lesson.compare_reading": "Bandingkan Bacaan"
+    ,"streak.repair_progress": "{done}/2 sasaran hari ini — selesaikan 2 untuk memulihkan rentetan {lost} hari"
 };

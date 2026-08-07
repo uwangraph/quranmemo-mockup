@@ -765,4 +765,5 @@ export default {
     "lesson.self_practice_done": "انتهى التدريب الفردي",
     "lesson.btn_musyrif_submission": "المتابعة إلى التسميع للمشرف",
     "lesson.compare_reading": "قارن التلاوتين"
+    ,"streak.repair_progress": "{done}/2 من أهداف اليوم — أكمل هدفين لاستعادة سلسلة {lost} يومًا"
 };

@@ -37,6 +37,10 @@ if (typeof window !== 'undefined' && !window.__quranmemoKeydownRegistered) {
 
 const DAY_MS = 86400000;
 
+// Grace Period 4 jam (STREAK.md): hari hafalan baru dianggap berganti pukul 04.00,
+// bukan tepat tengah malam, supaya penghafal malam tidak kehilangan runtunan.
+const GRACE_HOURS = 4;
+
 // Semua batas hari memakai waktu server UTC+7 (WIB), bukan zona waktu perangkat.
 function serverNow() {
     const now = new Date();
@@ -47,9 +51,69 @@ function dayKey(date) {
     return date.toISOString().split('T')[0];
 }
 
-// Jarak hari antara sebuah tanggal (YYYY-MM-DD) dan hari ini menurut waktu server.
+// Tanggal "hari hafalan" — sudah digeser mundur oleh grace period, sehingga
+// pukul 00.00–03.59 masih terhitung sebagai hari sebelumnya.
+function streakDayKey(date = serverNow()) {
+    return dayKey(new Date(date.getTime() - GRACE_HOURS * 3600000));
+}
+
+// Jarak hari antara sebuah tanggal (YYYY-MM-DD) dan hari hafalan berjalan.
 function daysSince(dayStr) {
-    return Math.round((Date.parse(dayKey(serverNow())) - Date.parse(dayStr)) / DAY_MS);
+    return Math.round((Date.parse(streakDayKey()) - Date.parse(dayStr)) / DAY_MS);
+}
+
+// Penanda bulan (YYYY-MM) untuk semua reset bulanan.
+function monthKey(date = serverNow()) {
+    return streakDayKey(date).slice(0, 7);
+}
+
+// ====== Besaran XP (XP.md) ======
+// Satu-satunya sumber angka XP di aplikasi; layar mana pun yang menampilkan
+// atau memberi XP membacanya dari sini agar tidak pernah berbeda dengan dokumen.
+export const XP = {
+    step: 4,              // 1 step hafalan benar
+    dailyMissionTotal: 35, // total misi harian (XP.md: "1 misi harian = 35 XP")
+    checkpoint: 100,
+    setoran: 50,
+    mumtaz: 75,
+    halaqahPerSetoran: 25
+};
+
+// XP penyelesaian satu surah, berdasarkan jumlah ayatnya (tabel XP.md).
+export function surahCompletionXp(ayatCount) {
+    if (ayatCount <= 20) return 50;
+    if (ayatCount <= 60) return 80;
+    if (ayatCount <= 80) return 125;
+    if (ayatCount <= 100) return 150;
+    if (ayatCount <= 150) return 180;
+    if (ayatCount <= 200) return 175; // sesuai tabel XP.md, meski lebih kecil dari tingkat sebelumnya
+    return 250;
+}
+
+// Hadiah gems per hari runtunan (STREAK.md).
+function streakGemsFor(day) {
+    if (day >= 22) return 3;
+    if (day >= 15) return 5;
+    if (day >= 8) return 4;
+    return 3;
+}
+
+// Rukhsah Harian tambahan yang diberikan saat sebuah milestone runtunan tercapai.
+const STREAK_MILESTONES = [
+    { days: 3, badgeId: 'b1', freezes: 1 },
+    { days: 7, badgeId: 'b2', freezes: 1 },
+    { days: 30, badgeId: 'b4', freezes: 2 },
+    { days: 100, badgeId: 'b5', freezes: 3 },
+    { days: 365, badgeId: 'b6', freezes: 0 }
+];
+
+// Dua misi harian dari MISSION.md, tetapi jumlah XP-nya mengikuti XP.md:
+// satu paket misi harian bernilai 35 XP, dibagi 15 (log in) + 20 (hafal 1 ayat).
+export function makeDailyQuests() {
+    return [
+        { id: 'm_login', text: 'quest.daily_login', max: 1, current: 0, xp: 15, claimed: false },
+        { id: 'm_verse', text: 'quest.memorize_verse', max: 1, current: 0, xp: 20, claimed: false }
+    ];
 }
 
 export function createAppState() {
@@ -74,7 +138,12 @@ export function createAppState() {
         streakHistory: [false, false, false, false, false, false, false], // 7 hari terakhir (index 0 = paling lama)
         streakFreezes: 1,       // Jumlah Rukhsah Harian yang dimiliki
         streakRepairsUsed: 0,   // Berapa kali Tebus Hari dipakai bulan ini (maks 2)
+        streakMilestonesGranted: [], // Milestone yang bonus rukhsahnya sudah diberikan
+        pendingRepair: null,    // { startedDay, targetsDone } — Tebus Hari yang sedang berjalan
+        rewardGems: 0,          // Gems energy hasil reward streak — direset tiap tanggal 2
+        monthlyResetKey: null,  // Bulan (YYYY-MM) terakhir reset bulanan dijalankan
         lastActiveDate: null,   // Hari terakhir menyelesaikan 1 step hafalan aktif (YYYY-MM-DD)
+        dailyTargetsDone: { day: null, count: 0 }, // Jumlah target selesai pada hari berjalan
         inventory: [],
         progress: {
             surah_094: 0,
@@ -103,15 +172,8 @@ export function createAppState() {
             { id: 'c1', title: 'certificate.juz30_title', type: 'certificate.memorization', date: '2026-01-15', icon: '📜' },
             { id: 'c2', title: 'certificate.tahsin_title', type: 'certificate.tahsin', date: '2025-11-20', icon: '🎓' }
         ],
-        dailyQuests: {
-            date: null,
-            completedAll: false,
-            quests: [
-                { id: 'q1', text: 'quest.complete_step', max: 1, current: 0, xp: 10, claimed: false },
-                { id: 'q2', text: 'quest.three_correct', max: 3, current: 0, xp: 10, claimed: false },
-                { id: 'q3', text: 'quest.start_today', max: 1, current: 0, xp: 15, claimed: false }
-            ]
-        }
+        dailyQuests: { date: null, completedAll: false, quests: makeDailyQuests() },
+        monthlyMission: { month: null, loginDays: 0, versesMemorized: 0, xpEarned: 0 }
     }));
 
     // Ensure fallback properties exist for old users
@@ -125,7 +187,13 @@ export function createAppState() {
     if (user.streakHistory === undefined) user.streakHistory = [true, true, false, true, true, true, true];
     if (user.streakFreezes === undefined) user.streakFreezes = 1;
     if (user.streakRepairsUsed === undefined) user.streakRepairsUsed = 0;
+    if (!Array.isArray(user.streakMilestonesGranted)) user.streakMilestonesGranted = [];
+    if (user.pendingRepair === undefined) user.pendingRepair = null;
+    if (user.rewardGems === undefined) user.rewardGems = 0;
+    if (user.monthlyResetKey === undefined) user.monthlyResetKey = null;
+    if (user.dailyTargetsDone === undefined) user.dailyTargetsDone = { day: null, count: 0 };
     if (user.lastActiveDate === undefined) user.lastActiveDate = null;
+    if (user.monthlyMission === undefined) user.monthlyMission = { month: null, loginDays: 0, versesMemorized: 0, xpEarned: 0 };
     if (!Array.isArray(user.progress?.tadabbur)) user.progress.tadabbur = [];
     if (user.scheduledBooking === undefined) user.scheduledBooking = { musyrifName: 'Ust. Ahmad Zaki', time: '2026-05-22T15:00:00', surah: 'Ad-Dhuha', juz: 30 };
     if (user.badges === undefined) user.badges = [
@@ -141,37 +209,79 @@ export function createAppState() {
         { id: 'c2', title: 'certificate.tahsin_title', type: 'certificate.tahsin', date: '2025-11-20', icon: '🎓' }
     ];
     
-    const defaultQuests = [
-        { id: 'q1', text: 'quest.complete_step', max: 1, current: 0, xp: 10, claimed: false },
-        { id: 'q2', text: 'quest.three_correct_no_mistake', max: 3, current: 0, xp: 10, claimed: false },
-        { id: 'q3', text: 'quest.complete_instant_review', max: 1, current: 0, xp: 15, claimed: false }
-    ];
-    if (user.dailyQuests === undefined || user.dailyQuests.date === undefined) {
-        user.dailyQuests = { date: null, completedAll: false, quests: defaultQuests };
+    // Misi lama (q1/q2/q3) diganti oleh set MISSION.md; misi yang ID atau nilai XP-nya
+    // tidak lagi cocok dibuang, agar pengguna lama tidak tersangkut aturan yang sudah mati.
+    const questSpec = makeDailyQuests();
+    if (user.dailyQuests === undefined || user.dailyQuests.date === undefined ||
+        user.dailyQuests.quests?.length !== questSpec.length ||
+        !user.dailyQuests.quests.every((q, i) => q.id === questSpec[i].id && q.xp === questSpec[i].xp)) {
+        user.dailyQuests = { date: null, completedAll: false, quests: makeDailyQuests() };
     }
 
     let pendingRewardInfo = $state(null);
 
     function checkDailyReset() {
-        const todayStr = dayKey(serverNow());
+        const todayStr = streakDayKey();
 
-        // 2. Check Daily Quests Reset
         if (user.dailyQuests.date !== todayStr) {
-            user.dailyQuests = {
-                date: todayStr,
-                completedAll: false,
-                quests: [
-                    { id: 'q1', text: 'quest.complete_step', max: 1, current: 0, xp: 10, claimed: false },
-                    { id: 'q2', text: 'quest.three_correct_streak', max: 3, current: 0, xp: 10, claimed: false },
-                    { id: 'q3', text: 'quest.complete_instant_review', max: 1, current: 0, xp: 15, claimed: false }
-                ]
-            };
+            user.dailyQuests = { date: todayStr, completedAll: false, quests: makeDailyQuests() };
+            saveUser();
+        }
+
+        if (user.dailyTargetsDone?.day !== todayStr) {
+            user.dailyTargetsDone = { day: todayStr, count: 0 };
+            saveUser();
+        }
+
+        // Misi "log in harian" (MISSION.md) terpenuhi oleh kehadiran itu sendiri —
+        // membuka aplikasi hari ini sudah merupakan buktinya. XP-nya tetap harus diklaim.
+        const login = user.dailyQuests.quests.find(q => q.id === 'm_login');
+        if (login && login.current < login.max) {
+            login.current = login.max;
             saveUser();
         }
     }
-    
+
+    // Reset bulanan (STREAK.md): gems energy hasil reward dihapus tanggal 2 setiap
+    // bulan, jatah Tebus Hari kembali penuh, dan 1 Rukhsah gratis diberikan.
+    function checkMonthlyReset() {
+        const now = serverNow();
+        const key = monthKey(now);
+        if (user.monthlyResetKey === key) return;
+
+        // Kunjungan pertama hanya menandai bulan berjalan. Menjalankan resetnya di sini
+        // akan menghadiahi rukhsah bulanan kedua kepada pengguna yang baru mendaftar.
+        if (user.monthlyResetKey === null) {
+            user.monthlyResetKey = key;
+            saveUser();
+            return;
+        }
+
+        // Menunggu tanggal 2 — sebelum itu bulan baru belum "dibuka".
+        const dayOfMonth = Number(streakDayKey(now).slice(8));
+        if (dayOfMonth < 2) return;
+
+        user.gems = Math.max(0, user.gems - (user.rewardGems || 0));
+        user.rewardGems = 0;
+        user.streakRepairsUsed = 0;
+        user.streakFreezes += 1; // 1 Rukhsah gratis per bulan
+        user.monthlyResetKey = key;
+        saveUser();
+    }
+
+    // Misi bulanan mengakumulasi capaian harian sepanjang bulan berjalan.
+    function checkMonthlyMissionReset() {
+        const key = monthKey();
+        if (user.monthlyMission.month !== key) {
+            user.monthlyMission = { month: key, loginDays: 0, versesMemorized: 0, xpEarned: 0 };
+            saveUser();
+        }
+    }
+
     // Run check on initialization
     if (typeof window !== 'undefined') {
+        checkMonthlyReset();
+        checkMonthlyMissionReset();
         checkDailyReset();
         evaluateStreak();
     }
@@ -205,13 +315,13 @@ export function createAppState() {
     // Returns reward info if a new-day streak continuation is detected after daily target completion.
     function checkLoginReward() {
         if (typeof window === 'undefined') return null;
-        const todayStr = dayKey(serverNow());
+        const todayStr = streakDayKey();
 
         if (user.lastLoginDate === todayStr) {
             return null; // Already claimed today
         }
 
-        const targetQuest = user.dailyQuests?.quests?.find(x => x.id === 'q1');
+        const targetQuest = user.dailyQuests?.quests?.find(x => x.id === 'm_verse');
         if (!targetQuest || targetQuest.current < targetQuest.max) {
             return null; // No valid daily target completed yet
         }
@@ -221,25 +331,16 @@ export function createAppState() {
 
         const newStreak = isConsecutive ? user.loginStreak + 1 : 1;
 
-        // Reward schedule berdasarkan target streak (STREAK.md):
-        // 1-7 hari: 3 gems energy
-        // 8-14 hari: 4 gems energy
-        // 15-21 hari: 5 gems energy
-        // 22-30 hari: 3 gems energy
-        let gemsReward = 3;
-        if (newStreak >= 22) gemsReward = 3;
-        else if (newStreak >= 15) gemsReward = 5;
-        else if (newStreak >= 8) gemsReward = 4;
-        else gemsReward = 3;
-
-        return { gemsReward, streakDay: newStreak };
+        return { gemsReward: streakGemsFor(newStreak), streakDay: newStreak };
     }
 
     function claimLoginReward(gemsReward, streakDay) {
         if (typeof window === 'undefined') return;
-        user.lastLoginDate = dayKey(serverNow());
+        user.lastLoginDate = streakDayKey();
         user.loginStreak = streakDay;
         user.gems += gemsReward;
+        // Dicatat terpisah agar reset tanggal 2 hanya menghapus gems hasil reward.
+        user.rewardGems = (user.rewardGems || 0) + gemsReward;
         pendingRewardInfo = null;
         saveUser();
     }
@@ -268,14 +369,17 @@ export function createAppState() {
         const q = user.dailyQuests.quests.find(x => x.id === questId);
         if (q && !q.claimed && q.current >= q.max) {
             q.claimed = true;
-            // XP per misi sesuai docs: total 1 misi harian = 35 XP (dibagi 3 misi)
-            // q1: 10 XP, q2: 10 XP, q3: 15 XP → total 35 XP
+            // MISSION.md: log in harian 50 XP, hafal 1 ayat 50 XP.
             user.xp += q.xp;
-            
-            // Check if all completed → bonus agar total = 35 XP
+
+            // Misi bulanan hanya mengakumulasi misi harian yang benar-benar diklaim.
+            checkMonthlyMissionReset();
+            if (q.id === 'm_login') user.monthlyMission.loginDays += 1;
+            if (q.id === 'm_verse') user.monthlyMission.versesMemorized += 1;
+            user.monthlyMission.xpEarned += q.xp;
+
             if (user.dailyQuests.quests.every(x => x.claimed)) {
                 user.dailyQuests.completedAll = true;
-                // Bonus sudah termasuk dalam xp per quest (total 35 XP)
             }
             saveUser();
         }
@@ -292,14 +396,20 @@ export function createAppState() {
 
     // ====== Streak-related functions ======
 
-    // Buka lencana milestone yang sudah terlampaui oleh runtunan saat ini.
+    // Buka lencana milestone yang sudah terlampaui oleh runtunan saat ini, sekaligus
+    // memberikan bonus Rukhsah Harian sesuai STREAK.md. Bonus hanya sekali per
+    // milestone — pengguna yang putus lalu mengulang tetap dapat lencananya, tapi
+    // tidak bisa memanen rukhsah berkali-kali dari milestone yang sama.
     function unlockStreakBadges() {
-        const milestones = [3, 7, 30, 100, 365];
-        const badgeIds = ['b1', 'b2', 'b4', 'b5', 'b6'];
-        milestones.forEach((m, i) => {
-            if (user.streak >= m) {
-                const badge = user.badges.find(b => b.id === badgeIds[i]);
-                if (badge) badge.earned = true;
+        STREAK_MILESTONES.forEach((m) => {
+            if (user.streak < m.days) return;
+
+            const badge = user.badges.find(b => b.id === m.badgeId);
+            if (badge) badge.earned = true;
+
+            if (m.freezes > 0 && !user.streakMilestonesGranted.includes(m.days)) {
+                user.streakFreezes += m.freezes;
+                user.streakMilestonesGranted = [...user.streakMilestonesGranted, m.days];
             }
         });
     }
@@ -314,20 +424,58 @@ export function createAppState() {
         if (gap === 2 && user.streakFreezes > 0) {
             user.streakFreezes -= 1;
             // Majukan penanda agar rukhsah tidak terpakai dua kali untuk hari yang sama.
-            user.lastActiveDate = dayKey(new Date(serverNow().getTime() - DAY_MS));
+            user.lastActiveDate = dayKey(new Date(Date.parse(streakDayKey()) - DAY_MS));
             saveUser();
             return;
         }
 
+        // Streak putus. Jendela Tebus Hari cuma 24 jam (STREAK.md), jadi kesempatan
+        // menebus hanya dibuka pada hari pertama setelah hari yang terlewat.
+        // Hanya saat runtunan benar-benar baru putus; pemanggilan ulang di hari yang
+        // sama tidak boleh menghapus tawaran penebusan yang sedang berjalan.
+        const streakLost = user.streak;
         user.streak = 0;
+        if (streakLost > 0) {
+            user.pendingRepair = (gap === 2 && user.streakRepairsUsed < 2)
+                ? { startedDay: streakDayKey(), targetsDone: 0, lostStreak: streakLost }
+                : null;
+        }
         saveUser();
+    }
+
+    // Tebus Hari berlaku hanya selama hari ia ditawarkan.
+    function repairOffer() {
+        if (!user.pendingRepair) return null;
+        if (user.pendingRepair.startedDay !== streakDayKey()) return null;
+        return user.pendingRepair;
     }
 
     // Dipanggil ketika pengguna menyelesaikan minimal 1 step hafalan aktif.
     // Hanya menambah runtunan satu kali per hari (STREAK.md).
     function markDailyProgress() {
-        const todayStr = dayKey(serverNow());
-        if (user.lastActiveDate === todayStr) return false;
+        const todayStr = streakDayKey();
+
+        // Selalu catat jumlah target hari ini — dipakai Tebus Hari (sesi double).
+        if (user.dailyTargetsDone?.day !== todayStr) {
+            user.dailyTargetsDone = { day: todayStr, count: 0 };
+        }
+        user.dailyTargetsDone.count += 1;
+
+        const offer = repairOffer();
+        if (offer) {
+            offer.targetsDone = user.dailyTargetsDone.count;
+            // Dua target selesai hari ini → hari yang terlewat tertebus.
+            if (offer.targetsDone >= 2) {
+                user.streak = offer.lostStreak;
+                user.streakRepairsUsed += 1;
+                user.pendingRepair = null;
+            }
+        }
+
+        if (user.lastActiveDate === todayStr) {
+            saveUser();
+            return false;
+        }
 
         evaluateStreak(); // pastikan hari bolong sudah diperhitungkan sebelum menambah
 
@@ -350,16 +498,21 @@ export function createAppState() {
         return false;
     }
 
-    // Tebus Hari (Streak Repair) — kembalikan streak yang sudah putus
+    // Tebus Hari (Streak Repair) — mengaktifkan penebusan. Streak baru kembali
+    // setelah pengguna menyelesaikan dua target di hari yang sama, bukan seketika.
     function repairStreak() {
-        if (user.streakRepairsUsed < 2 && user.streak === 0) {
-            user.streak = 1;
+        const offer = repairOffer();
+        if (!offer || user.streakRepairsUsed >= 2) return false;
+
+        offer.targetsDone = user.dailyTargetsDone?.day === streakDayKey() ? user.dailyTargetsDone.count : 0;
+        if (offer.targetsDone >= 2) {
+            user.streak = offer.lostStreak;
             user.streakRepairsUsed += 1;
-            // Tandai hari ini sudah aktif agar runtunan tidak langsung putus lagi.
-            user.lastActiveDate = dayKey(serverNow());
+            user.pendingRepair = null;
             saveUser();
             return true;
         }
+        saveUser();
         return false;
     }
 
@@ -368,7 +521,7 @@ export function createAppState() {
         user.streak = Math.min(user.streak + days, 999);
         if (user.streak > user.maxStreak) user.maxStreak = user.streak;
         user.streakHistory = [...user.streakHistory.slice(1), true];
-        user.lastActiveDate = dayKey(serverNow());
+        user.lastActiveDate = streakDayKey();
         unlockStreakBadges();
         saveUser();
     }
@@ -450,7 +603,8 @@ export function createAppState() {
         markDailyProgress,
         completeTadabbur,
         triggerLoginRewardCheck,
-        clearPendingRewardInfo
+        clearPendingRewardInfo,
+        get repairOffer() { return repairOffer(); },
     };
 }
 

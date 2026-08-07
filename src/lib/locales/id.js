@@ -786,4 +786,5 @@ export default {
     ,"quran.94_7_translation": "Maka apabila engkau telah selesai dari suatu urusan, tetaplah bekerja keras untuk urusan yang lain,"
     ,"quran.94_8_translation": "dan hanya kepada Tuhanmulah engkau berharap."
 
+    ,"streak.repair_progress": "{done}/2 target hari ini — selesaikan 2 untuk mengembalikan runtunan {lost} hari"
 };

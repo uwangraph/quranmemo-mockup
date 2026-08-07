@@ -764,4 +764,5 @@ export default {
     "lesson.self_practice_done": "Entraînement individuel terminé",
     "lesson.btn_musyrif_submission": "Passer à la récitation devant un moushrif",
     "lesson.compare_reading": "Comparer les récitations"
+    ,"streak.repair_progress": "{done}/2 objectifs aujourd'hui — termines-en 2 pour retrouver ta série de {lost} jours"
 };

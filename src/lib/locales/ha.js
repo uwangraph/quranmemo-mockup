@@ -762,4 +762,5 @@ export default {
     "lesson.streak_overlay_desc": "Amsoshi 5 daidai a jere. Ka ci gaba da mai da hankali!",
     "lesson.streak_overlay_label": "Jerin Kwanaki",
     "lesson.mic_error": "An kasa samun damar makarufo. Da fatan za ka ba da izinin makarufo a burauzarka."
+    ,"streak.repair_progress": "Buri {done}/2 na yau — gama 2 don mayar da jerin kwanaki {lost}"
 };

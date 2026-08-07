@@ -6,7 +6,13 @@
 import assert from 'node:assert/strict';
 
 const DAY_MS = 86400000;
+const GRACE_HOURS = 4;
 const dayKey = (date) => date.toISOString().split('T')[0];
+
+// Replika streakDayKey(): pukul 00.00–03.59 masih terhitung hari sebelumnya.
+export function streakDayKey(isoInstant) {
+    return dayKey(new Date(Date.parse(isoInstant) - GRACE_HOURS * 3600000));
+}
 
 // Replika evaluateStreak() + markDailyProgress(), dengan "hari ini" bisa disuntik.
 function makeStreak(user, today) {
@@ -21,10 +27,31 @@ function makeStreak(user, today) {
             user.lastActiveDate = dayKey(new Date(Date.parse(today) - DAY_MS));
             return;
         }
+        const streakLost = user.streak;
         user.streak = 0;
+        // Hanya saat runtunan benar-benar baru putus; pemanggilan ulang di hari yang
+        // sama tidak boleh menghapus tawaran penebusan yang sedang berjalan.
+        if (streakLost > 0) {
+            user.pendingRepair = (gap === 2 && user.streakRepairsUsed < 2)
+                ? { startedDay: today, targetsDone: 0, lostStreak: streakLost }
+                : null;
+        }
     }
 
     function markDailyProgress() {
+        if (user.dailyTargetsDone.day !== today) user.dailyTargetsDone = { day: today, count: 0 };
+        user.dailyTargetsDone.count += 1;
+
+        const offer = user.pendingRepair?.startedDay === today ? user.pendingRepair : null;
+        if (offer) {
+            offer.targetsDone = user.dailyTargetsDone.count;
+            if (offer.targetsDone >= 2) {
+                user.streak = offer.lostStreak;
+                user.streakRepairsUsed += 1;
+                user.pendingRepair = null;
+            }
+        }
+
         if (user.lastActiveDate === today) return false;
         evaluateStreak();
         user.streak = Math.min(user.streak + 1, 999);
@@ -41,6 +68,9 @@ const baseUser = (over = {}) => ({
     streak: 0,
     maxStreak: 0,
     streakFreezes: 0,
+    streakRepairsUsed: 0,
+    pendingRepair: null,
+    dailyTargetsDone: { day: null, count: 0 },
     streakHistory: [false, false, false, false, false, false, false],
     lastActiveDate: null,
     ...over
@@ -108,4 +138,45 @@ const baseUser = (over = {}) => ({
     assert.equal(u.streak, 9);
 }
 
-console.log('streak: 7/7 lolos');
+// 8. Grace Period: hafalan pukul 02.00 masih dihitung sebagai hari sebelumnya,
+//    sehingga penghafal malam tidak kehilangan runtunan (STREAK.md).
+{
+    assert.equal(streakDayKey('2026-08-07T02:30:00Z'), '2026-08-06');
+    assert.equal(streakDayKey('2026-08-07T04:00:00Z'), '2026-08-07');
+    assert.equal(streakDayKey('2026-08-07T23:59:00Z'), '2026-08-07');
+}
+
+// 9. Tebus Hari: satu target belum cukup — streak baru pulih setelah target kedua.
+{
+    const u = baseUser({ streak: 12, maxStreak: 12, lastActiveDate: '2026-08-04' });
+    const s = makeStreak(u, '2026-08-06');
+    s.evaluateStreak();
+    assert.equal(u.streak, 0);
+    assert.equal(u.pendingRepair.lostStreak, 12);
+
+    s.markDailyProgress();
+    assert.equal(u.streak, 1, 'target pertama hanya membuka runtunan baru');
+    assert.ok(u.pendingRepair, 'penebusan masih berjalan');
+
+    s.markDailyProgress();
+    assert.equal(u.streak, 12, 'target kedua mengembalikan runtunan lama');
+    assert.equal(u.streakRepairsUsed, 1);
+    assert.equal(u.pendingRepair, null);
+}
+
+// 10. Jendela Tebus Hari hanya 24 jam: bolos dua hari tidak menawarkan penebusan.
+{
+    const u = baseUser({ streak: 12, maxStreak: 12, lastActiveDate: '2026-08-03' });
+    makeStreak(u, '2026-08-06').evaluateStreak();
+    assert.equal(u.streak, 0);
+    assert.equal(u.pendingRepair, null);
+}
+
+// 11. Tebus Hari maksimal 2× per bulan.
+{
+    const u = baseUser({ streak: 12, maxStreak: 12, streakRepairsUsed: 2, lastActiveDate: '2026-08-04' });
+    makeStreak(u, '2026-08-06').evaluateStreak();
+    assert.equal(u.pendingRepair, null, 'jatah penebusan bulan ini sudah habis');
+}
+
+console.log('streak: 11/11 lolos');

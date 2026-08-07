@@ -17,6 +17,9 @@
     const maxStreak = $derived(appState.user.maxStreak);
     const streakFreezes = $derived(appState.user.streakFreezes);
     const streakRepairsUsed = $derived(appState.user.streakRepairsUsed);
+    // Tebus Hari hanya bisa dipakai selama jendela 24 jam setelah runtunan putus.
+    const repairOffer = $derived(appState.repairOffer);
+    const repairDone = $derived(Math.min(2, repairOffer?.targetsDone ?? 0));
 
     // Milestone berikutnya
     const nextMilestone = $derived(milestones.find(m => m.days > streak) || milestones[milestones.length - 1]);
@@ -46,7 +49,12 @@
 
     function handleRepair() {
         const ok = appState.repairStreak();
-        repairResult = ok ? i18n.t('streak.success_repair') : i18n.t('streak.fail_repair');
+        // Gagal di sini biasanya bukan error, melainkan target hari ini belum genap dua.
+        repairResult = ok
+            ? i18n.t('streak.success_repair')
+            : repairOffer
+                ? i18n.t('streak.repair_progress', { done: repairDone, lost: repairOffer.lostStreak })
+                : i18n.t('streak.fail_repair');
         clearTimeout(repairTimer);
         repairTimer = setTimeout(() => (repairResult = ''), 3000);
     }
@@ -189,10 +197,14 @@
                 <div class="tool-content">
                     <div class="tool-title">{i18n.t('streak.repair_title')}</div>
                     <div class="tool-count">
-                        {2 - streakRepairsUsed}/2 {i18n.t('sidebar.quests_done').toLowerCase()}
+                        {#if repairOffer}
+                            {i18n.t('streak.repair_progress', { done: repairDone, lost: repairOffer.lostStreak })}
+                        {:else}
+                            {2 - streakRepairsUsed}/2 {i18n.t('sidebar.quests_done').toLowerCase()}
+                        {/if}
                     </div>
                 </div>
-                <button class="tool-btn repair" onclick={handleRepair} disabled={streakRepairsUsed >= 2}>
+                <button class="tool-btn repair" onclick={handleRepair} disabled={!repairOffer || streakRepairsUsed >= 2}>
                     {i18n.t('streak.repair_btn')}
                 </button>
             </div>

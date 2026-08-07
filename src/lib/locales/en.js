@@ -786,4 +786,5 @@ export default {
     ,"quran.94_7_translation": "So when you have finished your duties, strive diligently,"
     ,"quran.94_8_translation": "and turn your hopes to your Lord alone."
 
+    ,"streak.repair_progress": "{done}/2 targets today — finish 2 to restore your {lost}-day streak"
 };
