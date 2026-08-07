@@ -786,5 +786,17 @@ export default {
     ,"quran.94_7_translation": "So when you have finished your duties, strive diligently,"
     ,"quran.94_8_translation": "and turn your hopes to your Lord alone."
 
+    ,"quest.daily_login": "Log in today"
+    ,"quest.memorize_verse": "Memorize 1 verse today"
+    ,"quests.monthly": "Monthly Mission"
+    ,"quests.per_day": "day"
+    ,"quests.monthly_xp_total": "XP from missions this month"
+    ,"lb.src_step": "1 memorization step"
+    ,"lb.src_daily_mission": "Daily missions"
+    ,"lb.src_surah": "Surah completed"
+    ,"lb.src_checkpoint": "Checkpoint"
+    ,"lb.src_setoran": "Recitation to musyrif"
+    ,"lb.src_mumtaz": "Mumtaz grade"
+    ,"lb.src_halaqah": "Halaqah — per member recitation"
     ,"streak.repair_progress": "{done}/2 targets today — finish 2 to restore your {lost}-day streak"
 };

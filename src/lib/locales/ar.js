@@ -765,5 +765,17 @@ export default {
     "lesson.self_practice_done": "انتهى التدريب الفردي",
     "lesson.btn_musyrif_submission": "المتابعة إلى التسميع للمشرف",
     "lesson.compare_reading": "قارن التلاوتين"
+    ,"quest.daily_login": "سجّل الدخول اليوم"
+    ,"quest.memorize_verse": "احفظ آية واحدة اليوم"
+    ,"quests.monthly": "مهمة الشهر"
+    ,"quests.per_day": "يوم"
+    ,"quests.monthly_xp_total": "نقاط الخبرة من مهام هذا الشهر"
+    ,"lb.src_step": "خطوة حفظ واحدة"
+    ,"lb.src_daily_mission": "المهام اليومية"
+    ,"lb.src_surah": "إتمام سورة"
+    ,"lb.src_checkpoint": "نقطة تفتيش"
+    ,"lb.src_setoran": "التسميع للمشرف"
+    ,"lb.src_mumtaz": "تقدير ممتاز"
+    ,"lb.src_halaqah": "الحلقة — عن كل تسميع عضو"
     ,"streak.repair_progress": "{done}/2 من أهداف اليوم — أكمل هدفين لاستعادة سلسلة {lost} يومًا"
 };

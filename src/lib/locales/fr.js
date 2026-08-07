@@ -764,5 +764,17 @@ export default {
     "lesson.self_practice_done": "Entraînement individuel terminé",
     "lesson.btn_musyrif_submission": "Passer à la récitation devant un moushrif",
     "lesson.compare_reading": "Comparer les récitations"
+    ,"quest.daily_login": "Se connecter aujourd'hui"
+    ,"quest.memorize_verse": "Mémoriser 1 verset aujourd'hui"
+    ,"quests.monthly": "Mission mensuelle"
+    ,"quests.per_day": "jour"
+    ,"quests.monthly_xp_total": "XP des missions ce mois-ci"
+    ,"lb.src_step": "1 étape de mémorisation"
+    ,"lb.src_daily_mission": "Missions quotidiennes"
+    ,"lb.src_surah": "Sourate terminée"
+    ,"lb.src_checkpoint": "Point de contrôle"
+    ,"lb.src_setoran": "Récitation au moushrif"
+    ,"lb.src_mumtaz": "Mention mumtaz"
+    ,"lb.src_halaqah": "Halaqah — par récitation d'un membre"
     ,"streak.repair_progress": "{done}/2 objectifs aujourd'hui — termines-en 2 pour retrouver ta série de {lost} jours"
 };

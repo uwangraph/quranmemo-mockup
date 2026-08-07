@@ -765,5 +765,17 @@ export default {
     "lesson.self_practice_done": "Latihan sendiri telah selesai",
     "lesson.btn_musyrif_submission": "Teruskan ke Setoran Musyrif",
     "lesson.compare_reading": "Bandingkan Bacaan"
+    ,"quest.daily_login": "Log masuk harian"
+    ,"quest.memorize_verse": "Hafal 1 ayat hari ini"
+    ,"quests.monthly": "Misi Bulanan"
+    ,"quests.per_day": "hari"
+    ,"quests.monthly_xp_total": "XP misi bulan ini"
+    ,"lb.src_step": "1 langkah hafalan"
+    ,"lb.src_daily_mission": "Misi harian"
+    ,"lb.src_surah": "Surah selesai"
+    ,"lb.src_checkpoint": "Checkpoint"
+    ,"lb.src_setoran": "Setoran kepada musyrif"
+    ,"lb.src_mumtaz": "Gred mumtaz"
+    ,"lb.src_halaqah": "Halaqah — setiap ahli setoran"
     ,"streak.repair_progress": "{done}/2 sasaran hari ini — selesaikan 2 untuk memulihkan rentetan {lost} hari"
 };

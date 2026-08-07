@@ -786,5 +786,17 @@ export default {
     ,"quran.94_7_translation": "Maka apabila engkau telah selesai dari suatu urusan, tetaplah bekerja keras untuk urusan yang lain,"
     ,"quran.94_8_translation": "dan hanya kepada Tuhanmulah engkau berharap."
 
+    ,"quest.daily_login": "Log in harian"
+    ,"quest.memorize_verse": "Hafalkan 1 ayat hari ini"
+    ,"quests.monthly": "Misi Bulanan"
+    ,"quests.per_day": "hari"
+    ,"quests.monthly_xp_total": "XP misi bulan ini"
+    ,"lb.src_step": "1 step hafalan"
+    ,"lb.src_daily_mission": "Misi harian"
+    ,"lb.src_surah": "Surah selesai"
+    ,"lb.src_checkpoint": "Checkpoint"
+    ,"lb.src_setoran": "Setoran ke musyrif"
+    ,"lb.src_mumtaz": "Nilai mumtaz"
+    ,"lb.src_halaqah": "Halaqah — tiap anggota setoran"
     ,"streak.repair_progress": "{done}/2 target hari ini — selesaikan 2 untuk mengembalikan runtunan {lost} hari"
 };

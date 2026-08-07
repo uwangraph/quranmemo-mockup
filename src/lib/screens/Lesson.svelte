@@ -1,5 +1,5 @@
 <script>
-	import { appState } from '$lib/app.svelte.js';
+	import { appState, XP, surahCompletionXp } from '$lib/app.svelte.js';
 	import { i18n } from '$lib/i18n.svelte.js';
 	import confetti from 'canvas-confetti';
     
@@ -1255,7 +1255,7 @@
             // Dihitung dari step unik, bukan jumlah percobaan, agar menjawab salah
             // lalu benar di ulangan tidak menghasilkan XP lebih besar.
             const correctStepCount = correctStepIds.size;
-            const xpEarned = correctStepCount * 4;
+            let xpEarned = correctStepCount * XP.step;
             let gemsEarned = nodeType === 'checkpoint' ? 150 : 55; // Per target: 55, per checkpoint: 150
             const breakdownLines = [];
 
@@ -1264,14 +1264,23 @@
             } else {
                 breakdownLines.push(`+${gemsEarned} Gems — Satu target selesai`);
             }
-            breakdownLines.push(`+${xpEarned} XP — ${correctStepCount} step benar × 4 XP`);
+            breakdownLines.push(`+${xpEarned} XP — ${correctStepCount} step benar × ${XP.step} XP`);
 
-            // Bonus: Surah selesai (Al-Insyirah < 30 ayat → +75 Gems)
+            // Checkpoint punya XP tersendiri di luar XP per step (XP.md).
+            if (nodeType === 'checkpoint') {
+                xpEarned += XP.checkpoint;
+                breakdownLines.push(`+${XP.checkpoint} XP — Checkpoint`);
+            }
+
+            // Bonus: Surah selesai. Gems tetap, XP mengikuti tabel jumlah ayat (XP.md).
             let surahBonus = 0;
             if (surahJustCompleted) {
                 surahBonus = 75;
                 gemsEarned += surahBonus;
+                const surahXp = surahCompletionXp(totalVerses);
+                xpEarned += surahXp;
                 breakdownLines.push(`+${surahBonus} Gems — Surah Al-Insyirah selesai!`);
+                breakdownLines.push(`+${surahXp} XP — Surah selesai (${totalVerses} ayat)`);
             }
 
             lessonEarnedXP = xpEarned;
@@ -1284,8 +1293,7 @@
             if (appState.user.progress.surah_094 === selectedVerseIndex) {
                 appState.user.progress.surah_094 += 1;
             }
-            appState.updateQuestProgress('q1', 1); // trigger quest
-            appState.updateQuestProgress('q3', 1); // Murojaah instan selesai — dihitung di akhir lesson
+            appState.updateQuestProgress('m_verse', 1); // misi harian "hafalkan 1 ayat" (MISSION.md)
             appState.markDailyProgress();          // runtunan bertambah setelah step hafalan aktif selesai
             appState.triggerLoginRewardCheck();
             appState.saveUser();
@@ -1365,7 +1373,7 @@
                 if (isCorrect) {
                     correctAttempts += 1;
                     correctStepIds.add(String(currentStepConfig.id).split('_')[0]);
-                    appState.updateQuestProgress('q2', 1); // trigger quest
+                    appState.updateQuestProgress('m_verse', 1); // jawaban benar juga memenuhi misi hafalan harian
                 } else {
                     incorrectQueue.push({
                         ...currentStepConfig,

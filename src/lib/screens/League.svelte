@@ -1,5 +1,5 @@
 <script>
-    import { appState } from '$lib/app.svelte.js';
+    import { appState, XP, surahCompletionXp } from '$lib/app.svelte.js';
     import { i18n } from '$lib/i18n.svelte.js';
     import BottomNav from '../components/BottomNav.svelte';
 
@@ -9,21 +9,32 @@
     let activePeriod = $state('weekly');
 
     const tabs = $derived([
-        { id: 'global-user', label: i18n.t('lb.tab_global_user') || 'Global', icon: '🌍' },
-        { id: 'regional-user', label: i18n.t('lb.tab_regional') || 'Regional', icon: '🏳️' },
+        { id: 'global-user', label: i18n.t('lb.tab_global_user'), icon: '🌍' },
+        { id: 'regional-user', label: i18n.t('lb.tab_regional'), icon: '🏳️' },
     ]);
 
     const periods = $derived([
-        { id: 'weekly', label: i18n.t('lb.weekly') || 'Pekanan' },
-        { id: 'monthly', label: i18n.t('lb.monthly') || 'Bulanan' },
-        { id: 'alltime', label: i18n.t('lb.alltime') || 'All Time' },
+        { id: 'weekly', label: i18n.t('lb.weekly') },
+        { id: 'monthly', label: i18n.t('lb.monthly') },
+        { id: 'alltime', label: i18n.t('lb.alltime') },
+    ]);
+
+    // Besaran XP dibaca dari aturan bersama agar tidak pernah menyimpang dari XP.md.
+    const xpSources = $derived([
+        { icon: '📝', label: i18n.t('lb.src_step'), value: `+${XP.step} XP` },
+        { icon: '🎯', label: i18n.t('lb.src_daily_mission'), value: `+${XP.dailyMissionTotal} XP` },
+        { icon: '📖', label: i18n.t('lb.src_surah'), value: `+${surahCompletionXp(1)}–${surahCompletionXp(999)} XP` },
+        { icon: '🏁', label: i18n.t('lb.src_checkpoint'), value: `+${XP.checkpoint} XP` },
+        { icon: '🎤', label: i18n.t('lb.src_setoran'), value: `+${XP.setoran} XP` },
+        { icon: '⭐', label: i18n.t('lb.src_mumtaz'), value: `+${XP.mumtaz} XP` },
+        { icon: '🤝', label: i18n.t('lb.src_halaqah'), value: `+${XP.halaqahPerSetoran} XP` },
     ]);
 
     // Mock data generators
     const globalUsers = $derived([
         { name: 'Siti Nurhaliza', xp: 4820, avatar: '🧕', country: '🇮🇩', streak: 42 },
         { name: 'Ahmad Dani', xp: 4350, avatar: '🧔', country: '🇮🇩', streak: 38 },
-        { name: i18n.t('lb.you') || 'Kamu', xp: appState.user.xp, avatar: '👤', country: '🇮🇩', streak: appState.user.streak, isMe: true },
+        { name: i18n.t('lb.you'), xp: appState.user.xp, avatar: '👤', country: '🇮🇩', streak: appState.user.streak, isMe: true },
         { name: 'Fatimah Az-Zahra', xp: 2100, avatar: '🧕', country: '🇲🇾', streak: 21 },
         { name: 'Omar Farooq', xp: 1950, avatar: '🧔', country: '🇸🇦', streak: 19 },
         { name: 'Aisha Bello', xp: 1800, avatar: '🧕', country: '🇳🇬', streak: 15 },
@@ -47,9 +58,9 @@
     const rest = $derived(currentData.slice(3));
 
     function getPeriodLabel() {
-        if (activePeriod === 'weekly') return i18n.t('lb.reset_weekly') || 'Reset setiap hari Senin jam 00:00';
-        if (activePeriod === 'monthly') return i18n.t('lb.reset_monthly') || 'Reset setiap tanggal 1';
-        return i18n.t('lb.reset_alltime') || 'Peringkat sepanjang masa (tidak diretas)';
+        if (activePeriod === 'weekly') return i18n.t('lb.reset_weekly');
+        if (activePeriod === 'monthly') return i18n.t('lb.reset_monthly');
+        return i18n.t('lb.reset_alltime');
     }
 
     function getMedalColor(rank) {
@@ -161,7 +172,7 @@
                             {/if}
                         </div>
                         {#if r.streak}
-                            <div class="rank-sub">🔥 {r.streak} {i18n.t('lb.day_streak') || 'Hari Streak'}</div>
+                            <div class="rank-sub">🔥 {r.streak} {i18n.t('lb.day_streak')}</div>
                         {/if}
                     </div>
                     <div class="rank-xp-col">
@@ -175,13 +186,11 @@
         <!-- XP Source Info -->
         <div class="xp-info-card">
             <div style="font-size: 13px; font-weight: 900; color: #3c3c3c; margin-bottom: 8px;">
-                ⚡ {i18n.t('lb.xp_sources') || 'Sumber XP'}
+                ⚡ {i18n.t('lb.xp_sources')}
             </div>
-            <div class="xp-row"><span>📝 Mini Target</span><span class="xp-val">+50 XP</span></div>
-            <div class="xp-row"><span>📖 Checkpoint</span><span class="xp-val">+200 XP</span></div>
-            <div class="xp-row"><span>🎤 Setoran</span><span class="xp-val">+100 XP</span></div>
-            <div class="xp-row"><span>🔥 Streak</span><span class="xp-val">+25 XP</span></div>
-            <div class="xp-row"><span>⭐ Mumtaz</span><span class="xp-val">+150 XP</span></div>
+            {#each xpSources as src}
+                <div class="xp-row"><span>{src.icon} {src.label}</span><span class="xp-val">{src.value}</span></div>
+            {/each}
         </div>
 
         <div style="height: 20px;"></div>

@@ -1,9 +1,22 @@
 <script>
-    import { appState } from '$lib/app.svelte.js';
+    import { appState, XP, makeDailyQuests } from '$lib/app.svelte.js';
     import { i18n } from '$lib/i18n.svelte.js';
     import BottomNav from '../components/BottomNav.svelte';
 
     let activeTab = $state('misi');
+
+    const monthly = $derived(appState.user.monthlyMission);
+    // Target bulanan = jumlah hari di bulan berjalan; hadiahnya akumulasi misi harian.
+    const daysInMonth = $derived.by(() => {
+        const [y, m] = (monthly.month ?? new Date().toISOString().slice(0, 7)).split('-').map(Number);
+        return new Date(y, m, 0).getDate();
+    });
+    // XP per misi dibaca dari definisi misi harian agar tidak ada dua sumber angka.
+    const questXp = Object.fromEntries(makeDailyQuests().map(q => [q.id, q.xp]));
+    const monthlyItems = $derived([
+        { icon: '📅', text: i18n.t('quest.daily_login'), current: monthly.loginDays, max: daysInMonth, xp: questXp.m_login },
+        { icon: '📖', text: i18n.t('quest.memorize_verse'), current: monthly.versesMemorized, max: daysInMonth, xp: questXp.m_verse }
+    ]);
     let showCustomAlert = $state(false);
     let alertMessage = $state("");
     let alertType = $state("alert");
@@ -103,7 +116,7 @@
                                         </div>
                                         <div class="card-content">
                                             <div style="font-size:14px; font-weight:900; color:#065f46;">{i18n.t('quests.complete_all')}</div>
-                                            <div style="font-size:12px; font-weight:700; color:#10b981; margin-top:4px;">{i18n.t('quests.total_reward', {xp: 35})}</div>
+                                            <div style="font-size:12px; font-weight:700; color:#10b981; margin-top:4px;">{i18n.t('quests.total_reward', {xp: XP.dailyMissionTotal})}</div>
                                         </div>
                                     </div>
                                 {:else}
@@ -113,7 +126,7 @@
                                         </div>
                                         <div class="card-content">
                                             <div style="font-size:14px; font-weight:900; color:#065f46;">{i18n.t('quests.all_complete')}</div>
-                                            <div class="reward-pill" style="margin-top:4px;">{i18n.t('quests.claimed', {xp: 35})}</div>
+                                            <div class="reward-pill" style="margin-top:4px;">{i18n.t('quests.claimed', {xp: XP.dailyMissionTotal})}</div>
                                         </div>
                                     </div>
                                 {/if}
@@ -159,16 +172,43 @@
                     </div>
                 {:else if activeTab === 'pencapaian'}
                     <!-- Mobile Pencapaian (Badges/Monthly Challenge) Tab Content -->
-                    <div class="mobile-pencapaian-tab">
-                        <div class="badge-cluster-large">
-                            <div class="badge-circle-large green-badge"></div>
-                            <div class="badge-circle-large yellow-badge">
-                                <img src="https://cdn-icons-png.flaticon.com/512/3238/3238125.png" alt="Quran" style="width:50px; height:50px; object-fit:contain; filter:brightness(0) invert(1);" />
-                            </div>
-                            <div class="badge-circle-large blue-badge"></div>
+                    <div class="quests-section">
+                        <div class="section-header">
+                            <h3>{i18n.t('quests.monthly')}</h3>
+                            <span class="timer"><i class="ti ti-calendar"></i> {monthly.month ?? ''}</span>
                         </div>
-                        <h2 class="pencapaian-title">{i18n.t('quests.monthly_soon')}</h2>
-                        <p class="pencapaian-desc">{i18n.t('quests.monthly_desc')}</p>
+
+                        <div class="quest-cards">
+                            {#each monthlyItems as item}
+                                {@const pct = Math.min(100, Math.round((item.current / item.max) * 100))}
+                                <div class="quest-card active-card">
+                                    <div class="card-icon">
+                                        <div class="monthly-icon">{item.icon}</div>
+                                    </div>
+                                    <div class="card-content">
+                                        <div class="quest-title">{item.text}</div>
+                                        <div class="quest-progress-container">
+                                            <div class="progress-bar-bg">
+                                                <div class="progress-bar-fill" style="width: {pct}%;">
+                                                    <span class="progress-text">{item.current} / {item.max}</span>
+                                                </div>
+                                            </div>
+                                            <div class="reward-tag">+{item.xp} XP/{i18n.t('quests.per_day')}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {/each}
+
+                            <div class="quest-card" style="background: linear-gradient(135deg, #fffbeb, #fff); border-color: #fde68a;">
+                                <div class="card-icon">
+                                    <div class="monthly-icon" style="background:#fef3c7; border-color:#fde68a;">⚡</div>
+                                </div>
+                                <div class="card-content">
+                                    <div style="font-size:14px; font-weight:900; color:#92400e;">{i18n.t('quests.monthly_xp_total')}</div>
+                                    <div style="font-size:18px; font-weight:900; color:#f59e0b; margin-top:4px;">{monthly.xpEarned.toLocaleString()} XP</div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 {/if}
             </div>
@@ -235,6 +275,12 @@
 </div>
 
 <style>
+    .monthly-icon {
+        background: #e0f2f1; border: 2px solid #b2dfdb; border-radius: 12px;
+        width: 44px; height: 44px; display: flex; align-items: center;
+        justify-content: center; font-size: 22px;
+    }
+
     /* Light Theme Base - QuranMemo Style */
     .quests-screen {
         background: #f1f5f9;
@@ -660,75 +706,6 @@
         font-size: 13px;
         color: #777;
         text-align: center;
-    }
-
-    /* Mobile Pencapaian Tab Content */
-    .mobile-pencapaian-tab {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
-        padding: 60px 20px;
-    }
-    
-    .badge-cluster-large {
-        position: relative;
-        width: 140px;
-        height: 120px;
-        margin-bottom: 32px;
-    }
-    
-    .badge-circle-large {
-        position: absolute;
-        border-radius: 50%;
-    }
-    
-    .badge-cluster-large .green-badge {
-        width: 70px;
-        height: 70px;
-        background: #10b981;
-        right: 0;
-        top: 20px;
-        z-index: 1;
-    }
-    
-    .badge-cluster-large .blue-badge {
-        width: 60px;
-        height: 60px;
-        background: #38bdf8;
-        left: 0;
-        top: 30px;
-        z-index: 1;
-    }
-    
-    .badge-cluster-large .yellow-badge {
-        width: 100px;
-        height: 100px;
-        background: #ff9600;
-        left: 20px;
-        top: 0;
-        z-index: 2;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        box-shadow: 0 4px 0 #cc7800;
-    }
-    
-    .pencapaian-title {
-        font-size: 20px;
-        font-weight: 900;
-        color: #3c3c3c;
-        margin-bottom: 16px;
-        line-height: 1.3;
-    }
-    
-    .pencapaian-desc {
-        font-size: 15px;
-        font-weight: 700;
-        color: #777;
-        line-height: 1.5;
-        max-width: 280px;
     }
 
     /* Hide desktop Side Column when Pencapaian tab is active on desktop (if ever visible) */

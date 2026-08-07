@@ -762,5 +762,17 @@ export default {
     "lesson.streak_overlay_desc": "Amsoshi 5 daidai a jere. Ka ci gaba da mai da hankali!",
     "lesson.streak_overlay_label": "Jerin Kwanaki",
     "lesson.mic_error": "An kasa samun damar makarufo. Da fatan za ka ba da izinin makarufo a burauzarka."
+    ,"quest.daily_login": "Shiga yau"
+    ,"quest.memorize_verse": "Haddace aya 1 yau"
+    ,"quests.monthly": "Manufar Wata"
+    ,"quests.per_day": "rana"
+    ,"quests.monthly_xp_total": "XP na manufofin wannan wata"
+    ,"lb.src_step": "Mataki 1 na haddacewa"
+    ,"lb.src_daily_mission": "Manufofin yau da kullum"
+    ,"lb.src_surah": "An gama sura"
+    ,"lb.src_checkpoint": "Matsayin dubawa"
+    ,"lb.src_setoran": "Sadar da haddar ga musyrif"
+    ,"lb.src_mumtaz": "Darajar mumtaz"
+    ,"lb.src_halaqah": "Halaƙa — kowane memba ya sadar"
     ,"streak.repair_progress": "Buri {done}/2 na yau — gama 2 don mayar da jerin kwanaki {lost}"
 };
