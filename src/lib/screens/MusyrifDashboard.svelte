@@ -3,6 +3,37 @@
     import { i18n } from '$lib/i18n.svelte.js';
     
     let isAvailable = $state(true);
+
+    // Antrean verifikasi Placement Test (ONBOARDING.md §1.3).
+    // Musyrif mendengar rekaman QS Maryam 1-10 lalu menentukan kategorinya; sistem
+    // tidak pernah memutuskan sendiri. Selain santri di perangkat ini, ditampilkan
+    // beberapa contoh antrean agar bentuk layarnya terlihat.
+    const placement = $derived(appState.user.placement);
+    const slaLeft = $derived(appState.placementSlaHoursLeft());
+
+    const CATS = [
+        { id: 'rbq', icon: '🌱', color: '#b45309' },
+        { id: 'rtq', icon: '📖', color: '#0369a1' },
+        { id: 'tahfidz', icon: '🏅', color: '#0f766e' }
+    ];
+
+    const queue = $derived([
+        ...(placement?.status === 'pending'
+            ? [{ name: appState.user.name, hours: slaLeft ?? 24, self: true }] : []),
+        { name: 'Fatimah Az-Zahra', hours: 19, self: false },
+        { name: 'Yusuf Ibrahim', hours: 6, self: false }
+    ]);
+
+    let decided = $state({});   // nama -> kategori, untuk contoh non-santri
+
+    function decide(entry, cat) {
+        if (entry.self) {
+            const notes = { rbq: 'placement.rec_note_rbq', rtq: 'placement.rec_note_rtq', tahfidz: 'placement.rec_note_tahfidz' };
+            const surah = { rbq: 'An-Nas', rtq: 'Ad-Duha', tahfidz: 'An-Naba' };
+            appState.setPlacementResult(cat, { surah: surah[cat], juz: 30, note: i18n.t(notes[cat]) });
+        }
+        decided = { ...decided, [entry.name]: cat };
+    }
 </script>
 
 <div class="screen">
@@ -39,6 +70,35 @@
                 <div class="toggle-circle"></div>
             </button>
         </div>
+
+        <!-- Antrean verifikasi placement, SLA 1x24 jam -->
+        <div class="section-label">🎤 {i18n.t('musyrif.placement_queue')} ({queue.length})</div>
+        {#each queue as entry}
+            {@const chosen = decided[entry.name]}
+            <div class="placement-row" class:urgent={entry.hours <= 6 && !chosen}>
+                <div class="pl-avatar">{chosen ? CATS.find(c => c.id === chosen).icon : '🎧'}</div>
+                <div style="flex:1; min-width:0;">
+                    <div class="pl-name">
+                        {entry.name}
+                        {#if entry.self}<span class="pl-self">{i18n.t('lb.you_badge')}</span>{/if}
+                    </div>
+                    <div class="pl-meta">QS Maryam 1-10 · {i18n.t('placement.sla_left', { hours: entry.hours })}</div>
+                </div>
+            </div>
+            {#if chosen}
+                <div class="pl-done" style="color:{CATS.find(c => c.id === chosen).color}">
+                    ✓ {i18n.t(`placement.cat_${chosen}`)}
+                </div>
+            {:else}
+                <div class="pl-actions">
+                    {#each CATS as c}
+                        <button class="pl-btn" onclick={() => decide(entry, c.id)}>
+                            {c.icon} {i18n.t(`placement.cat_${c.id}`)}
+                        </button>
+                    {/each}
+                </div>
+            {/if}
+        {/each}
 
         <div class="section-label">{i18n.t('musyrif.requests')} (Instan)</div>
         
@@ -107,6 +167,41 @@
 </div>
 
 <style>
+    /* Antrean placement */
+    .placement-row {
+        display: flex; align-items: center; gap: 12px;
+        background: #fff; border: 2px solid #e5e5e5; border-radius: 14px 14px 0 0;
+        border-bottom: none; padding: 12px;
+    }
+    .placement-row.urgent { border-color: #fecaca; background: #fef2f2; }
+    .pl-avatar {
+        width: 42px; height: 42px; border-radius: 50%; background: #f1f5f9;
+        display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0;
+    }
+    .pl-name { font-size: 14px; font-weight: 900; color: #3c3c3c; display: flex; align-items: center; gap: 6px; }
+    .pl-self {
+        font-size: 8px; font-weight: 900; background: #00978A; color: #fff;
+        padding: 1px 6px; border-radius: 99px; text-transform: uppercase;
+    }
+    .pl-meta { font-size: 11px; font-weight: 700; color: #94a3b8; margin-top: 2px; }
+    .pl-actions {
+        display: flex; gap: 6px; padding: 0 12px 12px;
+        background: #fff; border: 2px solid #e5e5e5; border-top: none;
+        border-radius: 0 0 14px 14px; margin-bottom: 10px;
+    }
+    .pl-btn {
+        flex: 1; min-height: 40px; padding: 8px 4px; border-radius: 10px;
+        border: 2px solid #e5e5e5; background: #f8fafc;
+        font-family: 'Nunito', sans-serif; font-size: 10px; font-weight: 800;
+        color: #475569; cursor: pointer;
+    }
+    .pl-btn:active { background: #e2e8f0; }
+    .pl-done {
+        background: #fff; border: 2px solid #e5e5e5; border-top: none;
+        border-radius: 0 0 14px 14px; padding: 10px 12px; margin-bottom: 10px;
+        font-size: 12px; font-weight: 900;
+    }
+
     .musyrif-profile-header {
         background: #1a1a1a;
         padding: 30px 20px 20px;
