@@ -55,10 +55,12 @@
         <span style="font-size: 16px; font-weight: 900; color: #3c3c3c; flex: 1; text-align: center;">
             {i18n.t('profile.title')}
         </span>
-            <i class="ti ti-settings" style="font-size:20px;"></i>
         <button
             style="background:none; border:none; color:#afafaf; cursor:pointer;"
+            onclick={() => appState.go('reminders')}
+            aria-label={i18n.t('reminder.title')}
         >
+            <i class="ti ti-bell" style="font-size:20px;"></i>
         </button>
     </div>
 

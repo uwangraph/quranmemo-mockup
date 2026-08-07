@@ -21,6 +21,7 @@
     import CreateCommunity from '$lib/screens/CreateCommunity.svelte';
     import CreateHalaqah from '$lib/screens/CreateHalaqah.svelte';
     import HalaqahHub from '$lib/screens/HalaqahHub.svelte';
+    import Reminders from '$lib/screens/Reminders.svelte';
     import DailyLoginReward from '$lib/components/learn/DailyLoginReward.svelte';
 </script>
 
@@ -47,6 +48,8 @@
         <League />
     {:else if appState.currentScreen === 'profile'}
         <Profile />
+    {:else if appState.currentScreen === 'reminders'}
+        <Reminders />
     {:else if appState.currentScreen === 'language'}
         <Language />
     {:else if appState.currentScreen === 'lesson'}

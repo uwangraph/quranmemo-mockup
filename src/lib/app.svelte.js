@@ -179,6 +179,12 @@ export function createAppState() {
         },
         pathMode: 'roadmap',        // 'roadmap' (Roadmap Levelling) | 'self' (Self-paced)
         selfPacedTarget: null,      // target pilihan sendiri saat pathMode === 'self'
+        // Preferensi pengingat (STREAK.md — Onboarding Key Question)
+        reminder: {
+            dailyTarget: 1,         // jumlah ayat per hari
+            preferredTime: '05:00', // waktu hafalan pilihan
+            level: 'ringan'         // ringan | sedang | kritis
+        },
         showLatin: true,
         loginStreak: 1,
         lastLoginDate: null,
@@ -230,6 +236,7 @@ export function createAppState() {
     if (user.lastActiveDate === undefined) user.lastActiveDate = null;
     if (user.pathMode === undefined) user.pathMode = 'roadmap';
     if (user.selfPacedTarget === undefined) user.selfPacedTarget = null;
+    if (user.reminder === undefined) user.reminder = { dailyTarget: 1, preferredTime: '05:00', level: 'ringan' };
     if (user.placement === undefined) user.placement = {
         canRead: null, status: 'not_started', category: null, submittedAt: null,
         musyrifName: null, resultSeen: false, everMemorized: null, memorizedSurahs: [],
@@ -601,6 +608,11 @@ export function createAppState() {
         saveUser();
     }
 
+    function setReminderPrefs(patch) {
+        user.reminder = { ...user.reminder, ...patch };
+        saveUser();
+    }
+
     // ====== Setoran ke musyrif (XP.md) ======
 
     // Mencatat satu setoran yang sudah diverifikasi musyrif dan memberikan XP-nya.
@@ -655,6 +667,7 @@ export function createAppState() {
         lesson: "Lesson",
         tadabbur: "Tadabbur",
         profile: "Profile",
+        reminders: "Reminders",
         language: "Language",
         "admin-users": "Monitor Users",
         "admin-musyrif": "Monitor Musyrif",
@@ -724,6 +737,7 @@ export function createAppState() {
         setPlacementResult,
         placementSlaHoursLeft,
         setPathMode,
+        setReminderPrefs,
         recordSetoran,
         markSurahReviewed,
         get murajaahDue() { return murajaahDue(); }
