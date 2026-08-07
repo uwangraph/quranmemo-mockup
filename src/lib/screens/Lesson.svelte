@@ -215,11 +215,7 @@
     let isCorrect = $state(false);
     
     let showTajwidModal = $state(false);
-    let streakCount = $state(0);
     let incorrectQueue = $state([]);
-    let pendingStreakAnimation = $state(false);
-    let showStreakOverlay = $state(false);
-
 
     // Audio & Voice Recording States
     let audio = null;
@@ -820,13 +816,21 @@
 
     const currentStepConfig = $derived(stepsPipeline[currentStep]);
 
-    // Automatically trigger setup when selectedVerseIndex from roadmap changes
+    // Automatically trigger setup when selectedVerseIndex from roadmap changes.
+    // Guarded by lastInitVerse so effect re-runs triggered by OTHER reactive
+    // dependencies (e.g. `audio` reassignment) don't reset currentStep / recoil
+    // the lesson back to step 1.
+    let lastInitVerse = null;
     $effect(() => {
+        if (selectedVerseIndex !== null && selectedVerseIndex !== undefined
+            && selectedVerseIndex === lastInitVerse) {
+            return;
+        }
+        lastInitVerse = selectedVerseIndex;
         if (selectedVerseIndex !== null && selectedVerseIndex !== undefined) {
             currentStep = 0;
             isChecked = false;
             isCorrect = false;
-            streakCount = 0;
             incorrectQueue = [];
             selectedOptionIdx = null;
             selectedWords = [];
@@ -1042,6 +1046,10 @@
 
     async function startSimulatedRecording() {
         if (recordState === 'recording') {
+            if (audio) audio.pause();
+            isPlaying = false;
+            isPlayingRecorded = false;
+            isComparing = false;
             if (mediaRecorder && mediaRecorder.state !== 'inactive') {
                 mediaRecorder.stop();
             }
@@ -1292,11 +1300,6 @@
 
         // If it's already checked, this button click means "Continue to Next Step"
         if (isChecked) {
-            if (pendingStreakAnimation) {
-                pendingStreakAnimation = false;
-                showStreakOverlay = true;
-                return;
-            }
             advanceStep();
             return;
         }
@@ -1363,14 +1366,7 @@
                     correctAttempts += 1;
                     correctStepIds.add(String(currentStepConfig.id).split('_')[0]);
                     appState.updateQuestProgress('q2', 1); // trigger quest
-                    streakCount += 1;
-                    if (streakCount === 5) {
-
-                        streakCount = 0;
-                        pendingStreakAnimation = true;
-                    }
                 } else {
-                    streakCount = 0;
                     incorrectQueue.push({
                         ...currentStepConfig,
                         id: currentStepConfig.id + '_' + Date.now(),
@@ -1760,25 +1756,6 @@
     <canvas bind:this={confettiCanvas} class="confetti-canvas"></canvas>
     <LessonCompletion bind:showCompletion={showCompletion} {selectedVerseIndex} {activeVerse} {lessonEarnedXP} {lessonEarnedGems} breakdown={lessonBreakdown} accuracy={accuracyPercent + '%'} onFinish={exitLesson} />
 
-    {#if showStreakOverlay}
-        <div class="streak-overlay-page">
-            <div class="streak-content">
-                <div class="streak-icon"><i class="ti ti-bolt-filled"></i></div>
-                <h2 class="streak-title">{i18n.t('lesson.streak_overlay_title')}</h2>
-                <p class="streak-desc">{i18n.t('lesson.streak_overlay_desc')}</p>
-                <div class="streak-reward">
-                    <span class="plus-text">+4</span>
-                    <span class="streak-label">{i18n.t('lesson.streak_overlay_label')}</span>
-                </div>
-            </div>
-            <div class="streak-footer">
-                <button class="btn-duo btn-green streak-continue-btn" onclick={() => { showStreakOverlay = false; advanceStep(); }}>
-                    {i18n.t('lesson.btn_continue')}
-                </button>
-            </div>
-        </div>
-    {/if}
-
 </div>
 
 <style>
@@ -1795,94 +1772,7 @@
         animation: floatUp 1s ease-out forwards;
     }
     
-    /* Streak Overlay Page */
-    .streak-overlay-page {
-        position: fixed;
-        inset: 0;
-        background: #fff;
-        z-index: 200;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        padding: 40px 24px;
-        animation: slideInUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-    .streak-content {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
-    }
-    .streak-icon {
-        font-size: 80px;
-        color: #ff9600;
-        margin-bottom: 24px;
-        animation: pulseHeart 1.5s infinite;
-        filter: drop-shadow(0 10px 20px rgba(255,150,0,0.3));
-    }
-    .streak-title {
-        font-size: 28px;
-        font-weight: 900;
-        color: #ff9600;
-        margin: 0 0 12px 0;
-        letter-spacing: -0.5px;
-    }
-    .streak-desc {
-        font-size: 15px;
-        font-weight: 700;
-        color: #64748b;
-        margin: 0 0 32px 0;
-        line-height: 1.5;
-        max-width: 280px;
-    }
-    .streak-reward {
-        background: #fffbf2;
-        border: 3px solid #ffe4b3;
-        padding: 16px 32px;
-        border-radius: 24px;
-        display: flex;
-        align-items: baseline;
-        gap: 8px;
-        animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.2s both;
-    }
-    .streak-reward .plus-text {
-        font-size: 32px;
-        font-weight: 900;
-        color: #ff9600;
-    }
-    .streak-reward .streak-label {
-        font-size: 20px;
-        font-weight: 800;
-        color: #d97706;
-    }
-    .streak-footer {
-        width: 100%;
-        padding-top: 24px;
-    }
-    .streak-continue-btn {
-        width: 100%;
-        padding: 18px;
-        font-size: 16px;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-    }
-
-    @keyframes slideInUp {
-        from { transform: translateY(100%); }
-        to { transform: translateY(0); }
-    }
-    @keyframes pulseHeart {
-        0%, 100% { transform: scale(1); }
-        50% { transform: scale(1.1); }
-    }
-    @keyframes popIn {
-        0% { transform: scale(0.5); opacity: 0; }
-        80% { transform: scale(1.1); opacity: 1; }
-        100% { transform: scale(1); opacity: 1; }
-    }
-
+    /* Streak overlay dihapus — konsep streak tidak lagi dipakai */
     .confetti-canvas {
         position: absolute;
         top: 0;
