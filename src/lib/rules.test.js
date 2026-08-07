@@ -171,6 +171,61 @@ function weekDays(activeDays, today) {
     assert.deepEqual(w.map(d => d.done), [false, false, false, false, false, false, false]);
 }
 
+// ── LEARDERBOARD.md: XP dipisah per periode, bukan total yang sama diulang ──
+function weekKeyOf(day) {
+    const d = new Date(Date.parse(day));
+    const shift = (d.getUTCDay() + 6) % 7;   // 0 = Senin
+    return new Date(d.getTime() - shift * DAY_MS).toISOString().split('T')[0];
+}
+
+function makeXp(user, today) {
+    const wk = () => weekKeyOf(today), mk = () => today.slice(0, 7);
+    return {
+        addXp(n) {
+            const b = user.xpBuckets;
+            if (b.weekKey !== wk()) { b.weekKey = wk(); b.week = 0; }
+            if (b.monthKey !== mk()) { b.monthKey = mk(); b.month = 0; }
+            b.week += n; b.month += n; b.event += n; user.xp += n;
+        },
+        forPeriod(p) {
+            const b = user.xpBuckets;
+            if (p === 'weekly') return b.weekKey === wk() ? b.week : 0;
+            if (p === 'monthly') return b.monthKey === mk() ? b.month : 0;
+            if (p === 'event') return b.event;
+            return user.xp;
+        }
+    };
+}
+
+{
+    const u = { xp: 0, xpBuckets: { weekKey: null, week: 0, monthKey: null, month: 0, event: 0 } };
+    const x = makeXp(u, '2026-08-07');     // Jumat
+    x.addXp(50); x.addXp(30);
+    assert.equal(x.forPeriod('weekly'), 80);
+    assert.equal(x.forPeriod('monthly'), 80);
+    assert.equal(x.forPeriod('alltime'), 80);
+}
+
+{
+    // Pekan berganti: ember pekanan kosong lagi, bulanan & all-time tetap.
+    const u = { xp: 200, xpBuckets: { weekKey: weekKeyOf('2026-08-07'), week: 200, monthKey: '2026-08', month: 200, event: 200 } };
+    const x = makeXp(u, '2026-08-12');     // Rabu pekan berikutnya
+    assert.equal(x.forPeriod('weekly'), 0, 'pekanan reset setiap Senin');
+    assert.equal(x.forPeriod('monthly'), 200, 'bulanan belum reset');
+    assert.equal(x.forPeriod('alltime'), 200);
+    x.addXp(10);
+    assert.equal(x.forPeriod('weekly'), 10);
+    assert.equal(x.forPeriod('monthly'), 210);
+}
+
+{
+    // Bulan berganti: bulanan kosong, all-time tidak pernah reset.
+    const u = { xp: 500, xpBuckets: { weekKey: weekKeyOf('2026-08-28'), week: 90, monthKey: '2026-08', month: 500, event: 500 } };
+    const x = makeXp(u, '2026-09-03');
+    assert.equal(x.forPeriod('monthly'), 0);
+    assert.equal(x.forPeriod('alltime'), 500);
+}
+
 // ── LEVELLING.md: surah tanpa konten tidak boleh diganti diam-diam ────────
 {
     // Replika surahByName(): pencocokan longgar terhadap penulisan nama di dokumen.

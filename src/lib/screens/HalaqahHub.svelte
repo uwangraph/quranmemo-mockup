@@ -19,6 +19,13 @@
     ]);
     const isExplore = $derived(activeTab === 'explore-halaqah' || activeTab === 'explore-komunitas');
 
+    // Angka per periode, sejalan dengan layar Liga.
+    const periodScale = $derived({ weekly: 0.12, monthly: 0.4, alltime: 1, event: 0.25 }[activePeriod] ?? 1);
+    const scaled = (n) => Math.round(n * periodScale);
+
+    // XP yang disumbangkan pengguna ini ke halaqahnya lewat setoran (XP.md).
+    const myHalaqahContribution = $derived(appState.user.halaqahXp ?? 0);
+
     const tabs = $derived([
         { id: 'my-community', label: i18n.t('lb.tab_my_community') || 'Komunitasku', icon: '👥' },
         { id: 'my-halaqah', label: i18n.t('lb.tab_my_halaqah') || 'Halaqahku', icon: '🤝' },
@@ -28,42 +35,42 @@
 
     // Mock Data for Explore (Global)
     const halaqahList = $derived([
-        { name: 'Halaqah Al-Fatih', xp: 12400, members: 15, avatar: '🟢', region: '🇮🇩' },
-        { name: 'Halaqah An-Nur', xp: 11200, members: 18, avatar: '🔵', region: '🇲🇾' },
-        { name: 'Halaqah Al-Huda', xp: 9800, members: 12, avatar: '🟡', region: '🇮🇩' },
-        { name: 'Halaqah Ar-Rahman', xp: 8500, members: 20, avatar: '🟣', region: '🇸🇦' },
-        { name: 'Halaqah Al-Amin', xp: 7200, members: 10, avatar: '🟠', region: '🇳🇬' },
+        { name: 'Halaqah Al-Fatih', xp: scaled(12400), members: 15, avatar: '🟢', region: '🇮🇩' },
+        { name: 'Halaqah An-Nur', xp: scaled(11200), members: 18, avatar: '🔵', region: '🇲🇾' },
+        { name: 'Halaqah Al-Huda', xp: scaled(9800), members: 12, avatar: '🟡', region: '🇮🇩' },
+        { name: 'Halaqah Ar-Rahman', xp: scaled(8500), members: 20, avatar: '🟣', region: '🇸🇦' },
+        { name: 'Halaqah Al-Amin', xp: scaled(7200), members: 10, avatar: '🟠', region: '🇳🇬' },
     ].sort((a, b) => b.xp - a.xp).map((h, i) => ({ ...h, rank: i + 1 })));
 
     const komunitasList = $derived([
-        { name: 'Pesantren Al-Hikmah', xp: 45200, members: 120, halaqah: 8, avatar: '🏛️', region: '🇮🇩' },
-        { name: 'Madrasah An-Nur', xp: 38900, members: 85, halaqah: 6, avatar: '🕌', region: '🇲🇾' },
-        { name: 'QuranHub Global', xp: 32100, members: 200, halaqah: 12, avatar: '🌐', region: '🇸🇦' },
-        { name: 'Tahfiz Center', xp: 28700, members: 65, halaqah: 4, avatar: '📚', region: '🇮🇩' },
+        { name: 'Pesantren Al-Hikmah', xp: scaled(45200), members: 120, halaqah: 8, avatar: '🏛️', region: '🇮🇩' },
+        { name: 'Madrasah An-Nur', xp: scaled(38900), members: 85, halaqah: 6, avatar: '🕌', region: '🇲🇾' },
+        { name: 'QuranHub Global', xp: scaled(32100), members: 200, halaqah: 12, avatar: '🌐', region: '🇸🇦' },
+        { name: 'Tahfiz Center', xp: scaled(28700), members: 65, halaqah: 4, avatar: '📚', region: '🇮🇩' },
     ].sort((a, b) => b.xp - a.xp).map((k, i) => ({ ...k, rank: i + 1 })));
 
     // Mock Data for "My Community"
     const myCommunityMembers = $derived([
-        { name: 'Siti Nurhaliza', xp: 3200, avatar: '🧕', halaqah: 'Al-Fatih' },
-        { name: i18n.t('lb.you') || 'Kamu', xp: appState.user.xp, avatar: '👤', halaqah: 'Al-Fatih', isMe: true },
-        { name: 'Ahmad Dani', xp: 2100, avatar: '🧔', halaqah: 'An-Nur' },
-        { name: 'Budi Utomo', xp: 1800, avatar: '👨', halaqah: 'Al-Fatih' },
-        { name: 'Sarah W.', xp: 1500, avatar: '👩', halaqah: 'An-Nur' },
-        { name: 'Rizky B.', xp: 1200, avatar: '👦', halaqah: 'Al-Huda' },
+        { name: 'Siti Nurhaliza', xp: scaled(3200), avatar: '🧕', halaqah: 'Al-Fatih' },
+        { name: i18n.t('lb.you') || 'Kamu', xp: appState.xpForPeriod(activePeriod), avatar: '👤', halaqah: 'Al-Fatih', isMe: true },
+        { name: 'Ahmad Dani', xp: scaled(2100), avatar: '🧔', halaqah: 'An-Nur' },
+        { name: 'Budi Utomo', xp: scaled(1800), avatar: '👨', halaqah: 'Al-Fatih' },
+        { name: 'Sarah W.', xp: scaled(1500), avatar: '👩', halaqah: 'An-Nur' },
+        { name: 'Rizky B.', xp: scaled(1200), avatar: '👦', halaqah: 'Al-Huda' },
     ].sort((a, b) => b.xp - a.xp).map((u, i) => ({ ...u, rank: i + 1 })));
 
     const myCommunityHalaqahs = $derived([
-        { name: 'Halaqah Al-Fatih', xp: 8200, members: 15, avgXp: 547, avatar: '🟢' },
-        { name: 'Halaqah An-Nur', xp: 6800, members: 12, avgXp: 567, avatar: '🔵' },
-        { name: 'Halaqah Al-Huda', xp: 5400, members: 10, avgXp: 540, avatar: '🟡' },
+        { name: 'Halaqah Al-Fatih', xp: scaled(8200), members: 15, avgXp: 547, avatar: '🟢' },
+        { name: 'Halaqah An-Nur', xp: scaled(6800), members: 12, avgXp: 567, avatar: '🔵' },
+        { name: 'Halaqah Al-Huda', xp: scaled(5400), members: 10, avgXp: 540, avatar: '🟡' },
     ].sort((a, b) => b.xp - a.xp).map((h, i) => ({ ...h, rank: i + 1 })));
 
     const myHalaqahMembers = $derived([
-        { name: 'Siti Nurhaliza', xp: 3200, avatar: '🧕' },
-        { name: i18n.t('lb.you') || 'Kamu', xp: appState.user.xp, avatar: '👤', isMe: true },
-        { name: 'Budi Utomo', xp: 1800, avatar: '👨' },
-        { name: 'Dewi Sartika', xp: 1600, avatar: '👩' },
-        { name: 'Hasan Ali', xp: 1400, avatar: '🧔' },
+        { name: 'Siti Nurhaliza', xp: scaled(3200), avatar: '🧕' },
+        { name: i18n.t('lb.you') || 'Kamu', xp: appState.xpForPeriod(activePeriod), avatar: '👤', isMe: true },
+        { name: 'Budi Utomo', xp: scaled(1800), avatar: '👨' },
+        { name: 'Dewi Sartika', xp: scaled(1600), avatar: '👩' },
+        { name: 'Hasan Ali', xp: scaled(1400), avatar: '🧔' },
     ].sort((a, b) => b.xp - a.xp).map((u, i) => ({ ...u, rank: i + 1 })));
 
     // Peringkat regional adalah daftar global yang disaring per negara, lalu
@@ -157,6 +164,16 @@
                     <div style="font-size: 10px; font-weight: 700; color: #afafaf;">15/20 {i18n.t('lb.members')} · Pesantren Al-Hikmah</div>
                 </div>
             </div>
+            <!-- Setiap setoran anggota menyumbang XP ke halaqahnya (XP.md — XP Halaqah).
+                 Sebelumnya angka ini dicatat tapi tidak pernah terlihat di mana pun. -->
+            <div class="contrib-card">
+                <span class="contrib-icon">🤝</span>
+                <div style="flex:1; min-width:0;">
+                    <div class="contrib-label">{i18n.t('lb.src_halaqah')}</div>
+                    <div class="contrib-sub">{i18n.t('halaqah.your_contribution')}</div>
+                </div>
+                <span class="contrib-val">+{myHalaqahContribution.toLocaleString()} XP</span>
+            </div>
         {/if}
 
         <!-- Create Buttons for Explore Tabs -->
@@ -216,6 +233,15 @@
 </div>
 
 <style>
+    .contrib-card {
+        display: flex; align-items: center; gap: 12px; margin: 0 16px 4px;
+        background: #f5f3ff; border: 2px solid #ddd6fe; border-radius: 14px; padding: 12px;
+    }
+    .contrib-icon { font-size: 22px; }
+    .contrib-label { font-size: 13px; font-weight: 900; color: #5b21b6; }
+    .contrib-sub { font-size: 10px; font-weight: 700; color: #7c3aed; margin-top: 2px; }
+    .contrib-val { font-size: 15px; font-weight: 900; color: #7c3aed; white-space: nowrap; }
+
     .scope-toggle {
         display: flex; gap: 8px; padding: 10px 16px 0; background: #fff;
     }

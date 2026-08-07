@@ -33,15 +33,20 @@
     ]);
 
     // Mock data generators
+    // Angka lawan diskalakan per periode: total sepanjang masa tidak masuk akal
+    // dipakai sebagai perolehan pekanan.
+    const periodScale = $derived({ weekly: 0.12, monthly: 0.4, alltime: 1, event: 0.25 }[activePeriod] ?? 1);
+    const scaled = (n) => Math.round(n * periodScale);
+
     const globalUsers = $derived([
-        { name: 'Siti Nurhaliza', xp: 4820, avatar: '🧕', country: '🇮🇩', streak: 42 },
-        { name: 'Ahmad Dani', xp: 4350, avatar: '🧔', country: '🇮🇩', streak: 38 },
-        { name: i18n.t('lb.you'), xp: appState.user.xp, avatar: '👤', country: '🇮🇩', streak: appState.user.streak, isMe: true },
-        { name: 'Fatimah Az-Zahra', xp: 2100, avatar: '🧕', country: '🇲🇾', streak: 21 },
-        { name: 'Omar Farooq', xp: 1950, avatar: '🧔', country: '🇸🇦', streak: 19 },
-        { name: 'Aisha Bello', xp: 1800, avatar: '🧕', country: '🇳🇬', streak: 15 },
-        { name: 'Yusuf Ibrahim', xp: 1650, avatar: '👨', country: '🇮🇩', streak: 12 },
-        { name: 'Khadijah Musa', xp: 1500, avatar: '🧕', country: '🇲🇾', streak: 10 },
+        { name: 'Siti Nurhaliza', xp: scaled(4820), avatar: '🧕', country: '🇮🇩', streak: 42 },
+        { name: 'Ahmad Dani', xp: scaled(4350), avatar: '🧔', country: '🇮🇩', streak: 38 },
+        { name: i18n.t('lb.you'), xp: appState.xpForPeriod(activePeriod), avatar: '👤', country: '🇮🇩', streak: appState.user.streak, isMe: true },
+        { name: 'Fatimah Az-Zahra', xp: scaled(2100), avatar: '🧕', country: '🇲🇾', streak: 21 },
+        { name: 'Omar Farooq', xp: scaled(1950), avatar: '🧔', country: '🇸🇦', streak: 19 },
+        { name: 'Aisha Bello', xp: scaled(1800), avatar: '🧕', country: '🇳🇬', streak: 15 },
+        { name: 'Yusuf Ibrahim', xp: scaled(1650), avatar: '👨', country: '🇮🇩', streak: 12 },
+        { name: 'Khadijah Musa', xp: scaled(1500), avatar: '🧕', country: '🇲🇾', streak: 10 },
     ].sort((a, b) => b.xp - a.xp).map((u, i) => ({ ...u, rank: i + 1 })));
 
     const regionalUsers = $derived(

@@ -888,6 +888,7 @@ export default {
     ,"certificate.level_beginner": "حفظ جزء عمّ"
     ,"certificate.level_mid": "حفظ المستوى المتوسط"
     ,"certificate.level_pro": "حفظ المستوى المتقدم"
+    ,"halaqah.your_contribution": "من تسميعك في هذه الفترة"
     ,"learn.content_pending": "المحتوى غير متوفر بعد"
     ,"learn.content_pending_desc": "آيات {target} ما زالت بانتظار مصدر مصحف موثّق."
 };

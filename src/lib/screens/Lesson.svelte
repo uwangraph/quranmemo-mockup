@@ -1106,7 +1106,7 @@
             lessonEarnedGems = gemsEarned;
             lessonBreakdown = breakdownLines.join('\n');
 
-            appState.user.xp += lessonEarnedXP;
+            appState.addXp(lessonEarnedXP);   // sekaligus mengisi ember XP per periode
             appState.user.gems += lessonEarnedGems;
 
             appState.advanceSurahProgress(activeSurah.id, selectedVerseIndex);

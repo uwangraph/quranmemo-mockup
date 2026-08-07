@@ -64,6 +64,14 @@ function daysSince(dayStr) {
     return Math.round((Date.parse(streakDayKey()) - Date.parse(dayStr)) / DAY_MS);
 }
 
+// Penanda pekan ISO: tanggal hari Senin pada pekan berjalan. Papan peringkat
+// pekanan reset setiap Senin 00.00 (LEARDERBOARD.md).
+function weekKey(date = serverNow()) {
+    const d = new Date(Date.parse(streakDayKey(date)));
+    const shift = (d.getUTCDay() + 6) % 7;   // 0 = Senin
+    return dayKey(new Date(d.getTime() - shift * DAY_MS));
+}
+
 // Penanda bulan (YYYY-MM) untuk semua reset bulanan.
 function monthKey(date = serverNow()) {
     return streakDayKey(date).slice(0, 7);
@@ -159,6 +167,8 @@ export function createAppState() {
         },
         setoranIds: [],   // ID sesi setoran yang XP-nya sudah diberikan
         halaqahXp: 0,     // XP yang disumbangkan ke halaqah (25 per setoran anggota)
+        // XP per periode papan peringkat. All-time memakai user.xp.
+        xpBuckets: { weekKey: null, week: 0, monthKey: null, month: 0, event: 0 },
         inventory: [],
         progress: {
             surah_094: 0,       // dipertahankan untuk migrasi data lama
@@ -258,6 +268,7 @@ export function createAppState() {
     };
     if (!Array.isArray(user.setoranIds)) user.setoranIds = [];
     if (user.halaqahXp === undefined) user.halaqahXp = 0;
+    if (user.xpBuckets === undefined) user.xpBuckets = { weekKey: null, week: 0, monthKey: null, month: 0, event: 0 };
     if (user.lastActiveDate === undefined) user.lastActiveDate = null;
     if (user.pathMode === undefined) user.pathMode = 'roadmap';
     if (user.selfPacedTarget === undefined) user.selfPacedTarget = null;
@@ -462,7 +473,7 @@ export function createAppState() {
         if (q && !q.claimed && q.current >= q.max) {
             q.claimed = true;
             // MISSION.md: log in harian 50 XP, hafal 1 ayat 50 XP.
-            user.xp += q.xp;
+            addXp(q.xp);
 
             // Misi bulanan hanya mengakumulasi misi harian yang benar-benar diklaim.
             checkMonthlyMissionReset();
@@ -671,6 +682,31 @@ export function createAppState() {
         }
     }
 
+    // Satu-satunya pintu penambahan XP. Selain menambah total sepanjang masa, XP
+    // juga masuk ke ember pekanan/bulanan/event supaya papan peringkat per periode
+    // menampilkan angka yang benar-benar berbeda, bukan total yang sama diulang.
+    function addXp(amount) {
+        if (!amount) return;
+        const b = user.xpBuckets;
+        const wk = weekKey(), mk = monthKey();
+        if (b.weekKey !== wk) { b.weekKey = wk; b.week = 0; }
+        if (b.monthKey !== mk) { b.monthKey = mk; b.month = 0; }
+        b.week += amount;
+        b.month += amount;
+        b.event += amount;
+        user.xp += amount;
+        saveUser();
+    }
+
+    // XP untuk periode papan peringkat tertentu.
+    function xpForPeriod(period) {
+        const b = user.xpBuckets;
+        if (period === 'weekly') return b.weekKey === weekKey() ? b.week : 0;
+        if (period === 'monthly') return b.monthKey === monthKey() ? b.month : 0;
+        if (period === 'event') return b.event;
+        return user.xp;
+    }
+
     // ====== Kemajuan tangga (LEVELLING.md) ======
 
     // Dipanggil ketika checkpoint sebuah mini target selesai. Tanpa ini posisi tangga
@@ -786,7 +822,7 @@ export function createAppState() {
         const bonus = grade === 'mumtaz' ? XP.mumtaz : 0;
         const gained = XP.setoran + bonus;
 
-        user.xp += gained;
+        addXp(gained);
         // Setiap anggota yang setoran menyumbang XP ke halaqahnya (XP.md — XP Halaqah).
         user.halaqahXp += XP.halaqahPerSetoran;
         user.setoranIds = [...user.setoranIds, sessionId];
@@ -900,6 +936,8 @@ export function createAppState() {
         get activeSurah() { return activeSurah(); },
         surahProgress,
         advanceSurahProgress,
+        addXp,
+        xpForPeriod,
         updatePlacement,
         submitPlacementRecording,
         setPlacementResult,

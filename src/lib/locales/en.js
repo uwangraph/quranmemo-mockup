@@ -909,6 +909,7 @@ export default {
     ,"certificate.level_beginner": "Juz Amma Memorization"
     ,"certificate.level_mid": "Mid Level Memorization"
     ,"certificate.level_pro": "Pro Level Memorization"
+    ,"halaqah.your_contribution": "From your recitations this period"
     ,"learn.content_pending": "Content not available yet"
     ,"learn.content_pending_desc": "Verses for {target} still need to come from a verified mushaf."
 };

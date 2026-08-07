@@ -909,6 +909,7 @@ export default {
     ,"certificate.level_beginner": "Hafalan Juz Amma"
     ,"certificate.level_mid": "Hafalan Mid Level"
     ,"certificate.level_pro": "Hafalan Pro Level"
+    ,"halaqah.your_contribution": "Dari setoranmu di periode ini"
     ,"learn.content_pending": "Konten belum tersedia"
     ,"learn.content_pending_desc": "Ayat untuk {target} masih menunggu sumber mushaf terverifikasi."
 };

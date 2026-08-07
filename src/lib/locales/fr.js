@@ -887,6 +887,7 @@ export default {
     ,"certificate.level_beginner": "Mémorisation du Juz Amma"
     ,"certificate.level_mid": "Mémorisation niveau intermédiaire"
     ,"certificate.level_pro": "Mémorisation niveau avancé"
+    ,"halaqah.your_contribution": "De tes récitations sur cette période"
     ,"learn.content_pending": "Contenu pas encore disponible"
     ,"learn.content_pending_desc": "Les versets de {target} attendent une source de mushaf vérifiée."
 };
