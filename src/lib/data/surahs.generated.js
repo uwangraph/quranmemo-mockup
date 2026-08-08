@@ -1104,7 +1104,7 @@ export default {
       },
       {
         "verseNumber": 3,
-        "arabic": "فَسَبِّحْ بِحَمْدِ رَبِّكَ وَٱسْتَغْفِرْهُ ۚ إِنَّهُۥ كَانَ تَوَّابًۢا",
+        "arabic": "فَسَبِّحْ بِحَمْدِ رَبِّكَ وَٱسْتَغْفِرْهُ إِنَّهُۥ كَانَ تَوَّابًۢا",
         "translationKey": "quran.110_3_translation",
         "transliteration": "Fa sab bih bihamdi rabbika was taghfir, innahu kaana tawwaaba",
         "audio": "https://everyayah.com/data/Husary_128kbps/110003.mp3",
@@ -1113,12 +1113,11 @@ export default {
           "بِحَمْدِ",
           "رَبِّكَ",
           "وَٱسْتَغْفِرْهُ",
-          "ۚ",
           "إِنَّهُۥ",
           "كَانَ",
           "تَوَّابًۢا"
         ],
-        "frontBlank": "___ ___ رَبِّكَ وَٱسْتَغْفِرْهُ ۚ إِنَّهُۥ كَانَ تَوَّابًۢا",
+        "frontBlank": "___ ___ رَبِّكَ وَٱسْتَغْفِرْهُ إِنَّهُۥ كَانَ تَوَّابًۢا",
         "frontBlankLatin": "___ ___ bih bihamdi rabbika was taghfir, innahu kaana tawwaaba",
         "frontCorrect": "فَسَبِّحْ بِحَمْدِ",
         "frontChoices": [
@@ -1126,23 +1125,23 @@ export default {
           "إِذَا جَآءَ",
           "وَرَأَيْتَ ٱلنَّاسَ"
         ],
-        "endBlank": "فَسَبِّحْ بِحَمْدِ رَبِّكَ وَٱسْتَغْفِرْهُ ۚ إِنَّهُۥ كَانَ ___",
-        "endBlankLatin": "Fa sab bih bihamdi rabbika was taghfir, ___",
+        "endBlank": "فَسَبِّحْ بِحَمْدِ رَبِّكَ وَٱسْتَغْفِرْهُ إِنَّهُۥ كَانَ ___",
+        "endBlankLatin": "Fa sab bih bihamdi rabbika was ___",
         "endCorrect": "تَوَّابًۢا",
         "endChoices": [
           "تَوَّابًۢا",
           "إِذَا",
           "جَآءَ"
         ],
-        "middleBlank": "فَسَبِّحْ بِحَمْدِ رَبِّكَ وَٱسْتَغْفِرْهُ ___ إِنَّهُۥ كَانَ تَوَّابًۢا",
-        "middleBlankLatin": "Fa sab bih bihamdi ___ was taghfir, innahu kaana tawwaaba",
-        "middleCorrect": "ۚ",
+        "middleBlank": "فَسَبِّحْ بِحَمْدِ رَبِّكَ ___ إِنَّهُۥ كَانَ تَوَّابًۢا",
+        "middleBlankLatin": "Fa sab bih ___ rabbika was taghfir, innahu kaana tawwaaba",
+        "middleCorrect": "وَٱسْتَغْفِرْهُ",
         "middleChoices": [
-          "ۚ",
+          "وَٱسْتَغْفِرْهُ",
           "إِذَا",
           "جَآءَ"
         ],
-        "twoBlank": "___ ___ رَبِّكَ وَٱسْتَغْفِرْهُ ۚ إِنَّهُۥ كَانَ تَوَّابًۢا",
+        "twoBlank": "___ ___ رَبِّكَ وَٱسْتَغْفِرْهُ إِنَّهُۥ كَانَ تَوَّابًۢا",
         "twoCorrect": [
           "فَسَبِّحْ",
           "بِحَمْدِ"
@@ -2549,49 +2548,48 @@ export default {
       },
       {
         "verseNumber": 4,
-        "arabic": "كَلَّا ۖ لَيُنۢبَذَنَّ فِى ٱلْحُطَمَةِ",
+        "arabic": "كَلَّا لَيُنۢبَذَنَّ فِى ٱلْحُطَمَةِ",
         "translationKey": "quran.104_4_translation",
         "transliteration": "Kalla layum ba zanna fil hutamah",
         "audio": "https://everyayah.com/data/Husary_128kbps/104004.mp3",
         "words": [
           "كَلَّا",
-          "ۖ",
           "لَيُنۢبَذَنَّ",
           "فِى",
           "ٱلْحُطَمَةِ"
         ],
-        "frontBlank": "___ ___ لَيُنۢبَذَنَّ فِى ٱلْحُطَمَةِ",
+        "frontBlank": "___ ___ فِى ٱلْحُطَمَةِ",
         "frontBlankLatin": "___ ___ ba zanna fil hutamah",
-        "frontCorrect": "كَلَّا ۖ",
+        "frontCorrect": "كَلَّا لَيُنۢبَذَنَّ",
         "frontChoices": [
-          "كَلَّا ۖ",
+          "كَلَّا لَيُنۢبَذَنَّ",
           "وَيْلٌۭ لِّكُلِّ",
           "ٱلَّذِى جَمَعَ"
         ],
-        "endBlank": "كَلَّا ۖ لَيُنۢبَذَنَّ فِى ___",
-        "endBlankLatin": "Kalla layum ba zanna ___",
+        "endBlank": "كَلَّا لَيُنۢبَذَنَّ فِى ___",
+        "endBlankLatin": "Kalla layum ba ___",
         "endCorrect": "ٱلْحُطَمَةِ",
         "endChoices": [
           "ٱلْحُطَمَةِ",
           "وَيْلٌۭ",
           "لِّكُلِّ"
         ],
-        "middleBlank": "كَلَّا ۖ ___ فِى ٱلْحُطَمَةِ",
+        "middleBlank": "كَلَّا لَيُنۢبَذَنَّ ___ ٱلْحُطَمَةِ",
         "middleBlankLatin": "Kalla layum ___ zanna fil hutamah",
-        "middleCorrect": "لَيُنۢبَذَنَّ",
+        "middleCorrect": "فِى",
         "middleChoices": [
-          "لَيُنۢبَذَنَّ",
+          "فِى",
           "وَيْلٌۭ",
           "لِّكُلِّ"
         ],
-        "twoBlank": "___ ___ لَيُنۢبَذَنَّ فِى ٱلْحُطَمَةِ",
+        "twoBlank": "___ ___ فِى ٱلْحُطَمَةِ",
         "twoCorrect": [
           "كَلَّا",
-          "ۖ"
+          "لَيُنۢبَذَنَّ"
         ],
         "twoChoices": [
           "كَلَّا",
-          "ۖ",
+          "لَيُنۢبَذَنَّ",
           "وَيْلٌۭ",
           "لِّكُلِّ"
         ]
@@ -4271,12 +4269,11 @@ export default {
       },
       {
         "verseNumber": 9,
-        "arabic": "۞ أَفَلَا يَعْلَمُ إِذَا بُعْثِرَ مَا فِى ٱلْقُبُورِ",
+        "arabic": "أَفَلَا يَعْلَمُ إِذَا بُعْثِرَ مَا فِى ٱلْقُبُورِ",
         "translationKey": "quran.100_9_translation",
         "transliteration": "Afala ya'lamu iza b'uthira ma filquboor",
         "audio": "https://everyayah.com/data/Husary_128kbps/100009.mp3",
         "words": [
-          "۞",
           "أَفَلَا",
           "يَعْلَمُ",
           "إِذَا",
@@ -4285,15 +4282,15 @@ export default {
           "فِى",
           "ٱلْقُبُورِ"
         ],
-        "frontBlank": "___ ___ يَعْلَمُ إِذَا بُعْثِرَ مَا فِى ٱلْقُبُورِ",
+        "frontBlank": "___ ___ إِذَا بُعْثِرَ مَا فِى ٱلْقُبُورِ",
         "frontBlankLatin": "___ ___ iza b'uthira ma filquboor",
-        "frontCorrect": "۞ أَفَلَا",
+        "frontCorrect": "أَفَلَا يَعْلَمُ",
         "frontChoices": [
           "فَٱلْمُورِيَٰتِ قَدْحًۭا",
-          "۞ أَفَلَا",
+          "أَفَلَا يَعْلَمُ",
           "وَٱلْعَٰدِيَٰتِ ضَبْحًۭا"
         ],
-        "endBlank": "۞ أَفَلَا يَعْلَمُ إِذَا بُعْثِرَ مَا فِى ___",
+        "endBlank": "أَفَلَا يَعْلَمُ إِذَا بُعْثِرَ مَا فِى ___",
         "endBlankLatin": "Afala ya'lamu iza b'uthira ma filquboor ___",
         "endCorrect": "ٱلْقُبُورِ",
         "endChoices": [
@@ -4301,22 +4298,22 @@ export default {
           "وَٱلْعَٰدِيَٰتِ",
           "ضَبْحًۭا"
         ],
-        "middleBlank": "۞ أَفَلَا يَعْلَمُ إِذَا ___ مَا فِى ٱلْقُبُورِ",
-        "middleBlankLatin": "Afala ya'lamu iza b'uthira ___ filquboor",
+        "middleBlank": "أَفَلَا يَعْلَمُ إِذَا ___ مَا فِى ٱلْقُبُورِ",
+        "middleBlankLatin": "Afala ya'lamu iza ___ ma filquboor",
         "middleCorrect": "بُعْثِرَ",
         "middleChoices": [
           "بُعْثِرَ",
           "وَٱلْعَٰدِيَٰتِ",
           "ضَبْحًۭا"
         ],
-        "twoBlank": "___ ___ يَعْلَمُ إِذَا بُعْثِرَ مَا فِى ٱلْقُبُورِ",
+        "twoBlank": "___ ___ إِذَا بُعْثِرَ مَا فِى ٱلْقُبُورِ",
         "twoCorrect": [
-          "۞",
-          "أَفَلَا"
+          "أَفَلَا",
+          "يَعْلَمُ"
         ],
         "twoChoices": [
-          "۞",
           "أَفَلَا",
+          "يَعْلَمُ",
           "وَٱلْعَٰدِيَٰتِ",
           "ضَبْحًۭا"
         ]
@@ -5034,7 +5031,7 @@ export default {
       },
       {
         "verseNumber": 5,
-        "arabic": "وَمَآ أُمِرُوٓا۟ إِلَّا لِيَعْبُدُوا۟ ٱللَّهَ مُخْلِصِينَ لَهُ ٱلدِّينَ حُنَفَآءَ وَيُقِيمُوا۟ ٱلصَّلَوٰةَ وَيُؤْتُوا۟ ٱلزَّكَوٰةَ ۚ وَذَٰلِكَ دِينُ ٱلْقَيِّمَةِ",
+        "arabic": "وَمَآ أُمِرُوٓا۟ إِلَّا لِيَعْبُدُوا۟ ٱللَّهَ مُخْلِصِينَ لَهُ ٱلدِّينَ حُنَفَآءَ وَيُقِيمُوا۟ ٱلصَّلَوٰةَ وَيُؤْتُوا۟ ٱلزَّكَوٰةَ وَذَٰلِكَ دِينُ ٱلْقَيِّمَةِ",
         "translationKey": "quran.98_5_translation",
         "transliteration": "Wa maa umiroo il-la liy'abu dul laaha mukhliseena lahud-deena huna faa-a wa yuqeemus salaahta wa yu-tuz zakaata; wa zaalika deenul qaiyimah",
         "audio": "https://everyayah.com/data/Husary_128kbps/098005.mp3",
@@ -5052,12 +5049,11 @@ export default {
           "ٱلصَّلَوٰةَ",
           "وَيُؤْتُوا۟",
           "ٱلزَّكَوٰةَ",
-          "ۚ",
           "وَذَٰلِكَ",
           "دِينُ",
           "ٱلْقَيِّمَةِ"
         ],
-        "frontBlank": "___ ___ إِلَّا لِيَعْبُدُوا۟ ٱللَّهَ مُخْلِصِينَ لَهُ ٱلدِّينَ حُنَفَآءَ وَيُقِيمُوا۟ ٱلصَّلَوٰةَ وَيُؤْتُوا۟ ٱلزَّكَوٰةَ ۚ وَذَٰلِكَ دِينُ ٱلْقَيِّمَةِ",
+        "frontBlank": "___ ___ إِلَّا لِيَعْبُدُوا۟ ٱللَّهَ مُخْلِصِينَ لَهُ ٱلدِّينَ حُنَفَآءَ وَيُقِيمُوا۟ ٱلصَّلَوٰةَ وَيُؤْتُوا۟ ٱلزَّكَوٰةَ وَذَٰلِكَ دِينُ ٱلْقَيِّمَةِ",
         "frontBlankLatin": "___ ___ umiroo il-la liy'abu dul laaha mukhliseena lahud-deena huna faa-a wa yuqeemus salaahta wa yu-tuz zakaata; wa zaalika deenul qaiyimah",
         "frontCorrect": "وَمَآ أُمِرُوٓا۟",
         "frontChoices": [
@@ -5065,15 +5061,15 @@ export default {
           "لَمْ يَكُنِ",
           "رَسُولٌۭ مِّنَ"
         ],
-        "endBlank": "وَمَآ أُمِرُوٓا۟ إِلَّا لِيَعْبُدُوا۟ ٱللَّهَ مُخْلِصِينَ لَهُ ٱلدِّينَ حُنَفَآءَ وَيُقِيمُوا۟ ٱلصَّلَوٰةَ وَيُؤْتُوا۟ ٱلزَّكَوٰةَ ۚ وَذَٰلِكَ دِينُ ___",
-        "endBlankLatin": "Wa maa umiroo il-la liy'abu dul laaha mukhliseena lahud-deena huna faa-a wa yuqeemus salaahta wa yu-tuz ___",
+        "endBlank": "وَمَآ أُمِرُوٓا۟ إِلَّا لِيَعْبُدُوا۟ ٱللَّهَ مُخْلِصِينَ لَهُ ٱلدِّينَ حُنَفَآءَ وَيُقِيمُوا۟ ٱلصَّلَوٰةَ وَيُؤْتُوا۟ ٱلزَّكَوٰةَ وَذَٰلِكَ دِينُ ___",
+        "endBlankLatin": "Wa maa umiroo il-la liy'abu dul laaha mukhliseena lahud-deena huna faa-a wa yuqeemus salaahta wa ___",
         "endCorrect": "ٱلْقَيِّمَةِ",
         "endChoices": [
           "ٱلْقَيِّمَةِ",
           "لَمْ",
           "يَكُنِ"
         ],
-        "middleBlank": "وَمَآ أُمِرُوٓا۟ إِلَّا لِيَعْبُدُوا۟ ٱللَّهَ مُخْلِصِينَ لَهُ ٱلدِّينَ ___ وَيُقِيمُوا۟ ٱلصَّلَوٰةَ وَيُؤْتُوا۟ ٱلزَّكَوٰةَ ۚ وَذَٰلِكَ دِينُ ٱلْقَيِّمَةِ",
+        "middleBlank": "وَمَآ أُمِرُوٓا۟ إِلَّا لِيَعْبُدُوا۟ ٱللَّهَ مُخْلِصِينَ لَهُ ٱلدِّينَ ___ وَيُقِيمُوا۟ ٱلصَّلَوٰةَ وَيُؤْتُوا۟ ٱلزَّكَوٰةَ وَذَٰلِكَ دِينُ ٱلْقَيِّمَةِ",
         "middleBlankLatin": "Wa maa umiroo il-la liy'abu dul laaha mukhliseena ___ huna faa-a wa yuqeemus salaahta wa yu-tuz zakaata; wa zaalika deenul qaiyimah",
         "middleCorrect": "حُنَفَآءَ",
         "middleChoices": [
@@ -5081,7 +5077,7 @@ export default {
           "لَمْ",
           "يَكُنِ"
         ],
-        "twoBlank": "___ ___ إِلَّا لِيَعْبُدُوا۟ ٱللَّهَ مُخْلِصِينَ لَهُ ٱلدِّينَ حُنَفَآءَ وَيُقِيمُوا۟ ٱلصَّلَوٰةَ وَيُؤْتُوا۟ ٱلزَّكَوٰةَ ۚ وَذَٰلِكَ دِينُ ٱلْقَيِّمَةِ",
+        "twoBlank": "___ ___ إِلَّا لِيَعْبُدُوا۟ ٱللَّهَ مُخْلِصِينَ لَهُ ٱلدِّينَ حُنَفَآءَ وَيُقِيمُوا۟ ٱلصَّلَوٰةَ وَيُؤْتُوا۟ ٱلزَّكَوٰةَ وَذَٰلِكَ دِينُ ٱلْقَيِّمَةِ",
         "twoCorrect": [
           "وَمَآ",
           "أُمِرُوٓا۟"
@@ -5095,7 +5091,7 @@ export default {
       },
       {
         "verseNumber": 6,
-        "arabic": "إِنَّ ٱلَّذِينَ كَفَرُوا۟ مِنْ أَهْلِ ٱلْكِتَٰبِ وَٱلْمُشْرِكِينَ فِى نَارِ جَهَنَّمَ خَٰلِدِينَ فِيهَآ ۚ أُو۟لَٰٓئِكَ هُمْ شَرُّ ٱلْبَرِيَّةِ",
+        "arabic": "إِنَّ ٱلَّذِينَ كَفَرُوا۟ مِنْ أَهْلِ ٱلْكِتَٰبِ وَٱلْمُشْرِكِينَ فِى نَارِ جَهَنَّمَ خَٰلِدِينَ فِيهَآ أُو۟لَٰٓئِكَ هُمْ شَرُّ ٱلْبَرِيَّةِ",
         "translationKey": "quran.98_6_translation",
         "transliteration": "Innal lazeena kafaru min ahlil kitaabi wal mushri keena fee nari jahan nama khaali deena feeha; ulaa-ika hum shar rul ba reeyah",
         "audio": "https://everyayah.com/data/Husary_128kbps/098006.mp3",
@@ -5112,13 +5108,12 @@ export default {
           "جَهَنَّمَ",
           "خَٰلِدِينَ",
           "فِيهَآ",
-          "ۚ",
           "أُو۟لَٰٓئِكَ",
           "هُمْ",
           "شَرُّ",
           "ٱلْبَرِيَّةِ"
         ],
-        "frontBlank": "___ ___ كَفَرُوا۟ مِنْ أَهْلِ ٱلْكِتَٰبِ وَٱلْمُشْرِكِينَ فِى نَارِ جَهَنَّمَ خَٰلِدِينَ فِيهَآ ۚ أُو۟لَٰٓئِكَ هُمْ شَرُّ ٱلْبَرِيَّةِ",
+        "frontBlank": "___ ___ كَفَرُوا۟ مِنْ أَهْلِ ٱلْكِتَٰبِ وَٱلْمُشْرِكِينَ فِى نَارِ جَهَنَّمَ خَٰلِدِينَ فِيهَآ أُو۟لَٰٓئِكَ هُمْ شَرُّ ٱلْبَرِيَّةِ",
         "frontBlankLatin": "___ ___ kafaru min ahlil kitaabi wal mushri keena fee nari jahan nama khaali deena feeha; ulaa-ika hum shar rul ba reeyah",
         "frontCorrect": "إِنَّ ٱلَّذِينَ",
         "frontChoices": [
@@ -5126,15 +5121,15 @@ export default {
           "لَمْ يَكُنِ",
           "رَسُولٌۭ مِّنَ"
         ],
-        "endBlank": "إِنَّ ٱلَّذِينَ كَفَرُوا۟ مِنْ أَهْلِ ٱلْكِتَٰبِ وَٱلْمُشْرِكِينَ فِى نَارِ جَهَنَّمَ خَٰلِدِينَ فِيهَآ ۚ أُو۟لَٰٓئِكَ هُمْ شَرُّ ___",
-        "endBlankLatin": "Innal lazeena kafaru min ahlil kitaabi wal mushri keena fee nari jahan nama khaali deena feeha; ___",
+        "endBlank": "إِنَّ ٱلَّذِينَ كَفَرُوا۟ مِنْ أَهْلِ ٱلْكِتَٰبِ وَٱلْمُشْرِكِينَ فِى نَارِ جَهَنَّمَ خَٰلِدِينَ فِيهَآ أُو۟لَٰٓئِكَ هُمْ شَرُّ ___",
+        "endBlankLatin": "Innal lazeena kafaru min ahlil kitaabi wal mushri keena fee nari jahan nama khaali deena ___",
         "endCorrect": "ٱلْبَرِيَّةِ",
         "endChoices": [
           "ٱلْبَرِيَّةِ",
           "لَمْ",
           "يَكُنِ"
         ],
-        "middleBlank": "إِنَّ ٱلَّذِينَ كَفَرُوا۟ مِنْ أَهْلِ ٱلْكِتَٰبِ وَٱلْمُشْرِكِينَ فِى ___ جَهَنَّمَ خَٰلِدِينَ فِيهَآ ۚ أُو۟لَٰٓئِكَ هُمْ شَرُّ ٱلْبَرِيَّةِ",
+        "middleBlank": "إِنَّ ٱلَّذِينَ كَفَرُوا۟ مِنْ أَهْلِ ٱلْكِتَٰبِ وَٱلْمُشْرِكِينَ فِى ___ جَهَنَّمَ خَٰلِدِينَ فِيهَآ أُو۟لَٰٓئِكَ هُمْ شَرُّ ٱلْبَرِيَّةِ",
         "middleBlankLatin": "Innal lazeena kafaru min ahlil kitaabi wal mushri ___ fee nari jahan nama khaali deena feeha; ulaa-ika hum shar rul ba reeyah",
         "middleCorrect": "نَارِ",
         "middleChoices": [
@@ -5142,7 +5137,7 @@ export default {
           "لَمْ",
           "يَكُنِ"
         ],
-        "twoBlank": "___ ___ كَفَرُوا۟ مِنْ أَهْلِ ٱلْكِتَٰبِ وَٱلْمُشْرِكِينَ فِى نَارِ جَهَنَّمَ خَٰلِدِينَ فِيهَآ ۚ أُو۟لَٰٓئِكَ هُمْ شَرُّ ٱلْبَرِيَّةِ",
+        "twoBlank": "___ ___ كَفَرُوا۟ مِنْ أَهْلِ ٱلْكِتَٰبِ وَٱلْمُشْرِكِينَ فِى نَارِ جَهَنَّمَ خَٰلِدِينَ فِيهَآ أُو۟لَٰٓئِكَ هُمْ شَرُّ ٱلْبَرِيَّةِ",
         "twoCorrect": [
           "إِنَّ",
           "ٱلَّذِينَ"
@@ -5209,7 +5204,7 @@ export default {
       },
       {
         "verseNumber": 8,
-        "arabic": "جَزَآؤُهُمْ عِندَ رَبِّهِمْ جَنَّٰتُ عَدْنٍۢ تَجْرِى مِن تَحْتِهَا ٱلْأَنْهَٰرُ خَٰلِدِينَ فِيهَآ أَبَدًۭا ۖ رَّضِىَ ٱللَّهُ عَنْهُمْ وَرَضُوا۟ عَنْهُ ۚ ذَٰلِكَ لِمَنْ خَشِىَ رَبَّهُۥ",
+        "arabic": "جَزَآؤُهُمْ عِندَ رَبِّهِمْ جَنَّٰتُ عَدْنٍۢ تَجْرِى مِن تَحْتِهَا ٱلْأَنْهَٰرُ خَٰلِدِينَ فِيهَآ أَبَدًۭا رَّضِىَ ٱللَّهُ عَنْهُمْ وَرَضُوا۟ عَنْهُ ذَٰلِكَ لِمَنْ خَشِىَ رَبَّهُۥ",
         "translationKey": "quran.98_8_translation",
         "transliteration": "Jazaa-uhum inda rabbihim jan naatu 'adnin tajree min tahtihal an haaru khalideena feeha abada; radiy-yallaahu 'anhum wa ra du 'an zaalika liman khashiya rabbah.",
         "audio": "https://everyayah.com/data/Husary_128kbps/098008.mp3",
@@ -5226,19 +5221,17 @@ export default {
           "خَٰلِدِينَ",
           "فِيهَآ",
           "أَبَدًۭا",
-          "ۖ",
           "رَّضِىَ",
           "ٱللَّهُ",
           "عَنْهُمْ",
           "وَرَضُوا۟",
           "عَنْهُ",
-          "ۚ",
           "ذَٰلِكَ",
           "لِمَنْ",
           "خَشِىَ",
           "رَبَّهُۥ"
         ],
-        "frontBlank": "___ ___ رَبِّهِمْ جَنَّٰتُ عَدْنٍۢ تَجْرِى مِن تَحْتِهَا ٱلْأَنْهَٰرُ خَٰلِدِينَ فِيهَآ أَبَدًۭا ۖ رَّضِىَ ٱللَّهُ عَنْهُمْ وَرَضُوا۟ عَنْهُ ۚ ذَٰلِكَ لِمَنْ خَشِىَ رَبَّهُۥ",
+        "frontBlank": "___ ___ رَبِّهِمْ جَنَّٰتُ عَدْنٍۢ تَجْرِى مِن تَحْتِهَا ٱلْأَنْهَٰرُ خَٰلِدِينَ فِيهَآ أَبَدًۭا رَّضِىَ ٱللَّهُ عَنْهُمْ وَرَضُوا۟ عَنْهُ ذَٰلِكَ لِمَنْ خَشِىَ رَبَّهُۥ",
         "frontBlankLatin": "___ ___ rabbihim jan naatu 'adnin tajree min tahtihal an haaru khalideena feeha abada; radiy-yallaahu 'anhum wa ra du 'an zaalika liman khashiya rabbah.",
         "frontCorrect": "جَزَآؤُهُمْ عِندَ",
         "frontChoices": [
@@ -5246,23 +5239,23 @@ export default {
           "لَمْ يَكُنِ",
           "رَسُولٌۭ مِّنَ"
         ],
-        "endBlank": "جَزَآؤُهُمْ عِندَ رَبِّهِمْ جَنَّٰتُ عَدْنٍۢ تَجْرِى مِن تَحْتِهَا ٱلْأَنْهَٰرُ خَٰلِدِينَ فِيهَآ أَبَدًۭا ۖ رَّضِىَ ٱللَّهُ عَنْهُمْ وَرَضُوا۟ عَنْهُ ۚ ذَٰلِكَ لِمَنْ خَشِىَ ___",
-        "endBlankLatin": "Jazaa-uhum inda rabbihim jan naatu 'adnin tajree min tahtihal an haaru khalideena feeha abada; radiy-yallaahu 'anhum wa ra du 'an zaalika liman ___",
+        "endBlank": "جَزَآؤُهُمْ عِندَ رَبِّهِمْ جَنَّٰتُ عَدْنٍۢ تَجْرِى مِن تَحْتِهَا ٱلْأَنْهَٰرُ خَٰلِدِينَ فِيهَآ أَبَدًۭا رَّضِىَ ٱللَّهُ عَنْهُمْ وَرَضُوا۟ عَنْهُ ذَٰلِكَ لِمَنْ خَشِىَ ___",
+        "endBlankLatin": "Jazaa-uhum inda rabbihim jan naatu 'adnin tajree min tahtihal an haaru khalideena feeha abada; radiy-yallaahu 'anhum wa ra du 'an ___",
         "endCorrect": "رَبَّهُۥ",
         "endChoices": [
           "يَكُنِ",
           "رَبَّهُۥ",
           "لَمْ"
         ],
-        "middleBlank": "جَزَآؤُهُمْ عِندَ رَبِّهِمْ جَنَّٰتُ عَدْنٍۢ تَجْرِى مِن تَحْتِهَا ٱلْأَنْهَٰرُ خَٰلِدِينَ فِيهَآ ___ ۖ رَّضِىَ ٱللَّهُ عَنْهُمْ وَرَضُوا۟ عَنْهُ ۚ ذَٰلِكَ لِمَنْ خَشِىَ رَبَّهُۥ",
-        "middleBlankLatin": "Jazaa-uhum inda rabbihim jan naatu 'adnin tajree min tahtihal an haaru ___ feeha abada; radiy-yallaahu 'anhum wa ra du 'an zaalika liman khashiya rabbah.",
-        "middleCorrect": "أَبَدًۭا",
+        "middleBlank": "جَزَآؤُهُمْ عِندَ رَبِّهِمْ جَنَّٰتُ عَدْنٍۢ تَجْرِى مِن تَحْتِهَا ٱلْأَنْهَٰرُ خَٰلِدِينَ ___ أَبَدًۭا رَّضِىَ ٱللَّهُ عَنْهُمْ وَرَضُوا۟ عَنْهُ ذَٰلِكَ لِمَنْ خَشِىَ رَبَّهُۥ",
+        "middleBlankLatin": "Jazaa-uhum inda rabbihim jan naatu 'adnin tajree min tahtihal an ___ khalideena feeha abada; radiy-yallaahu 'anhum wa ra du 'an zaalika liman khashiya rabbah.",
+        "middleCorrect": "فِيهَآ",
         "middleChoices": [
-          "أَبَدًۭا",
+          "فِيهَآ",
           "لَمْ",
           "يَكُنِ"
         ],
-        "twoBlank": "___ ___ رَبِّهِمْ جَنَّٰتُ عَدْنٍۢ تَجْرِى مِن تَحْتِهَا ٱلْأَنْهَٰرُ خَٰلِدِينَ فِيهَآ أَبَدًۭا ۖ رَّضِىَ ٱللَّهُ عَنْهُمْ وَرَضُوا۟ عَنْهُ ۚ ذَٰلِكَ لِمَنْ خَشِىَ رَبَّهُۥ",
+        "twoBlank": "___ ___ رَبِّهِمْ جَنَّٰتُ عَدْنٍۢ تَجْرِى مِن تَحْتِهَا ٱلْأَنْهَٰرُ خَٰلِدِينَ فِيهَآ أَبَدًۭا رَّضِىَ ٱللَّهُ عَنْهُمْ وَرَضُوا۟ عَنْهُ ذَٰلِكَ لِمَنْ خَشِىَ رَبَّهُۥ",
         "twoCorrect": [
           "جَزَآؤُهُمْ",
           "عِندَ"
@@ -5285,54 +5278,50 @@ export default {
     "verses": [
       {
         "verseNumber": 1,
-        "arabic": "بِّسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ إِنَّآ أَنزَلْنَٰهُ فِى لَيْلَةِ ٱلْقَدْرِ",
+        "arabic": "إِنَّآ أَنزَلْنَٰهُ فِى لَيْلَةِ ٱلْقَدْرِ",
         "translationKey": "quran.97_1_translation",
         "transliteration": "Innaa anzalnaahu fee lailatil qadr",
         "audio": "https://everyayah.com/data/Husary_128kbps/097001.mp3",
         "words": [
-          "بِّسْمِ",
-          "ٱللَّهِ",
-          "ٱلرَّحْمَٰنِ",
-          "ٱلرَّحِيمِ",
           "إِنَّآ",
           "أَنزَلْنَٰهُ",
           "فِى",
           "لَيْلَةِ",
           "ٱلْقَدْرِ"
         ],
-        "frontBlank": "___ ___ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ إِنَّآ أَنزَلْنَٰهُ فِى لَيْلَةِ ٱلْقَدْرِ",
+        "frontBlank": "___ ___ فِى لَيْلَةِ ٱلْقَدْرِ",
         "frontBlankLatin": "___ ___ fee lailatil qadr",
-        "frontCorrect": "بِّسْمِ ٱللَّهِ",
+        "frontCorrect": "إِنَّآ أَنزَلْنَٰهُ",
         "frontChoices": [
-          "بِّسْمِ ٱللَّهِ",
+          "إِنَّآ أَنزَلْنَٰهُ",
           "وَمَآ أَدْرَىٰكَ",
           "لَيْلَةُ ٱلْقَدْرِ"
         ],
-        "endBlank": "بِّسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ إِنَّآ أَنزَلْنَٰهُ فِى لَيْلَةِ ___",
-        "endBlankLatin": "Innaa anzalnaahu fee lailatil qadr ___",
+        "endBlank": "إِنَّآ أَنزَلْنَٰهُ فِى لَيْلَةِ ___",
+        "endBlankLatin": "Innaa anzalnaahu fee lailatil ___",
         "endCorrect": "ٱلْقَدْرِ",
         "endChoices": [
           "ٱلْقَدْرِ",
           "وَمَآ",
           "أَدْرَىٰكَ"
         ],
-        "middleBlank": "بِّسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ ___ أَنزَلْنَٰهُ فِى لَيْلَةِ ٱلْقَدْرِ",
-        "middleBlankLatin": "Innaa anzalnaahu fee lailatil ___",
-        "middleCorrect": "إِنَّآ",
+        "middleBlank": "إِنَّآ أَنزَلْنَٰهُ ___ لَيْلَةِ ٱلْقَدْرِ",
+        "middleBlankLatin": "Innaa anzalnaahu ___ lailatil qadr",
+        "middleCorrect": "فِى",
         "middleChoices": [
-          "إِنَّآ",
+          "فِى",
           "وَمَآ",
           "أَدْرَىٰكَ"
         ],
-        "twoBlank": "___ ___ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ إِنَّآ أَنزَلْنَٰهُ فِى لَيْلَةِ ٱلْقَدْرِ",
+        "twoBlank": "___ ___ فِى لَيْلَةِ ٱلْقَدْرِ",
         "twoCorrect": [
-          "بِّسْمِ",
-          "ٱللَّهِ"
+          "إِنَّآ",
+          "أَنزَلْنَٰهُ"
         ],
         "twoChoices": [
           "أَدْرَىٰكَ",
-          "بِّسْمِ",
-          "ٱللَّهِ",
+          "إِنَّآ",
+          "أَنزَلْنَٰهُ",
           "وَمَآ"
         ]
       },
@@ -5354,7 +5343,7 @@ export default {
         "frontCorrect": "وَمَآ أَدْرَىٰكَ",
         "frontChoices": [
           "وَمَآ أَدْرَىٰكَ",
-          "بِّسْمِ ٱللَّهِ",
+          "إِنَّآ أَنزَلْنَٰهُ",
           "لَيْلَةُ ٱلْقَدْرِ"
         ],
         "endBlank": "وَمَآ أَدْرَىٰكَ مَا لَيْلَةُ ___",
@@ -5362,16 +5351,16 @@ export default {
         "endCorrect": "ٱلْقَدْرِ",
         "endChoices": [
           "ٱلْقَدْرِ",
-          "بِّسْمِ",
-          "ٱللَّهِ"
+          "إِنَّآ",
+          "أَنزَلْنَٰهُ"
         ],
         "middleBlank": "وَمَآ أَدْرَىٰكَ ___ لَيْلَةُ ٱلْقَدْرِ",
         "middleBlankLatin": "Wa maa ___ ma lailatul qadr",
         "middleCorrect": "مَا",
         "middleChoices": [
           "مَا",
-          "بِّسْمِ",
-          "ٱللَّهِ"
+          "إِنَّآ",
+          "أَنزَلْنَٰهُ"
         ],
         "twoBlank": "___ ___ مَا لَيْلَةُ ٱلْقَدْرِ",
         "twoCorrect": [
@@ -5381,8 +5370,8 @@ export default {
         "twoChoices": [
           "وَمَآ",
           "أَدْرَىٰكَ",
-          "بِّسْمِ",
-          "ٱللَّهِ"
+          "إِنَّآ",
+          "أَنزَلْنَٰهُ"
         ]
       },
       {
@@ -5404,7 +5393,7 @@ export default {
         "frontCorrect": "لَيْلَةُ ٱلْقَدْرِ",
         "frontChoices": [
           "لَيْلَةُ ٱلْقَدْرِ",
-          "بِّسْمِ ٱللَّهِ",
+          "إِنَّآ أَنزَلْنَٰهُ",
           "وَمَآ أَدْرَىٰكَ"
         ],
         "endBlank": "لَيْلَةُ ٱلْقَدْرِ خَيْرٌۭ مِّنْ أَلْفِ ___",
@@ -5412,16 +5401,16 @@ export default {
         "endCorrect": "شَهْرٍۢ",
         "endChoices": [
           "شَهْرٍۢ",
-          "بِّسْمِ",
-          "ٱللَّهِ"
+          "إِنَّآ",
+          "أَنزَلْنَٰهُ"
         ],
         "middleBlank": "لَيْلَةُ ٱلْقَدْرِ خَيْرٌۭ ___ أَلْفِ شَهْرٍۢ",
         "middleBlankLatin": "Lailatul qadri khairum ___ alfee shahr",
         "middleCorrect": "مِّنْ",
         "middleChoices": [
           "مِّنْ",
-          "بِّسْمِ",
-          "ٱللَّهِ"
+          "إِنَّآ",
+          "أَنزَلْنَٰهُ"
         ],
         "twoBlank": "___ ___ خَيْرٌۭ مِّنْ أَلْفِ شَهْرٍۢ",
         "twoCorrect": [
@@ -5431,8 +5420,8 @@ export default {
         "twoChoices": [
           "لَيْلَةُ",
           "ٱلْقَدْرِ",
-          "بِّسْمِ",
-          "ٱللَّهِ"
+          "إِنَّآ",
+          "أَنزَلْنَٰهُ"
         ]
       },
       {
@@ -5457,7 +5446,7 @@ export default {
         "frontCorrect": "تَنَزَّلُ ٱلْمَلَٰٓئِكَةُ",
         "frontChoices": [
           "تَنَزَّلُ ٱلْمَلَٰٓئِكَةُ",
-          "بِّسْمِ ٱللَّهِ",
+          "إِنَّآ أَنزَلْنَٰهُ",
           "وَمَآ أَدْرَىٰكَ"
         ],
         "endBlank": "تَنَزَّلُ ٱلْمَلَٰٓئِكَةُ وَٱلرُّوحُ فِيهَا بِإِذْنِ رَبِّهِم مِّن كُلِّ ___",
@@ -5465,16 +5454,16 @@ export default {
         "endCorrect": "أَمْرٍۢ",
         "endChoices": [
           "أَمْرٍۢ",
-          "بِّسْمِ",
-          "ٱللَّهِ"
+          "إِنَّآ",
+          "أَنزَلْنَٰهُ"
         ],
         "middleBlank": "تَنَزَّلُ ٱلْمَلَٰٓئِكَةُ وَٱلرُّوحُ فِيهَا ___ رَبِّهِم مِّن كُلِّ أَمْرٍۢ",
         "middleBlankLatin": "Tanaz zalul malaa-ikatu war ___ feeha bi izni-rab bihim min kulli amr",
         "middleCorrect": "بِإِذْنِ",
         "middleChoices": [
           "بِإِذْنِ",
-          "بِّسْمِ",
-          "ٱللَّهِ"
+          "إِنَّآ",
+          "أَنزَلْنَٰهُ"
         ],
         "twoBlank": "___ ___ وَٱلرُّوحُ فِيهَا بِإِذْنِ رَبِّهِم مِّن كُلِّ أَمْرٍۢ",
         "twoCorrect": [
@@ -5484,8 +5473,8 @@ export default {
         "twoChoices": [
           "تَنَزَّلُ",
           "ٱلْمَلَٰٓئِكَةُ",
-          "بِّسْمِ",
-          "ٱللَّهِ"
+          "إِنَّآ",
+          "أَنزَلْنَٰهُ"
         ]
       },
       {
@@ -5506,7 +5495,7 @@ export default {
         "frontCorrect": "سَلَٰمٌ هِىَ",
         "frontChoices": [
           "سَلَٰمٌ هِىَ",
-          "بِّسْمِ ٱللَّهِ",
+          "إِنَّآ أَنزَلْنَٰهُ",
           "وَمَآ أَدْرَىٰكَ"
         ],
         "endBlank": "سَلَٰمٌ هِىَ حَتَّىٰ مَطْلَعِ ___",
@@ -5514,16 +5503,16 @@ export default {
         "endCorrect": "ٱلْفَجْرِ",
         "endChoices": [
           "ٱلْفَجْرِ",
-          "بِّسْمِ",
-          "ٱللَّهِ"
+          "إِنَّآ",
+          "أَنزَلْنَٰهُ"
         ],
         "middleBlank": "سَلَٰمٌ هِىَ ___ مَطْلَعِ ٱلْفَجْرِ",
         "middleBlankLatin": "Salaamun hiya ___ mat la'il fajr",
         "middleCorrect": "حَتَّىٰ",
         "middleChoices": [
           "حَتَّىٰ",
-          "بِّسْمِ",
-          "ٱللَّهِ"
+          "إِنَّآ",
+          "أَنزَلْنَٰهُ"
         ],
         "twoBlank": "___ ___ حَتَّىٰ مَطْلَعِ ٱلْفَجْرِ",
         "twoCorrect": [
@@ -5533,8 +5522,8 @@ export default {
         "twoChoices": [
           "سَلَٰمٌ",
           "هِىَ",
-          "بِّسْمِ",
-          "ٱللَّهِ"
+          "إِنَّآ",
+          "أَنزَلْنَٰهُ"
         ]
       }
     ]
@@ -6403,7 +6392,7 @@ export default {
       },
       {
         "verseNumber": 19,
-        "arabic": "كَلَّا لَا تُطِعْهُ وَٱسْجُدْ وَٱقْتَرِب ۩",
+        "arabic": "كَلَّا لَا تُطِعْهُ وَٱسْجُدْ وَٱقْتَرِب",
         "translationKey": "quran.96_19_translation",
         "transliteration": "Kalla; la tuti'hu wasjud waqtarib",
         "audio": "https://everyayah.com/data/Husary_128kbps/096019.mp3",
@@ -6412,10 +6401,9 @@ export default {
           "لَا",
           "تُطِعْهُ",
           "وَٱسْجُدْ",
-          "وَٱقْتَرِب",
-          "۩"
+          "وَٱقْتَرِب"
         ],
-        "frontBlank": "___ ___ تُطِعْهُ وَٱسْجُدْ وَٱقْتَرِب ۩",
+        "frontBlank": "___ ___ تُطِعْهُ وَٱسْجُدْ وَٱقْتَرِب",
         "frontBlankLatin": "___ ___ tuti'hu wasjud waqtarib",
         "frontCorrect": "كَلَّا لَا",
         "frontChoices": [
@@ -6423,23 +6411,23 @@ export default {
           "ٱقْرَأْ بِٱسْمِ",
           "خَلَقَ ٱلْإِنسَٰنَ"
         ],
-        "endBlank": "كَلَّا لَا تُطِعْهُ وَٱسْجُدْ وَٱقْتَرِب ___",
-        "endBlankLatin": "Kalla; la tuti'hu wasjud waqtarib ___",
-        "endCorrect": "۩",
+        "endBlank": "كَلَّا لَا تُطِعْهُ وَٱسْجُدْ ___",
+        "endBlankLatin": "Kalla; la tuti'hu wasjud ___",
+        "endCorrect": "وَٱقْتَرِب",
         "endChoices": [
-          "۩",
+          "وَٱقْتَرِب",
           "ٱقْرَأْ",
           "بِٱسْمِ"
         ],
-        "middleBlank": "كَلَّا لَا تُطِعْهُ ___ وَٱقْتَرِب ۩",
-        "middleBlankLatin": "Kalla; la tuti'hu ___ waqtarib",
-        "middleCorrect": "وَٱسْجُدْ",
+        "middleBlank": "كَلَّا لَا ___ وَٱسْجُدْ وَٱقْتَرِب",
+        "middleBlankLatin": "Kalla; la ___ wasjud waqtarib",
+        "middleCorrect": "تُطِعْهُ",
         "middleChoices": [
-          "وَٱسْجُدْ",
+          "تُطِعْهُ",
           "ٱقْرَأْ",
           "بِٱسْمِ"
         ],
-        "twoBlank": "___ ___ تُطِعْهُ وَٱسْجُدْ وَٱقْتَرِب ۩",
+        "twoBlank": "___ ___ تُطِعْهُ وَٱسْجُدْ وَٱقْتَرِب",
         "twoCorrect": [
           "كَلَّا",
           "لَا"
@@ -6462,52 +6450,46 @@ export default {
     "verses": [
       {
         "verseNumber": 1,
-        "arabic": "بِّسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ وَٱلتِّينِ وَٱلزَّيْتُونِ",
+        "arabic": "وَٱلتِّينِ وَٱلزَّيْتُونِ",
         "translationKey": "quran.95_1_translation",
         "transliteration": "Wat teeni waz zaitoon",
         "audio": "https://everyayah.com/data/Husary_128kbps/095001.mp3",
         "words": [
-          "بِّسْمِ",
-          "ٱللَّهِ",
-          "ٱلرَّحْمَٰنِ",
-          "ٱلرَّحِيمِ",
           "وَٱلتِّينِ",
           "وَٱلزَّيْتُونِ"
         ],
-        "frontBlank": "___ ___ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ وَٱلتِّينِ وَٱلزَّيْتُونِ",
-        "frontBlankLatin": "___ ___ waz zaitoon",
-        "frontCorrect": "بِّسْمِ ٱللَّهِ",
+        "frontBlank": "___ وَٱلزَّيْتُونِ",
+        "frontBlankLatin": "___ teeni waz zaitoon",
+        "frontCorrect": "وَٱلتِّينِ",
         "frontChoices": [
-          "بِّسْمِ ٱللَّهِ",
-          "وَطُورِ سِينِينَ",
-          "وَهَٰذَا ٱلْبَلَدِ"
+          "وَٱلتِّينِ",
+          "وَٱلتِّينِ وَٱلزَّيْتُونِ",
+          "وَطُورِ سِينِينَ"
         ],
-        "endBlank": "بِّسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ وَٱلتِّينِ ___",
-        "endBlankLatin": "Wat teeni waz zaitoon ___",
+        "endBlank": "وَٱلتِّينِ ___",
+        "endBlankLatin": "Wat ___",
         "endCorrect": "وَٱلزَّيْتُونِ",
         "endChoices": [
           "وَٱلزَّيْتُونِ",
           "وَطُورِ",
           "سِينِينَ"
         ],
-        "middleBlank": "بِّسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ___ وَٱلتِّينِ وَٱلزَّيْتُونِ",
-        "middleBlankLatin": "Wat teeni waz ___",
-        "middleCorrect": "ٱلرَّحِيمِ",
+        "middleBlank": "___ وَٱلزَّيْتُونِ",
+        "middleBlankLatin": "___ teeni waz zaitoon",
+        "middleCorrect": "وَٱلتِّينِ",
         "middleChoices": [
-          "ٱلرَّحِيمِ",
+          "وَٱلتِّينِ",
           "وَطُورِ",
           "سِينِينَ"
         ],
-        "twoBlank": "___ ___ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ وَٱلتِّينِ وَٱلزَّيْتُونِ",
+        "twoBlank": "___ وَٱلزَّيْتُونِ",
         "twoCorrect": [
-          "بِّسْمِ",
-          "ٱللَّهِ"
+          "وَٱلتِّينِ"
         ],
         "twoChoices": [
-          "سِينِينَ",
-          "بِّسْمِ",
-          "ٱللَّهِ",
-          "وَطُورِ"
+          "وَٱلتِّينِ",
+          "وَطُورِ",
+          "سِينِينَ"
         ]
       },
       {
@@ -6525,7 +6507,7 @@ export default {
         "frontCorrect": "وَطُورِ",
         "frontChoices": [
           "وَطُورِ",
-          "بِّسْمِ ٱللَّهِ",
+          "وَٱلتِّينِ وَٱلزَّيْتُونِ",
           "وَطُورِ سِينِينَ"
         ],
         "endBlank": "وَطُورِ ___",
@@ -6533,16 +6515,16 @@ export default {
         "endCorrect": "سِينِينَ",
         "endChoices": [
           "سِينِينَ",
-          "بِّسْمِ",
-          "ٱللَّهِ"
+          "وَٱلتِّينِ",
+          "وَٱلزَّيْتُونِ"
         ],
         "middleBlank": "___ سِينِينَ",
         "middleBlankLatin": "___ toori sineen",
         "middleCorrect": "وَطُورِ",
         "middleChoices": [
           "وَطُورِ",
-          "بِّسْمِ",
-          "ٱللَّهِ"
+          "وَٱلتِّينِ",
+          "وَٱلزَّيْتُونِ"
         ],
         "twoBlank": "___ سِينِينَ",
         "twoCorrect": [
@@ -6550,8 +6532,8 @@ export default {
         ],
         "twoChoices": [
           "وَطُورِ",
-          "بِّسْمِ",
-          "ٱللَّهِ"
+          "وَٱلتِّينِ",
+          "وَٱلزَّيْتُونِ"
         ]
       },
       {
@@ -6570,7 +6552,7 @@ export default {
         "frontCorrect": "وَهَٰذَا ٱلْبَلَدِ",
         "frontChoices": [
           "وَهَٰذَا ٱلْبَلَدِ",
-          "بِّسْمِ ٱللَّهِ",
+          "وَٱلتِّينِ وَٱلزَّيْتُونِ",
           "وَطُورِ سِينِينَ"
         ],
         "endBlank": "وَهَٰذَا ٱلْبَلَدِ ___",
@@ -6578,16 +6560,16 @@ export default {
         "endCorrect": "ٱلْأَمِينِ",
         "endChoices": [
           "ٱلْأَمِينِ",
-          "بِّسْمِ",
-          "ٱللَّهِ"
+          "وَٱلتِّينِ",
+          "وَٱلزَّيْتُونِ"
         ],
         "middleBlank": "وَهَٰذَا ___ ٱلْأَمِينِ",
         "middleBlankLatin": "Wa ___ balad-il ameen",
         "middleCorrect": "ٱلْبَلَدِ",
         "middleChoices": [
           "ٱلْبَلَدِ",
-          "بِّسْمِ",
-          "ٱللَّهِ"
+          "وَٱلتِّينِ",
+          "وَٱلزَّيْتُونِ"
         ],
         "twoBlank": "___ ___ ٱلْأَمِينِ",
         "twoCorrect": [
@@ -6597,8 +6579,8 @@ export default {
         "twoChoices": [
           "وَهَٰذَا",
           "ٱلْبَلَدِ",
-          "بِّسْمِ",
-          "ٱللَّهِ"
+          "وَٱلتِّينِ",
+          "وَٱلزَّيْتُونِ"
         ]
       },
       {
@@ -6620,7 +6602,7 @@ export default {
         "frontCorrect": "لَقَدْ خَلَقْنَا",
         "frontChoices": [
           "لَقَدْ خَلَقْنَا",
-          "بِّسْمِ ٱللَّهِ",
+          "وَٱلتِّينِ وَٱلزَّيْتُونِ",
           "وَطُورِ سِينِينَ"
         ],
         "endBlank": "لَقَدْ خَلَقْنَا ٱلْإِنسَٰنَ فِىٓ أَحْسَنِ ___",
@@ -6628,16 +6610,16 @@ export default {
         "endCorrect": "تَقْوِيمٍۢ",
         "endChoices": [
           "تَقْوِيمٍۢ",
-          "بِّسْمِ",
-          "ٱللَّهِ"
+          "وَٱلتِّينِ",
+          "وَٱلزَّيْتُونِ"
         ],
         "middleBlank": "لَقَدْ خَلَقْنَا ٱلْإِنسَٰنَ ___ أَحْسَنِ تَقْوِيمٍۢ",
         "middleBlankLatin": "Laqad khalaqnal insaana ___ ahsani taqweem",
         "middleCorrect": "فِىٓ",
         "middleChoices": [
           "فِىٓ",
-          "بِّسْمِ",
-          "ٱللَّهِ"
+          "وَٱلتِّينِ",
+          "وَٱلزَّيْتُونِ"
         ],
         "twoBlank": "___ ___ ٱلْإِنسَٰنَ فِىٓ أَحْسَنِ تَقْوِيمٍۢ",
         "twoCorrect": [
@@ -6647,8 +6629,8 @@ export default {
         "twoChoices": [
           "لَقَدْ",
           "خَلَقْنَا",
-          "بِّسْمِ",
-          "ٱللَّهِ"
+          "وَٱلتِّينِ",
+          "وَٱلزَّيْتُونِ"
         ]
       },
       {
@@ -6668,7 +6650,7 @@ export default {
         "frontCorrect": "ثُمَّ رَدَدْنَٰهُ",
         "frontChoices": [
           "ثُمَّ رَدَدْنَٰهُ",
-          "بِّسْمِ ٱللَّهِ",
+          "وَٱلتِّينِ وَٱلزَّيْتُونِ",
           "وَطُورِ سِينِينَ"
         ],
         "endBlank": "ثُمَّ رَدَدْنَٰهُ أَسْفَلَ ___",
@@ -6676,16 +6658,16 @@ export default {
         "endCorrect": "سَٰفِلِينَ",
         "endChoices": [
           "سَٰفِلِينَ",
-          "بِّسْمِ",
-          "ٱللَّهِ"
+          "وَٱلتِّينِ",
+          "وَٱلزَّيْتُونِ"
         ],
         "middleBlank": "ثُمَّ رَدَدْنَٰهُ ___ سَٰفِلِينَ",
         "middleBlankLatin": "Thumma ra ___ naahu asfala saafileen",
         "middleCorrect": "أَسْفَلَ",
         "middleChoices": [
           "أَسْفَلَ",
-          "بِّسْمِ",
-          "ٱللَّهِ"
+          "وَٱلتِّينِ",
+          "وَٱلزَّيْتُونِ"
         ],
         "twoBlank": "___ ___ أَسْفَلَ سَٰفِلِينَ",
         "twoCorrect": [
@@ -6695,8 +6677,8 @@ export default {
         "twoChoices": [
           "ثُمَّ",
           "رَدَدْنَٰهُ",
-          "بِّسْمِ",
-          "ٱللَّهِ"
+          "وَٱلتِّينِ",
+          "وَٱلزَّيْتُونِ"
         ]
       },
       {
@@ -6721,7 +6703,7 @@ export default {
         "frontCorrect": "إِلَّا ٱلَّذِينَ",
         "frontChoices": [
           "إِلَّا ٱلَّذِينَ",
-          "بِّسْمِ ٱللَّهِ",
+          "وَٱلتِّينِ وَٱلزَّيْتُونِ",
           "وَطُورِ سِينِينَ"
         ],
         "endBlank": "إِلَّا ٱلَّذِينَ ءَامَنُوا۟ وَعَمِلُوا۟ ٱلصَّٰلِحَٰتِ فَلَهُمْ أَجْرٌ غَيْرُ ___",
@@ -6729,16 +6711,16 @@ export default {
         "endCorrect": "مَمْنُونٍۢ",
         "endChoices": [
           "مَمْنُونٍۢ",
-          "بِّسْمِ",
-          "ٱللَّهِ"
+          "وَٱلتِّينِ",
+          "وَٱلزَّيْتُونِ"
         ],
         "middleBlank": "إِلَّا ٱلَّذِينَ ءَامَنُوا۟ وَعَمِلُوا۟ ___ فَلَهُمْ أَجْرٌ غَيْرُ مَمْنُونٍۢ",
         "middleBlankLatin": "Ill-lal lazeena aamanoo wa ___ saalihaati; falahum ajrun ghairu mamnoon",
         "middleCorrect": "ٱلصَّٰلِحَٰتِ",
         "middleChoices": [
           "ٱلصَّٰلِحَٰتِ",
-          "بِّسْمِ",
-          "ٱللَّهِ"
+          "وَٱلتِّينِ",
+          "وَٱلزَّيْتُونِ"
         ],
         "twoBlank": "___ ___ ءَامَنُوا۟ وَعَمِلُوا۟ ٱلصَّٰلِحَٰتِ فَلَهُمْ أَجْرٌ غَيْرُ مَمْنُونٍۢ",
         "twoCorrect": [
@@ -6746,8 +6728,8 @@ export default {
           "ٱلَّذِينَ"
         ],
         "twoChoices": [
-          "بِّسْمِ",
-          "ٱللَّهِ",
+          "وَٱلتِّينِ",
+          "وَٱلزَّيْتُونِ",
           "إِلَّا",
           "ٱلَّذِينَ"
         ]
@@ -6769,7 +6751,7 @@ export default {
         "frontCorrect": "فَمَا يُكَذِّبُكَ",
         "frontChoices": [
           "فَمَا يُكَذِّبُكَ",
-          "بِّسْمِ ٱللَّهِ",
+          "وَٱلتِّينِ وَٱلزَّيْتُونِ",
           "وَطُورِ سِينِينَ"
         ],
         "endBlank": "فَمَا يُكَذِّبُكَ بَعْدُ ___",
@@ -6777,16 +6759,16 @@ export default {
         "endCorrect": "بِٱلدِّينِ",
         "endChoices": [
           "بِٱلدِّينِ",
-          "بِّسْمِ",
-          "ٱللَّهِ"
+          "وَٱلتِّينِ",
+          "وَٱلزَّيْتُونِ"
         ],
         "middleBlank": "فَمَا يُكَذِّبُكَ ___ بِٱلدِّينِ",
         "middleBlankLatin": "Fama yu ___ zibuka b'adu bid deen",
         "middleCorrect": "بَعْدُ",
         "middleChoices": [
-          "ٱللَّهِ",
+          "وَٱلزَّيْتُونِ",
           "بَعْدُ",
-          "بِّسْمِ"
+          "وَٱلتِّينِ"
         ],
         "twoBlank": "___ ___ بَعْدُ بِٱلدِّينِ",
         "twoCorrect": [
@@ -6796,8 +6778,8 @@ export default {
         "twoChoices": [
           "فَمَا",
           "يُكَذِّبُكَ",
-          "بِّسْمِ",
-          "ٱللَّهِ"
+          "وَٱلتِّينِ",
+          "وَٱلزَّيْتُونِ"
         ]
       },
       {
@@ -6817,24 +6799,24 @@ export default {
         "frontCorrect": "أَلَيْسَ ٱللَّهُ",
         "frontChoices": [
           "أَلَيْسَ ٱللَّهُ",
-          "بِّسْمِ ٱللَّهِ",
+          "وَٱلتِّينِ وَٱلزَّيْتُونِ",
           "وَطُورِ سِينِينَ"
         ],
         "endBlank": "أَلَيْسَ ٱللَّهُ بِأَحْكَمِ ___",
         "endBlankLatin": "Alai sal laahu ___",
         "endCorrect": "ٱلْحَٰكِمِينَ",
         "endChoices": [
-          "ٱللَّهِ",
+          "وَٱلزَّيْتُونِ",
           "ٱلْحَٰكِمِينَ",
-          "بِّسْمِ"
+          "وَٱلتِّينِ"
         ],
         "middleBlank": "أَلَيْسَ ٱللَّهُ ___ ٱلْحَٰكِمِينَ",
         "middleBlankLatin": "Alai sal ___ bi-ahkamil haakimeen",
         "middleCorrect": "بِأَحْكَمِ",
         "middleChoices": [
           "بِأَحْكَمِ",
-          "بِّسْمِ",
-          "ٱللَّهِ"
+          "وَٱلتِّينِ",
+          "وَٱلزَّيْتُونِ"
         ],
         "twoBlank": "___ ___ بِأَحْكَمِ ٱلْحَٰكِمِينَ",
         "twoCorrect": [
@@ -6844,8 +6826,8 @@ export default {
         "twoChoices": [
           "أَلَيْسَ",
           "ٱللَّهُ",
-          "بِّسْمِ",
-          "ٱللَّهِ"
+          "وَٱلتِّينِ",
+          "وَٱلزَّيْتُونِ"
         ]
       }
     ]
@@ -10839,50 +10821,49 @@ export default {
       },
       {
         "verseNumber": 17,
-        "arabic": "كَلَّا ۖ بَل لَّا تُكْرِمُونَ ٱلْيَتِيمَ",
+        "arabic": "كَلَّا بَل لَّا تُكْرِمُونَ ٱلْيَتِيمَ",
         "translationKey": "quran.89_17_translation",
         "transliteration": "Kalla bal laa tukrimooo nal yateem",
         "audio": "https://everyayah.com/data/Husary_128kbps/089017.mp3",
         "words": [
           "كَلَّا",
-          "ۖ",
           "بَل",
           "لَّا",
           "تُكْرِمُونَ",
           "ٱلْيَتِيمَ"
         ],
-        "frontBlank": "___ ___ بَل لَّا تُكْرِمُونَ ٱلْيَتِيمَ",
+        "frontBlank": "___ ___ لَّا تُكْرِمُونَ ٱلْيَتِيمَ",
         "frontBlankLatin": "___ ___ laa tukrimooo nal yateem",
-        "frontCorrect": "كَلَّا ۖ",
+        "frontCorrect": "كَلَّا بَل",
         "frontChoices": [
-          "كَلَّا ۖ",
+          "كَلَّا بَل",
           "وَلَيَالٍ عَشْرٍۢ",
           "وَٱلشَّفْعِ وَٱلْوَتْرِ"
         ],
-        "endBlank": "كَلَّا ۖ بَل لَّا تُكْرِمُونَ ___",
-        "endBlankLatin": "Kalla bal laa tukrimooo nal ___",
+        "endBlank": "كَلَّا بَل لَّا تُكْرِمُونَ ___",
+        "endBlankLatin": "Kalla bal laa tukrimooo ___",
         "endCorrect": "ٱلْيَتِيمَ",
         "endChoices": [
           "ٱلْيَتِيمَ",
           "وَٱلْفَجْرِ",
           "وَلَيَالٍ"
         ],
-        "middleBlank": "كَلَّا ۖ بَل ___ تُكْرِمُونَ ٱلْيَتِيمَ",
-        "middleBlankLatin": "Kalla bal laa ___ nal yateem",
+        "middleBlank": "كَلَّا بَل ___ تُكْرِمُونَ ٱلْيَتِيمَ",
+        "middleBlankLatin": "Kalla bal ___ tukrimooo nal yateem",
         "middleCorrect": "لَّا",
         "middleChoices": [
           "لَّا",
           "وَٱلْفَجْرِ",
           "وَلَيَالٍ"
         ],
-        "twoBlank": "___ ___ بَل لَّا تُكْرِمُونَ ٱلْيَتِيمَ",
+        "twoBlank": "___ ___ لَّا تُكْرِمُونَ ٱلْيَتِيمَ",
         "twoCorrect": [
           "كَلَّا",
-          "ۖ"
+          "بَل"
         ],
         "twoChoices": [
           "كَلَّا",
-          "ۖ",
+          "بَل",
           "وَٱلْفَجْرِ",
           "وَلَيَالٍ"
         ]
@@ -11133,7 +11114,7 @@ export default {
       },
       {
         "verseNumber": 23,
-        "arabic": "وَجِا۟ىٓءَ يَوْمَئِذٍۭ بِجَهَنَّمَ ۚ يَوْمَئِذٍۢ يَتَذَكَّرُ ٱلْإِنسَٰنُ وَأَنَّىٰ لَهُ ٱلذِّكْرَىٰ",
+        "arabic": "وَجِا۟ىٓءَ يَوْمَئِذٍۭ بِجَهَنَّمَ يَوْمَئِذٍۢ يَتَذَكَّرُ ٱلْإِنسَٰنُ وَأَنَّىٰ لَهُ ٱلذِّكْرَىٰ",
         "translationKey": "quran.89_23_translation",
         "transliteration": "Wa jeee'a yawma'izim bi jahannnam; Yawma 'iziny yatazakkarul insaanu wa annaa lahuz zikraa",
         "audio": "https://everyayah.com/data/Husary_128kbps/089023.mp3",
@@ -11141,7 +11122,6 @@ export default {
           "وَجِا۟ىٓءَ",
           "يَوْمَئِذٍۭ",
           "بِجَهَنَّمَ",
-          "ۚ",
           "يَوْمَئِذٍۢ",
           "يَتَذَكَّرُ",
           "ٱلْإِنسَٰنُ",
@@ -11149,7 +11129,7 @@ export default {
           "لَهُ",
           "ٱلذِّكْرَىٰ"
         ],
-        "frontBlank": "___ ___ بِجَهَنَّمَ ۚ يَوْمَئِذٍۢ يَتَذَكَّرُ ٱلْإِنسَٰنُ وَأَنَّىٰ لَهُ ٱلذِّكْرَىٰ",
+        "frontBlank": "___ ___ بِجَهَنَّمَ يَوْمَئِذٍۢ يَتَذَكَّرُ ٱلْإِنسَٰنُ وَأَنَّىٰ لَهُ ٱلذِّكْرَىٰ",
         "frontBlankLatin": "___ ___ yawma'izim bi jahannnam; Yawma 'iziny yatazakkarul insaanu wa annaa lahuz zikraa",
         "frontCorrect": "وَجِا۟ىٓءَ يَوْمَئِذٍۭ",
         "frontChoices": [
@@ -11157,23 +11137,23 @@ export default {
           "وَلَيَالٍ عَشْرٍۢ",
           "وَٱلشَّفْعِ وَٱلْوَتْرِ"
         ],
-        "endBlank": "وَجِا۟ىٓءَ يَوْمَئِذٍۭ بِجَهَنَّمَ ۚ يَوْمَئِذٍۢ يَتَذَكَّرُ ٱلْإِنسَٰنُ وَأَنَّىٰ لَهُ ___",
-        "endBlankLatin": "Wa jeee'a yawma'izim bi jahannnam; Yawma 'iziny yatazakkarul insaanu ___",
+        "endBlank": "وَجِا۟ىٓءَ يَوْمَئِذٍۭ بِجَهَنَّمَ يَوْمَئِذٍۢ يَتَذَكَّرُ ٱلْإِنسَٰنُ وَأَنَّىٰ لَهُ ___",
+        "endBlankLatin": "Wa jeee'a yawma'izim bi jahannnam; Yawma 'iziny yatazakkarul ___",
         "endCorrect": "ٱلذِّكْرَىٰ",
         "endChoices": [
           "ٱلذِّكْرَىٰ",
           "وَٱلْفَجْرِ",
           "وَلَيَالٍ"
         ],
-        "middleBlank": "وَجِا۟ىٓءَ يَوْمَئِذٍۭ بِجَهَنَّمَ ۚ يَوْمَئِذٍۢ ___ ٱلْإِنسَٰنُ وَأَنَّىٰ لَهُ ٱلذِّكْرَىٰ",
-        "middleBlankLatin": "Wa jeee'a yawma'izim bi jahannnam; ___ 'iziny yatazakkarul insaanu wa annaa lahuz zikraa",
+        "middleBlank": "وَجِا۟ىٓءَ يَوْمَئِذٍۭ بِجَهَنَّمَ يَوْمَئِذٍۢ ___ ٱلْإِنسَٰنُ وَأَنَّىٰ لَهُ ٱلذِّكْرَىٰ",
+        "middleBlankLatin": "Wa jeee'a yawma'izim bi ___ Yawma 'iziny yatazakkarul insaanu wa annaa lahuz zikraa",
         "middleCorrect": "يَتَذَكَّرُ",
         "middleChoices": [
           "يَتَذَكَّرُ",
           "وَٱلْفَجْرِ",
           "وَلَيَالٍ"
         ],
-        "twoBlank": "___ ___ بِجَهَنَّمَ ۚ يَوْمَئِذٍۢ يَتَذَكَّرُ ٱلْإِنسَٰنُ وَأَنَّىٰ لَهُ ٱلذِّكْرَىٰ",
+        "twoBlank": "___ ___ بِجَهَنَّمَ يَوْمَئِذٍۢ يَتَذَكَّرُ ٱلْإِنسَٰنُ وَأَنَّىٰ لَهُ ٱلذِّكْرَىٰ",
         "twoCorrect": [
           "وَجِا۟ىٓءَ",
           "يَوْمَئِذٍۭ"
@@ -13046,7 +13026,7 @@ export default {
       },
       {
         "verseNumber": 7,
-        "arabic": "إِلَّا مَا شَآءَ ٱللَّهُ ۚ إِنَّهُۥ يَعْلَمُ ٱلْجَهْرَ وَمَا يَخْفَىٰ",
+        "arabic": "إِلَّا مَا شَآءَ ٱللَّهُ إِنَّهُۥ يَعْلَمُ ٱلْجَهْرَ وَمَا يَخْفَىٰ",
         "translationKey": "quran.87_7_translation",
         "transliteration": "Illaa maa shaaa'al laah; innahoo ya'lamul jahra wa maa yakhfaa",
         "audio": "https://everyayah.com/data/Husary_128kbps/087007.mp3",
@@ -13055,14 +13035,13 @@ export default {
           "مَا",
           "شَآءَ",
           "ٱللَّهُ",
-          "ۚ",
           "إِنَّهُۥ",
           "يَعْلَمُ",
           "ٱلْجَهْرَ",
           "وَمَا",
           "يَخْفَىٰ"
         ],
-        "frontBlank": "___ ___ شَآءَ ٱللَّهُ ۚ إِنَّهُۥ يَعْلَمُ ٱلْجَهْرَ وَمَا يَخْفَىٰ",
+        "frontBlank": "___ ___ شَآءَ ٱللَّهُ إِنَّهُۥ يَعْلَمُ ٱلْجَهْرَ وَمَا يَخْفَىٰ",
         "frontBlankLatin": "___ ___ shaaa'al laah; innahoo ya'lamul jahra wa maa yakhfaa",
         "frontCorrect": "إِلَّا مَا",
         "frontChoices": [
@@ -13070,23 +13049,23 @@ export default {
           "سَبِّحِ ٱسْمَ",
           "ٱلَّذِى خَلَقَ"
         ],
-        "endBlank": "إِلَّا مَا شَآءَ ٱللَّهُ ۚ إِنَّهُۥ يَعْلَمُ ٱلْجَهْرَ وَمَا ___",
-        "endBlankLatin": "Illaa maa shaaa'al laah; innahoo ya'lamul jahra wa maa ___",
+        "endBlank": "إِلَّا مَا شَآءَ ٱللَّهُ إِنَّهُۥ يَعْلَمُ ٱلْجَهْرَ وَمَا ___",
+        "endBlankLatin": "Illaa maa shaaa'al laah; innahoo ya'lamul jahra wa ___",
         "endCorrect": "يَخْفَىٰ",
         "endChoices": [
           "يَخْفَىٰ",
           "سَبِّحِ",
           "ٱسْمَ"
         ],
-        "middleBlank": "إِلَّا مَا شَآءَ ٱللَّهُ ۚ ___ يَعْلَمُ ٱلْجَهْرَ وَمَا يَخْفَىٰ",
-        "middleBlankLatin": "Illaa maa shaaa'al laah; innahoo ___ jahra wa maa yakhfaa",
+        "middleBlank": "إِلَّا مَا شَآءَ ٱللَّهُ ___ يَعْلَمُ ٱلْجَهْرَ وَمَا يَخْفَىٰ",
+        "middleBlankLatin": "Illaa maa shaaa'al laah; ___ ya'lamul jahra wa maa yakhfaa",
         "middleCorrect": "إِنَّهُۥ",
         "middleChoices": [
           "ٱسْمَ",
           "إِنَّهُۥ",
           "سَبِّحِ"
         ],
-        "twoBlank": "___ ___ شَآءَ ٱللَّهُ ۚ إِنَّهُۥ يَعْلَمُ ٱلْجَهْرَ وَمَا يَخْفَىٰ",
+        "twoBlank": "___ ___ شَآءَ ٱللَّهُ إِنَّهُۥ يَعْلَمُ ٱلْجَهْرَ وَمَا يَخْفَىٰ",
         "twoCorrect": [
           "إِلَّا",
           "مَا"
@@ -14869,7 +14848,7 @@ export default {
       },
       {
         "verseNumber": 9,
-        "arabic": "ٱلَّذِى لَهُۥ مُلْكُ ٱلسَّمَٰوَٰتِ وَٱلْأَرْضِ ۚ وَٱللَّهُ عَلَىٰ كُلِّ شَىْءٍۢ شَهِيدٌ",
+        "arabic": "ٱلَّذِى لَهُۥ مُلْكُ ٱلسَّمَٰوَٰتِ وَٱلْأَرْضِ وَٱللَّهُ عَلَىٰ كُلِّ شَىْءٍۢ شَهِيدٌ",
         "translationKey": "quran.85_9_translation",
         "transliteration": "Allazee lahoo mulkus samaawaati wal ard; wallaahu 'alaa kulli shai 'in Shaheed",
         "audio": "https://everyayah.com/data/Husary_128kbps/085009.mp3",
@@ -14879,14 +14858,13 @@ export default {
           "مُلْكُ",
           "ٱلسَّمَٰوَٰتِ",
           "وَٱلْأَرْضِ",
-          "ۚ",
           "وَٱللَّهُ",
           "عَلَىٰ",
           "كُلِّ",
           "شَىْءٍۢ",
           "شَهِيدٌ"
         ],
-        "frontBlank": "___ ___ مُلْكُ ٱلسَّمَٰوَٰتِ وَٱلْأَرْضِ ۚ وَٱللَّهُ عَلَىٰ كُلِّ شَىْءٍۢ شَهِيدٌ",
+        "frontBlank": "___ ___ مُلْكُ ٱلسَّمَٰوَٰتِ وَٱلْأَرْضِ وَٱللَّهُ عَلَىٰ كُلِّ شَىْءٍۢ شَهِيدٌ",
         "frontBlankLatin": "___ ___ mulkus samaawaati wal ard; wallaahu 'alaa kulli shai 'in Shaheed",
         "frontCorrect": "ٱلَّذِى لَهُۥ",
         "frontChoices": [
@@ -14894,23 +14872,23 @@ export default {
           "ٱلَّذِى لَهُۥ",
           "وَٱلسَّمَآءِ ذَاتِ"
         ],
-        "endBlank": "ٱلَّذِى لَهُۥ مُلْكُ ٱلسَّمَٰوَٰتِ وَٱلْأَرْضِ ۚ وَٱللَّهُ عَلَىٰ كُلِّ شَىْءٍۢ ___",
-        "endBlankLatin": "Allazee lahoo mulkus samaawaati wal ard; wallaahu 'alaa kulli shai ___",
+        "endBlank": "ٱلَّذِى لَهُۥ مُلْكُ ٱلسَّمَٰوَٰتِ وَٱلْأَرْضِ وَٱللَّهُ عَلَىٰ كُلِّ شَىْءٍۢ ___",
+        "endBlankLatin": "Allazee lahoo mulkus samaawaati wal ard; wallaahu 'alaa kulli ___",
         "endCorrect": "شَهِيدٌ",
         "endChoices": [
           "شَهِيدٌ",
           "وَٱلسَّمَآءِ",
           "ذَاتِ"
         ],
-        "middleBlank": "ٱلَّذِى لَهُۥ مُلْكُ ٱلسَّمَٰوَٰتِ وَٱلْأَرْضِ ___ وَٱللَّهُ عَلَىٰ كُلِّ شَىْءٍۢ شَهِيدٌ",
+        "middleBlank": "ٱلَّذِى لَهُۥ مُلْكُ ٱلسَّمَٰوَٰتِ وَٱلْأَرْضِ ___ عَلَىٰ كُلِّ شَىْءٍۢ شَهِيدٌ",
         "middleBlankLatin": "Allazee lahoo mulkus samaawaati wal ___ wallaahu 'alaa kulli shai 'in Shaheed",
-        "middleCorrect": "ۚ",
+        "middleCorrect": "وَٱللَّهُ",
         "middleChoices": [
-          "ۚ",
+          "وَٱللَّهُ",
           "وَٱلسَّمَآءِ",
           "ذَاتِ"
         ],
-        "twoBlank": "___ ___ مُلْكُ ٱلسَّمَٰوَٰتِ وَٱلْأَرْضِ ۚ وَٱللَّهُ عَلَىٰ كُلِّ شَىْءٍۢ شَهِيدٌ",
+        "twoBlank": "___ ___ مُلْكُ ٱلسَّمَٰوَٰتِ وَٱلْأَرْضِ وَٱللَّهُ عَلَىٰ كُلِّ شَىْءٍۢ شَهِيدٌ",
         "twoCorrect": [
           "ٱلَّذِى",
           "لَهُۥ"
@@ -14982,7 +14960,7 @@ export default {
       },
       {
         "verseNumber": 11,
-        "arabic": "إِنَّ ٱلَّذِينَ ءَامَنُوا۟ وَعَمِلُوا۟ ٱلصَّٰلِحَٰتِ لَهُمْ جَنَّٰتٌۭ تَجْرِى مِن تَحْتِهَا ٱلْأَنْهَٰرُ ۚ ذَٰلِكَ ٱلْفَوْزُ ٱلْكَبِيرُ",
+        "arabic": "إِنَّ ٱلَّذِينَ ءَامَنُوا۟ وَعَمِلُوا۟ ٱلصَّٰلِحَٰتِ لَهُمْ جَنَّٰتٌۭ تَجْرِى مِن تَحْتِهَا ٱلْأَنْهَٰرُ ذَٰلِكَ ٱلْفَوْزُ ٱلْكَبِيرُ",
         "translationKey": "quran.85_11_translation",
         "transliteration": "Innal lazeena aamanoo wa 'amilus saalihaati lahum Jannaatun tajree min tahtihal anhaar; zaalikal fawzul kabeer",
         "audio": "https://everyayah.com/data/Husary_128kbps/085011.mp3",
@@ -14998,12 +14976,11 @@ export default {
           "مِن",
           "تَحْتِهَا",
           "ٱلْأَنْهَٰرُ",
-          "ۚ",
           "ذَٰلِكَ",
           "ٱلْفَوْزُ",
           "ٱلْكَبِيرُ"
         ],
-        "frontBlank": "___ ___ ءَامَنُوا۟ وَعَمِلُوا۟ ٱلصَّٰلِحَٰتِ لَهُمْ جَنَّٰتٌۭ تَجْرِى مِن تَحْتِهَا ٱلْأَنْهَٰرُ ۚ ذَٰلِكَ ٱلْفَوْزُ ٱلْكَبِيرُ",
+        "frontBlank": "___ ___ ءَامَنُوا۟ وَعَمِلُوا۟ ٱلصَّٰلِحَٰتِ لَهُمْ جَنَّٰتٌۭ تَجْرِى مِن تَحْتِهَا ٱلْأَنْهَٰرُ ذَٰلِكَ ٱلْفَوْزُ ٱلْكَبِيرُ",
         "frontBlankLatin": "___ ___ aamanoo wa 'amilus saalihaati lahum Jannaatun tajree min tahtihal anhaar; zaalikal fawzul kabeer",
         "frontCorrect": "إِنَّ ٱلَّذِينَ",
         "frontChoices": [
@@ -15011,15 +14988,15 @@ export default {
           "وَٱلسَّمَآءِ ذَاتِ",
           "وَٱلْيَوْمِ ٱلْمَوْعُودِ"
         ],
-        "endBlank": "إِنَّ ٱلَّذِينَ ءَامَنُوا۟ وَعَمِلُوا۟ ٱلصَّٰلِحَٰتِ لَهُمْ جَنَّٰتٌۭ تَجْرِى مِن تَحْتِهَا ٱلْأَنْهَٰرُ ۚ ذَٰلِكَ ٱلْفَوْزُ ___",
-        "endBlankLatin": "Innal lazeena aamanoo wa 'amilus saalihaati lahum Jannaatun tajree min tahtihal anhaar; zaalikal fawzul ___",
+        "endBlank": "إِنَّ ٱلَّذِينَ ءَامَنُوا۟ وَعَمِلُوا۟ ٱلصَّٰلِحَٰتِ لَهُمْ جَنَّٰتٌۭ تَجْرِى مِن تَحْتِهَا ٱلْأَنْهَٰرُ ذَٰلِكَ ٱلْفَوْزُ ___",
+        "endBlankLatin": "Innal lazeena aamanoo wa 'amilus saalihaati lahum Jannaatun tajree min tahtihal anhaar; zaalikal ___",
         "endCorrect": "ٱلْكَبِيرُ",
         "endChoices": [
           "ٱلْكَبِيرُ",
           "وَٱلسَّمَآءِ",
           "ذَاتِ"
         ],
-        "middleBlank": "إِنَّ ٱلَّذِينَ ءَامَنُوا۟ وَعَمِلُوا۟ ٱلصَّٰلِحَٰتِ لَهُمْ جَنَّٰتٌۭ ___ مِن تَحْتِهَا ٱلْأَنْهَٰرُ ۚ ذَٰلِكَ ٱلْفَوْزُ ٱلْكَبِيرُ",
+        "middleBlank": "إِنَّ ٱلَّذِينَ ءَامَنُوا۟ وَعَمِلُوا۟ ٱلصَّٰلِحَٰتِ لَهُمْ جَنَّٰتٌۭ ___ مِن تَحْتِهَا ٱلْأَنْهَٰرُ ذَٰلِكَ ٱلْفَوْزُ ٱلْكَبِيرُ",
         "middleBlankLatin": "Innal lazeena aamanoo wa 'amilus saalihaati lahum ___ tajree min tahtihal anhaar; zaalikal fawzul kabeer",
         "middleCorrect": "تَجْرِى",
         "middleChoices": [
@@ -15027,7 +15004,7 @@ export default {
           "وَٱلسَّمَآءِ",
           "ذَاتِ"
         ],
-        "twoBlank": "___ ___ ءَامَنُوا۟ وَعَمِلُوا۟ ٱلصَّٰلِحَٰتِ لَهُمْ جَنَّٰتٌۭ تَجْرِى مِن تَحْتِهَا ٱلْأَنْهَٰرُ ۚ ذَٰلِكَ ٱلْفَوْزُ ٱلْكَبِيرُ",
+        "twoBlank": "___ ___ ءَامَنُوا۟ وَعَمِلُوا۟ ٱلصَّٰلِحَٰتِ لَهُمْ جَنَّٰتٌۭ تَجْرِى مِن تَحْتِهَا ٱلْأَنْهَٰرُ ذَٰلِكَ ٱلْفَوْزُ ٱلْكَبِيرُ",
         "twoCorrect": [
           "إِنَّ",
           "ٱلَّذِينَ"
@@ -16530,7 +16507,7 @@ export default {
       },
       {
         "verseNumber": 21,
-        "arabic": "وَإِذَا قُرِئَ عَلَيْهِمُ ٱلْقُرْءَانُ لَا يَسْجُدُونَ ۩",
+        "arabic": "وَإِذَا قُرِئَ عَلَيْهِمُ ٱلْقُرْءَانُ لَا يَسْجُدُونَ",
         "translationKey": "quran.84_21_translation",
         "transliteration": "Wa izaa quri'a 'alaihimul Quraanu laa yasjudoon",
         "audio": "https://everyayah.com/data/Husary_128kbps/084021.mp3",
@@ -16540,10 +16517,9 @@ export default {
           "عَلَيْهِمُ",
           "ٱلْقُرْءَانُ",
           "لَا",
-          "يَسْجُدُونَ",
-          "۩"
+          "يَسْجُدُونَ"
         ],
-        "frontBlank": "___ ___ عَلَيْهِمُ ٱلْقُرْءَانُ لَا يَسْجُدُونَ ۩",
+        "frontBlank": "___ ___ عَلَيْهِمُ ٱلْقُرْءَانُ لَا يَسْجُدُونَ",
         "frontBlankLatin": "___ ___ quri'a 'alaihimul Quraanu laa yasjudoon",
         "frontCorrect": "وَإِذَا قُرِئَ",
         "frontChoices": [
@@ -16551,15 +16527,15 @@ export default {
           "إِذَا ٱلسَّمَآءُ",
           "وَأَذِنَتْ لِرَبِّهَا"
         ],
-        "endBlank": "وَإِذَا قُرِئَ عَلَيْهِمُ ٱلْقُرْءَانُ لَا يَسْجُدُونَ ___",
-        "endBlankLatin": "Wa izaa quri'a 'alaihimul Quraanu laa ___",
-        "endCorrect": "۩",
+        "endBlank": "وَإِذَا قُرِئَ عَلَيْهِمُ ٱلْقُرْءَانُ لَا ___",
+        "endBlankLatin": "Wa izaa quri'a 'alaihimul Quraanu ___",
+        "endCorrect": "يَسْجُدُونَ",
         "endChoices": [
-          "۩",
+          "يَسْجُدُونَ",
           "إِذَا",
           "ٱلسَّمَآءُ"
         ],
-        "middleBlank": "وَإِذَا قُرِئَ عَلَيْهِمُ ___ لَا يَسْجُدُونَ ۩",
+        "middleBlank": "وَإِذَا قُرِئَ عَلَيْهِمُ ___ لَا يَسْجُدُونَ",
         "middleBlankLatin": "Wa izaa quri'a ___ Quraanu laa yasjudoon",
         "middleCorrect": "ٱلْقُرْءَانُ",
         "middleChoices": [
@@ -16567,7 +16543,7 @@ export default {
           "إِذَا",
           "ٱلسَّمَآءُ"
         ],
-        "twoBlank": "___ ___ عَلَيْهِمُ ٱلْقُرْءَانُ لَا يَسْجُدُونَ ۩",
+        "twoBlank": "___ ___ عَلَيْهِمُ ٱلْقُرْءَانُ لَا يَسْجُدُونَ",
         "twoCorrect": [
           "وَإِذَا",
           "قُرِئَ"
@@ -17410,15 +17386,13 @@ export default {
       },
       {
         "verseNumber": 14,
-        "arabic": "كَلَّا ۖ بَلْ ۜ رَانَ عَلَىٰ قُلُوبِهِم مَّا كَانُوا۟ يَكْسِبُونَ",
+        "arabic": "كَلَّا بَلْ رَانَ عَلَىٰ قُلُوبِهِم مَّا كَانُوا۟ يَكْسِبُونَ",
         "translationKey": "quran.83_14_translation",
         "transliteration": "Kallaa bal raana 'alaa quloobihim maa kaanoo yaksiboon",
         "audio": "https://everyayah.com/data/Husary_128kbps/083014.mp3",
         "words": [
           "كَلَّا",
-          "ۖ",
           "بَلْ",
-          "ۜ",
           "رَانَ",
           "عَلَىٰ",
           "قُلُوبِهِم",
@@ -17426,38 +17400,38 @@ export default {
           "كَانُوا۟",
           "يَكْسِبُونَ"
         ],
-        "frontBlank": "___ ___ بَلْ ۜ رَانَ عَلَىٰ قُلُوبِهِم مَّا كَانُوا۟ يَكْسِبُونَ",
+        "frontBlank": "___ ___ رَانَ عَلَىٰ قُلُوبِهِم مَّا كَانُوا۟ يَكْسِبُونَ",
         "frontBlankLatin": "___ ___ raana 'alaa quloobihim maa kaanoo yaksiboon",
-        "frontCorrect": "كَلَّا ۖ",
+        "frontCorrect": "كَلَّا بَلْ",
         "frontChoices": [
           "وَيْلٌۭ لِّلْمُطَفِّفِينَ",
           "ٱلَّذِينَ إِذَا",
-          "كَلَّا ۖ"
+          "كَلَّا بَلْ"
         ],
-        "endBlank": "كَلَّا ۖ بَلْ ۜ رَانَ عَلَىٰ قُلُوبِهِم مَّا كَانُوا۟ ___",
-        "endBlankLatin": "Kallaa bal raana 'alaa quloobihim maa kaanoo yaksiboon ___",
+        "endBlank": "كَلَّا بَلْ رَانَ عَلَىٰ قُلُوبِهِم مَّا كَانُوا۟ ___",
+        "endBlankLatin": "Kallaa bal raana 'alaa quloobihim maa kaanoo ___",
         "endCorrect": "يَكْسِبُونَ",
         "endChoices": [
           "يَكْسِبُونَ",
           "وَيْلٌۭ",
           "لِّلْمُطَفِّفِينَ"
         ],
-        "middleBlank": "كَلَّا ۖ بَلْ ۜ رَانَ ___ قُلُوبِهِم مَّا كَانُوا۟ يَكْسِبُونَ",
-        "middleBlankLatin": "Kallaa bal raana 'alaa quloobihim ___ kaanoo yaksiboon",
-        "middleCorrect": "عَلَىٰ",
+        "middleBlank": "كَلَّا بَلْ رَانَ عَلَىٰ ___ مَّا كَانُوا۟ يَكْسِبُونَ",
+        "middleBlankLatin": "Kallaa bal raana 'alaa ___ maa kaanoo yaksiboon",
+        "middleCorrect": "قُلُوبِهِم",
         "middleChoices": [
-          "عَلَىٰ",
+          "قُلُوبِهِم",
           "وَيْلٌۭ",
           "لِّلْمُطَفِّفِينَ"
         ],
-        "twoBlank": "___ ___ بَلْ ۜ رَانَ عَلَىٰ قُلُوبِهِم مَّا كَانُوا۟ يَكْسِبُونَ",
+        "twoBlank": "___ ___ رَانَ عَلَىٰ قُلُوبِهِم مَّا كَانُوا۟ يَكْسِبُونَ",
         "twoCorrect": [
           "كَلَّا",
-          "ۖ"
+          "بَلْ"
         ],
         "twoChoices": [
           "كَلَّا",
-          "ۖ",
+          "بَلْ",
           "وَيْلٌۭ",
           "لِّلْمُطَفِّفِينَ"
         ]
@@ -17991,20 +17965,19 @@ export default {
       },
       {
         "verseNumber": 26,
-        "arabic": "خِتَٰمُهُۥ مِسْكٌۭ ۚ وَفِى ذَٰلِكَ فَلْيَتَنَافَسِ ٱلْمُتَنَٰفِسُونَ",
+        "arabic": "خِتَٰمُهُۥ مِسْكٌۭ وَفِى ذَٰلِكَ فَلْيَتَنَافَسِ ٱلْمُتَنَٰفِسُونَ",
         "translationKey": "quran.83_26_translation",
         "transliteration": "Khitaamuhoo misk; wa fee zaalika falyatanaafasil Mutanaafisoon",
         "audio": "https://everyayah.com/data/Husary_128kbps/083026.mp3",
         "words": [
           "خِتَٰمُهُۥ",
           "مِسْكٌۭ",
-          "ۚ",
           "وَفِى",
           "ذَٰلِكَ",
           "فَلْيَتَنَافَسِ",
           "ٱلْمُتَنَٰفِسُونَ"
         ],
-        "frontBlank": "___ ___ ۚ وَفِى ذَٰلِكَ فَلْيَتَنَافَسِ ٱلْمُتَنَٰفِسُونَ",
+        "frontBlank": "___ ___ وَفِى ذَٰلِكَ فَلْيَتَنَافَسِ ٱلْمُتَنَٰفِسُونَ",
         "frontBlankLatin": "___ ___ wa fee zaalika falyatanaafasil Mutanaafisoon",
         "frontCorrect": "خِتَٰمُهُۥ مِسْكٌۭ",
         "frontChoices": [
@@ -18012,23 +17985,23 @@ export default {
           "وَيْلٌۭ لِّلْمُطَفِّفِينَ",
           "ٱلَّذِينَ إِذَا"
         ],
-        "endBlank": "خِتَٰمُهُۥ مِسْكٌۭ ۚ وَفِى ذَٰلِكَ فَلْيَتَنَافَسِ ___",
-        "endBlankLatin": "Khitaamuhoo misk; wa fee zaalika falyatanaafasil ___",
+        "endBlank": "خِتَٰمُهُۥ مِسْكٌۭ وَفِى ذَٰلِكَ فَلْيَتَنَافَسِ ___",
+        "endBlankLatin": "Khitaamuhoo misk; wa fee zaalika ___",
         "endCorrect": "ٱلْمُتَنَٰفِسُونَ",
         "endChoices": [
           "ٱلْمُتَنَٰفِسُونَ",
           "وَيْلٌۭ",
           "لِّلْمُطَفِّفِينَ"
         ],
-        "middleBlank": "خِتَٰمُهُۥ مِسْكٌۭ ۚ ___ ذَٰلِكَ فَلْيَتَنَافَسِ ٱلْمُتَنَٰفِسُونَ",
+        "middleBlank": "خِتَٰمُهُۥ مِسْكٌۭ وَفِى ___ فَلْيَتَنَافَسِ ٱلْمُتَنَٰفِسُونَ",
         "middleBlankLatin": "Khitaamuhoo misk; wa ___ zaalika falyatanaafasil Mutanaafisoon",
-        "middleCorrect": "وَفِى",
+        "middleCorrect": "ذَٰلِكَ",
         "middleChoices": [
           "لِّلْمُطَفِّفِينَ",
-          "وَفِى",
+          "ذَٰلِكَ",
           "وَيْلٌۭ"
         ],
-        "twoBlank": "___ ___ ۚ وَفِى ذَٰلِكَ فَلْيَتَنَافَسِ ٱلْمُتَنَٰفِسُونَ",
+        "twoBlank": "___ ___ وَفِى ذَٰلِكَ فَلْيَتَنَافَسِ ٱلْمُتَنَٰفِسُونَ",
         "twoCorrect": [
           "خِتَٰمُهُۥ",
           "مِسْكٌۭ"
@@ -19402,7 +19375,7 @@ export default {
       },
       {
         "verseNumber": 19,
-        "arabic": "يَوْمَ لَا تَمْلِكُ نَفْسٌۭ لِّنَفْسٍۢ شَيْـًۭٔا ۖ وَٱلْأَمْرُ يَوْمَئِذٍۢ لِّلَّهِ",
+        "arabic": "يَوْمَ لَا تَمْلِكُ نَفْسٌۭ لِّنَفْسٍۢ شَيْـًۭٔا وَٱلْأَمْرُ يَوْمَئِذٍۢ لِّلَّهِ",
         "translationKey": "quran.82_19_translation",
         "transliteration": "Yawma laa tamliku nafsul linafsin shai'anw walamru yawma'izil lillaah",
         "audio": "https://everyayah.com/data/Husary_128kbps/082019.mp3",
@@ -19413,12 +19386,11 @@ export default {
           "نَفْسٌۭ",
           "لِّنَفْسٍۢ",
           "شَيْـًۭٔا",
-          "ۖ",
           "وَٱلْأَمْرُ",
           "يَوْمَئِذٍۢ",
           "لِّلَّهِ"
         ],
-        "frontBlank": "___ ___ تَمْلِكُ نَفْسٌۭ لِّنَفْسٍۢ شَيْـًۭٔا ۖ وَٱلْأَمْرُ يَوْمَئِذٍۢ لِّلَّهِ",
+        "frontBlank": "___ ___ تَمْلِكُ نَفْسٌۭ لِّنَفْسٍۢ شَيْـًۭٔا وَٱلْأَمْرُ يَوْمَئِذٍۢ لِّلَّهِ",
         "frontBlankLatin": "___ ___ tamliku nafsul linafsin shai'anw walamru yawma'izil lillaah",
         "frontCorrect": "يَوْمَ لَا",
         "frontChoices": [
@@ -19426,23 +19398,23 @@ export default {
           "إِذَا ٱلسَّمَآءُ",
           "وَإِذَا ٱلْكَوَاكِبُ"
         ],
-        "endBlank": "يَوْمَ لَا تَمْلِكُ نَفْسٌۭ لِّنَفْسٍۢ شَيْـًۭٔا ۖ وَٱلْأَمْرُ يَوْمَئِذٍۢ ___",
-        "endBlankLatin": "Yawma laa tamliku nafsul linafsin shai'anw walamru yawma'izil lillaah ___",
+        "endBlank": "يَوْمَ لَا تَمْلِكُ نَفْسٌۭ لِّنَفْسٍۢ شَيْـًۭٔا وَٱلْأَمْرُ يَوْمَئِذٍۢ ___",
+        "endBlankLatin": "Yawma laa tamliku nafsul linafsin shai'anw walamru yawma'izil ___",
         "endCorrect": "لِّلَّهِ",
         "endChoices": [
           "لِّلَّهِ",
           "إِذَا",
           "ٱلسَّمَآءُ"
         ],
-        "middleBlank": "يَوْمَ لَا تَمْلِكُ نَفْسٌۭ لِّنَفْسٍۢ ___ ۖ وَٱلْأَمْرُ يَوْمَئِذٍۢ لِّلَّهِ",
-        "middleBlankLatin": "Yawma laa tamliku nafsul linafsin ___ walamru yawma'izil lillaah",
-        "middleCorrect": "شَيْـًۭٔا",
+        "middleBlank": "يَوْمَ لَا تَمْلِكُ نَفْسٌۭ ___ شَيْـًۭٔا وَٱلْأَمْرُ يَوْمَئِذٍۢ لِّلَّهِ",
+        "middleBlankLatin": "Yawma laa tamliku nafsul ___ shai'anw walamru yawma'izil lillaah",
+        "middleCorrect": "لِّنَفْسٍۢ",
         "middleChoices": [
-          "شَيْـًۭٔا",
+          "لِّنَفْسٍۢ",
           "إِذَا",
           "ٱلسَّمَآءُ"
         ],
-        "twoBlank": "___ ___ تَمْلِكُ نَفْسٌۭ لِّنَفْسٍۢ شَيْـًۭٔا ۖ وَٱلْأَمْرُ يَوْمَئِذٍۢ لِّلَّهِ",
+        "twoBlank": "___ ___ تَمْلِكُ نَفْسٌۭ لِّنَفْسٍۢ شَيْـًۭٔا وَٱلْأَمْرُ يَوْمَئِذٍۢ لِّلَّهِ",
         "twoCorrect": [
           "يَوْمَ",
           "لَا"
@@ -22067,7 +22039,7 @@ export default {
       },
       {
         "verseNumber": 27,
-        "arabic": "ءَأَنتُمْ أَشَدُّ خَلْقًا أَمِ ٱلسَّمَآءُ ۚ بَنَىٰهَا",
+        "arabic": "ءَأَنتُمْ أَشَدُّ خَلْقًا أَمِ ٱلسَّمَآءُ بَنَىٰهَا",
         "translationKey": "quran.79_27_translation",
         "transliteration": "A-antum a shaddu khalqan amis samaa-u banaaha.",
         "audio": "https://everyayah.com/data/Husary_128kbps/079027.mp3",
@@ -22077,10 +22049,9 @@ export default {
           "خَلْقًا",
           "أَمِ",
           "ٱلسَّمَآءُ",
-          "ۚ",
           "بَنَىٰهَا"
         ],
-        "frontBlank": "___ ___ خَلْقًا أَمِ ٱلسَّمَآءُ ۚ بَنَىٰهَا",
+        "frontBlank": "___ ___ خَلْقًا أَمِ ٱلسَّمَآءُ بَنَىٰهَا",
         "frontBlankLatin": "___ ___ shaddu khalqan amis samaa-u banaaha.",
         "frontCorrect": "ءَأَنتُمْ أَشَدُّ",
         "frontChoices": [
@@ -22088,15 +22059,15 @@ export default {
           "وَٱلنَّٰزِعَٰتِ غَرْقًۭا",
           "وَٱلنَّٰشِطَٰتِ نَشْطًۭا"
         ],
-        "endBlank": "ءَأَنتُمْ أَشَدُّ خَلْقًا أَمِ ٱلسَّمَآءُ ۚ ___",
-        "endBlankLatin": "A-antum a shaddu khalqan amis samaa-u ___",
+        "endBlank": "ءَأَنتُمْ أَشَدُّ خَلْقًا أَمِ ٱلسَّمَآءُ ___",
+        "endBlankLatin": "A-antum a shaddu khalqan amis ___",
         "endCorrect": "بَنَىٰهَا",
         "endChoices": [
           "غَرْقًۭا",
           "بَنَىٰهَا",
           "وَٱلنَّٰزِعَٰتِ"
         ],
-        "middleBlank": "ءَأَنتُمْ أَشَدُّ خَلْقًا ___ ٱلسَّمَآءُ ۚ بَنَىٰهَا",
+        "middleBlank": "ءَأَنتُمْ أَشَدُّ خَلْقًا ___ ٱلسَّمَآءُ بَنَىٰهَا",
         "middleBlankLatin": "A-antum a shaddu ___ amis samaa-u banaaha.",
         "middleCorrect": "أَمِ",
         "middleChoices": [
@@ -22104,7 +22075,7 @@ export default {
           "وَٱلنَّٰزِعَٰتِ",
           "غَرْقًۭا"
         ],
-        "twoBlank": "___ ___ خَلْقًا أَمِ ٱلسَّمَآءُ ۚ بَنَىٰهَا",
+        "twoBlank": "___ ___ خَلْقًا أَمِ ٱلسَّمَآءُ بَنَىٰهَا",
         "twoCorrect": [
           "ءَأَنتُمْ",
           "أَشَدُّ"
@@ -24732,7 +24703,7 @@ export default {
       },
       {
         "verseNumber": 37,
-        "arabic": "رَّبِّ ٱلسَّمَٰوَٰتِ وَٱلْأَرْضِ وَمَا بَيْنَهُمَا ٱلرَّحْمَٰنِ ۖ لَا يَمْلِكُونَ مِنْهُ خِطَابًۭا",
+        "arabic": "رَّبِّ ٱلسَّمَٰوَٰتِ وَٱلْأَرْضِ وَمَا بَيْنَهُمَا ٱلرَّحْمَٰنِ لَا يَمْلِكُونَ مِنْهُ خِطَابًۭا",
         "translationKey": "quran.78_37_translation",
         "transliteration": "Rabbis samaa waati wal ardi wa maa baina humar rahmaani laa yam likoona minhu khi taaba",
         "audio": "https://everyayah.com/data/Husary_128kbps/078037.mp3",
@@ -24743,13 +24714,12 @@ export default {
           "وَمَا",
           "بَيْنَهُمَا",
           "ٱلرَّحْمَٰنِ",
-          "ۖ",
           "لَا",
           "يَمْلِكُونَ",
           "مِنْهُ",
           "خِطَابًۭا"
         ],
-        "frontBlank": "___ ___ وَٱلْأَرْضِ وَمَا بَيْنَهُمَا ٱلرَّحْمَٰنِ ۖ لَا يَمْلِكُونَ مِنْهُ خِطَابًۭا",
+        "frontBlank": "___ ___ وَٱلْأَرْضِ وَمَا بَيْنَهُمَا ٱلرَّحْمَٰنِ لَا يَمْلِكُونَ مِنْهُ خِطَابًۭا",
         "frontBlankLatin": "___ ___ waati wal ardi wa maa baina humar rahmaani laa yam likoona minhu khi taaba",
         "frontCorrect": "رَّبِّ ٱلسَّمَٰوَٰتِ",
         "frontChoices": [
@@ -24757,15 +24727,15 @@ export default {
           "عَمَّ يَتَسَآءَلُونَ",
           "عَنِ ٱلنَّبَإِ"
         ],
-        "endBlank": "رَّبِّ ٱلسَّمَٰوَٰتِ وَٱلْأَرْضِ وَمَا بَيْنَهُمَا ٱلرَّحْمَٰنِ ۖ لَا يَمْلِكُونَ مِنْهُ ___",
-        "endBlankLatin": "Rabbis samaa waati wal ardi wa maa baina humar rahmaani ___",
+        "endBlank": "رَّبِّ ٱلسَّمَٰوَٰتِ وَٱلْأَرْضِ وَمَا بَيْنَهُمَا ٱلرَّحْمَٰنِ لَا يَمْلِكُونَ مِنْهُ ___",
+        "endBlankLatin": "Rabbis samaa waati wal ardi wa maa baina humar ___",
         "endCorrect": "خِطَابًۭا",
         "endChoices": [
           "خِطَابًۭا",
           "عَمَّ",
           "يَتَسَآءَلُونَ"
         ],
-        "middleBlank": "رَّبِّ ٱلسَّمَٰوَٰتِ وَٱلْأَرْضِ وَمَا بَيْنَهُمَا ___ ۖ لَا يَمْلِكُونَ مِنْهُ خِطَابًۭا",
+        "middleBlank": "رَّبِّ ٱلسَّمَٰوَٰتِ وَٱلْأَرْضِ وَمَا بَيْنَهُمَا ___ لَا يَمْلِكُونَ مِنْهُ خِطَابًۭا",
         "middleBlankLatin": "Rabbis samaa waati wal ardi ___ maa baina humar rahmaani laa yam likoona minhu khi taaba",
         "middleCorrect": "ٱلرَّحْمَٰنِ",
         "middleChoices": [
@@ -24773,7 +24743,7 @@ export default {
           "عَمَّ",
           "يَتَسَآءَلُونَ"
         ],
-        "twoBlank": "___ ___ وَٱلْأَرْضِ وَمَا بَيْنَهُمَا ٱلرَّحْمَٰنِ ۖ لَا يَمْلِكُونَ مِنْهُ خِطَابًۭا",
+        "twoBlank": "___ ___ وَٱلْأَرْضِ وَمَا بَيْنَهُمَا ٱلرَّحْمَٰنِ لَا يَمْلِكُونَ مِنْهُ خِطَابًۭا",
         "twoCorrect": [
           "رَّبِّ",
           "ٱلسَّمَٰوَٰتِ"
@@ -24787,7 +24757,7 @@ export default {
       },
       {
         "verseNumber": 38,
-        "arabic": "يَوْمَ يَقُومُ ٱلرُّوحُ وَٱلْمَلَٰٓئِكَةُ صَفًّۭا ۖ لَّا يَتَكَلَّمُونَ إِلَّا مَنْ أَذِنَ لَهُ ٱلرَّحْمَٰنُ وَقَالَ صَوَابًۭا",
+        "arabic": "يَوْمَ يَقُومُ ٱلرُّوحُ وَٱلْمَلَٰٓئِكَةُ صَفًّۭا لَّا يَتَكَلَّمُونَ إِلَّا مَنْ أَذِنَ لَهُ ٱلرَّحْمَٰنُ وَقَالَ صَوَابًۭا",
         "translationKey": "quran.78_38_translation",
         "transliteration": "Yauma yaqoo mur roohu wal malaa-ikatu saf-fal laa yata kalla moona illa man azina lahur rahmaanu wa qaala sawaaba",
         "audio": "https://everyayah.com/data/Husary_128kbps/078038.mp3",
@@ -24797,7 +24767,6 @@ export default {
           "ٱلرُّوحُ",
           "وَٱلْمَلَٰٓئِكَةُ",
           "صَفًّۭا",
-          "ۖ",
           "لَّا",
           "يَتَكَلَّمُونَ",
           "إِلَّا",
@@ -24808,7 +24777,7 @@ export default {
           "وَقَالَ",
           "صَوَابًۭا"
         ],
-        "frontBlank": "___ ___ ٱلرُّوحُ وَٱلْمَلَٰٓئِكَةُ صَفًّۭا ۖ لَّا يَتَكَلَّمُونَ إِلَّا مَنْ أَذِنَ لَهُ ٱلرَّحْمَٰنُ وَقَالَ صَوَابًۭا",
+        "frontBlank": "___ ___ ٱلرُّوحُ وَٱلْمَلَٰٓئِكَةُ صَفًّۭا لَّا يَتَكَلَّمُونَ إِلَّا مَنْ أَذِنَ لَهُ ٱلرَّحْمَٰنُ وَقَالَ صَوَابًۭا",
         "frontBlankLatin": "___ ___ mur roohu wal malaa-ikatu saf-fal laa yata kalla moona illa man azina lahur rahmaanu wa qaala sawaaba",
         "frontCorrect": "يَوْمَ يَقُومُ",
         "frontChoices": [
@@ -24816,23 +24785,23 @@ export default {
           "عَمَّ يَتَسَآءَلُونَ",
           "عَنِ ٱلنَّبَإِ"
         ],
-        "endBlank": "يَوْمَ يَقُومُ ٱلرُّوحُ وَٱلْمَلَٰٓئِكَةُ صَفًّۭا ۖ لَّا يَتَكَلَّمُونَ إِلَّا مَنْ أَذِنَ لَهُ ٱلرَّحْمَٰنُ وَقَالَ ___",
-        "endBlankLatin": "Yauma yaqoo mur roohu wal malaa-ikatu saf-fal laa yata kalla moona illa man azina ___",
+        "endBlank": "يَوْمَ يَقُومُ ٱلرُّوحُ وَٱلْمَلَٰٓئِكَةُ صَفًّۭا لَّا يَتَكَلَّمُونَ إِلَّا مَنْ أَذِنَ لَهُ ٱلرَّحْمَٰنُ وَقَالَ ___",
+        "endBlankLatin": "Yauma yaqoo mur roohu wal malaa-ikatu saf-fal laa yata kalla moona illa man ___",
         "endCorrect": "صَوَابًۭا",
         "endChoices": [
           "صَوَابًۭا",
           "عَمَّ",
           "يَتَسَآءَلُونَ"
         ],
-        "middleBlank": "يَوْمَ يَقُومُ ٱلرُّوحُ وَٱلْمَلَٰٓئِكَةُ صَفًّۭا ۖ لَّا ___ إِلَّا مَنْ أَذِنَ لَهُ ٱلرَّحْمَٰنُ وَقَالَ صَوَابًۭا",
+        "middleBlank": "يَوْمَ يَقُومُ ٱلرُّوحُ وَٱلْمَلَٰٓئِكَةُ صَفًّۭا لَّا يَتَكَلَّمُونَ ___ مَنْ أَذِنَ لَهُ ٱلرَّحْمَٰنُ وَقَالَ صَوَابًۭا",
         "middleBlankLatin": "Yauma yaqoo mur roohu wal malaa-ikatu saf-fal ___ yata kalla moona illa man azina lahur rahmaanu wa qaala sawaaba",
-        "middleCorrect": "يَتَكَلَّمُونَ",
+        "middleCorrect": "إِلَّا",
         "middleChoices": [
-          "يَتَكَلَّمُونَ",
+          "إِلَّا",
           "عَمَّ",
           "يَتَسَآءَلُونَ"
         ],
-        "twoBlank": "___ ___ ٱلرُّوحُ وَٱلْمَلَٰٓئِكَةُ صَفًّۭا ۖ لَّا يَتَكَلَّمُونَ إِلَّا مَنْ أَذِنَ لَهُ ٱلرَّحْمَٰنُ وَقَالَ صَوَابًۭا",
+        "twoBlank": "___ ___ ٱلرُّوحُ وَٱلْمَلَٰٓئِكَةُ صَفًّۭا لَّا يَتَكَلَّمُونَ إِلَّا مَنْ أَذِنَ لَهُ ٱلرَّحْمَٰنُ وَقَالَ صَوَابًۭا",
         "twoCorrect": [
           "يَوْمَ",
           "يَقُومُ"
@@ -24846,7 +24815,7 @@ export default {
       },
       {
         "verseNumber": 39,
-        "arabic": "ذَٰلِكَ ٱلْيَوْمُ ٱلْحَقُّ ۖ فَمَن شَآءَ ٱتَّخَذَ إِلَىٰ رَبِّهِۦ مَـَٔابًا",
+        "arabic": "ذَٰلِكَ ٱلْيَوْمُ ٱلْحَقُّ فَمَن شَآءَ ٱتَّخَذَ إِلَىٰ رَبِّهِۦ مَـَٔابًا",
         "translationKey": "quran.78_39_translation",
         "transliteration": "Zaalikal yaumul haqqu faman shaa-at ta khaaza ill-laa rabbihi ma-aaba",
         "audio": "https://everyayah.com/data/Husary_128kbps/078039.mp3",
@@ -24854,7 +24823,6 @@ export default {
           "ذَٰلِكَ",
           "ٱلْيَوْمُ",
           "ٱلْحَقُّ",
-          "ۖ",
           "فَمَن",
           "شَآءَ",
           "ٱتَّخَذَ",
@@ -24862,7 +24830,7 @@ export default {
           "رَبِّهِۦ",
           "مَـَٔابًا"
         ],
-        "frontBlank": "___ ___ ٱلْحَقُّ ۖ فَمَن شَآءَ ٱتَّخَذَ إِلَىٰ رَبِّهِۦ مَـَٔابًا",
+        "frontBlank": "___ ___ ٱلْحَقُّ فَمَن شَآءَ ٱتَّخَذَ إِلَىٰ رَبِّهِۦ مَـَٔابًا",
         "frontBlankLatin": "___ ___ haqqu faman shaa-at ta khaaza ill-laa rabbihi ma-aaba",
         "frontCorrect": "ذَٰلِكَ ٱلْيَوْمُ",
         "frontChoices": [
@@ -24870,23 +24838,23 @@ export default {
           "عَمَّ يَتَسَآءَلُونَ",
           "عَنِ ٱلنَّبَإِ"
         ],
-        "endBlank": "ذَٰلِكَ ٱلْيَوْمُ ٱلْحَقُّ ۖ فَمَن شَآءَ ٱتَّخَذَ إِلَىٰ رَبِّهِۦ ___",
-        "endBlankLatin": "Zaalikal yaumul haqqu faman shaa-at ta khaaza ill-laa rabbihi ___",
+        "endBlank": "ذَٰلِكَ ٱلْيَوْمُ ٱلْحَقُّ فَمَن شَآءَ ٱتَّخَذَ إِلَىٰ رَبِّهِۦ ___",
+        "endBlankLatin": "Zaalikal yaumul haqqu faman shaa-at ta khaaza ill-laa ___",
         "endCorrect": "مَـَٔابًا",
         "endChoices": [
           "مَـَٔابًا",
           "عَمَّ",
           "يَتَسَآءَلُونَ"
         ],
-        "middleBlank": "ذَٰلِكَ ٱلْيَوْمُ ٱلْحَقُّ ۖ فَمَن ___ ٱتَّخَذَ إِلَىٰ رَبِّهِۦ مَـَٔابًا",
-        "middleBlankLatin": "Zaalikal yaumul haqqu faman shaa-at ___ khaaza ill-laa rabbihi ma-aaba",
+        "middleBlank": "ذَٰلِكَ ٱلْيَوْمُ ٱلْحَقُّ فَمَن ___ ٱتَّخَذَ إِلَىٰ رَبِّهِۦ مَـَٔابًا",
+        "middleBlankLatin": "Zaalikal yaumul haqqu faman ___ ta khaaza ill-laa rabbihi ma-aaba",
         "middleCorrect": "شَآءَ",
         "middleChoices": [
           "شَآءَ",
           "عَمَّ",
           "يَتَسَآءَلُونَ"
         ],
-        "twoBlank": "___ ___ ٱلْحَقُّ ۖ فَمَن شَآءَ ٱتَّخَذَ إِلَىٰ رَبِّهِۦ مَـَٔابًا",
+        "twoBlank": "___ ___ ٱلْحَقُّ فَمَن شَآءَ ٱتَّخَذَ إِلَىٰ رَبِّهِۦ مَـَٔابًا",
         "twoCorrect": [
           "ذَٰلِكَ",
           "ٱلْيَوْمُ"

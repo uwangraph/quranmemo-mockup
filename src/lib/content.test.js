@@ -45,6 +45,14 @@ for (const surah of Object.values(SURAHS)) {
         assert.ok(!/^بِسْمِ\s+\S*للَّه/.test(v.arabic),
             `${where} ayat ${v.verseNumber}: basmalah menyelinap ke dalam ayat`);
         assert.ok(v.words.length > 0, `${where} ayat ${v.verseNumber}: daftar kata kosong`);
+
+        // Tanda mushaf yang berdiri sendiri (sajdah ۩, rub' el hizb ۞) bukan kata.
+        // Kalau ikut terhitung, audio per-kata meleset satu posisi dan pilihan
+        // latihan berisi simbol alih-alih kata.
+        v.words.forEach((w) => assert.match(w, /[\u0621-\u064A]/,
+            `${where} ayat ${v.verseNumber}: "${w}" bukan kata, tanda mushaf ikut terhitung`));
+        assert.ok(!/^بسم\s+الله/.test(v.arabic.replace(/[\u064B-\u0652\u0670\u06D6-\u06ED]/g, '')),
+            `${where} ayat ${v.verseNumber}: basmalah menyelinap ke dalam ayat`);
         assert.equal(v.words.join(' '), v.arabic,
             `${where} ayat ${v.verseNumber}: pemecahan kata tidak menyusun ulang ayatnya`);
 

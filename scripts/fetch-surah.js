@@ -38,7 +38,16 @@ const TRANSLATIONS = {
 // basmalah berbeda antar edisi, dan pola yang meleset akan diam-diam menyisakan
 // basmalah di dalam ayat pertama.
 const BASMALAH_WORDS = 4;
-const startsWithBasmalah = (t) => /^بِسْمِ/.test(t);
+
+// Harakat dilucuti sebelum mencocokkan. Sebagian surah menulis basmalah dengan
+// syaddah (بِّسْمِ), sehingga pencocokan langsung ke bentuk berharakat meleset dan
+// basmalah tertinggal di dalam ayat pertama.
+const stripHarakat = (t) => t
+    .replace(/[\u064B-\u0652\u0653-\u0655\u0670\u06D6-\u06ED]/g, '')
+    .replace(/[\u0671\u0622\u0623\u0625]/g, 'ا')
+    .replace(/\u0670/g, '');
+
+const startsWithBasmalah = (t) => /^بسم\s+الله/.test(stripHarakat(t).replace(/\s+/g, ' ').trim());
 const startsWithBasmalahLatin = (t) => /^bis?mi/i.test(t);
 
 function dropBasmalah(text, isLatin) {
@@ -46,6 +55,13 @@ function dropBasmalah(text, isLatin) {
     if (!hit) return text;
     return text.split(/\s+/).slice(BASMALAH_WORDS).join(' ');
 }
+
+// Tanda mushaf yang berdiri sendiri — sajdah (۩) dan rub' el hizb (۞) — bukan kata
+// yang dilafalkan. Membiarkannya membuat jumlah kata bertambah, sehingga audio
+// per-kata meleset satu posisi dan pilihan latihan berisi simbol, bukan kata.
+const ARABIC_LETTER = /[\u0621-\u064A]/;
+const isWord = (token) => ARABIC_LETTER.test(token);
+const toWords = (text) => text.split(/\s+/).filter(Boolean).filter(isWord);
 
 const slug = (s) => s.toLowerCase().replace(/['’`]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 
@@ -147,7 +163,7 @@ export async function fetchSurah(number, displayName) {
 
     const keepBasmalah = number === 1 || number === 9;   // Al-Fatihah & At-Taubah
     const strip = (t, i, isLatin) => (i === 0 && !keepBasmalah ? dropBasmalah(t, isLatin) : t);
-    const arabic = ar.ayahs.map((a, i) => strip(a.text, i, false).trim());
+    const arabic = ar.ayahs.map((a, i) => toWords(strip(a.text, i, false)).join(' '));
     const latin = la.ayahs.map((a, i) => strip(a.text, i, true).trim());
     // Basmalah juga menempel di ayat 1 pada edisi terjemahan.
     const translations = {};
@@ -159,6 +175,9 @@ export async function fetchSurah(number, displayName) {
 
     const wordsPer = arabic.map((t) => t.split(/\s+/).filter(Boolean));
     const latinPer = latin.map((t) => t.split(/\s+/).filter(Boolean));
+    wordsPer.forEach((w, i) => {
+        if (w.join(' ') !== arabic[i]) throw new Error(`surah ${number} ayat ${i + 1}: pemecahan kata tidak konsisten`);
+    });
     const allWords = [...new Set(wordsPer.flat())];
     const allPairs = [...new Set(wordsPer.filter((w) => w.length >= 2).map((w) => w.slice(0, 2).join(' ')))];
 
