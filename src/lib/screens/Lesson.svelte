@@ -16,7 +16,6 @@
     import MotivationalFooter from '$lib/components/lesson/MotivationalFooter.svelte';
     import TajwidInfo from '$lib/screens/TajwidInfo.svelte';
 
-    // Al-Insyirah Verses Data (1 to 8)
     // Ayat surah aktif dibaca dari registry konten, bukan ditulis di layar ini.
     // Fallback ke Al-Insyirah menjaga layar tetap hidup bila dibuka di luar alur
     // roadmap (mis. lewat navigasi mockup) saat mini target belum punya konten.
@@ -491,7 +490,10 @@
         if (activeVerse) {
             const wordIdx = activeVerse.words.indexOf(wordText);
             if (wordIdx !== -1) {
-                const s = '094';
+                // Nomor surah dibaca dari surah yang sedang dikerjakan. Sebelumnya
+                // dipatok '094', sehingga mengetuk kata di surah mana pun memutar
+                // potongan audio Al-Insyirah.
+                const s = String(activeSurah.number).padStart(3, '0');
                 const v = String(activeVerse.verseNumber).padStart(3, '0');
                 const w = String(wordIdx + 1).padStart(3, '0');
                 const url = `https://audio.qurancdn.com/wbw/${s}_${v}_${w}.mp3`;
@@ -1223,7 +1225,7 @@
         const verseNumber = activeVerse?.verseNumber ?? selectedVerseIndex + 1;
         advanceStep();
         appState.marketplaceTab = 'instant';
-        appState.marketplaceSurah = 'Al-Insyirah';
+        appState.marketplaceSurah = activeSurah.name;
         appState.marketplaceAyah = String(verseNumber);
         appState.go('murojaah');
     }
