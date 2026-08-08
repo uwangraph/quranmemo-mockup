@@ -2,6 +2,7 @@
     import { appState } from '$lib/app.svelte.js';
     import { i18n } from '$lib/i18n.svelte.js';
     import BottomNav from '../components/BottomNav.svelte';
+    import { SURAHS } from '$lib/data/surahs.js';
 
     let selectedSurah = $state(appState.marketplaceSurah);
     let selectedAyah = $state(appState.marketplaceAyah);
@@ -28,27 +29,20 @@
         showCustomAlert = true;
     }
 
-    const juz30Surahs = [
-        "An-Naba'", "An-Nazi'at", "'Abasa", "At-Takwir", "Al-Infitar", 
-        "Al-Mutaffifin", "Al-Inshiqaq", "Al-Buruj", "At-Tariq", "Al-A'la", 
-        "Al-Ghashiyah", "Al-Fajr", "Al-Balad", "Ash-Shams", "Al-Lail", 
-        "Ad-Duha", "Al-Insyirah", "At-Tin", "Al-'Alaq", "Al-Qadr", 
-        "Al-Bayyinah", "Az-Zalzalah", "Al-'Adiyat", "Al-Qari'ah", "At-Takathur", 
-        "Al-'Asr", "Al-Humazah", "Al-Fil", "Quraish", "Al-Ma'un", 
-        "Al-Kauthar", "Al-Kafirun", "An-Nasr", "Al-Masad", "Al-Ikhlas", 
-        "Al-Falaq", "An-Nas"
-    ];
-    
-    const juz29Surahs = [
-        "Al-Mulk", "Al-Qalam", "Al-Haqqah", "Al-Ma'arij", "Nuh", 
-        "Al-Jinn", "Al-Muzzammil", "Al-Muddaththir", "Al-Qiyamah", 
-        "Al-Insan", "Al-Mursalat"
-    ];
-    
-    const proSurahs = [
-        "Juz 1 (Al-Baqarah)", "Juz 2 (Al-Baqarah)", "Juz 3 (Ali 'Imran)", 
-        "Juz 4 (Ali 'Imran - An-Nisa)", "Juz 5 (An-Nisa)"
-    ];
+    // Daftar surah dibaca dari registry konten, bukan ditulis ulang di layar ini.
+    // Dua daftar terpisah sempat menyimpang penulisannya ("Ad-Duha" di sini vs
+    // "Ad-Dhuha" di data tangga), sehingga pranala dari layar lain jatuh ke surah
+    // pertama karena namanya tidak pernah cocok.
+    const byJuz = (juz) => Object.values(SURAHS)
+        .filter((x) => x.juz === juz)
+        .sort((a, b) => b.number - a.number)
+        .map((x) => x.name);
+
+    const juz30Surahs = $derived(byJuz(30));
+    const juz29Surahs = $derived(byJuz(29));
+
+    // Level Pro dipetakan per juz, bukan per surah, dan kontennya belum tersedia.
+    const proSurahs = $derived(byJuz(30));
 
     const availableSurahs = $derived.by(() => {
         if (appState.user.learningPath === 'mid') return juz29Surahs;

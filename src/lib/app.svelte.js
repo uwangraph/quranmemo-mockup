@@ -162,7 +162,7 @@ export function createAppState() {
         // Data awal sengaja berisi surah yang sudah lewat 14 hari agar alurnya terlihat di mockup.
         murajaahLog: {
             'An-Nas': dayKey(new Date(serverNow().getTime() - 18 * DAY_MS)),
-            'Ad-Duha': dayKey(new Date(serverNow().getTime() - 22 * DAY_MS)),
+            'Ad-Dhuha': dayKey(new Date(serverNow().getTime() - 22 * DAY_MS)),
             'Al-Insyirah': dayKey(new Date(serverNow().getTime() - 3 * DAY_MS))
         },
         setoranIds: [],   // ID sesi setoran yang XP-nya sudah diberikan
@@ -266,7 +266,7 @@ export function createAppState() {
     if (user.dailyTargetsDone === undefined) user.dailyTargetsDone = { day: null, count: 0 };
     if (user.murajaahLog === undefined) user.murajaahLog = {
         'An-Nas': dayKey(new Date(serverNow().getTime() - 18 * DAY_MS)),
-        'Ad-Duha': dayKey(new Date(serverNow().getTime() - 22 * DAY_MS)),
+        'Ad-Dhuha': dayKey(new Date(serverNow().getTime() - 22 * DAY_MS)),
         'Al-Insyirah': dayKey(new Date(serverNow().getTime() - 3 * DAY_MS))
     };
     if (!Array.isArray(user.setoranIds)) user.setoranIds = [];
