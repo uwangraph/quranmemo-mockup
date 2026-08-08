@@ -2,6 +2,22 @@
     import { appState } from '$lib/app.svelte.js';
     import { i18n } from '$lib/i18n.svelte.js';
     import BottomNav from '../components/BottomNav.svelte';
+    import { SURAHS, surahByName } from '$lib/data/surahs.js';
+
+    // Ayat renungan mengikuti surah yang sedang dihafal. Sebelumnya selalu Al-Mulk:1
+    // apa pun yang sedang dikerjakan pengguna, sehingga Tadabbur terasa terlepas dari
+    // hafalannya sendiri.
+    //
+    // Node Tadabbur di roadmap memakai kunci `<id-surah>_1`, jadi surahnya dibaca dari
+    // sana lebih dulu; kalau Tadabbur dibuka dari tombol bebas, dipakai surah aktif.
+    const tadabburSurah = $derived.by(() => {
+        const key = appState.selectedTadabburKey;
+        const fromNode = key ? SURAHS[key.replace(/_\d+$/, '')] : null;
+        return fromNode ?? appState.activeSurah ?? surahByName('Al-Insyirah');
+    });
+
+    // Ayat pertama surah tersebut dipakai sebagai bahan renungan.
+    const tadabburVerse = $derived(tadabburSurah?.verses?.[0] ?? null);
 
     const tadabburSteps = $derived([
         { t: "At-Tilawah", d: i18n.t('tadabbur.s1d'), i: "📖" },
@@ -63,12 +79,14 @@
                 <button class="btn-duo btn-outline small-btn disabled" title={i18n.t('tadabbur.unlock_hint')}>{i18n.t('tadabbur.free')}</button>
             </div>
 
-            <div class="verse-card">
-                <div class="verse-label">{i18n.t('tadabbur.verse_today')}</div>
-                <div class="arabic-text">تَبَٰرَكَ ٱلَّذِي بِيَدِهِ ٱلۡمُلۡكُ</div>
-                <div class="translation">"{i18n.t('tadabbur.verse_trans')}"</div>
-                <div class="reference">Al-Mulk: 1</div>
-            </div>
+            {#if tadabburVerse}
+                <div class="verse-card">
+                    <div class="verse-label">{i18n.t('tadabbur.verse_today')}</div>
+                    <div class="arabic-text">{tadabburVerse.arabic}</div>
+                    <div class="translation">"{i18n.t(tadabburVerse.translationKey)}"</div>
+                    <div class="reference">{tadabburSurah.name}: {tadabburVerse.verseNumber}</div>
+                </div>
+            {/if}
 
             <div class="section-label" style="padding: 0; margin: 10px 0 10px">{i18n.t('tadabbur.themes')}</div>
             <div class="themes-grid">
