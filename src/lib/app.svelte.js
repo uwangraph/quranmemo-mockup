@@ -171,7 +171,6 @@ export function createAppState() {
         xpBuckets: { weekKey: null, week: 0, monthKey: null, month: 0, event: 0 },
         inventory: [],
         progress: {
-            surah_094: 0,       // dipertahankan untuk migrasi data lama
             surahs: {},         // id surah -> jumlah ayat yang sudah selesai
             tadabbur: [],  // key node Tadabbur yang sudah diselesaikan
             // Posisi di struktur tangga LEVELLING.md, terpisah per level karena
@@ -287,8 +286,9 @@ export function createAppState() {
     if (!Array.isArray(user.progress.completedLadders)) user.progress.completedLadders = [];
     if (!user.progress.surahs) {
         // Progres lama hanya mengenal satu surah; pindahkan ke kunci surahnya.
-        user.progress.surahs = user.progress.surah_094 ? { 'al-insyirah': user.progress.surah_094 } : {};
+        const legacy = user.progress.surah_094;   // penghitung tunggal sebelum registry surah
         user.progress.surahs = legacy ? { 'al-insyirah': legacy } : {};
+        delete user.progress.surah_094;
     }
     if (user.progress.ladderProgress === undefined) user.progress.ladderProgress = {
         beginner: { ladderIndex: 0, completedTargets: [] },
@@ -885,8 +885,6 @@ export function createAppState() {
             .sort((a, b) => b.days - a.days);
     }
 
-    // Initialize selectedVerseIndex based on progress
-    selectedVerseIndex = user.progress.surah_094;
     
     const screenLabels = {
         onboarding: "Onboarding",
