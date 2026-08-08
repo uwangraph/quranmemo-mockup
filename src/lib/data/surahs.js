@@ -10,7 +10,12 @@
 // Surah tanpa entri di sini akan ditandai "konten belum tersedia" oleh antarmuka,
 // bukan diam-diam diganti surah lain.
 
+// Surah yang diambil lewat scripts/fetch-surah.js. Berkas JSON-nya hasil bangkitan
+// dan tidak disunting tangan — jalankan ulang skripnya untuk menambah surah.
+import generated from './surahs.generated.js';
+
 export const SURAHS = {
+    ...generated,
     'al-insyirah': {
         id: 'al-insyirah',
         name: 'Al-Insyirah',

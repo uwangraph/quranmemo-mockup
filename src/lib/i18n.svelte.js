@@ -16,6 +16,11 @@ export const locales = [
 
 const dicts = { id, en, ms, ha, fr, ar };
 
+// Terjemahan ayat tinggal di berkas hasil bangkitan, bukan di berkas locale.
+// Ratusan ayat x enam bahasa akan menenggelamkan kunci antarmuka di sana, dan
+// isinya bukan sesuatu yang boleh disunting tangan.
+import verseTranslations from './data/translations.generated.js';
+
 // Older localStorage records stored Indonesian copy instead of translation keys.
 // Resolve those values transparently so existing progress also follows the active locale.
 const legacyKeys = {
@@ -44,7 +49,11 @@ export function createI18n() {
 
     function t(key, params = {}) { 
         const resolvedKey = legacyKeys[key] || key;
-        let text = dicts[locale]?.[resolvedKey] || dicts['en']?.[resolvedKey] || resolvedKey; 
+        let text = dicts[locale]?.[resolvedKey]
+            || verseTranslations[locale]?.[resolvedKey]
+            || dicts['en']?.[resolvedKey]
+            || verseTranslations['en']?.[resolvedKey]
+            || resolvedKey; 
         if (params) {
             Object.keys(params).forEach(k => {
                 text = text.split(`{${k}}`).join(params[k]);
