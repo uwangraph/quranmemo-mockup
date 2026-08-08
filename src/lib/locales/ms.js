@@ -892,4 +892,6 @@ export default {
     ,"halaqah.your_contribution": "Daripada setoran anda tempoh ini"
     ,"learn.content_pending": "Kandungan belum tersedia"
     ,"learn.content_pending_desc": "Ayat untuk {target} masih menunggu sumber mushaf yang disahkan."
+    ,"learn.all_available_done": "Semua kandungan yang ada sudah selesai"
+    ,"learn.all_available_done_desc": "{count} mini sasaran lagi menunggu kandungan mushaf yang disahkan. Kekalkan hafalan anda dengan murajaah."
 };

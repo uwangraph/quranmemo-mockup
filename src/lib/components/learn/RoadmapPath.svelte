@@ -14,11 +14,12 @@
     const learningPath = $derived(appState.user.learningPath);
     const ladders = $derived(laddersFor(learningPath));
 
-    // Tangga & mini target yang sedang berjalan, dibaca per level.
-    const pos = $derived(appState.user.progress.ladderProgress?.[learningPath] ?? { ladderIndex: 0, targetIndex: 0 });
-    const ladderIndex = $derived(Math.min(pos.ladderIndex, ladders.length - 1));
-    const ladder = $derived(ladders[ladderIndex]);
-    const targetIndex = $derived(Math.min(pos.targetIndex, ladderTargetCount(ladder) - 1));
+    // Keadaan tangga dibaca dari satu sumber di app state, supaya roadmap dan layar
+    // lesson tidak pernah berbeda pendapat soal target yang aktif.
+    const st = $derived(appState.ladderState);
+    const ladderIndex = $derived(st.ladderIndex);
+    const ladder = $derived(st.ladder);
+    const doneCount = $derived(st.targets.filter(t => t.done).length);
 
     const pathConfig = $derived.by(() => {
         if (learningPath === 'pro') {
@@ -30,37 +31,38 @@
         return { unitTitle: i18n.t('learn.unit_title_beginner'), unitDesc: i18n.t('learn.unit_desc_beginner'), badge: 'BEGINNER LEVEL' };
     });
 
-    // Nama tiap mini target, apa pun bentuk levelnya: surah, kelompok surah,
-    // atau blok lima halaman.
-    function targetLabel(l, i) {
-        if (l.surahs) return l.surahs[i];
-        if (l.groups) return l.groups[i].join(', ');
-        if (l.blocks) return `${i18n.t('learn.page')} ${l.blocks[i].from}-${l.blocks[i].to}`;
-        return '';
-    }
-
     const passed = $derived(appState.user.progress.completedLadders ?? []);
 
-    // Gerbang terbuka begitu mini target terakhir tangga ini selesai; tertutup
-    // setelah dilewati. Sebelumnya selalu terkunci karena tidak ada yang menggerakkannya.
+    // Gerbang hanya terbuka setelah SELURUH mini target tangga ini selesai. Membuka
+    // lebih awal berarti memberi lencana juz untuk surah yang tidak pernah dihafal.
     const gateStatus = $derived(
         passed.includes(ladder.id) ? 'completed'
-        : (targetIndex >= ladderTargetCount(ladder) - 1 ? 'available' : 'locked')
+        : (st.targets.every(t => t.done) ? 'available' : 'locked')
     );
 
-    const targets = $derived(
-        Array.from({ length: ladderTargetCount(ladder) }, (_, i) => ({
-            index: i,
-            label: targetLabel(ladder, i),
-            status: i < targetIndex ? 'completed' : i === targetIndex ? 'current' : 'locked'
-        }))
-    );
+    // Blok halaman pada level Pro belum dipetakan ke satu surah, jadi labelnya
+    // dibentuk dari rentang halamannya.
+    function labelOf(t) {
+        if (t.name) return t.name;
+        const b = ladder.blocks?.[t.index];
+        return b ? `${i18n.t('learn.page')} ${b.from}-${b.to}` : '—';
+    }
+
+    // Empat keadaan: selesai, sedang dikerjakan, terkunci, dan belum ada kontennya.
+    // Keadaan terakhir itu yang dulu keliru ditampilkan sebagai sudah selesai.
+    const targets = $derived(st.targets.map(t => ({
+        label: labelOf(t),
+        status: t.done ? 'completed'
+              : t === st.playable ? 'current'
+              : t.available ? 'locked'
+              : 'pending'
+    })));
 
     // Node ayat untuk mini target yang sedang dibuka, dibangun dari konten surah
     // yang sebenarnya. Kalau surahnya belum punya konten, roadmap mengatakannya
     // terus terang alih-alih menyajikan ayat surah lain di bawah nama ini.
-    const targetName = $derived(targets[targetIndex]?.label ?? null);
-    const surah = $derived(learningPath === 'beginner' ? surahByName(targetName) : surahByName(targetName?.split(',')[0]));
+    const targetName = $derived(st.playable?.name ?? null);
+    const surah = $derived(surahByName(targetName));
     const surahDone = $derived(surah ? appState.surahProgress(surah.id) : 0);
 
     const innerNodes = $derived.by(() => {
@@ -140,7 +142,7 @@
                 </span>
                 <span class="ladder-name">{ladder.name}</span>
             </div>
-            <span class="ladder-progress">{targetIndex}/{targets.length}</span>
+            <span class="ladder-progress">{doneCount}/{targets.length}</span>
         </div>
 
         <div class="unit-actions">
@@ -192,10 +194,21 @@
     </div>
 
     <div class="current-target-label">
-        {i18n.t('learn.current_mini_target')}: <strong>{targets[targetIndex]?.label ?? ''}</strong>
+        {i18n.t('learn.current_mini_target')}: <strong>{targetName ?? '—'}</strong>
     </div>
 
-    {#if !surah}
+    {#if !surah && st.availableAllDone}
+        <!-- Semua yang bisa dikerjakan sudah tuntas. Lebih baik menyatakannya dan
+             mengarahkan ke murajaah daripada meninggalkan layar buntu. -->
+        <div class="all-done">
+            <span style="font-size:38px;">🎉</span>
+            <div class="ad-title">{i18n.t('learn.all_available_done')}</div>
+            <div class="ad-sub">{i18n.t('learn.all_available_done_desc', { count: st.pending.length })}</div>
+            <button class="ad-btn" onclick={() => appState.go('murojaah')}>
+                {i18n.t('murajaah.review_now')}
+            </button>
+        </div>
+    {:else if !surah}
         <!-- Jujur soal batas mockup: lebih baik menyatakan konten belum ada daripada
              menyajikan ayat surah lain di bawah nama mini target ini. -->
         <div class="no-content">
@@ -368,6 +381,9 @@
         max-width: 160px;
     }
     .target-chip.completed { border-color: #bbf7d0; background: #f0fdf4; color: #16a34a; }
+    .target-chip.pending {
+        border-style: dashed; border-color: #cbd5e1; background: #f8fafc; color: #94a3b8;
+    }
     .target-chip.current { border-color: var(--duo-green); background: #e6faf8; color: var(--duo-green-dark); }
     .target-label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .target-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
@@ -424,6 +440,21 @@
     .node-title { font-size: 13px; font-weight: 800; color: #3c3c3c; margin-top: 8px; text-align: center; }
     .connector { width: 8px; height: 40px; background: #e5e5e5; margin: 4px 0; z-index: 1; }
     .connector.completed, .connector.current, .connector.available { background: #d7ffb2; }
+
+    .all-done {
+        margin: 20px 16px 0; padding: 26px 18px; text-align: center;
+        background: linear-gradient(135deg, #f0fdf4, #ecfdf5);
+        border: 2px solid #bbf7d0; border-radius: 18px;
+    }
+    :global(.desktop-browser) .all-done, :global(.tablet) .all-done { margin: 20px 0 0; }
+    .ad-title { font-size: 16px; font-weight: 900; color: #065f46; margin-top: 8px; }
+    .ad-sub { font-size: 12px; font-weight: 700; color: #10b981; margin-top: 6px; line-height: 1.5; }
+    .ad-btn {
+        margin-top: 14px; background: #00978A; color: #fff; border: none;
+        border-bottom: 3px solid #007a6e; border-radius: 12px; padding: 11px 22px;
+        font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 900;
+        cursor: pointer; min-height: 44px;
+    }
 
     .no-content {
         margin: 20px 16px 0; padding: 24px 16px; text-align: center;

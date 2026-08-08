@@ -178,10 +178,14 @@ export function createAppState() {
             // pengguna bisa berpindah jalur tanpa kehilangan posisi jalur lamanya.
             // Beginner mulai di mini target ke-21 (Al-Insyirah), surah yang lessonnya ada.
             completedLadders: [],  // id tangga yang gerbangnya sudah dilewati
+            // completedTargets mencatat mini target yang benar-benar diselesaikan.
+            // Model lama memakai satu pointer targetIndex, sehingga menempatkan
+            // pengguna di Al-Insyirah berarti menandai 20 surah sebelumnya seolah
+            // sudah tuntas padahal tidak pernah dikerjakan.
             ladderProgress: {
-                beginner: { ladderIndex: 0, targetIndex: 20 },
-                mid: { ladderIndex: 0, targetIndex: 0 },
-                pro: { ladderIndex: 0, targetIndex: 0 }
+                beginner: { ladderIndex: 0, completedTargets: [] },
+                mid: { ladderIndex: 0, completedTargets: [] },
+                pro: { ladderIndex: 0, completedTargets: [] }
             }
         },
         level: 'pemula',
@@ -284,12 +288,21 @@ export function createAppState() {
     if (!user.progress.surahs) {
         // Progres lama hanya mengenal satu surah; pindahkan ke kunci surahnya.
         user.progress.surahs = user.progress.surah_094 ? { 'al-insyirah': user.progress.surah_094 } : {};
+        user.progress.surahs = legacy ? { 'al-insyirah': legacy } : {};
     }
     if (user.progress.ladderProgress === undefined) user.progress.ladderProgress = {
-        beginner: { ladderIndex: 0, targetIndex: 20 },
-        mid: { ladderIndex: 0, targetIndex: 0 },
-        pro: { ladderIndex: 0, targetIndex: 0 }
+        beginner: { ladderIndex: 0, completedTargets: [] },
+        mid: { ladderIndex: 0, completedTargets: [] },
+        pro: { ladderIndex: 0, completedTargets: [] }
     };
+    // Pointer targetIndex lama tidak membedakan "sudah dikerjakan" dari "dilewati
+    // karena posisi awal". Karena hanya Al-Insyirah yang pernah bisa dimainkan,
+    // yang dipindahkan hanya progres yang benar-benar terbukti dari data surah.
+    Object.entries(user.progress.ladderProgress).forEach(([path, pos]) => {
+        if (Array.isArray(pos.completedTargets)) return;
+        pos.completedTargets = [];
+        delete pos.targetIndex;
+    });
     if (user.scheduledBooking === undefined) user.scheduledBooking = { musyrifName: 'Ust. Ahmad Zaki', time: '2026-05-22T15:00:00', surah: 'Ad-Dhuha', juz: 30 };
     if (user.badges === undefined) user.badges = [
         { id: 'b1', icon: '🔥', name: 'Langkah Pertama', desc: 'Menyelesaikan 3 hari streak berturut-turut', earned: false },
@@ -654,16 +667,7 @@ export function createAppState() {
     // Nama mini target yang sedang berjalan pada tangga aktif. Untuk Beginner ini
     // nama surah; untuk Mid sekelompok surah; untuk Pro sebuah blok halaman.
     function currentTargetName() {
-        const path = user.learningPath;
-        const ladders = laddersFor(path);
-        const pos = user.progress.ladderProgress?.[path];
-        if (!pos) return null;
-        const l = ladders[Math.min(pos.ladderIndex, ladders.length - 1)];
-        const i = Math.min(pos.targetIndex, ladderTargetCount(l) - 1);
-        if (l.surahs) return l.surahs[i];
-        if (l.groups) return l.groups[i][0];        // surah pertama kelompok
-        if (l.blocks) return null;                  // blok halaman, bukan satu surah
-        return null;
+        return ladderState().playable?.name ?? null;
     }
 
     // Konten surah yang sedang dikerjakan, atau null bila belum tersedia.
@@ -709,29 +713,60 @@ export function createAppState() {
 
     // ====== Kemajuan tangga (LEVELLING.md) ======
 
+    // Keadaan lengkap tangga yang sedang ditempuh. Dipakai roadmap maupun layar
+    // lesson supaya keduanya tidak pernah berbeda pendapat soal target aktif.
+    function ladderState(path = user.learningPath) {
+        const ladders = laddersFor(path);
+        const pos = user.progress.ladderProgress[path] ?? { ladderIndex: 0, completedTargets: [] };
+        const ladderIndex = Math.min(pos.ladderIndex, ladders.length - 1);
+        const ladder = ladders[ladderIndex];
+        const total = ladderTargetCount(ladder);
+        const doneSet = new Set(pos.completedTargets ?? []);
+
+        const targets = Array.from({ length: total }, (_, i) => {
+            const name = targetNameAt(ladder, i);
+            const available = name !== null && surahByName(name) !== null;
+            return { index: i, name, available, done: doneSet.has(i) };
+        });
+
+        // Target aktif adalah yang pertama belum selesai DAN kontennya tersedia.
+        // Target tanpa konten tidak diklaim selesai, hanya belum bisa dikerjakan.
+        const playable = targets.find(t => !t.done && t.available) ?? null;
+        const pending = targets.filter(t => !t.done && !t.available);
+        const availableAllDone = targets.every(t => t.done || !t.available);
+
+        return { ladders, ladderIndex, ladder, targets, playable, pending, availableAllDone };
+    }
+
+    // Nama mini target ke-i pada sebuah tangga, apa pun bentuk levelnya.
+    function targetNameAt(ladder, i) {
+        if (ladder.surahs) return ladder.surahs[i];
+        if (ladder.groups) return ladder.groups[i]?.[0] ?? null;
+        return null;   // blok halaman Pro belum dipetakan ke satu surah
+    }
+
     // Dipanggil ketika checkpoint sebuah mini target selesai. Tanpa ini posisi tangga
     // tidak pernah bergerak dan gerbang penutupnya terkunci selamanya.
     function completeMiniTarget() {
         const path = user.learningPath;
-        const ladders = laddersFor(path);
+        const st = ladderState(path);
+        if (!st.playable) return false;
+
         const pos = user.progress.ladderProgress[path];
-        if (!pos) return false;
+        pos.completedTargets = [...new Set([...pos.completedTargets, st.playable.index])];
 
-        const ladder = ladders[Math.min(pos.ladderIndex, ladders.length - 1)];
-        const total = ladderTargetCount(ladder);
-
-        if (pos.targetIndex + 1 < total) {
-            pos.targetIndex += 1;
-        } else {
-            // Mini target terakhir tuntas → gerbang tangga terlewati.
-            passLadderGate(ladder);
-            if (pos.ladderIndex + 1 < ladders.length) {
+        // Gerbang hanya terlewati kalau seluruh mini target tangga ini tuntas —
+        // termasuk yang kontennya belum ada. Melewatkannya lebih awal berarti
+        // memberi lencana juz untuk surah yang tidak pernah dihafal.
+        const after = ladderState(path);
+        if (after.targets.every(t => t.done)) {
+            passLadderGate(after.ladder);
+            if (pos.ladderIndex + 1 < after.ladders.length) {
                 pos.ladderIndex += 1;
-                pos.targetIndex = 0;
+                pos.completedTargets = [];
             }
         }
 
-        // Mini target berikutnya punya progresnya sendiri, dikunci per surah.
         saveUser();
         return true;
     }
@@ -932,6 +967,7 @@ export function createAppState() {
         get repairOffer() { return repairOffer(); },
         get weekDays() { return weekDays(); },
         completeMiniTarget,
+        get ladderState() { return ladderState(); },
         get currentTargetName() { return currentTargetName(); },
         get activeSurah() { return activeSurah(); },
         surahProgress,

@@ -892,4 +892,6 @@ export default {
     ,"halaqah.your_contribution": "من تسميعك في هذه الفترة"
     ,"learn.content_pending": "المحتوى غير متوفر بعد"
     ,"learn.content_pending_desc": "آيات {target} ما زالت بانتظار مصدر مصحف موثّق."
+    ,"learn.all_available_done": "اكتمل كل المحتوى المتاح"
+    ,"learn.all_available_done_desc": "ما زال {count} من الأهداف الصغيرة بانتظار محتوى مصحف موثّق. حافظ على حفظك بالمراجعة."
 };

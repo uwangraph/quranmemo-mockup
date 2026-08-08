@@ -255,4 +255,50 @@ function makeXp(user, today) {
     assert.equal(progress.surahs['al-insyirah'], 2, 'lompat ayat tidak menambah progres');
 }
 
+// ── LEVELLING.md: mini target hanya "selesai" kalau benar-benar dikerjakan ──
+// Replika ladderState(): target tanpa konten bukan selesai dan bukan terkunci.
+function ladderState(ladder, completedTargets, hasContent) {
+    const done = new Set(completedTargets);
+    const targets = ladder.surahs.map((name, index) => ({
+        index, name, available: hasContent(name), done: done.has(index)
+    }));
+    const playable = targets.find(t => !t.done && t.available) ?? null;
+    return {
+        targets, playable,
+        pending: targets.filter(t => !t.done && !t.available),
+        availableAllDone: targets.every(t => t.done || !t.available)
+    };
+}
+
+{
+    const ladder = { surahs: ['An-Nas', 'Al-Falaq', 'Al-Insyirah', 'Ad-Dhuha'] };
+    const has = (n) => n === 'Al-Insyirah';
+
+    const st = ladderState(ladder, [], has);
+    assert.equal(st.playable.name, 'Al-Insyirah', 'target aktif adalah yang kontennya ada');
+    assert.deepEqual(st.targets.map(t => t.done), [false, false, false, false],
+        'tidak ada satu pun target diklaim selesai hanya karena posisi awal');
+    assert.equal(st.pending.length, 3, 'tiga target menunggu konten');
+    assert.equal(st.availableAllDone, false);
+}
+
+{
+    // Setelah satu-satunya target bertanggung konten selesai: tidak ada lagi yang
+    // bisa dimainkan, dan gerbang TIDAK boleh terbuka karena masih ada yang belum.
+    const ladder = { surahs: ['An-Nas', 'Al-Insyirah'] };
+    const has = (n) => n === 'Al-Insyirah';
+    const st = ladderState(ladder, [1], has);
+    assert.equal(st.playable, null);
+    assert.equal(st.availableAllDone, true, 'semua yang tersedia sudah tuntas');
+    assert.equal(st.targets.every(t => t.done), false, 'gerbang tetap tertutup');
+}
+
+{
+    // Gerbang baru terbuka kalau seluruh mini target tuntas.
+    const ladder = { surahs: ['An-Nas', 'Al-Insyirah'] };
+    const st = ladderState(ladder, [0, 1], () => true);
+    assert.equal(st.targets.every(t => t.done), true);
+    assert.equal(st.playable, null);
+}
+
 console.log('rules: semua kasus lolos');

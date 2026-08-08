@@ -889,4 +889,6 @@ export default {
     ,"halaqah.your_contribution": "Daga sadar da haddar ka a wannan lokaci"
     ,"learn.content_pending": "Abun ciki bai shirya ba tukuna"
     ,"learn.content_pending_desc": "Ayoyin {target} na jiran tushen mushaf da aka tantance."
+    ,"learn.all_available_done": "An kammala duk abun ciki da ake da shi"
+    ,"learn.all_available_done_desc": "Sauran ƙananan buri {count} na jiran abun ciki na mushaf da aka tantance. Ka kiyaye haddarka da murajaah."
 };

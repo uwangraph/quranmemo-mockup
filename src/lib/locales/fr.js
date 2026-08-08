@@ -891,4 +891,6 @@ export default {
     ,"halaqah.your_contribution": "De tes récitations sur cette période"
     ,"learn.content_pending": "Contenu pas encore disponible"
     ,"learn.content_pending_desc": "Les versets de {target} attendent une source de mushaf vérifiée."
+    ,"learn.all_available_done": "Tout le contenu disponible est terminé"
+    ,"learn.all_available_done_desc": "{count} mini-objectifs attendent encore un contenu de mushaf vérifié. Entretiens ta mémorisation par la révision."
 };
