@@ -190,12 +190,16 @@
         border-radius: 0 0 14px 14px; margin-bottom: 10px;
     }
     .pl-btn {
+        appearance: none; -webkit-appearance: none;
         flex: 1; min-height: 40px; padding: 8px 4px; border-radius: 10px;
-        border: 2px solid #e5e5e5; background: #f8fafc;
-        font-family: 'Nunito', sans-serif; font-size: 10px; font-weight: 800;
-        color: #475569; cursor: pointer;
+        border: 2px solid #e2e8f0; background: #f8fafc;
+        font-family: inherit; font-size: 10px; line-height: 1.15; font-weight: 800;
+        color: #475569; cursor: pointer; text-align: center;
+        box-shadow: 0 2px 0 #cbd5e1;
+        transition: transform .12s ease, background .12s ease, box-shadow .12s ease;
     }
-    .pl-btn:active { background: #e2e8f0; }
+    .pl-btn:hover { background: #eef6f7; border-color: #99d5d0; color: #007d73; }
+    .pl-btn:active { background: #e2e8f0; transform: translateY(2px); box-shadow: none; }
     .pl-done {
         background: #fff; border: 2px solid #e5e5e5; border-top: none;
         border-radius: 0 0 14px 14px; padding: 10px 12px; margin-bottom: 10px;
