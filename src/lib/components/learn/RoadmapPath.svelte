@@ -22,6 +22,9 @@
     const doneCount = $derived(st.targets.filter(t => t.done).length);
 
     const pathConfig = $derived.by(() => {
+        if (appState.user.pathMode === 'self') {
+            return { unitTitle: 'Belajar sesuai ritmemu', unitDesc: 'Kamu memilih surah sendiri untuk mulai di sini.', badge: 'SELF-PACED' };
+        }
         if (learningPath === 'pro') {
             return { unitTitle: i18n.t('learn.unit_title_pro'), unitDesc: i18n.t('learn.unit_desc_pro'), badge: 'PRO LEVEL' };
         }
@@ -62,7 +65,9 @@
     // yang sebenarnya. Kalau surahnya belum punya konten, roadmap mengatakannya
     // terus terang alih-alih menyajikan ayat surah lain di bawah nama ini.
     const targetName = $derived(st.playable?.name ?? null);
-    const surah = $derived(surahByName(targetName));
+    const selfPaced = $derived(appState.user.pathMode === 'self');
+    const selectedSelfSurah = $derived(selfPaced ? surahByName(appState.user.selfPacedTarget) : null);
+    const surah = $derived(selectedSelfSurah ?? surahByName(targetName));
     const surahDone = $derived(surah ? appState.surahProgress(surah.id) : 0);
 
     const innerNodes = $derived.by(() => {
@@ -114,6 +119,13 @@
         }
     }
 
+    function startSelfPaced() {
+        if (!selectedSelfSurah) return;
+        appState.selectedVerseIndex = 0;
+        appState.selectedNodeType = 'lesson';
+        appState.go('lesson');
+    }
+
     // Tadabbur dari tombol banner: bisa dibuka kapan saja untuk merenung,
     // tanpa menandai node terjadwal di roadmap sebagai selesai.
     function openFreeTadabbur() {
@@ -158,6 +170,17 @@
                 <i class="ti ti-map"></i> {i18n.t('learn.ladder_map')}
             </button>
         </div>
+
+        {#if selfPaced && selectedSelfSurah}
+            <div class="self-paced-card">
+                <div>
+                    <span class="ladder-eyebrow">SURAH PILIHANMU</span>
+                    <strong>{selectedSelfSurah.name}</strong>
+                    <small>{selectedSelfSurah.verses.length} ayat tersedia</small>
+                </div>
+                <button class="btn-duo btn-green" onclick={startSelfPaced}>MULAI</button>
+            </div>
+        {/if}
     </div>
 
     <!-- Peta seluruh tangga di level ini -->
@@ -330,6 +353,16 @@
         min-height: 40px;
         transition: background 0.15s;
     }
+    .self-paced-card {
+        position: relative; z-index: 2; margin-top: 14px; padding: 12px;
+        display: flex; align-items: center; justify-content: space-between; gap: 12px;
+        background: rgba(255,255,255,0.96); border-radius: 16px; color: #134e4a;
+    }
+    .self-paced-card > div { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+    .self-paced-card .ladder-eyebrow { color: #0f766e; }
+    .self-paced-card strong { font-size: 15px; }
+    .self-paced-card small { color: #64748b; font-size: 10px; font-weight: 800; }
+    .self-paced-card button { width: auto; padding: 9px 14px; font-size: 11px; flex-shrink: 0; }
     .unit-guide-btn:hover { background: rgba(0,0,0,0.25); }
     .unit-guide-btn:active { background: rgba(0,0,0,0.35); }
     .unit-guide-btn:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }

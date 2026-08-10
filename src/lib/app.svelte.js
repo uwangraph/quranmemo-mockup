@@ -675,6 +675,7 @@ export function createAppState() {
     // Nama mini target yang sedang berjalan pada tangga aktif. Untuk Beginner ini
     // nama surah; untuk Mid sekelompok surah; untuk Pro sebuah blok halaman.
     function currentTargetName() {
+        if (user.pathMode === 'self' && user.selfPacedTarget) return user.selfPacedTarget;
         return ladderState().playable?.name ?? null;
     }
 

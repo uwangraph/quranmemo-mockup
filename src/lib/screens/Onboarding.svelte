@@ -6,6 +6,7 @@
     // Layar ini hanya mengumpulkan data dan menampilkan hasil verifikasi.
     import { appState } from '$lib/app.svelte.js';
     import { i18n } from '$lib/i18n.svelte.js';
+    import { SURAHS } from '$lib/data/surahs.js';
 
     // Urutan langkah mengikuti "Alur Keseluruhan" di ONBOARDING.md. Langkah 'record'
     // dan 'pending' dilewati kalau user menjawab belum bisa membaca — meminta rekaman
@@ -133,21 +134,22 @@
 
     // ── Free will: ikut rekomendasi musyrif atau pilih sendiri ─────
     let followRecommendation = $state(null);
-    let ownTarget = $state('');
+    let selfPacedSurah = $state('');
 
     function answerRecommendation() {
         if (followRecommendation === null) return;
-        if (!followRecommendation && !ownTarget.trim()) return;
+        if (!followRecommendation && !selfPacedSurah) return;
         appState.updatePlacement({ followRecommendation });
-        if (!followRecommendation) appState.setPathMode(appState.user.pathMode, ownTarget.trim());
-        goStep('path');
+        const target = followRecommendation ? placement.recommendation?.surah : selfPacedSurah;
+        appState.setPathMode(pathMode, pathMode === 'self' ? target : null);
+        goStep('reminder');
     }
 
     // ── Jalur: Self-paced vs Roadmap Levelling ─────────────────────
     let pathMode = $state('roadmap');
 
     function answerPath() {
-        appState.setPathMode(pathMode, pathMode === 'self' ? (ownTarget.trim() || null) : null);
+        appState.setPathMode(pathMode, pathMode === 'self' ? (selfPacedSurah || null) : null);
         goStep('reminder');
     }
 
@@ -351,9 +353,25 @@
             </div>
 
             {#if followRecommendation === false}
-                <input class="own-input" bind:value={ownTarget}
-                       placeholder={i18n.t('placement.rec_own_placeholder')} />
+                <select class="own-input" bind:value={selfPacedSurah} aria-label="Pilih surah">
+                    <option value="">Pilih surah yang ingin dihafal</option>
+                    {#each Object.values(SURAHS).sort((a, b) => a.number - b.number) as surah}
+                        <option value={surah.name}>{surah.name}</option>
+                    {/each}
+                </select>
             {/if}
+
+            <div class="field path-choice-inline">
+                <span class="field-label">Cara belajar</span>
+                <div class="opt-list">
+                    <button class="option-card tall" class:selected={pathMode === 'roadmap'} onclick={() => (pathMode = 'roadmap')}>
+                        <span class="opt-icon">🗺️</span><span><strong>{i18n.t('placement.path_roadmap')}</strong><small>{i18n.t('placement.path_roadmap_desc')}</small></span>
+                    </button>
+                    <button class="option-card tall" class:selected={pathMode === 'self'} onclick={() => (pathMode = 'self')}>
+                        <span class="opt-icon">🧭</span><span><strong>{i18n.t('placement.path_self')}</strong><small>Pilih surah sendiri dan belajar sesuai ritmemu.</small></span>
+                    </button>
+                </div>
+            </div>
 
         <!-- ── 9. Pilih jalur ────────────────────────────────────── -->
         {:else if step === 'path'}
@@ -383,13 +401,7 @@
 
             <div class="field">
                 <span class="field-label">{i18n.t('placement.daily_target')}</span>
-                <div class="chip-grid">
-                    {#each [1, 2, 3, 5, 10] as n}
-                        <button class="chip" class:selected={dailyTarget === n} onclick={() => (dailyTarget = n)}>
-                            {i18n.t('placement.verses_per_day', { count: n })}
-                        </button>
-                    {/each}
-                </div>
+                <div class="daily-target-input"><input class="own-input" type="number" min="1" max="30" bind:value={dailyTarget} /><span>ayat per hari</span></div>
             </div>
 
             <div class="field">
@@ -430,7 +442,7 @@
         {:else if step === 'surahs'}
             <button class="btn-duo btn-green" onclick={saveSurahs}>{i18n.t('onboarding.next')}</button>
         {:else if step === 'recommendation'}
-            {@const ready = followRecommendation === true || (followRecommendation === false && ownTarget.trim())}
+            {@const ready = followRecommendation === true || (followRecommendation === false && selfPacedSurah)}
             <button class="btn-duo" class:btn-green={ready} class:btn-disabled={!ready} onclick={answerRecommendation}>
                 {i18n.t('onboarding.next')}
             </button>
@@ -574,4 +586,8 @@
         display: block; font-size: 11px; font-weight: 900; color: #64748b;
         text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px;
     }
+    .path-choice-inline { margin-top: 18px; }
+    .daily-target-input { display: flex; align-items: center; gap: 10px; }
+    .daily-target-input .own-input { width: 110px; margin-top: 0; }
+    .daily-target-input span { font-size: 13px; font-weight: 800; color: #64748b; }
 </style>
