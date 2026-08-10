@@ -140,6 +140,14 @@ export function createAppState() {
     let marketplaceTab = $state('toko');
     let marketplaceSurah = $state('Al-Insyirah');
     let marketplaceAyah = $state('');
+    // Sesi setoran aktif, dibagikan oleh POV user dan musyrif.
+    let liveSession = $state({
+        studentName: 'Ahmad Hafidz',
+        musyrifName: 'Ust. Malik',
+        surah: 'Al-Insyirah',
+        ayah: '1-8',
+        sessionId: 'instant-al-insyirah-1-8'
+    });
     let musyrifBalance = $state(1250); // In-memory only — resets on every page load/refresh
     
     // Persistent User Data
@@ -894,6 +902,7 @@ export function createAppState() {
         league: "League",
         musyrif: "Musyrif Dashboard",
         livemarking: "Live Marking",
+        "user-livemarking": "Live Setoran",
         "musyrif-earnings": "Earnings & Analytics",
         lesson: "Lesson",
         tadabbur: "Tadabbur",
@@ -938,6 +947,8 @@ export function createAppState() {
         set marketplaceSurah(val) { marketplaceSurah = val; },
         get marketplaceAyah() { return marketplaceAyah; },
         set marketplaceAyah(val) { marketplaceAyah = val; },
+        get liveSession() { return liveSession; },
+        setLiveSession(session) { liveSession = { ...liveSession, ...session }; },
         get screenLabels() { return screenLabels; },
         get user() { return user; },
         get pendingRewardInfo() { return pendingRewardInfo; },

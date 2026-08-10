@@ -5,11 +5,16 @@
     import { SURAHS } from '$lib/data/surahs.js';
 
     let selectedSurah = $state(appState.marketplaceSurah);
-    let selectedAyah = $state(appState.marketplaceAyah);
+    let selectedAyahFrom = $state(1);
+    let selectedAyahTo = $state(1);
     let selectedGender = $state("all");
     let showDropdown = $state(false);
+    let showAyahFromDropdown = $state(false);
+    let showAyahToDropdown = $state(false);
     let hasSearched = $state(false);
-    let activeTab = $state(appState.marketplaceTab);
+    // Setiap kali halaman Marketplace dibuka dari awal, mulai dari tab pertama.
+    // Tab terakhir tidak dibawa dari kunjungan sebelumnya.
+    let activeTab = $state('instant');
 
     let showCustomAlert = $state(false);
     let alertMessage = $state("");
@@ -50,11 +55,24 @@
         return juz30Surahs;
     });
 
+    const selectedSurahData = $derived(SURAHS[Object.values(SURAHS).find((surah) => surah.name === selectedSurah)?.id]);
+    const ayahOptions = $derived.by(() => {
+        const count = selectedSurahData?.verses.length ?? 0;
+        return Array.from({ length: count }, (_, index) => index + 1);
+    });
+    const selectedAyah = $derived(
+        selectedAyahFrom === selectedAyahTo
+            ? `${selectedAyahFrom}`
+            : `${selectedAyahFrom}-${selectedAyahTo}`
+    );
+
     // Ensure selectedSurah matches the available list when initialized or changed
     $effect(() => {
         if (!availableSurahs.includes(selectedSurah)) {
             selectedSurah = availableSurahs[0];
         }
+        if (!ayahOptions.includes(selectedAyahFrom)) selectedAyahFrom = ayahOptions[0] ?? 1;
+        if (!ayahOptions.includes(selectedAyahTo) || selectedAyahTo < selectedAyahFrom) selectedAyahTo = selectedAyahFrom;
     });
 
     const defaultSchedule = $derived([
@@ -104,7 +122,14 @@
             customConfirm(i18n.t('market.confirm_booking', { surah: selectedSurah, ayah: selectedAyah, name: m.name, time: timeText, cost }), () => {
                 appState.user.gems -= cost;
                 appState.saveUser();
-                appState.go('livemarking');
+                appState.setLiveSession({
+                    studentName: appState.user.name,
+                    musyrifName: m.name,
+                    surah: selectedSurah,
+                    ayah: selectedAyah,
+                    sessionId: `instant-${selectedSurah}-${selectedAyah}`
+                });
+                appState.go('user-livemarking');
             });
         } else {
             customAlert(i18n.t('market.alert_not_enough_gems', { cost, have: appState.user.gems }));
@@ -172,7 +197,7 @@
                                     {#each availableSurahs as surah}
                                         <!-- svelte-ignore a11y_click_events_have_key_events -->
                                         <!-- svelte-ignore a11y_no_static_element_interactions -->
-                                        <div class="dropdown-item" class:selected={selectedSurah === surah} onclick={() => {selectedSurah = surah; showDropdown = false;}}>
+                                        <div class="dropdown-item" class:selected={selectedSurah === surah} onclick={() => {selectedSurah = surah; selectedAyahFrom = 1; selectedAyahTo = 1; showDropdown = false;}}>
                                             {surah}
                                         </div>
                                     {/each}
@@ -180,9 +205,40 @@
                             {/if}
                         </div>
                     </div>
-                    <div class="target-field">
-                        <label>{i18n.t('learn.verse')}</label>
-                        <input type="text" placeholder={i18n.t('marketplace.ayah_placeholder')} bind:value={selectedAyah} />
+                    <div class="ayah-range-field">
+                        <label>Ayat</label>
+                        <div class="ayah-range-controls">
+                            <div class="custom-select-wrapper ayah-custom-select">
+                                <div class="custom-select-box" role="button" tabindex="0" onclick={() => { showAyahFromDropdown = !showAyahFromDropdown; showAyahToDropdown = false; }} onkeydown={(event) => event.key === 'Enter' && (showAyahFromDropdown = !showAyahFromDropdown)}>
+                                    <span>Dari {selectedAyahFrom}</span><i class="ti ti-chevron-down"></i>
+                                </div>
+                                {#if showAyahFromDropdown}
+                                    <div class="dropdown-menu-overlay" onclick={() => showAyahFromDropdown = false}></div>
+                                    <div class="dropdown-menu ayah-dropdown-menu">
+                                        {#each ayahOptions as ayah}
+                                            <div class="dropdown-item" class:selected={selectedAyahFrom === ayah} role="button" tabindex="0" onclick={() => { selectedAyahFrom = ayah; if (selectedAyahTo < ayah) selectedAyahTo = ayah; showAyahFromDropdown = false; }}>
+                                                Ayat {ayah}
+                                            </div>
+                                        {/each}
+                                    </div>
+                                {/if}
+                            </div>
+                            <div class="custom-select-wrapper ayah-custom-select">
+                                <div class="custom-select-box" role="button" tabindex="0" onclick={() => { showAyahToDropdown = !showAyahToDropdown; showAyahFromDropdown = false; }} onkeydown={(event) => event.key === 'Enter' && (showAyahToDropdown = !showAyahToDropdown)}>
+                                    <span>Sampai {selectedAyahTo}</span><i class="ti ti-chevron-down"></i>
+                                </div>
+                                {#if showAyahToDropdown}
+                                    <div class="dropdown-menu-overlay" onclick={() => showAyahToDropdown = false}></div>
+                                    <div class="dropdown-menu ayah-dropdown-menu">
+                                        {#each ayahOptions.filter((ayah) => ayah >= selectedAyahFrom) as ayah}
+                                            <div class="dropdown-item" class:selected={selectedAyahTo === ayah} role="button" tabindex="0" onclick={() => { selectedAyahTo = ayah; showAyahToDropdown = false; }}>
+                                                Ayat {ayah}
+                                            </div>
+                                        {/each}
+                                    </div>
+                                {/if}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -404,6 +460,7 @@
     }
     .target-selector {
         display: flex;
+        flex-direction: column;
         gap: 12px;
         margin-top: 16px;
         background: rgba(255, 255, 255, 0.15);
@@ -424,8 +481,15 @@
         text-transform: uppercase;
         letter-spacing: 0.5px;
     }
+    .ayah-range-field { width: 100%; display: flex; flex-direction: column; gap: 4px; }
+    .ayah-range-field label { font-size: 10px; font-weight: 800; color: rgba(255,255,255,0.9); text-transform: uppercase; letter-spacing: 0.5px; }
+    .ayah-range-controls { display: flex; align-items: center; gap: 6px; }
+    .ayah-custom-select { flex: 1; min-width: 0; position: relative; z-index: 60; }
+    .ayah-custom-select .custom-select-box { padding: 8px 9px; font-size: 11px; }
+    .ayah-dropdown-menu { max-height: 220px; overflow-y: auto; }
     .custom-select-box,
-    .target-field input {
+    .target-field input,
+    .native-target-select {
         background: #fff;
         border: none;
         padding: 8px 12px;
@@ -437,6 +501,13 @@
         font-family: inherit;
         box-sizing: border-box;
         width: 100%;
+        appearance: none;
+        -webkit-appearance: none;
+        background-image: linear-gradient(45deg, transparent 50%, #64748b 50%), linear-gradient(135deg, #64748b 50%, transparent 50%);
+        background-position: calc(100% - 16px) 50%, calc(100% - 11px) 50%;
+        background-size: 5px 5px, 5px 5px;
+        background-repeat: no-repeat;
+        cursor: pointer;
     }
     .custom-select-box {
         display: flex;

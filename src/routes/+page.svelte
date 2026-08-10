@@ -8,6 +8,7 @@
     import Language from '$lib/screens/Language.svelte';
     import MusyrifDashboard from '$lib/screens/MusyrifDashboard.svelte';
     import LiveMarking from '$lib/screens/LiveMarking.svelte';
+    import UserLiveMarking from '$lib/screens/UserLiveMarking.svelte';
     import AdminUsers from '$lib/screens/AdminUsers.svelte';
     import AdminMusyrif from '$lib/screens/AdminMusyrif.svelte';
     import Lesson from '$lib/screens/Lesson.svelte';
@@ -62,6 +63,8 @@
         <MusyrifDashboard />
     {:else if appState.currentScreen === 'livemarking'}
         <LiveMarking />
+    {:else if appState.currentScreen === 'user-livemarking'}
+        <UserLiveMarking />
     {:else if appState.currentScreen === 'musyrif-earnings'}
         <MusyrifEarnings />
     {:else if appState.currentScreen === 'admin-dashboard'}

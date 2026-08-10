@@ -1,6 +1,7 @@
 <script>
     import { appState } from '$lib/app.svelte.js';
     import { i18n } from '$lib/i18n.svelte.js';
+    import { surahByName } from '$lib/data/surahs.js';
     
     import VideoCallContainer from '$lib/components/live-marking/VideoCallContainer.svelte';
     import MarkingTypeSelector from '$lib/components/live-marking/MarkingTypeSelector.svelte';
@@ -11,10 +12,13 @@
     let selectedWord = $state(null);
     let showTypeSelector = $state(false);
     
-    // Breaking down Al-Mulk 12 into words
-    const words = [
-        "إِنَّ", "ٱلَّذِينَ", "يَخۡشَوۡنَ", "رَبَّهُم", "بِٱلۡغَيۡبِ", "لَهُم", "مَّغۡفِرَةٞ", "وَأَجۡرٞ", "كَبِيرٞ"
-    ];
+    const session = $derived(appState.liveSession);
+    const selectedVerses = $derived.by(() => {
+        const surah = surahByName(session.surah);
+        const [from, to = from] = String(session.ayah).match(/\d+/g)?.map(Number) ?? [];
+        return surah?.verses.filter((verse) => verse.verseNumber >= from && verse.verseNumber <= to) ?? [];
+    });
+    const words = $derived(selectedVerses.flatMap((verse) => verse.words));
 
     function openSelector(word) {
         selectedWord = word;
@@ -55,8 +59,8 @@
                 <i class="ti ti-arrow-left"></i>
             </button>
             <div style="flex: 1">
-                <div style="font-size: 14px; font-weight: 900">Ahmad Hafidz</div>
-                <div style="font-size: 10px; font-weight: 700; color: #00978A">🔴 {i18n.t('marking.live')}</div>
+                <div style="font-size: 14px; font-weight: 900">{session.studentName}</div>
+                <div style="font-size: 10px; font-weight: 700; color: #00978A">🔴 {i18n.t('marking.live')} — {session.surah}: {session.ayah}</div>
             </div>
             <div class="timer-bubble">04:20</div>
         </div>

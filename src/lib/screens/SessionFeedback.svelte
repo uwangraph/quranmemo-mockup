@@ -2,9 +2,14 @@
     import { appState, XP } from '$lib/app.svelte.js';
     import { i18n } from '$lib/i18n.svelte.js';
 
-    // Sesi setoran yang baru selesai. Di mockup datanya statis; yang penting
-    // sessionId-nya stabil supaya XP tidak terbayar dua kali saat layar dibuka ulang.
-    const session = { id: 'setoran-almulk-12-16', surah: 'Al-Mulk', range: '12-16', grade: 'mumtaz' };
+    // Sesi mengikuti target yang dipilih user sebelum masuk live marking.
+    const liveSession = $derived(appState.liveSession);
+    const session = $derived({
+        id: liveSession.sessionId,
+        surah: liveSession.surah,
+        range: liveSession.ayah,
+        grade: 'mumtaz'
+    });
 
     // Sudah dibayar? Berarti layar ini pernah diselesaikan sebelumnya.
     const alreadyClaimed = $derived(appState.user.setoranIds.includes(session.id));
@@ -12,7 +17,7 @@
 
     function submit() {
         if (rating === 0) return;
-        appState.recordSetoran(session);
+        appState.recordSetoran({ sessionId: session.id, surah: session.surah, grade: session.grade });
         appState.go('learn');
     }
 

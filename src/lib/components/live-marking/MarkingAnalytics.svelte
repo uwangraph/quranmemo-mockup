@@ -9,7 +9,7 @@
     <div class="analytics-header">
         <div class="success-icon">🏆</div>
         <h1 style="font-size: 24px; font-weight: 900; color: #3c3c3c; margin: 16px 0 4px;">{i18n.t('marking.session_report')}</h1>
-        <p style="font-size: 14px; font-weight: 700; color: #afafaf;">Ahmad Hafidz • Al-Mulk: 12</p>
+        <p style="font-size: 14px; font-weight: 700; color: #afafaf;">{appState.liveSession.studentName} • {appState.liveSession.surah}: {appState.liveSession.ayah}</p>
     </div>
 
     <div class="stats-grid-analytics">

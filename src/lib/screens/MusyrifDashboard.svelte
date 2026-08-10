@@ -34,6 +34,17 @@
         }
         decided = { ...decided, [entry.name]: cat };
     }
+
+    function acceptInstantRequest() {
+        appState.setLiveSession({
+            studentName: 'Ahmad Hafidz',
+            musyrifName: 'Ust. Malik',
+            surah: 'Al-Insyirah',
+            ayah: '1-8',
+            sessionId: 'instant-al-insyirah-1-8'
+        });
+        appState.go('livemarking');
+    }
 </script>
 
 <div class="screen">
@@ -109,7 +120,7 @@
                     <div style="font-size: 14px; font-weight: 900; color: #3c3c3c">Ahmad Hafidz</div>
                     <div style="font-size: 11px; font-weight: 700; color: #ff9600">{i18n.t('admin.serving')}: Al-Insyirah (Instan) • +15 <i class="ti ti-diamond-filled" style="color: #1cb0f6;"></i></div>
                 </div>
-                <button class="btn-duo btn-orange" style="width: auto; padding: 10px 16px; font-size: 12px" onclick={() => appState.go('livemarking')}>
+                <button class="btn-duo btn-orange" style="width: auto; padding: 10px 16px; font-size: 12px" onclick={acceptInstantRequest}>
                     {i18n.t('musyrif.accept')}
                 </button>
             </div>
