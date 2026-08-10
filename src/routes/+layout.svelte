@@ -384,12 +384,11 @@
 											
 											<div class="sidebar-menu" style="display: flex; flex-direction: column; gap: 8px; flex: 1;">
 												{#each simulatedNavItems as item}
-													<button 
-														class="sidebar-item" 
-														class:active={appState.currentScreen === item.id}
-														onclick={() => appState.go(item.id)}
-														style="display: flex; align-items: center; gap: 14px; padding: 12px 16px; border: 2px solid transparent; border-radius: 12px; background: {appState.currentScreen === item.id ? '#DBF0EE' : 'none'}; color: {appState.currentScreen === item.id ? '#00978A' : '#4b5563'}; cursor: pointer; text-align: left; transition: all 0.2s;"
-													>
+														<button 
+															class="sidebar-item" 
+															class:active={appState.currentScreen === item.id}
+															onclick={() => appState.go(item.id)}
+														>
 														<img src={getFlaticon(item.id)} alt="" style="width: 22px; height: 22px; object-fit: contain; filter: {appState.currentScreen === item.id ? 'none' : 'grayscale(100%) opacity(60%)'}; transition: all 0.2s;" />
 														<span style="font-size: 13px; font-weight: 800; font-family: 'Nunito', sans-serif;">{i18n.t(item.label)}</span>
 													</button>
@@ -846,6 +845,38 @@
 		display: flex;
 		align-items: center;
 	}
+	.sidebar-item {
+		display: flex;
+		align-items: center;
+		gap: 14px;
+		min-height: 48px;
+		box-sizing: border-box;
+		padding: 12px 16px;
+		border: 2px solid #e5e5e5;
+		border-bottom: 3px solid #d1d5db;
+		border-radius: 12px;
+		background: #fff;
+		color: #4b5563;
+		cursor: pointer;
+		text-align: left;
+		transition: transform .1s ease, border-bottom-width .1s ease;
+	}
+	.sidebar-item.active {
+		background: #00978a;
+		color: #fff;
+		border: 0;
+		border-bottom: 3px solid #007a70;
+	}
+	.sidebar-item:hover {
+		transform: translateY(1px);
+		border-bottom-width: 2px;
+		box-shadow: none;
+	}
+	.sidebar-item:active {
+		transform: translateY(3px);
+		border-bottom-width: 0;
+		box-shadow: none;
+	}
 	.role-badge {
 		font-size: 10px;
 		font-weight: 800;
@@ -1005,5 +1036,18 @@
 	}
 	.zoom-text:hover {
 		color: #00978A;
+	}
+
+	/* Unified Duolingo-style press feedback for interactive buttons. */
+	:global(button:not(:disabled):not(.btn-disabled):not(.btn-duo):not(.sidebar-item)) {
+		transition: transform 0.1s ease, box-shadow 0.1s ease;
+	}
+	:global(button:not(:disabled):not(.btn-disabled):not(.btn-duo):not(.sidebar-item):hover) {
+		transform: translateY(1px);
+		box-shadow: 0 2px 0 rgba(0, 0, 0, 0.18);
+	}
+	:global(button:not(:disabled):not(.btn-disabled):not(.btn-duo):not(.sidebar-item):active) {
+		transform: translateY(3px);
+		box-shadow: none;
 	}
 </style>

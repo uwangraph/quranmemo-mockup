@@ -35,13 +35,15 @@
 
         <div class="mc-list">
             {#each shown as item}
-                <button class="mc-item" onclick={() => bookMurajaah(item.surah)}>
+                <div class="mc-item">
                     <div style="flex:1; min-width:0; text-align:left;">
                         <div class="mc-surah">{item.surah}</div>
                         <div class="mc-days">{i18n.t('murajaah.last_reviewed', { days: item.days })}</div>
                     </div>
-                    <span class="mc-cta">{i18n.t('murajaah.review_now')}</span>
-                </button>
+                    <button type="button" class="mc-cta" onclick={() => bookMurajaah(item.surah)}>
+                        {i18n.t('murajaah.review_now')}
+                    </button>
+                </div>
             {/each}
         </div>
 
@@ -79,20 +81,25 @@
     .mc-item {
         display: flex; align-items: center; gap: 10px;
         background: #fff; border: 2px solid #fed7aa; border-radius: 12px;
-        padding: 10px 12px; cursor: pointer; font-family: 'Nunito', sans-serif;
-        min-height: 52px; transition: transform 0.15s;
+        padding: 10px 12px; cursor: default; font-family: 'Nunito', sans-serif;
+        min-height: 52px; border-bottom: 3px solid #fed7aa;
     }
-    .mc-item:active { transform: scale(0.98); }
     .mc-surah { font-size: 14px; font-weight: 900; color: #1e293b; }
     .mc-days { font-size: 11px; font-weight: 700; color: #b45309; margin-top: 2px; }
     .mc-cta {
         background: #ff6200; color: #fff; font-size: 11px; font-weight: 900;
         padding: 7px 12px; border-radius: 9px; white-space: nowrap; flex-shrink: 0;
+        border: 0; border-bottom: 3px solid #c2410c; cursor: pointer;
+        font-family: 'Nunito', sans-serif; transition: transform .1s, border-bottom-width .1s;
     }
+    .mc-item .mc-cta:hover { transform: translateY(1px); border-bottom-width: 2px; box-shadow: none; }
+    .mc-item .mc-cta:active { transform: translateY(3px); border-bottom-width: 0; box-shadow: none; }
 
     .mc-more {
         width: 100%; margin-top: 10px; padding: 8px; min-height: 40px;
-        background: none; border: none; cursor: pointer;
+        background: none; border: none; border-bottom: 3px solid transparent; cursor: pointer;
         font-family: 'Nunito', sans-serif; font-size: 12px; font-weight: 800; color: #b45309;
     }
+    .mc-more:hover { transform: translateY(1px); border-bottom-color: #fed7aa; }
+    .mc-more:active { transform: translateY(3px); border-bottom-color: transparent; }
 </style>

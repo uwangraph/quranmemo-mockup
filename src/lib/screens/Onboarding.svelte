@@ -424,26 +424,26 @@
         {#if step === 'intro'}
             <button class="btn-duo btn-green" onclick={() => goStep('gate')}>{i18n.t('placement.start')}</button>
         {:else if step === 'gate'}
-            <button class="btn-duo" class:btn-green={canRead !== null} class:btn-disabled={canRead === null} onclick={answerGate}>
+            <button class="btn-duo" class:btn-green={canRead !== null} class:btn-disabled={canRead === null} disabled={canRead === null} onclick={answerGate}>
                 {i18n.t('onboarding.next')}
             </button>
         {:else if step === 'record'}
-            <button class="btn-duo" class:btn-green={recorded} class:btn-disabled={!recorded} onclick={submitRecording}>
+            <button class="btn-duo" class:btn-green={recorded} class:btn-disabled={!recorded} disabled={!recorded} onclick={submitRecording}>
                 {i18n.t('placement.send_recording')}
             </button>
         {:else if step === 'pending'}
-            <button class="btn-duo btn-disabled">{i18n.t('placement.waiting')}</button>
+            <button class="btn-duo btn-disabled" disabled>{i18n.t('placement.waiting')}</button>
         {:else if step === 'result'}
             <button class="btn-duo btn-green" onclick={acknowledgeResult}>{i18n.t('onboarding.next')}</button>
         {:else if step === 'hafalan'}
-            <button class="btn-duo" class:btn-green={everMemorized !== null} class:btn-disabled={everMemorized === null} onclick={answerHafalan}>
+            <button class="btn-duo" class:btn-green={everMemorized !== null} class:btn-disabled={everMemorized === null} disabled={everMemorized === null} onclick={answerHafalan}>
                 {i18n.t('onboarding.next')}
             </button>
         {:else if step === 'surahs'}
             <button class="btn-duo btn-green" onclick={saveSurahs}>{i18n.t('onboarding.next')}</button>
         {:else if step === 'recommendation'}
             {@const ready = followRecommendation === true || (followRecommendation === false && selfPacedSurah)}
-            <button class="btn-duo" class:btn-green={ready} class:btn-disabled={!ready} onclick={answerRecommendation}>
+            <button class="btn-duo" class:btn-green={ready} class:btn-disabled={!ready} disabled={!ready} onclick={answerRecommendation}>
                 {i18n.t('onboarding.next')}
             </button>
         {:else if step === 'path'}
@@ -487,9 +487,11 @@
         border: 2px solid #e5e5e5; border-bottom: 4px solid #e5e5e5; background: #fff;
         font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 800; color: #3c3c3c;
         cursor: pointer; text-align: left; display: flex; align-items: center; gap: 12px;
-        min-height: 56px; transition: all 0.1s;
+        min-height: 56px; box-sizing: border-box;
+        transition: transform .1s ease, border-bottom-width .1s ease;
     }
-    .option-card:active { border-bottom-width: 2px; transform: translateY(2px); }
+    .option-card:hover { border-bottom-width: 3px; transform: translateY(1px); }
+    .option-card:active { border-bottom-width: 0; transform: translateY(3px); }
     .option-card.selected {
         border-color: #1cb0f6; border-bottom-color: #0898dc;
         background: #ddf4ff; color: #0898dc;
@@ -505,10 +507,11 @@
         width: 92px; height: 92px; border-radius: 50%; border: none;
         background: #00978A; color: #fff; font-size: 38px; cursor: pointer;
         display: flex; align-items: center; justify-content: center;
-        box-shadow: 0 6px 0 #00665d; transition: all 0.1s;
+        box-shadow: 0 3px 0 #00665d; transition: transform .1s ease, box-shadow .1s ease;
     }
-    .rec-btn:active { transform: translateY(3px); box-shadow: 0 3px 0 #00665d; }
-    .rec-btn.recording { background: #ef4444; box-shadow: 0 6px 0 #b91c1c; animation: pulse 1.2s infinite; }
+    .rec-btn:hover { transform: translateY(1px); box-shadow: 0 2px 0 #00665d; }
+    .rec-btn:active { transform: translateY(3px); box-shadow: none; }
+    .rec-btn.recording { background: #ef4444; box-shadow: 0 3px 0 #b91c1c; animation: pulse 1.2s infinite; }
     .rec-time { font-size: 26px; font-weight: 900; color: #3c3c3c; font-variant-numeric: tabular-nums; }
     .rec-hint { font-size: 12px; font-weight: 700; color: #94a3b8; }
 
@@ -538,9 +541,12 @@
     .mock-btn {
         padding: 10px; border-radius: 10px; border: 2px solid #e2e8f0; background: #fff;
         font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 800; color: #475569;
-        cursor: pointer; min-height: 40px;
+        cursor: pointer; min-height: 40px; box-sizing: border-box;
+        border-bottom: 3px solid #cbd5e1;
+        transition: transform .1s ease, border-bottom-width .1s ease;
     }
-    .mock-btn:active { background: #f1f5f9; }
+    .mock-btn:hover { transform: translateY(1px); border-bottom-width: 2px; }
+    .mock-btn:active { transform: translateY(3px); border-bottom-width: 0; background: #f1f5f9; }
 
     .result-eyebrow {
         font-size: 11px; font-weight: 900; color: #94a3b8;
@@ -558,8 +564,12 @@
     .chip {
         padding: 9px 14px; border-radius: 99px; border: 2px solid #e5e5e5; background: #fff;
         font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 800; color: #475569;
-        cursor: pointer; min-height: 40px;
+        cursor: pointer; min-height: 40px; box-sizing: border-box;
+        border-bottom: 3px solid #cbd5e1;
+        transition: transform .1s ease, border-bottom-width .1s ease;
     }
+    .chip:hover { transform: translateY(1px); border-bottom-width: 2px; }
+    .chip:active { transform: translateY(3px); border-bottom-width: 0; }
     .chip.selected { background: #ddf4ff; border-color: #1cb0f6; color: #0898dc; }
 
     .rec-card {

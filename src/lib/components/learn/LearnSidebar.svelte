@@ -442,10 +442,11 @@
         font-size: 11px;
         font-weight: 900;
         cursor: pointer;
-        box-shadow: 0 2px 0 #1899d6;
+        box-shadow: 0 3px 0 #1899d6;
     }
+    .claim-quest-btn:hover { transform: translateY(1px); box-shadow: 0 2px 0 #1899d6; }
     .claim-quest-btn:active {
-        transform: translateY(2px);
+        transform: translateY(3px);
         box-shadow: none;
     }
 </style>

@@ -176,8 +176,9 @@
                         <div style="font-size:18px; font-weight:900; color:#fff;">{activeTab === 'instant' ? i18n.t('market.instant') : i18n.t('market.book_schedule')}</div>
                         <div style="font-size:12px; font-weight:700; color:rgba(255,255,255,0.8); margin-top:4px;">{activeTab === 'instant' ? i18n.t('market.instant_d') : i18n.t('market.book_schedule_d')}</div>
                     </div>
-                    <div style="background: rgba(255,255,255,0.2); padding: 4px 10px; border-radius: 12px; display: flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 800;">
-                        {i18n.t('market.price_label')} 15 <i class="ti ti-diamond-filled" style="color:#fff;"></i>
+                    <div class="price-badge">
+                        <span>{i18n.t('market.price_label')} 15</span>
+                        <i class="ti ti-diamond-filled" aria-hidden="true"></i>
                     </div>
                 </div>
                 
@@ -458,6 +459,19 @@
         box-shadow: 0 10px 20px rgba(28, 176, 246, 0.2);
         color: #fff;
     }
+    .price-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 5px 10px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.2);
+        font-size: 11px;
+        font-weight: 900;
+        line-height: 1;
+        white-space: nowrap;
+    }
+    .price-badge i { font-size: 13px; color: #fff; }
     .target-selector {
         display: flex;
         flex-direction: column;
@@ -556,8 +570,13 @@
         color: #1cb0f6; 
         font-size: 14px; 
         padding: 14px 20px;
-        width: 100%;
+        width: 100%; height: 48px; box-sizing: border-box; flex-shrink: 0;
+        border: 0; cursor: pointer;
+        box-shadow: 0 3px 0 #0284c7;
+        transition: transform .1s ease, box-shadow .1s ease;
     }
+    .find-btn:hover { transform: translateY(1px); box-shadow: 0 2px 0 #0284c7; }
+    .find-btn:active { transform: translateY(3px); box-shadow: none; }
     
     .section-header {
         display: flex;

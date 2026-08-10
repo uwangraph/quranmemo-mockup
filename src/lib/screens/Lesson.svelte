@@ -1818,7 +1818,7 @@
         text-transform: uppercase;
         letter-spacing: 0.5px;
         border: none;
-        border-bottom: 4px solid;
+        border-bottom: 3px solid;
         cursor: pointer;
         transition: all 0.15s;
         display: flex;
@@ -1826,10 +1826,15 @@
         justify-content: center;
         gap: 8px;
     }
+    .btn-duo:hover:not(:disabled) {
+        transform: translateY(1px);
+        border-bottom-width: 2px;
+        box-shadow: none;
+    }
     .btn-duo:active:not(:disabled) {
-        transform: translateY(4px);
+        transform: translateY(3px);
         border-bottom-width: 0;
-        margin-top: 4px;
+        box-shadow: none;
     }
     .btn-duo.outline {
         background: #fff;

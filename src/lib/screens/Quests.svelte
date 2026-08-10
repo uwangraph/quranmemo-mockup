@@ -547,10 +547,11 @@
         align-self: flex-start;
         background: #1cb0f6; color: #fff; border: none; border-radius: 10px;
         padding: 8px 20px; font-size: 14px; font-weight: 900; cursor: pointer;
-        box-shadow: 0 4px 0 #1899d6; text-transform: uppercase;
+        box-shadow: 0 3px 0 #1899d6; text-transform: uppercase;
     }
+    .claim-quest-btn:hover { transform: translateY(1px); box-shadow: 0 2px 0 #1899d6; }
     .claim-quest-btn:active {
-        transform: translateY(4px); box-shadow: none;
+        transform: translateY(3px); box-shadow: none;
     }
 
     /* Claimed Card */
@@ -792,18 +793,24 @@
     .btn-watch-ads {
         background: #1cb0f6;
         color: #fff;
-        border: 2px solid #0ea5e9;
+        border: 0;
+        height: 42px;
+        box-sizing: border-box;
         padding: 10px 20px;
         border-radius: 10px;
         font-size: 13px;
         font-weight: 900;
         cursor: pointer;
-        box-shadow: 0 4px 0 #0284c7;
+        box-shadow: 0 3px 0 #0284c7;
         text-transform: uppercase;
-        transition: all 0.15s;
+        transition: transform .1s ease, box-shadow .1s ease;
     }
-    .btn-watch-ads:active {
-        transform: translateY(4px);
+    .btn-watch-ads:hover:not(:disabled) {
+        transform: translateY(1px);
+        box-shadow: 0 2px 0 #0284c7;
+    }
+    .btn-watch-ads:active:not(:disabled) {
+        transform: translateY(3px);
         box-shadow: none;
     }
 </style>

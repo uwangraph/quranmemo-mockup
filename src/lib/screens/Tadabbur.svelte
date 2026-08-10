@@ -139,14 +139,24 @@
 <style>
     .small-btn {
         flex: 1;
+        height: 40px;
+        box-sizing: border-box;
         padding: 10px;
         font-size: 11px;
         border-radius: 12px;
+        border-bottom: 3px solid;
+        transition: transform .1s ease, border-bottom-width .1s ease;
     }
+    .btn-green.small-btn { border-bottom-color: #007a70; }
+    .btn-outline.small-btn:not(.disabled) { border-bottom-color: #cbd5e1; }
+    .small-btn:hover:not(.disabled) { transform: translateY(1px); border-bottom-width: 2px; box-shadow: none; }
+    .small-btn:active:not(.disabled) { transform: translateY(3px); border-bottom-width: 0; box-shadow: none; }
     .disabled {
         color: #afafaf;
         border-color: #eee;
         cursor: not-allowed;
+        border-bottom-width: 0;
+        box-shadow: none;
     }
     .verse-card {
         background: linear-gradient(135deg, #1a6b3c, #2ea65c);
@@ -185,25 +195,26 @@
     }
     .theme-card {
         padding: 16px;
+        min-height: 52px;
+        box-sizing: border-box;
         border-radius: 16px;
         font-size: 13px;
         font-weight: 800;
-        border: 2px solid transparent;
+        border: 0;
         cursor: pointer;
-        transition: all 0.2s;
+        box-shadow: 0 3px 0 var(--theme-shadow);
+        transition: transform .1s ease, box-shadow .1s ease;
         text-align: left;
     }
-    .theme-card.blue { background: #ddf4ff; color: #0898dc; border-bottom: 4px solid #0898dc; }
-    .theme-card.green { background: #d7ffb2; color: #46a302; border-bottom: 4px solid #46a302; }
-    .theme-card.orange { background: #fff7e6; color: #cc7000; border-bottom: 4px solid #cc7000; }
-    .theme-card.red { background: #ffdfe0; color: #cc0000; border-bottom: 4px solid #cc0000; }
-    .theme-card.purple { background: #f3e5f5; color: #7b1fa2; border-bottom: 4px solid #7b1fa2; }
-    .theme-card.cyan { background: #e0f7fa; color: #00838f; border-bottom: 4px solid #00838f; }
+    .theme-card.blue { --theme-shadow: #0898dc; background: #ddf4ff; color: #0898dc; }
+    .theme-card.green { --theme-shadow: #46a302; background: #d7ffb2; color: #46a302; }
+    .theme-card.orange { --theme-shadow: #cc7000; background: #fff7e6; color: #cc7000; }
+    .theme-card.red { --theme-shadow: #cc0000; background: #ffdfe0; color: #cc0000; }
+    .theme-card.purple { --theme-shadow: #7b1fa2; background: #f3e5f5; color: #7b1fa2; }
+    .theme-card.cyan { --theme-shadow: #00838f; background: #e0f7fa; color: #00838f; }
 
-    .theme-card:active {
-        transform: translateY(2px);
-        border-bottom-width: 2px;
-    }
+    .theme-card:hover { transform: translateY(1px); box-shadow: 0 2px 0 var(--theme-shadow); }
+    .theme-card:active { transform: translateY(3px); box-shadow: none; }
 
     .step-card {
         background: #fff;

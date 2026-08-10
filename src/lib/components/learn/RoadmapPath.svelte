@@ -23,7 +23,7 @@
 
     const pathConfig = $derived.by(() => {
         if (appState.user.pathMode === 'self') {
-            return { unitTitle: 'Belajar sesuai ritmemu', unitDesc: 'Kamu memilih surah sendiri untuk mulai di sini.', badge: 'SELF-PACED' };
+            return { unitTitle: 'Belajar sesuai ritmemu', unitDesc: 'Kamu memilih surah sendiri untuk mulai di sini.', badge: 'JALUR PEMULA' };
         }
         if (learningPath === 'pro') {
             return { unitTitle: i18n.t('learn.unit_title_pro'), unitDesc: i18n.t('learn.unit_desc_pro'), badge: 'PRO LEVEL' };
@@ -119,13 +119,6 @@
         }
     }
 
-    function startSelfPaced() {
-        if (!selectedSelfSurah) return;
-        appState.selectedVerseIndex = 0;
-        appState.selectedNodeType = 'lesson';
-        appState.go('lesson');
-    }
-
     // Tadabbur dari tombol banner: bisa dibuka kapan saja untuk merenung,
     // tanpa menandai node terjadwal di roadmap sebagai selesai.
     function openFreeTadabbur() {
@@ -137,14 +130,25 @@
 </script>
 
 <div class="path-column">
-    <div class="unit-banner">
+    <div class="unit-banner" class:self-paced-banner={selfPaced && selectedSelfSurah}>
         <!-- Islamic Pattern Background Elements -->
         <div class="islamic-motif motif-1"></div>
         <div class="islamic-motif motif-2"></div>
 
-        <div class="unit-badge" style="position: relative; z-index: 2;">{pathConfig.badge}</div>
-        <div style="font-size: 22px; font-weight: 900; color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.1); position: relative; z-index: 2;">{pathConfig.unitTitle}</div>
-        <div style="font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.9); margin-top: 4px; position: relative; z-index: 2;">{pathConfig.unitDesc}</div>
+        <div class="unit-badge" style="position: relative; z-index: 2;">{selfPaced ? 'JALUR PEMULA' : pathConfig.badge}</div>
+        <div class="banner-title">{surah?.name ?? pathConfig.unitTitle}</div>
+        <div class="banner-desc">{surah ? `Surah ${surah.number} · ${surah.verses.length} ayat tersedia` : pathConfig.unitDesc}</div>
+        {#if surah}
+            <div class="self-banner-icon"><i class="ti ti-book-2"></i></div>
+            {@const bannerDone = appState.surahProgress(surah.id)}
+            {@const bannerProgress = Math.round((bannerDone / surah.verses.length) * 100)}
+            <div class="self-stats">
+                <div><strong>{bannerDone}</strong><small>Target selesai</small></div>
+                <div><strong>{Math.max(0, surah.verses.length - bannerDone)}</strong><small>Sisa target</small></div>
+                <div><strong>{bannerProgress}%</strong><small>Progress</small></div>
+            </div>
+            <div class="self-progress-track"><span style="width:{bannerProgress}%"></span></div>
+        {/if}
 
         <!-- Tangga yang sedang ditempuh + gerbang penutupnya (LEVELLING.md) -->
         <div class="ladder-strip">
@@ -171,16 +175,6 @@
             </button>
         </div>
 
-        {#if selfPaced && selectedSelfSurah}
-            <div class="self-paced-card">
-                <div>
-                    <span class="ladder-eyebrow">SURAH PILIHANMU</span>
-                    <strong>{selectedSelfSurah.name}</strong>
-                    <small>{selectedSelfSurah.verses.length} ayat tersedia</small>
-                </div>
-                <button class="btn-duo btn-green" onclick={startSelfPaced}>MULAI</button>
-            </div>
-        {/if}
     </div>
 
     <!-- Peta seluruh tangga di level ini -->
@@ -306,6 +300,14 @@
         position: relative;
         overflow: hidden;
     }
+    .unit-banner { background: linear-gradient(145deg, #11a398, #08b4a7); padding: 20px; border-radius: 20px; box-shadow: 0 6px 0 #07988e; }
+    .unit-banner .ladder-strip { display: none; }
+    .unit-banner .unit-actions { margin-top: 16px; }
+    .unit-banner .unit-actions button:nth-child(n + 2) { display: none; }
+    .unit-banner .unit-guide-btn { background: #fff; color: #087f77; padding: 10px 16px; border-radius: 12px; box-shadow: 0 4px 0 #c7e4e1; transition: transform .1s ease, box-shadow .1s ease; }
+    .unit-banner .unit-guide-btn:hover { background: #fff; color: #087f77; transform: translateY(1px); box-shadow: 0 2px 0 #c7e4e1; }
+    .unit-banner .unit-guide-btn:active { background: #fff; color: #087f77; transform: translateY(3px); box-shadow: none; }
+    .self-banner-icon { position: absolute; z-index: 2; right: 20px; top: 50px; width: 46px; height: 46px; display: flex; align-items: center; justify-content: center; border-radius: 13px; background: rgba(255,255,255,0.2); color: #fff; font-size: 23px; }
     :global(.desktop-browser) .unit-banner, :global(.tablet) .unit-banner { margin: 0; }
 
     .islamic-motif {
@@ -320,6 +322,14 @@
     .motif-2 { left: -50px; bottom: -50px; transform: rotate(45deg) scale(0.7); }
 
     .unit-badge { font-size: 11px; font-weight: 900; color: rgba(255,255,255,0.7); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+    .banner-title { position: relative; z-index: 2; font-size: 27px; font-weight: 900; color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.1); }
+    .banner-desc { position: relative; z-index: 2; margin-top: 5px; color: rgba(255,255,255,0.95); font-size: 12px; font-weight: 700; }
+    .self-stats { position: relative; z-index: 2; display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 16px; }
+    .self-stats > div { padding: 10px 11px; border-radius: 12px; background: rgba(255,255,255,0.22); }
+    .self-stats strong { display: block; color: #fff; font-size: 20px; line-height: 1; }
+    .self-stats small { display: block; color: rgba(255,255,255,0.85); font-size: 9px; font-weight: 800; margin-top: 5px; }
+    .self-progress-track { position: relative; z-index: 2; height: 7px; margin-top: 12px; border-radius: 99px; background: rgba(255,255,255,0.25); overflow: hidden; }
+    .self-progress-track span { display: block; height: 100%; border-radius: inherit; background: #fff; }
 
     /* Tangga berjalan */
     .ladder-strip {
@@ -353,18 +363,8 @@
         min-height: 40px;
         transition: background 0.15s;
     }
-    .self-paced-card {
-        position: relative; z-index: 2; margin-top: 14px; padding: 12px;
-        display: flex; align-items: center; justify-content: space-between; gap: 12px;
-        background: rgba(255,255,255,0.96); border-radius: 16px; color: #134e4a;
-    }
-    .self-paced-card > div { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
-    .self-paced-card .ladder-eyebrow { color: #0f766e; }
-    .self-paced-card strong { font-size: 15px; }
-    .self-paced-card small { color: #64748b; font-size: 10px; font-weight: 800; }
-    .self-paced-card button { width: auto; padding: 9px 14px; font-size: 11px; flex-shrink: 0; }
-    .unit-guide-btn:hover { background: rgba(0,0,0,0.25); }
-    .unit-guide-btn:active { background: rgba(0,0,0,0.35); }
+    .unit-guide-btn:hover { transform: translateY(-1px); }
+    .unit-guide-btn:active { transform: translateY(2px); }
     .unit-guide-btn:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
 
     /* Peta tangga */
@@ -434,7 +434,8 @@
         background: #e5e5e5; color: #afafaf; font-size: 24px; display: flex; align-items: center; justify-content: center;
         cursor: pointer; position: relative; transition: all 0.1s;
     }
-    .node-btn:active { transform: translateY(2px); border-bottom-width: 2px; }
+    .node-btn:not(.locked):hover { transform: translateY(1px); border-bottom-width: 3px; }
+    .node-btn:not(.locked):active { transform: translateY(3px); border-bottom-width: 0; }
 
     .node-btn.completed { background: var(--duo-green); border-bottom-color: var(--duo-green-dark); color: #fff; }
     .node-btn.current { background: var(--duo-green); border-bottom-color: var(--duo-green-dark); color: #fff; animation: pulse 2s infinite; }
