@@ -1172,9 +1172,9 @@
             isChecked = true;
         }
         else if (type === 'puzzle_two') {
-            isCorrect = selectedWords.length === 2 && 
+            isCorrect = selectedWords.length === activeVerse.twoCorrect.length &&
                         selectedWords[0].text === activeVerse.twoCorrect[0] &&
-                        selectedWords[1].text === activeVerse.twoCorrect[1];
+                        activeVerse.twoCorrect.every((word, index) => selectedWords[index]?.text === word);
             isChecked = true;
         }
         else if (type === 'audio_scramble' || type === 'puzzle_total') {
