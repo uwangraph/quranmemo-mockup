@@ -56,7 +56,13 @@
     let showLatin = $state(false); // local state, tidak mempengaruhi soal lain
 
     let choices = $derived(activeVerse ? (type === 'fill_front' ? activeVerse.frontChoices : (type === 'fill_back' ? activeVerse.endChoices : activeVerse.middleChoices)) : []);
-    let correctIdx = $derived(type === 'fill_front' ? 0 : (type === 'fill_back' ? 1 : 1));
+    // Pilihan diacak per ayat; jangan mengandalkan nomor posisi tetap.
+    let correctAnswer = $derived(
+        !activeVerse ? null :
+        type === 'fill_front' ? activeVerse.frontCorrect :
+        (type === 'fill_back' ? activeVerse.endCorrect : activeVerse.middleCorrect)
+    );
+    let correctIdx = $derived(choices.indexOf(correctAnswer));
 
     // Get the text to show in the blank
     let blankText = $derived.by(() => {

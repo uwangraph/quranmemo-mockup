@@ -1141,7 +1141,7 @@
         const type = currentStepConfig.type;
         if (type === 'recall_prev') {
             if (recallMethod === 'mushaf') {
-                isCorrect = recallSelectedOptionIdx === 0;
+                isCorrect = recallSelectedOptionIdx === activeVerse.frontChoices.indexOf(activeVerse.frontCorrect);
             } else {
                 isCorrect = recordState === 'recorded';
             }
@@ -1160,15 +1160,15 @@
             isChecked = true;
         }
         else if (type === 'fill_front') {
-            isCorrect = selectedOptionIdx === 0;
+            isCorrect = selectedOptionIdx === activeVerse.frontChoices.indexOf(activeVerse.frontCorrect);
             isChecked = true;
         }
         else if (type === 'fill_back') {
-            isCorrect = selectedOptionIdx === 1;
+            isCorrect = selectedOptionIdx === activeVerse.endChoices.indexOf(activeVerse.endCorrect);
             isChecked = true;
         }
         else if (type === 'puzzle_one') {
-            isCorrect = selectedOptionIdx === 1;
+            isCorrect = selectedOptionIdx === activeVerse.middleChoices.indexOf(activeVerse.middleCorrect);
             isChecked = true;
         }
         else if (type === 'puzzle_two') {

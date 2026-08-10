@@ -38,13 +38,13 @@ export const SURAHS = {
             endBlankLatin: "alam nashrah laka ___",
             endCorrect: "صَدْرَكَ",
             endChoices: ["وِزْرَكَ", "صَدْرَكَ", "ظَهْرَكَ"],
-            middleBlank: "أَلَمْ ___ لَكَ صَدْرَكَ",
-            middleBlankLatin: "alam ___ laka shadrak",
-            middleCorrect: "نَشْرَحْ",
-            middleChoices: ["عَنكَ", "نَشْرَحْ", "وِزْرَكَ"],
-            twoBlank: "أَلَمْ ___ ___ صَدْرَكَ",
-            twoCorrect: ["نَشْرَحْ", "لَكَ"],
-            twoChoices: ["عَنكَ", "لَكَ", "نَشْرَحْ", "وِزْرَكَ"]
+            middleBlank: "أَلَمْ نَشْرَحْ ___ صَدْرَكَ",
+            middleBlankLatin: "alam nashrah ___ shadrak",
+            middleCorrect: "لَكَ",
+            middleChoices: ["عَنكَ", "لَكَ", "وِزْرَكَ"],
+            twoBlank: "___ ___ لَكَ صَدْرَكَ",
+            twoCorrect: ["أَلَمْ", "نَشْرَحْ"],
+            twoChoices: ["أَلَمْ", "نَشْرَحْ", "لَكَ", "وِزْرَكَ"]
         },
         {
             verseNumber: 2,
@@ -136,7 +136,7 @@ export const SURAHS = {
             middleChoices: ["رَبِّكَ", "ٱلْعُسْرِ", "صَدْرَكَ"],
             twoBlank: "فَإِنَّ ___ ___ يُسْرًا",
             twoCorrect: ["مَعَ", "ٱلْعُسْرِ"],
-            twoChoices: ["مَعَ", "ٱلْعُسْرِ", "لَكَ", "عَنكَ"]
+            twoChoices: ["فَإِنَّ", "مَعَ", "ٱلْعُسْرِ", "لَكَ"]
         },
         {
             verseNumber: 6,
@@ -159,7 +159,7 @@ export const SURAHS = {
             middleChoices: ["ٱلْعُسْرِ", "رَبِّكَ", "لَكَ"],
             twoBlank: "إِنَّ ___ ___ يُسْرًا",
             twoCorrect: ["مَعَ", "ٱلْعُسْرِ"],
-            twoChoices: ["مَعَ", "ٱلْعُسْرِ", "عَنكَ", "فَرَغْتَ"]
+            twoChoices: ["إِنَّ", "مَعَ", "ٱلْعُسْرِ", "عَنكَ"]
         },
         {
             verseNumber: 7,

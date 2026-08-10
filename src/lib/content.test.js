@@ -20,6 +20,11 @@ import ar from './locales/ar.js';
 // ada; kalau tidak, layar menampilkan kunci mentah seperti "quran.93_4_translation".
 const DICTS = { en, id, ms, ha, fr, ar };
 const hasTranslation = (lang, key) => Boolean(DICTS[lang]?.[key] || translations[lang]?.[key]);
+const fillBlanks = (template, answers) => {
+    let result = template;
+    for (const answer of answers) result = result.replace('___', answer);
+    return result;
+};
 
 // Jumlah ayat resmi tiap surah, dipakai sebagai pemeriksaan silang terhadap API.
 const AYAT = {
@@ -62,6 +67,34 @@ for (const surah of Object.values(SURAHS)) {
         assert.ok(v.middleChoices.includes(v.middleCorrect), `${where} ayat ${v.verseNumber}: middleCorrect hilang dari pilihan`);
         v.twoCorrect.forEach((w) => assert.ok(v.twoChoices.includes(w),
             `${where} ayat ${v.verseNumber}: twoCorrect hilang dari pilihan`));
+
+        // Kunci jawaban harus benar-benar menunjuk posisi yang ditanyakan,
+        // bukan sekadar kata yang kebetulan ada di ayat.
+        const frontCount = Math.min(2, Math.max(1, v.words.length - 1));
+        const middleIndex = v.words.length > 2 ? Math.floor(v.words.length / 2) : 0;
+        assert.equal(v.frontCorrect, v.words.slice(0, frontCount).join(' '),
+            `${where} ayat ${v.verseNumber}: frontCorrect salah posisi`);
+        assert.equal(v.endCorrect, v.words.at(-1),
+            `${where} ayat ${v.verseNumber}: endCorrect salah posisi`);
+        assert.equal(v.middleCorrect, v.words[middleIndex],
+            `${where} ayat ${v.verseNumber}: middleCorrect salah posisi`);
+        const twoBlankIndices = v.twoBlank.split(' ')
+            .map((part, index) => part === '___' ? index : -1)
+            .filter((index) => index >= 0);
+        assert.deepEqual(v.twoCorrect, twoBlankIndices.map((index) => v.words[index]),
+            `${where} ayat ${v.verseNumber}: twoCorrect salah posisi`);
+
+        // Pola ayat yang tampil di layar harus benar-benar kembali menjadi ayat
+        // asli setelah kunci dimasukkan. Ini menangkap blank/kunci yang tidak
+        // sinkron meskipun teks kuncinya sendiri ada di pilihan.
+        assert.equal(fillBlanks(v.frontBlank, v.frontCorrect.split(' ')), v.arabic,
+            `${where} ayat ${v.verseNumber}: frontBlank tidak cocok dengan ayat`);
+        assert.equal(fillBlanks(v.endBlank, [v.endCorrect]), v.arabic,
+            `${where} ayat ${v.verseNumber}: endBlank tidak cocok dengan ayat`);
+        assert.equal(fillBlanks(v.middleBlank, [v.middleCorrect]), v.arabic,
+            `${where} ayat ${v.verseNumber}: middleBlank tidak cocok dengan ayat`);
+        assert.equal(fillBlanks(v.twoBlank, v.twoCorrect), v.arabic,
+            `${where} ayat ${v.verseNumber}: twoBlank tidak cocok dengan ayat`);
 
         // Setiap ayat wajib punya terjemahan di seluruh bahasa antarmuka, kalau tidak
         // pengguna akan melihat kunci mentah seperti "quran.93_4_translation".

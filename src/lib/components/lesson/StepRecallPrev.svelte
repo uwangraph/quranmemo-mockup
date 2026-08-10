@@ -15,6 +15,8 @@
         playWordAudio,
         getTajweedHTML
     } = $props();
+
+    let correctIdx = $derived(previousVerse ? previousVerse.frontChoices.indexOf(previousVerse.frontCorrect) : -1);
 </script>
 
 <div class="verse-display-box">
@@ -74,8 +76,8 @@
         <!-- Mushaf Segmentasi mode -->
         <div class="arabic-focus-text Amiri segment-blank">
             {#if recallSelectedOptionIdx !== null}
-                {@const filledText = isChecked ? previousVerse.frontChoices[0] : previousVerse.frontChoices[recallSelectedOptionIdx]}
-                <span class="filled-text" class:revealed-correct={isChecked && recallSelectedOptionIdx !== 0} class:correct-filled={isChecked && recallSelectedOptionIdx === 0}>
+                {@const filledText = isChecked ? previousVerse.frontCorrect : previousVerse.frontChoices[recallSelectedOptionIdx]}
+                <span class="filled-text" class:revealed-correct={isChecked && recallSelectedOptionIdx !== correctIdx} class:correct-filled={isChecked && recallSelectedOptionIdx === correctIdx}>
                     {@html getTajweedHTML ? getTajweedHTML(filledText) : filledText}
                 </span>
                 {previousVerse.frontBlank.split('___').pop()}
@@ -93,8 +95,8 @@
                 <button 
                     class="option-pill"
                     class:selected={recallSelectedOptionIdx === i}
-                    class:correct={isChecked && i === 0}
-                    class:wrong={isChecked && recallSelectedOptionIdx === i && i !== 0}
+                    class:correct={isChecked && i === correctIdx}
+                    class:wrong={isChecked && recallSelectedOptionIdx === i && i !== correctIdx}
                     onclick={() => { 
                         if (!isChecked) {
                             recallSelectedOptionIdx = i; 
