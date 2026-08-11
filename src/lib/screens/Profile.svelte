@@ -142,7 +142,7 @@
                 <div class="empty-booking">
                     <span style="font-size:32px;">📋</span>
                     <span>{i18n.t('profile.no_booking')}</span>
-                    <button class="btn-create-booking">{i18n.t('profile.create_booking')}</button>
+                    <button class="btn-duo btn-green btn-sm btn-auto">{i18n.t('profile.create_booking')}</button>
                 </div>
             {/if}
         </div>
@@ -185,7 +185,7 @@
                 <button class="placement-empty" onclick={() => appState.go('onboarding')}>
                     <span style="font-size:32px;">🎤</span>
                     <span>{i18n.t('placement.not_taken')}</span>
-                    <span class="placement-cta">{i18n.t('placement.start')}</span>
+                    <span class="btn-duo btn-green btn-sm btn-auto placement-cta">{i18n.t('placement.start')}</span>
                 </button>
             {/if}
         </div>
@@ -469,11 +469,6 @@
         padding: 24px; background: #f8fafc; border-radius: 16px;
         border: 2px dashed #e2e8f0; color: #94a3b8; font-size: 13px; font-weight: 700;
     }
-    .btn-create-booking {
-        background: #00978A; color: #fff; border: none; border-bottom: 3px solid #007a6e;
-        border-radius: 10px; padding: 8px 20px; font-size: 12px; font-weight: 900;
-        font-family: 'Nunito', sans-serif; cursor: pointer; margin-top: 4px;
-    }
 
     /* ── LEVEL ── */
     .level-card {
@@ -603,10 +598,7 @@
         color: #94a3b8; font-size: 13px; font-weight: 700; cursor: pointer;
         font-family: 'Nunito', sans-serif;
     }
-    .placement-cta {
-        background: #00978A; color: #fff; border-radius: 10px;
-        padding: 8px 20px; font-size: 12px; font-weight: 900; margin-top: 4px;
-    }
+    .placement-cta { margin-top: 4px; }
 
     /* ── BADGE ── */
     .badge-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }

@@ -103,7 +103,7 @@
             {:else}
                 <div class="pl-actions">
                     {#each CATS as c}
-                        <button class="pl-btn" onclick={() => decide(entry, c.id)}>
+                        <button class="btn-duo btn-outline btn-sm pl-btn" onclick={() => decide(entry, c.id)}>
                             {c.icon} {i18n.t(`placement.cat_${c.id}`)}
                         </button>
                     {/each}
@@ -120,7 +120,7 @@
                     <div style="font-size: 14px; font-weight: 900; color: #3c3c3c">Ahmad Hafidz</div>
                     <div style="font-size: 11px; font-weight: 700; color: #ff9600">{i18n.t('admin.serving')}: Al-Insyirah (Instan) • +15 <i class="ti ti-diamond-filled" style="color: #1cb0f6;"></i></div>
                 </div>
-                <button class="btn-duo btn-orange" style="width: auto; padding: 10px 16px; font-size: 12px" onclick={acceptInstantRequest}>
+                <button class="btn-duo btn-orange btn-sm btn-auto" onclick={acceptInstantRequest}>
                     {i18n.t('musyrif.accept')}
                 </button>
             </div>

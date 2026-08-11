@@ -166,6 +166,39 @@ body {
   cursor: not-allowed;
 }
 
+/* Dipakai di dasbor musyrif tetapi belum pernah didefinisikan, sehingga tombolnya
+   kehilangan warna sekaligus tepian 3D yang menjadi ciri gaya ini. */
+.btn-orange {
+  background: #ff9600;
+  color: #fff;
+  border-bottom: 3px solid #cc7800;
+}
+
+.btn-red {
+  background: #ff4b4b;
+  color: #fff;
+  border-bottom: 3px solid #d33;
+}
+
+/* Varian ukuran. Sebelumnya tiap layar menambal sendiri lewat atribut style,
+   sehingga tombol yang sama tampil berbeda-beda dari satu layar ke layar lain. */
+.btn-duo.btn-sm {
+  padding: 10px 16px;
+  font-size: 12px;
+  border-radius: 12px;
+}
+
+.btn-duo.btn-auto {
+  display: inline-block;
+  width: auto;
+}
+
+/* Target sentuh minimum, supaya varian kecil tetap nyaman ditekan. */
+.btn-duo.btn-sm,
+.btn-duo.btn-auto {
+  min-height: 40px;
+}
+
 /* ===================== THEME OVERRIDES ===================== */
 .phone.theme-musyrif .btn-green {
   background: #23a100;

@@ -201,7 +201,7 @@
 						class="snb" 
 						class:active={appState.currentScreen === screen.id}
 						onclick={() => handleNavigate(screen.id)}
-						style={appState.currentScreen === screen.id ? `background: ${cat.color}; border-color: ${cat.color}; color: #fff;` : ''}
+						style={appState.currentScreen === screen.id ? `background: ${cat.color}; border-color: ${cat.color}; border-bottom-color: color-mix(in srgb, ${cat.color} 72%, #000); color: #fff;` : ''}
 						title={i18n.t('screen.' + screen.id)}
 					>
 						<img src={getFlaticon(screen.id)} alt="" style="width: 18px; height: 18px; object-fit: contain; margin-right: {isSidebarExpanded ? '10px' : '0'}; filter: {appState.currentScreen === screen.id ? 'brightness(0) invert(1)' : 'none'};" />
@@ -541,17 +541,30 @@
 		font-weight: 800;
 		padding: 10px 12px;
 		border-radius: 14px;
+		min-height: 42px;
+		box-sizing: border-box;
 		border: 2px solid #e5e5e5;
+		border-bottom: 3px solid #cbd5e1;
 		background: #fff;
 		cursor: pointer;
 		color: #777;
-		transition: all 0.15s;
+		transition: transform .1s ease, border-bottom-width .1s ease;
 		width: 100%;
 		text-align: left;
 		margin-bottom: 6px;
 		display: flex;
 		align-items: center;
 		gap: 12px;
+	}
+	.snb:hover {
+		transform: translateY(1px);
+		border-bottom-width: 2px;
+		box-shadow: none;
+	}
+	.snb:active {
+		transform: translateY(3px);
+		border-bottom-width: 0;
+		box-shadow: none;
 	}
 	.collapsed .snb {
 		padding: 10px;
@@ -1039,14 +1052,14 @@
 	}
 
 	/* Unified Duolingo-style press feedback for interactive buttons. */
-	:global(button:not(:disabled):not(.btn-disabled):not(.btn-duo):not(.sidebar-item)) {
+	:global(button:not(:disabled):not(.btn-disabled):not(.btn-duo):not(.sidebar-item):not(.mc-cta):not(.snb):not(.unit-guide-btn)) {
 		transition: transform 0.1s ease, box-shadow 0.1s ease;
 	}
-	:global(button:not(:disabled):not(.btn-disabled):not(.btn-duo):not(.sidebar-item):hover) {
+	:global(button:not(:disabled):not(.btn-disabled):not(.btn-duo):not(.sidebar-item):not(.mc-cta):not(.snb):not(.unit-guide-btn):hover) {
 		transform: translateY(1px);
 		box-shadow: 0 2px 0 rgba(0, 0, 0, 0.18);
 	}
-	:global(button:not(:disabled):not(.btn-disabled):not(.btn-duo):not(.sidebar-item):active) {
+	:global(button:not(:disabled):not(.btn-disabled):not(.btn-duo):not(.sidebar-item):not(.mc-cta):not(.snb):not(.unit-guide-btn):active) {
 		transform: translateY(3px);
 		box-shadow: none;
 	}

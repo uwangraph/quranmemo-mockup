@@ -259,7 +259,7 @@
                 <div class="mock-label">{i18n.t('placement.mock_label')}</div>
                 <div class="mock-btns">
                     {#each Object.keys(CATEGORIES) as key}
-                        <button class="mock-btn" onclick={() => simulateMusyrif(key)}>
+                        <button class="btn-duo btn-outline btn-sm" onclick={() => simulateMusyrif(key)}>
                             {CATEGORIES[key].icon} {i18n.t(`placement.cat_${key}`)}
                         </button>
                     {/each}
@@ -538,16 +538,6 @@
         text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px;
     }
     .mock-btns { display: flex; flex-direction: column; gap: 8px; }
-    .mock-btn {
-        padding: 10px; border-radius: 10px; border: 2px solid #e2e8f0; background: #fff;
-        font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 800; color: #475569;
-        cursor: pointer; min-height: 40px; box-sizing: border-box;
-        border-bottom: 3px solid #cbd5e1;
-        transition: transform .1s ease, border-bottom-width .1s ease;
-    }
-    .mock-btn:hover { transform: translateY(1px); border-bottom-width: 2px; }
-    .mock-btn:active { transform: translateY(3px); border-bottom-width: 0; background: #f1f5f9; }
-
     .result-eyebrow {
         font-size: 11px; font-weight: 900; color: #94a3b8;
         text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;

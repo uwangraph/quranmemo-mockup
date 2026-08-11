@@ -221,7 +221,7 @@
             <span style="font-size:38px;">🎉</span>
             <div class="ad-title">{i18n.t('learn.all_available_done')}</div>
             <div class="ad-sub">{i18n.t('learn.all_available_done_desc', { count: st.pending.length })}</div>
-            <button class="ad-btn" onclick={() => appState.go('murojaah')}>
+            <button class="btn-duo btn-green btn-auto" onclick={() => appState.go('murojaah')}>
                 {i18n.t('murajaah.review_now')}
             </button>
         </div>
@@ -304,7 +304,7 @@
     .unit-banner .ladder-strip { display: none; }
     .unit-banner .unit-actions { margin-top: 16px; }
     .unit-banner .unit-actions button:nth-child(n + 2) { display: none; }
-    .unit-banner .unit-guide-btn { background: #fff; color: #087f77; padding: 10px 16px; border-radius: 12px; box-shadow: 0 4px 0 #c7e4e1; transition: transform .1s ease, box-shadow .1s ease; }
+    .unit-banner .unit-guide-btn { background: #fff; color: #087f77; padding: 10px 16px; border-radius: 12px; box-shadow: 0 3px 0 #c7e4e1; transition: transform .1s ease, box-shadow .1s ease; }
     .unit-banner .unit-guide-btn:hover { background: #fff; color: #087f77; transform: translateY(1px); box-shadow: 0 2px 0 #c7e4e1; }
     .unit-banner .unit-guide-btn:active { background: #fff; color: #087f77; transform: translateY(3px); box-shadow: none; }
     .self-banner-icon { position: absolute; z-index: 2; right: 20px; top: 50px; width: 46px; height: 46px; display: flex; align-items: center; justify-content: center; border-radius: 13px; background: rgba(255,255,255,0.2); color: #fff; font-size: 23px; }
@@ -361,10 +361,11 @@
         padding: 8px 14px; border-radius: 12px; font-size: 12px; font-weight: 800; cursor: pointer;
         /* Target sentuh nyaman untuk anak maupun lansia. */
         min-height: 40px;
-        transition: background 0.15s;
+        box-shadow: 0 3px 0 rgba(0,0,0,0.2);
+        transition: transform .1s ease, box-shadow .1s ease;
     }
-    .unit-guide-btn:hover { transform: translateY(-1px); }
-    .unit-guide-btn:active { transform: translateY(2px); }
+    .unit-guide-btn:hover { transform: translateY(1px); box-shadow: 0 2px 0 rgba(0,0,0,0.2); }
+    .unit-guide-btn:active { transform: translateY(3px); box-shadow: none; }
     .unit-guide-btn:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
 
     /* Peta tangga */
@@ -481,14 +482,9 @@
         border: 2px solid #bbf7d0; border-radius: 18px;
     }
     :global(.desktop-browser) .all-done, :global(.tablet) .all-done { margin: 20px 0 0; }
+    .all-done :global(.btn-duo) { margin-top: 14px; }
     .ad-title { font-size: 16px; font-weight: 900; color: #065f46; margin-top: 8px; }
     .ad-sub { font-size: 12px; font-weight: 700; color: #10b981; margin-top: 6px; line-height: 1.5; }
-    .ad-btn {
-        margin-top: 14px; background: #00978A; color: #fff; border: none;
-        border-bottom: 3px solid #007a6e; border-radius: 12px; padding: 11px 22px;
-        font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 900;
-        cursor: pointer; min-height: 44px;
-    }
 
     .no-content {
         margin: 20px 16px 0; padding: 24px 16px; text-align: center;

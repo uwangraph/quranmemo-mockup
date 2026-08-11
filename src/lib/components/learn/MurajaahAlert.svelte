@@ -40,7 +40,7 @@
                         <div class="mc-surah">{item.surah}</div>
                         <div class="mc-days">{i18n.t('murajaah.last_reviewed', { days: item.days })}</div>
                     </div>
-                    <button type="button" class="mc-cta" onclick={() => bookMurajaah(item.surah)}>
+                    <button type="button" class="btn-duo btn-orange btn-sm btn-auto mc-cta" onclick={() => bookMurajaah(item.surah)}>
                         {i18n.t('murajaah.review_now')}
                     </button>
                 </div>
@@ -86,14 +86,8 @@
     }
     .mc-surah { font-size: 14px; font-weight: 900; color: #1e293b; }
     .mc-days { font-size: 11px; font-weight: 700; color: #b45309; margin-top: 2px; }
-    .mc-cta {
-        background: #ff6200; color: #fff; font-size: 11px; font-weight: 900;
-        padding: 7px 12px; border-radius: 9px; white-space: nowrap; flex-shrink: 0;
-        border: 0; border-bottom: 3px solid #c2410c; cursor: pointer;
-        font-family: 'Nunito', sans-serif; transition: transform .1s, border-bottom-width .1s;
-    }
-    .mc-item .mc-cta:hover { transform: translateY(1px); border-bottom-width: 2px; box-shadow: none; }
-    .mc-item .mc-cta:active { transform: translateY(3px); border-bottom-width: 0; box-shadow: none; }
+    /* Bentuk & warna dari gaya tombol bersama; di sini hanya penempatannya. */
+    .mc-cta { flex-shrink: 0; align-self: center; }
 
     .mc-more {
         width: 100%; margin-top: 10px; padding: 8px; min-height: 40px;
