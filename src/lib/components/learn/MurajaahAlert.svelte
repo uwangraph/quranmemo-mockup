@@ -40,7 +40,7 @@
                         <div class="mc-surah">{item.surah}</div>
                         <div class="mc-days">{i18n.t('murajaah.last_reviewed', { days: item.days })}</div>
                     </div>
-                    <button type="button" class="btn-duo btn-orange btn-sm btn-auto mc-cta" onclick={() => bookMurajaah(item.surah)}>
+                    <button type="button" class="btn-duo btn-orange btn-xs btn-auto mc-cta" onclick={() => bookMurajaah(item.surah)}>
                         {i18n.t('murajaah.review_now')}
                     </button>
                 </div>

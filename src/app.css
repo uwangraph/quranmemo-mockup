@@ -193,6 +193,36 @@ body {
   width: auto;
 }
 
+/* Aksi ringkas di dalam baris daftar, bukan tombol utama sebuah layar.
+   Tepian 3D ditipiskan jadi 2px; pada tombol sekecil ini tepian 3px terbaca
+   sebagai bingkai tebal, bukan sebagai kedalaman.
+
+   Tingginya 26px, di bawah 40px yang dipakai tombol utama dan di bawah anjuran
+   umum target sentuh. Dipilih sadar karena ini aksi sekunder di dalam baris yang
+   sudah punya konteksnya sendiri — bukan sasaran tekan utama sebuah layar. */
+.btn-duo.btn-xs {
+  padding: 3px 9px;
+  font-size: 10px;
+  border-radius: 8px;
+  letter-spacing: 0.2px;
+  min-height: 26px;
+  border-bottom-width: 2px;
+}
+
+/* Efek tekan harus ikut berskala. Aturan umum btn-duo menuju tepian 2px saat
+   hover — nilai yang justru sama dengan keadaan diam btn-xs, sehingga tombolnya
+   tampak tidak bereaksi sama sekali. Di sini jaraknya dihitung ulang dari tepian
+   2px agar gerakannya tetap terasa. */
+.btn-duo.btn-xs:not(.btn-disabled):hover {
+  transform: translateY(1px);
+  border-bottom-width: 1px;
+}
+
+.btn-duo.btn-xs:not(.btn-disabled):active {
+  transform: translateY(2px);
+  border-bottom-width: 0;
+}
+
 /* Target sentuh minimum, supaya varian kecil tetap nyaman ditekan. */
 .btn-duo.btn-sm,
 .btn-duo.btn-auto {
