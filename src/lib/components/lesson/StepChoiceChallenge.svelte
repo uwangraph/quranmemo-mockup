@@ -232,9 +232,10 @@
         text-align: center;
         width: 100%;
     }
+    /* Jawaban yang baru diisi masih netral (biru), belum divonis benar. */
     .filled-text {
-        color: #00978a; 
-        border-bottom: 2px dashed #00978a;
+        color: #1cb0f6;
+        border-bottom: 2px dashed #1cb0f6;
         transition: all 0.3s ease;
     }
     .filled-text.revealed-correct {
@@ -276,14 +277,23 @@
         transform: translateY(2px);
         border-bottom-width: 2px;
     }
+    /* Terpilih memakai biru, bukan hijau. Hijau di layar ini berarti "jawabanmu
+       benar"; memakainya juga untuk sekadar menandai pilihan membuat jawaban salah
+       tampak seperti sudah dibenarkan sebelum diperiksa. */
     .choice-card-button.selected {
-        border-color: #00978A;
-        background: #e0f5f3;
+        border-color: #1cb0f6;
+        background: #ddf4ff;
     }
     .choice-card-button.selected .choice-index-circle {
-        background: #00978A;
-        border-color: #00978A;
+        background: #1cb0f6;
+        border-color: #1cb0f6;
         color: #fff;
+    }
+    /* Setelah diperiksa, penanda pilihan tidak boleh lagi bersaing dengan
+       penanda benar/salah. */
+    .choice-card-button.selected.correct,
+    .choice-card-button.selected.wrong {
+        background: unset;
     }
     .choice-card-button.correct {
         border-color: #22c55e;

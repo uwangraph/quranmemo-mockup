@@ -281,9 +281,15 @@
     .option-pill:hover:not(:disabled) {
         border-color: #cbd5e1;
     }
+    /* Biru untuk sekadar terpilih; hijau disimpan untuk vonis "benar" saja.
+       Lihat catatan yang sama di StepChoiceChallenge. */
     .option-pill.selected {
-        border-color: #00978A;
-        background: #e0f5f3;
+        border-color: #1cb0f6;
+        background: #ddf4ff;
+    }
+    .option-pill.selected.correct,
+    .option-pill.selected.wrong {
+        background: unset;
     }
     .option-pill.correct {
         border-color: #22c55e;
@@ -299,8 +305,8 @@
         font-family: 'Amiri', serif;
     }
     .filled-text {
-        color: #00978a; 
-        border-bottom: 2px dashed #00978a;
+        color: #1cb0f6;
+        border-bottom: 2px dashed #1cb0f6;
         transition: all 0.3s ease;
     }
     .filled-text.revealed-correct {
