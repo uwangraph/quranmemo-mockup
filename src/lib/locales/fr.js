@@ -893,4 +893,7 @@ export default {
     ,"learn.content_pending_desc": "Les versets de {target} attendent une source de mushaf vérifiée."
     ,"learn.all_available_done": "Tout le contenu disponible est terminé"
     ,"learn.all_available_done_desc": "{count} mini-objectifs attendent encore un contenu de mushaf vérifié. Entretiens ta mémorisation par la révision."
+    ,"placement.cat_rbq_short": "RBQ"
+    ,"placement.cat_rtq_short": "RTQ"
+    ,"placement.cat_tahfidz_short": "Tahfidz"
 };

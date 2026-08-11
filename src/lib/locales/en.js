@@ -915,4 +915,7 @@ export default {
     ,"learn.content_pending_desc": "Verses for {target} still need to come from a verified mushaf."
     ,"learn.all_available_done": "All available content completed"
     ,"learn.all_available_done_desc": "{count} more mini targets are waiting for verified mushaf content. Keep your memorization fresh with murajaah."
+    ,"placement.cat_rbq_short": "RBQ"
+    ,"placement.cat_rtq_short": "RTQ"
+    ,"placement.cat_tahfidz_short": "Tahfidz"
 };

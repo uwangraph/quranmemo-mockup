@@ -891,4 +891,7 @@ export default {
     ,"learn.content_pending_desc": "Ayoyin {target} na jiran tushen mushaf da aka tantance."
     ,"learn.all_available_done": "An kammala duk abun ciki da ake da shi"
     ,"learn.all_available_done_desc": "Sauran ƙananan buri {count} na jiran abun ciki na mushaf da aka tantance. Ka kiyaye haddarka da murajaah."
+    ,"placement.cat_rbq_short": "RBQ"
+    ,"placement.cat_rtq_short": "RTQ"
+    ,"placement.cat_tahfidz_short": "Tahfiz"
 };

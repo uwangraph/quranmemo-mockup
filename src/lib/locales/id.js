@@ -915,4 +915,7 @@ export default {
     ,"learn.content_pending_desc": "Ayat untuk {target} masih menunggu sumber mushaf terverifikasi."
     ,"learn.all_available_done": "Semua konten yang tersedia sudah selesai"
     ,"learn.all_available_done_desc": "{count} mini target lagi menunggu konten mushaf terverifikasi. Jaga hafalanmu dengan murajaah."
+    ,"placement.cat_rbq_short": "RBQ"
+    ,"placement.cat_rtq_short": "RTQ"
+    ,"placement.cat_tahfidz_short": "Tahfidz"
 };

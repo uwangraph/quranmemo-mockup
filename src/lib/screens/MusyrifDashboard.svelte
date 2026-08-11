@@ -11,10 +11,12 @@
     const placement = $derived(appState.user.placement);
     const slaLeft = $derived(appState.placementSlaHoursLeft());
 
+    // Warna kategori disamakan dengan kartu hasil placement di layar profil, supaya
+    // musyrif dan santri melihat kode warna yang sama untuk kategori yang sama.
     const CATS = [
-        { id: 'rbq', icon: '🌱', color: '#b45309' },
-        { id: 'rtq', icon: '📖', color: '#0369a1' },
-        { id: 'tahfidz', icon: '🏅', color: '#0f766e' }
+        { id: 'rbq', icon: '🌱', color: '#b45309', bg: '#fffbeb', edge: '#fde68a' },
+        { id: 'rtq', icon: '📖', color: '#0369a1', bg: '#eff6ff', edge: '#bfdbfe' },
+        { id: 'tahfidz', icon: '🏅', color: '#0f766e', bg: '#f0fdfa', edge: '#99f6e4' }
     ];
 
     const queue = $derived([
@@ -85,30 +87,49 @@
         <!-- Antrean verifikasi placement, SLA 1x24 jam -->
         <div class="section-label">🎤 {i18n.t('musyrif.placement_queue')} ({queue.length})</div>
         {#each queue as entry}
-            {@const chosen = decided[entry.name]}
-            <div class="placement-row" class:urgent={entry.hours <= 6 && !chosen}>
-                <div class="pl-avatar">{chosen ? CATS.find(c => c.id === chosen).icon : '🎧'}</div>
-                <div style="flex:1; min-width:0;">
-                    <div class="pl-name">
-                        {entry.name}
-                        {#if entry.self}<span class="pl-self">{i18n.t('lb.you_badge')}</span>{/if}
+            {@const cat = CATS.find((c) => c.id === decided[entry.name]) ?? null}
+            {@const urgent = entry.hours <= 6 && !cat}
+            <div class="pl-card" class:urgent>
+                <div class="pl-head">
+                    <div class="pl-avatar" style={cat ? `background:${cat.bg}` : ''}>
+                        {cat ? cat.icon : '🎧'}
                     </div>
-                    <div class="pl-meta">QS Maryam 1-10 · {i18n.t('placement.sla_left', { hours: entry.hours })}</div>
+                    <div class="pl-info">
+                        <div class="pl-name">
+                            {entry.name}
+                            {#if entry.self}<span class="pl-self">{i18n.t('lb.you_badge')}</span>{/if}
+                        </div>
+                        <div class="pl-meta">QS Maryam 1-10</div>
+                    </div>
+                    <span class="pl-sla" class:urgent>
+                        {i18n.t('placement.sla_left', { hours: entry.hours })}
+                    </span>
                 </div>
+
+                {#if cat}
+                    <div class="pl-verdict" style="background:{cat.bg}; color:{cat.color};">
+                        <i class="ti ti-circle-check-filled"></i>
+                        {i18n.t(`placement.cat_${cat.id}`)}
+                    </div>
+                {:else}
+                    <!-- Label dipendekkan jadi singkatan kategorinya. Nama panjangnya tidak
+                         muat di tombol selebar sepertiga: teksnya membungkus tiga baris dan
+                         tetap meluber keluar kartu. Nama penuhnya tetap terbaca lewat title. -->
+                    <div class="pl-actions">
+                        {#each CATS as c}
+                            <button
+                                class="btn-duo btn-sm pl-btn"
+                                style="background:{c.bg}; color:{c.color}; --btn-edge:{c.edge};"
+                                title={i18n.t(`placement.cat_${c.id}`)}
+                                onclick={() => decide(entry, c.id)}
+                            >
+                                <span class="pl-btn-icon">{c.icon}</span>
+                                {i18n.t(`placement.cat_${c.id}_short`)}
+                            </button>
+                        {/each}
+                    </div>
+                {/if}
             </div>
-            {#if chosen}
-                <div class="pl-done" style="color:{CATS.find(c => c.id === chosen).color}">
-                    ✓ {i18n.t(`placement.cat_${chosen}`)}
-                </div>
-            {:else}
-                <div class="pl-actions">
-                    {#each CATS as c}
-                        <button class="btn-duo btn-outline btn-sm pl-btn" onclick={() => decide(entry, c.id)}>
-                            {c.icon} {i18n.t(`placement.cat_${c.id}`)}
-                        </button>
-                    {/each}
-                </div>
-            {/if}
         {/each}
 
         <div class="section-label">{i18n.t('musyrif.requests')} (Instan)</div>
@@ -178,42 +199,64 @@
 </div>
 
 <style>
-    /* Antrean placement */
-    .placement-row {
-        display: flex; align-items: center; gap: 12px;
-        background: #fff; border: 2px solid #e5e5e5; border-radius: 14px 14px 0 0;
-        border-bottom: none; padding: 12px;
+    /* Antrean placement — satu kartu utuh per santri.
+       Sebelumnya baris identitas dan baris tombol adalah dua kotak terpisah yang
+       dijahit dengan mematikan border di sisi yang bertemu. Bentuk itu rapuh dan
+       terbaca sebagai dua kartu yang kebetulan berdempetan. */
+    .pl-card {
+        background: #fff;
+        border: 2px solid #e5e5e5;
+        border-radius: 16px;
+        padding: 12px;
+        margin-bottom: 10px;
     }
-    .placement-row.urgent { border-color: #fecaca; background: #fef2f2; }
+    .pl-card.urgent { border-color: #fecaca; background: #fef2f2; }
+
+    .pl-head { display: flex; align-items: center; gap: 12px; }
     .pl-avatar {
-        width: 42px; height: 42px; border-radius: 50%; background: #f1f5f9;
-        display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0;
+        width: 40px; height: 40px; border-radius: 50%; background: #f1f5f9;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 19px; flex-shrink: 0;
     }
-    .pl-name { font-size: 14px; font-weight: 900; color: #3c3c3c; display: flex; align-items: center; gap: 6px; }
+    .pl-info { flex: 1; min-width: 0; }
+    .pl-name {
+        font-size: 14px; font-weight: 900; color: #3c3c3c;
+        display: flex; align-items: center; gap: 6px;
+        overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
     .pl-self {
         font-size: 8px; font-weight: 900; background: #00978A; color: #fff;
-        padding: 1px 6px; border-radius: 99px; text-transform: uppercase;
+        padding: 1px 6px; border-radius: 99px; text-transform: uppercase; flex-shrink: 0;
     }
     .pl-meta { font-size: 11px; font-weight: 700; color: #94a3b8; margin-top: 2px; }
-    .pl-actions {
-        display: flex; gap: 6px; padding: 0 12px 12px;
-        background: #fff; border: 2px solid #e5e5e5; border-top: none;
-        border-radius: 0 0 14px 14px; margin-bottom: 10px;
+
+    /* Sisa waktu SLA dipindah ke kanan kepala kartu: itu informasi yang menentukan
+       urutan kerja musyrif, bukan keterangan tambahan di bawah nama. */
+    .pl-sla {
+        flex-shrink: 0; font-size: 10px; font-weight: 900;
+        color: #64748b; background: #f1f5f9;
+        padding: 4px 8px; border-radius: 99px; white-space: nowrap;
     }
+    .pl-sla.urgent { color: #b91c1c; background: #fee2e2; }
+
+    .pl-actions { display: flex; gap: 6px; margin-top: 12px; }
+    /* min-width: 0 wajib ada. Tanpa itu tombol flex tidak boleh menyusut di bawah
+       lebar teksnya, sehingga barisnya meluber keluar kartu dan tombol ketiga
+       terpotong di tepi layar. */
     .pl-btn {
-        appearance: none; -webkit-appearance: none;
-        flex: 1; min-height: 40px; padding: 8px 4px; border-radius: 10px;
-        border: 2px solid #e2e8f0; background: #f8fafc;
-        font-family: inherit; font-size: 10px; line-height: 1.15; font-weight: 800;
-        color: #475569; cursor: pointer; text-align: center;
-        box-shadow: 0 2px 0 #cbd5e1;
-        transition: transform .12s ease, background .12s ease, box-shadow .12s ease;
+        flex: 1;
+        min-width: 0;
+        padding: 8px 6px;
+        font-size: 11px;
+        letter-spacing: 0;
+        text-transform: none;
+        display: flex; flex-direction: column; align-items: center; gap: 2px;
     }
-    .pl-btn:hover { background: #eef6f7; border-color: #99d5d0; color: #007d73; }
-    .pl-btn:active { background: #e2e8f0; transform: translateY(2px); box-shadow: none; }
-    .pl-done {
-        background: #fff; border: 2px solid #e5e5e5; border-top: none;
-        border-radius: 0 0 14px 14px; padding: 10px 12px; margin-bottom: 10px;
+    .pl-btn-icon { font-size: 15px; line-height: 1; }
+
+    .pl-verdict {
+        display: flex; align-items: center; gap: 6px; margin-top: 12px;
+        padding: 9px 12px; border-radius: 12px;
         font-size: 12px; font-weight: 900;
     }
 

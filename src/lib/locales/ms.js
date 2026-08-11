@@ -894,4 +894,7 @@ export default {
     ,"learn.content_pending_desc": "Ayat untuk {target} masih menunggu sumber mushaf yang disahkan."
     ,"learn.all_available_done": "Semua kandungan yang ada sudah selesai"
     ,"learn.all_available_done_desc": "{count} mini sasaran lagi menunggu kandungan mushaf yang disahkan. Kekalkan hafalan anda dengan murajaah."
+    ,"placement.cat_rbq_short": "RBQ"
+    ,"placement.cat_rtq_short": "RTQ"
+    ,"placement.cat_tahfidz_short": "Tahfiz"
 };

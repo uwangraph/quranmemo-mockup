@@ -894,4 +894,7 @@ export default {
     ,"learn.content_pending_desc": "آيات {target} ما زالت بانتظار مصدر مصحف موثّق."
     ,"learn.all_available_done": "اكتمل كل المحتوى المتاح"
     ,"learn.all_available_done_desc": "ما زال {count} من الأهداف الصغيرة بانتظار محتوى مصحف موثّق. حافظ على حفظك بالمراجعة."
+    ,"placement.cat_rbq_short": "‏RBQ"
+    ,"placement.cat_rtq_short": "‏RTQ"
+    ,"placement.cat_tahfidz_short": "تحفيظ"
 };
