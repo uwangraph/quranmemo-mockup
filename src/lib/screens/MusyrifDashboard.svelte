@@ -1,7 +1,8 @@
 <script>
     import { appState } from '$lib/app.svelte.js';
     import { i18n } from '$lib/i18n.svelte.js';
-    
+    import { PLACEMENT_CATEGORIES } from '$lib/data/placementCategories.js';
+
     let isAvailable = $state(true);
 
     // Antrean verifikasi Placement Test (ONBOARDING.md §1.3).
@@ -11,30 +12,25 @@
     const placement = $derived(appState.user.placement);
     const slaLeft = $derived(appState.placementSlaHoursLeft());
 
-    // Warna kategori disamakan dengan kartu hasil placement di layar profil, supaya
-    // musyrif dan santri melihat kode warna yang sama untuk kategori yang sama.
-    const CATS = [
-        { id: 'rbq', icon: '🌱', color: '#b45309', bg: '#fffbeb', edge: '#fde68a' },
-        { id: 'rtq', icon: '📖', color: '#0369a1', bg: '#eff6ff', edge: '#bfdbfe' },
-        { id: 'tahfidz', icon: '🏅', color: '#0f766e', bg: '#f0fdfa', edge: '#99f6e4' }
-    ];
+    const CATS = PLACEMENT_CATEGORIES;
 
+    // Entri "self" hilang dari antrean begitu diputuskan (status berubah dari
+    // pending ke done), sehingga tidak perlu status "sudah diputuskan" untuknya di
+    // sini — kartu itu langsung tidak lagi ditampilkan.
     const queue = $derived([
         ...(placement?.status === 'pending'
-            ? [{ name: appState.user.name, hours: slaLeft ?? 24, self: true }] : []),
-        { name: 'Fatimah Az-Zahra', hours: 19, self: false },
-        { name: 'Yusuf Ibrahim', hours: 6, self: false }
+            ? [{ id: 'self', name: appState.user.name, hours: slaLeft ?? 24, self: true }] : []),
+        { id: 'demo-fatimah', name: 'Fatimah Az-Zahra', hours: 19, self: false },
+        { id: 'demo-yusuf', name: 'Yusuf Ibrahim', hours: 6, self: false }
     ]);
 
-    let decided = $state({});   // nama -> kategori, untuk contoh non-santri
-
-    function decide(entry, cat) {
-        if (entry.self) {
-            const notes = { rbq: 'placement.rec_note_rbq', rtq: 'placement.rec_note_rtq', tahfidz: 'placement.rec_note_tahfidz' };
-            const surah = { rbq: 'An-Nas', rtq: 'Ad-Duha', tahfidz: 'An-Naba' };
-            appState.setPlacementResult(cat, { surah: surah[cat], juz: 30, note: i18n.t(notes[cat]) });
-        }
-        decided = { ...decided, [entry.name]: cat };
+    // Membuka rekaman santri untuk didengar, dicatat, dan diberi kategori — bukan
+    // lagi menebak kategori langsung dari daftar. Keputusan disimpan di appState
+    // (bukan state lokal komponen ini) supaya bertahan saat berpindah ke layar
+    // review dan kembali lagi.
+    function checkSubmission(entry) {
+        appState.openPlacementReview(entry);
+        appState.go('placement-review');
     }
 
     function acceptInstantRequest() {
@@ -87,7 +83,8 @@
         <!-- Antrean verifikasi placement, SLA 1x24 jam -->
         <div class="section-label">🎤 {i18n.t('musyrif.placement_queue')} ({queue.length})</div>
         {#each queue as entry}
-            {@const cat = CATS.find((c) => c.id === decided[entry.name]) ?? null}
+            {@const decision = entry.self ? null : appState.demoPlacementDecisions[entry.id]}
+            {@const cat = decision ? CATS.find((c) => c.id === decision.category) : null}
             {@const urgent = entry.hours <= 6 && !cat}
             <div class="pl-card" class:urgent>
                 <div class="pl-head">
@@ -112,22 +109,12 @@
                         {i18n.t(`placement.cat_${cat.id}`)}
                     </div>
                 {:else}
-                    <!-- Label dipendekkan jadi singkatan kategorinya. Nama panjangnya tidak
-                         muat di tombol selebar sepertiga: teksnya membungkus tiga baris dan
-                         tetap meluber keluar kartu. Nama penuhnya tetap terbaca lewat title. -->
-                    <div class="pl-actions">
-                        {#each CATS as c}
-                            <button
-                                class="btn-duo btn-sm pl-btn"
-                                style="background:{c.bg}; color:{c.color}; --btn-edge:{c.edge};"
-                                title={i18n.t(`placement.cat_${c.id}`)}
-                                onclick={() => decide(entry, c.id)}
-                            >
-                                <span class="pl-btn-icon">{c.icon}</span>
-                                {i18n.t(`placement.cat_${c.id}_short`)}
-                            </button>
-                        {/each}
-                    </div>
+                    <!-- Menggantikan tiga tombol kategori instan: musyrif mendengar rekaman,
+                         menulis catatan, dan memberi rekomendasi surah dulu sebelum
+                         menjatuhkan kategori — bukan menebak dari nama santri saja. -->
+                    <button type="button" class="btn-duo btn-outline btn-sm pl-check-btn" onclick={() => checkSubmission(entry)}>
+                        <i class="ti ti-headphones"></i> {i18n.t('musyrif.check_submission')}
+                    </button>
                 {/if}
             </div>
         {/each}
@@ -239,20 +226,7 @@
     }
     .pl-sla.urgent { color: #b91c1c; background: #fee2e2; }
 
-    .pl-actions { display: flex; gap: 6px; margin-top: 12px; }
-    /* min-width: 0 wajib ada. Tanpa itu tombol flex tidak boleh menyusut di bawah
-       lebar teksnya, sehingga barisnya meluber keluar kartu dan tombol ketiga
-       terpotong di tepi layar. */
-    .pl-btn {
-        flex: 1;
-        min-width: 0;
-        padding: 8px 6px;
-        font-size: 11px;
-        letter-spacing: 0;
-        text-transform: none;
-        display: flex; flex-direction: column; align-items: center; gap: 2px;
-    }
-    .pl-btn-icon { font-size: 15px; line-height: 1; }
+    .pl-check-btn { margin-top: 12px; }
 
     .pl-verdict {
         display: flex; align-items: center; gap: 6px; margin-top: 12px;

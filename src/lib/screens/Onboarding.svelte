@@ -329,15 +329,22 @@
             <h1 class="q-title">{i18n.t('placement.rec_title')}</h1>
             <p class="q-sub">{i18n.t('placement.rec_desc')}</p>
 
-            {#if placement.recommendation}
+            {#if placement.recommendation?.surah || placement.recommendation?.note}
+                <!-- Musyrif boleh mengirim hanya catatan tanpa rekomendasi surah lewat
+                     layar Verifikasi Placement, jadi kedua baris dijaga terpisah —
+                     tanpa itu baris surah tampil sebagai "📖 null · Juz null". -->
                 <div class="rec-card">
                     <div class="rec-head">
                         <span class="rec-badge">{i18n.t('placement.rec_from_musyrif')}</span>
                     </div>
-                    <div class="rec-target">
-                        📖 {placement.recommendation.surah} · Juz {placement.recommendation.juz}
-                    </div>
-                    <div class="rec-note">{placement.recommendation.note}</div>
+                    {#if placement.recommendation.surah}
+                        <div class="rec-target">
+                            📖 {placement.recommendation.surah} · Juz {placement.recommendation.juz}
+                        </div>
+                    {/if}
+                    {#if placement.recommendation.note}
+                        <div class="rec-note">{placement.recommendation.note}</div>
+                    {/if}
                 </div>
             {/if}
 

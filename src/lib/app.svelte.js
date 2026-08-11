@@ -854,6 +854,44 @@ export function createAppState() {
         return Math.max(0, Math.ceil((DAY_MS - elapsed) / 3600000));
     }
 
+    // ====== Verifikasi Placement oleh musyrif ======
+    //
+    // Layar review terpisah menggantikan tiga tombol kategori instan di dasbor:
+    // musyrif mendengar rekaman, menulis catatan, dan memberi rekomendasi surah
+    // sebelum menjatuhkan kategori — bukan menebak dari nama santri saja.
+
+    let placementReview = $state(null);      // entri antrean yang sedang dibuka musyrif
+    // Keputusan untuk entri contoh (bukan santri di perangkat ini) — in-memory saja,
+    // sama seperti musyrifBalance, karena entri contoh tidak punya objek user
+    // sungguhan untuk menyimpan hasilnya.
+    let demoPlacementDecisions = $state({});
+
+    function openPlacementReview(entry) {
+        placementReview = entry;
+    }
+
+    function closePlacementReview() {
+        placementReview = null;
+    }
+
+    // Dipanggil dari layar review. Untuk santri di perangkat ini, keputusannya
+    // masuk ke placement test sungguhan; untuk entri contoh, disimpan di memori.
+    function submitPlacementReview({ category, note, surahName }) {
+        if (!placementReview) return;
+        const surah = surahName ? surahByName(surahName) : null;
+        const trimmedNote = note?.trim() || null;
+        const recommendation = (surah || trimmedNote)
+            ? { surah: surah?.name ?? null, juz: surah?.juz ?? null, note: trimmedNote }
+            : null;
+
+        if (placementReview.self) {
+            setPlacementResult(category, recommendation);
+        } else {
+            demoPlacementDecisions = { ...demoPlacementDecisions, [placementReview.id]: { category, recommendation } };
+        }
+        placementReview = null;
+    }
+
     function setPathMode(mode, target = null) {
         user.pathMode = mode; // 'roadmap' | 'self'
         user.selfPacedTarget = target;
@@ -912,6 +950,7 @@ export function createAppState() {
         feedback: "Session Feedback",
         league: "League",
         musyrif: "Musyrif Dashboard",
+        "placement-review": "Placement Review",
         livemarking: "Live Marking",
         "user-livemarking": "Live Setoran",
         "musyrif-earnings": "Earnings & Analytics",
@@ -928,7 +967,7 @@ export function createAppState() {
         currentScreen = id;
         
         // Theme switching logic
-        if (id === 'musyrif' || id === 'livemarking' || id === 'musyrif-earnings') {
+        if (id === 'musyrif' || id === 'livemarking' || id === 'musyrif-earnings' || id === 'placement-review') {
             theme = 'musyrif';
         } else if (id.startsWith('admin-')) {
             theme = 'admin';
@@ -998,6 +1037,11 @@ export function createAppState() {
         submitPlacementRecording,
         setPlacementResult,
         placementSlaHoursLeft,
+        get placementReview() { return placementReview; },
+        get demoPlacementDecisions() { return demoPlacementDecisions; },
+        openPlacementReview,
+        closePlacementReview,
+        submitPlacementReview,
         setPathMode,
         setReminderPrefs,
         recordSetoran,

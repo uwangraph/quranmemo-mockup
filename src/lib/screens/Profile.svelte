@@ -189,10 +189,18 @@
                             <div class="placement-mod">{i18n.t(`placement.module_${placement.category}`)}</div>
                         </div>
                     </div>
-                    {#if placement.recommendation}
+                    {#if placement.recommendation?.surah}
                         <div class="placement-rec">
                             <span class="placement-rec-label">{i18n.t('placement.rec_from_musyrif')}</span>
                             <span class="placement-rec-target">📖 {placement.recommendation.surah} · Juz {placement.recommendation.juz}</span>
+                        </div>
+                    {/if}
+                    {#if placement.recommendation?.note}
+                        <!-- Catatan bebas dari musyrif — bukan lagi hanya rekomendasi surah,
+                             dari layar Verifikasi Placement di dasbor musyrif. -->
+                        <div class="placement-note">
+                            <span class="placement-rec-label">{i18n.t('placement.rec_note_label')}</span>
+                            <p>{placement.recommendation.note}</p>
                         </div>
                     {/if}
                     <div class="placement-by">
@@ -637,6 +645,13 @@
         text-transform: uppercase; letter-spacing: 0.5px;
     }
     .placement-rec-target { font-size: 14px; font-weight: 900; color: #1e293b; }
+    .placement-note {
+        display: flex; flex-direction: column; gap: 4px; margin-top: 8px;
+        background: rgba(255,255,255,0.7); border-radius: 12px; padding: 10px 12px;
+    }
+    .placement-note p {
+        margin: 0; font-size: 12px; font-weight: 600; color: #334155; line-height: 1.5;
+    }
     .placement-by { font-size: 11px; font-weight: 700; color: #64748b; margin-top: 10px; }
     .placement-pending {
         width: 100%; display: flex; align-items: center; gap: 12px;

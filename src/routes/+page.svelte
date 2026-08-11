@@ -7,6 +7,7 @@
     import Profile from '$lib/screens/Profile.svelte';
     import Language from '$lib/screens/Language.svelte';
     import MusyrifDashboard from '$lib/screens/MusyrifDashboard.svelte';
+    import PlacementReview from '$lib/screens/PlacementReview.svelte';
     import LiveMarking from '$lib/screens/LiveMarking.svelte';
     import UserLiveMarking from '$lib/screens/UserLiveMarking.svelte';
     import AdminUsers from '$lib/screens/AdminUsers.svelte';
@@ -61,6 +62,8 @@
         <Tadabbur />
     {:else if appState.currentScreen === 'musyrif'}
         <MusyrifDashboard />
+    {:else if appState.currentScreen === 'placement-review'}
+        <PlacementReview />
     {:else if appState.currentScreen === 'livemarking'}
         <LiveMarking />
     {:else if appState.currentScreen === 'user-livemarking'}
