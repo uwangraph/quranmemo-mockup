@@ -100,15 +100,18 @@ body {
 .card-premium {
   background: #fff;
   border: 2px solid var(--border-main);
-  border-bottom-width: 4px;
   border-radius: 20px;
   padding: 16px;
-  transition: transform 0.1s;
+  /* Tepian lewat box-shadow dengan alasan yang sama seperti .btn-duo: kartu ini
+     dipakai bertumpuk, dan menipiskan border saat ditekan menggeser kartu di
+     bawahnya. */
+  box-shadow: 0 4px 0 var(--border-main);
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
 }
 
 .card-premium:active {
   transform: translateY(2px);
-  border-bottom-width: 2px;
+  box-shadow: 0 2px 0 var(--border-main);
 }
 
 /* ===================== BUTTONS ===================== */
@@ -125,45 +128,52 @@ body {
   border: none;
   cursor: pointer;
   text-align: center;
-  transition: transform 0.1s ease, border-bottom-width 0.1s ease;
+  /* Tepian 3D dibuat dengan box-shadow, bukan border-bottom yang menebal-menipis.
+     Lebar border ikut menentukan tinggi elemen, sehingga menipiskannya saat hover
+     memendekkan tombol dan mendorong semua yang ada di bawahnya ikut bergeser —
+     paling terasa pada daftar tombol bertumpuk. box-shadow tidak dihitung dalam
+     tata letak, jadi tingginya tetap saat ditekan.
+
+     Warna tepian datang dari --btn-edge yang disetel tiap varian warna, supaya
+     satu aturan tekan cukup untuk semuanya. */
+  box-shadow: 0 3px 0 var(--btn-edge, transparent);
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.btn-duo:not(.btn-disabled):hover {
+  transform: translateY(1px);
+  box-shadow: 0 2px 0 var(--btn-edge, transparent);
+}
+
+.btn-duo:not(.btn-disabled):active {
+  transform: translateY(3px);
+  box-shadow: none;
 }
 
 .btn-green {
   background: var(--duo-green);
   color: #fff;
-  border-bottom: 3px solid var(--duo-green-dark);
-}
-
-.btn-duo:not(.btn-disabled):hover {
-  transform: translateY(1px);
-  border-bottom-width: 2px;
-  box-shadow: none;
-}
-
-.btn-duo:not(.btn-disabled):active {
-  border-bottom-width: 0;
-  transform: translateY(3px);
-  box-shadow: none;
+  --btn-edge: var(--duo-green-dark);
 }
 
 .btn-blue {
   background: #1cb0f6;
   color: #fff;
-  border-bottom: 3px solid #0898dc;
+  --btn-edge: #0898dc;
 }
 
 .btn-outline {
   background: #fff;
   color: #1cb0f6;
   border: 2px solid #e5e5e5;
-  border-bottom: 3px solid #e5e5e5;
+  --btn-edge: #e5e5e5;
 }
 
 .btn-disabled {
   background: #e5e5e5;
   color: #afafaf;
-  border-bottom: 3px solid #ccc;
   cursor: not-allowed;
+  --btn-edge: #ccc;
 }
 
 /* Dipakai di dasbor musyrif tetapi belum pernah didefinisikan, sehingga tombolnya
@@ -171,13 +181,13 @@ body {
 .btn-orange {
   background: #ff9600;
   color: #fff;
-  border-bottom: 3px solid #cc7800;
+  --btn-edge: #cc7800;
 }
 
 .btn-red {
   background: #ff4b4b;
   color: #fff;
-  border-bottom: 3px solid #d33;
+  --btn-edge: #d33;
 }
 
 /* Varian ukuran. Sebelumnya tiap layar menambal sendiri lewat atribut style,
@@ -206,21 +216,18 @@ body {
   border-radius: 8px;
   letter-spacing: 0.2px;
   min-height: 26px;
-  border-bottom-width: 2px;
+  box-shadow: 0 2px 0 var(--btn-edge, transparent);
 }
 
-/* Efek tekan harus ikut berskala. Aturan umum btn-duo menuju tepian 2px saat
-   hover — nilai yang justru sama dengan keadaan diam btn-xs, sehingga tombolnya
-   tampak tidak bereaksi sama sekali. Di sini jaraknya dihitung ulang dari tepian
-   2px agar gerakannya tetap terasa. */
+/* Jarak tekan dihitung ulang dari tepian 2px agar gerakannya tetap terasa. */
 .btn-duo.btn-xs:not(.btn-disabled):hover {
   transform: translateY(1px);
-  border-bottom-width: 1px;
+  box-shadow: 0 1px 0 var(--btn-edge, transparent);
 }
 
 .btn-duo.btn-xs:not(.btn-disabled):active {
   transform: translateY(2px);
-  border-bottom-width: 0;
+  box-shadow: none;
 }
 
 /* Target sentuh minimum, supaya varian kecil tetap nyaman ditekan. */
@@ -232,7 +239,7 @@ body {
 /* ===================== THEME OVERRIDES ===================== */
 .phone.theme-musyrif .btn-green {
   background: #23a100;
-  border-bottom-color: #1a7a00;
+  --btn-edge: #1a7a00;
 }
 .phone.theme-musyrif .statusbar {
   background: #1a1a1a;
@@ -245,7 +252,7 @@ body {
 
 .phone.theme-admin .btn-green {
   background: #4f46e5;
-  border-bottom-color: #3730a3;
+  --btn-edge: #3730a3;
 }
 .phone.theme-admin .statusbar {
   background: #1e293b;

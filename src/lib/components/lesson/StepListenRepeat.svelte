@@ -140,11 +140,11 @@
         <div class="success-recording-box">
             <span class="action-helper-txt text-success">{i18n.t('lesson.voice_recorded')}</span>
             <div style="display: flex; gap: 8px; width: 100%; justify-content: center; margin-top: 4px;">
-                <button class="btn-duo" style="flex: 1; color: #00978A; border-color: #ccfbf1;" onclick={togglePlayRecorded} disabled={isChecked}>
+                <button class="btn-duo" style="flex: 1; color: #00978A; --btn-edge: #ccfbf1;" onclick={togglePlayRecorded} disabled={isChecked}>
                     <i class="ti {isPlayingRecorded ? 'ti-player-pause' : 'ti-player-play'}"></i> 
                     {isPlayingRecorded ? i18n.t('lesson.pause') : i18n.t('lesson.play_my_record')}
                 </button>
-                <button class="btn-duo" style="flex: 1; color: #ff4b4b; border-color: #fee2e2;" onclick={(e) => { e.preventDefault(); e.stopPropagation(); startSimulatedRecording(); }} disabled={isChecked}>
+                <button class="btn-duo" style="flex: 1; color: #ff4b4b; --btn-edge: #fee2e2;" onclick={(e) => { e.preventDefault(); e.stopPropagation(); startSimulatedRecording(); }} disabled={isChecked}>
                     <i class="ti ti-microphone"></i> 
                     {i18n.t('lesson.mic_re_record')}
                 </button>

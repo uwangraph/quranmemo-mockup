@@ -201,7 +201,7 @@
 						class="snb" 
 						class:active={appState.currentScreen === screen.id}
 						onclick={() => handleNavigate(screen.id)}
-						style={appState.currentScreen === screen.id ? `background: ${cat.color}; border-color: ${cat.color}; border-bottom-color: color-mix(in srgb, ${cat.color} 72%, #000); color: #fff;` : ''}
+						style={appState.currentScreen === screen.id ? `--snb-edge: color-mix(in srgb, ${cat.color} 72%, #000); background: ${cat.color}; border-color: ${cat.color}; color: #fff;` : ''}
 						title={i18n.t('screen.' + screen.id)}
 					>
 						<img src={getFlaticon(screen.id)} alt="" style="width: 18px; height: 18px; object-fit: contain; margin-right: {isSidebarExpanded ? '10px' : '0'}; filter: {appState.currentScreen === screen.id ? 'brightness(0) invert(1)' : 'none'};" />
@@ -544,11 +544,15 @@
 		min-height: 42px;
 		box-sizing: border-box;
 		border: 2px solid #e5e5e5;
-		border-bottom: 3px solid #cbd5e1;
+		/* Tepian 3D dibuat dengan box-shadow, bukan border-bottom yang menebal-menipis.
+		   Lebar border ikut menentukan tinggi elemen, sehingga menipiskannya saat hover
+		   memendekkan tombol dan mendorong seluruh tombol di bawahnya ikut bergeser.
+		   box-shadow tidak ikut dihitung dalam tata letak, jadi tingginya tetap. */
+		box-shadow: 0 3px 0 var(--snb-edge, #cbd5e1);
 		background: #fff;
 		cursor: pointer;
 		color: #777;
-		transition: transform .1s ease, border-bottom-width .1s ease;
+		transition: transform .1s ease, box-shadow .1s ease;
 		width: 100%;
 		text-align: left;
 		margin-bottom: 6px;
@@ -558,12 +562,10 @@
 	}
 	.snb:hover {
 		transform: translateY(1px);
-		border-bottom-width: 2px;
-		box-shadow: none;
+		box-shadow: 0 2px 0 var(--snb-edge, #cbd5e1);
 	}
 	.snb:active {
 		transform: translateY(3px);
-		border-bottom-width: 0;
 		box-shadow: none;
 	}
 	.collapsed .snb {

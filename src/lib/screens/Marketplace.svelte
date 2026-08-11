@@ -318,7 +318,7 @@
                         <div style="font-size:13px; font-weight:700; color:#afafaf; margin-top:4px;">{i18n.t('market.ads_desc')}</div>
                     </div>
                 </div>
-                <button class="btn-duo" style="background: #fff; color: #1cb0f6; border-color: #e5e5e5;" onclick={() => {
+                <button class="btn-duo" style="background: #fff; color: #1cb0f6; --btn-edge: #e5e5e5;" onclick={() => {
                     customConfirm(i18n.t('market.ads_confirm'), () => {
                         appState.user.gems += 50;
                         appState.saveUser();
@@ -340,7 +340,7 @@
                         <div style="font-size:11px; font-weight:800; color:#1cb0f6; margin-top:4px;">{i18n.t('market.freeze_owned', { count: appState.user.streakFreezes || 0 })}</div>
                     </div>
                 </div>
-                <button class="btn-duo" style="background: #ff9600; color: #fff; border-color: #cc7800; font-size: 13px;" onclick={() => {
+                <button class="btn-duo" style="background: #ff9600; color: #fff; --btn-edge: #cc7800; font-size: 13px;" onclick={() => {
                     // Harga meningkat (fee 5, 10)
                     const cost = (appState.user.streakFreezes || 0) > 0 ? 10 : 5;
                     if (appState.user.gems >= cost) {

@@ -1541,7 +1541,7 @@
                     {:else if (currentStepConfig.type === 'setor_full' || currentStepConfig.type === 'recall_level1' || currentStepConfig.type === 'recall_level2') && recordState === 'recorded'}
                         {#if !isChecked}
                             <div style="display: flex; gap: 12px; width: 100%;">
-                                <button class="btn-duo" style="flex: 1; background: #fee2e2; border-color: #fca5a5; color: #b91c1c; border-bottom-width: 4px; padding: 12px 8px; font-size: 13px; text-transform: uppercase;" onclick={() => { recordState = 'idle'; isPlayingRecorded = false; if (audio) audio.pause(); isPlaying = false; }}>
+                                <button class="btn-duo" style="flex: 1; background: #fee2e2; --btn-edge: #fca5a5; color: #b91c1c; padding: 12px 8px; font-size: 13px; text-transform: uppercase;" onclick={() => { recordState = 'idle'; isPlayingRecorded = false; if (audio) audio.pause(); isPlaying = false; }}>
                                     {i18n.t('lesson.btn_re_record')}
                                 </button>
                                 <button class="btn-duo btn-green" style="flex: 1; padding: 12px 8px; font-size: 13px; text-transform: uppercase;" onclick={() => { isCorrect = true; checkAnswer(); }}>
