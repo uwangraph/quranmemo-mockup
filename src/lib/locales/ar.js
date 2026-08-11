@@ -897,4 +897,5 @@ export default {
     ,"placement.cat_rbq_short": "‏RBQ"
     ,"placement.cat_rtq_short": "‏RTQ"
     ,"placement.cat_tahfidz_short": "تحفيظ"
+    ,"profile.booking_past": "انقضى"
 };

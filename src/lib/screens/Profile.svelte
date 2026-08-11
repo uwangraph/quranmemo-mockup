@@ -7,21 +7,44 @@
 
     // ── Scheduled Booking: hitung jam tersisa ──
     const booking = $derived(user.scheduledBooking);
-    const hoursLeft = $derived(() => {
+    // Status jadwal punya tiga keadaan, bukan dua. Sebelumnya sisa waktu dipagari
+    // di angka nol, sehingga jadwal yang sudah lewat berminggu-minggu tampil dengan
+    // lencana "Sekarang!" seolah sesinya sedang berlangsung.
+    const bookingState = $derived.by(() => {
         if (!booking?.time) return null;
-        const diff = new Date(booking.time) - new Date();
-        if (diff <= 0) return 0;
-        return Math.floor(diff / 3600000);
+        const diffMs = Date.parse(booking.time) - Date.now();
+        const hours = Math.floor(diffMs / 3600000);
+        if (diffMs < -3600000) return { kind: 'past' };            // lewat lebih dari sejam
+        if (diffMs <= 3600000) return { kind: 'now' };             // dalam rentang satu jam
+        if (hours < 24) return { kind: 'soon', hours };
+        return { kind: 'later', days: Math.round(hours / 24) };
     });
 
+    const bookingWhen = $derived(
+        booking?.time
+            ? new Date(booking.time).toLocaleString('id-ID',
+                { weekday: 'long', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })
+            : ''
+    );
+
+    // ── Levelling: dibaca dari progres sebenarnya ──
     // ── Levelling: data statis untuk mockup ──
-    const levelInfo = $derived({
-        juz: 30,
-        surah: 'Ad-Dhuha',
-        surahAr: 'الضحى',
-        ayat: 11,
-        ayatSelesai: 3,
-        progress: (3 / 11) * 100
+    // Angka di kartu ini dulu ditulis mati (Ad-Dhuha, 3 dari 11 ayat) sehingga profil
+    // melaporkan kemajuan yang tidak pernah terjadi. Kini dibaca dari surah yang
+    // sedang dikerjakan beserta progres tersimpannya.
+    const activeSurah = $derived(appState.activeSurah);
+    const levelInfo = $derived.by(() => {
+        if (!activeSurah) return null;
+        const done = appState.surahProgress(activeSurah.id);
+        const total = activeSurah.verses.length;
+        return {
+            juz: activeSurah.juz,
+            surah: activeSurah.name,
+            surahAr: activeSurah.nameAr,
+            ayat: total,
+            ayatSelesai: done,
+            progress: total ? (done / total) * 100 : 0
+        };
     });
 
     // ── Streak: visualisasi 7 hari ──
@@ -128,12 +151,16 @@
                         </div>
                         <div class="booking-time-row">
                             <i class="ti ti-clock"></i>
-                            <span>
-                                {new Date(booking.time).toLocaleDateString('id-ID', { weekday:'long', day:'numeric', month:'short' })}
-                            </span>
-                            <span class="booking-badge">
-                                {hoursLeft() !== null ? (hoursLeft() > 0 ? i18n.t('profile.hours_left', {hours: hoursLeft()}) : i18n.t('profile.now')) : ''}
-                            </span>
+                            <span>{bookingWhen}</span>
+                            {#if bookingState?.kind === 'now'}
+                                <span class="booking-badge">{i18n.t('profile.now')}</span>
+                            {:else if bookingState?.kind === 'soon'}
+                                <span class="booking-badge">{i18n.t('profile.hours_left', { hours: bookingState.hours })}</span>
+                            {:else if bookingState?.kind === 'later'}
+                                <span class="booking-badge muted">{i18n.t('profile.days_left', { days: bookingState.days })}</span>
+                            {:else if bookingState?.kind === 'past'}
+                                <span class="booking-badge past">{i18n.t('profile.booking_past')}</span>
+                            {/if}
                         </div>
                     </div>
                     <i class="ti ti-chevron-right booking-arrow"></i>
@@ -195,6 +222,7 @@
         ══════════════════════════════════ -->
         <div class="section-label">📖 {i18n.t('profile.memorization_level')}</div>
         <div class="section-pad">
+            {#if levelInfo}
             <div class="level-card">
                 <div class="level-top">
                     <div class="level-badge-pill">Juz {levelInfo.juz}</div>
@@ -234,6 +262,13 @@
                     <div class="progress-footer">{i18n.t('profile.verses_complete', {done: levelInfo.ayatSelesai, total: levelInfo.ayat})}</div>
                 </div>
             </div>
+            {:else}
+                <!-- Tidak ada surah aktif: seluruh konten yang tersedia sudah selesai. -->
+                <div class="level-empty">
+                    <span style="font-size:30px;">🎉</span>
+                    <span>{i18n.t('learn.all_available_done')}</span>
+                </div>
+            {/if}
         </div>
 
         <!-- ══════════════════════════════════
@@ -426,11 +461,18 @@
         box-shadow: 0 2px 8px rgba(0,0,0,0.04);
     }
     .hero-stat {
-        flex: 1; display: flex; flex-direction: column; align-items: center;
-        padding: 10px 4px; gap: 2px;
+        /* min-width: 0 supaya kolom boleh menyusut; tanpa itu label terpanjang
+           ("Sertifikat") menentukan lebar kolom dan mendorong isinya keluar kartu. */
+        flex: 1; min-width: 0;
+        display: flex; flex-direction: column; align-items: center;
+        padding: 10px 2px; gap: 2px;
     }
-    .hs-val { font-size: 13px; font-weight: 900; color: #1e293b; }
-    .hs-label { font-size: 9px; font-weight: 800; color: #94a3b8; text-transform: uppercase; }
+    .hs-val { font-size: 13px; font-weight: 900; color: #1e293b; white-space: nowrap; }
+    .hs-label {
+        font-size: 8px; font-weight: 800; color: #94a3b8; text-transform: uppercase;
+        letter-spacing: 0.2px; text-align: center; line-height: 1.2;
+        max-width: 100%; overflow-wrap: anywhere;
+    }
     .hs-divider { width: 1px; height: 36px; background: #e2e8f0; }
 
     /* ── BOOKING ── */
@@ -459,6 +501,8 @@
         font-size: 11px; font-weight: 700; color: #78716c;
         flex-wrap: wrap;
     }
+    .booking-badge.muted { background: #fed7aa; color: #9a3412; }
+    .booking-badge.past { background: #e2e8f0; color: #64748b; }
     .booking-badge {
         background: #ff6200; color: #fff; font-size: 10px; font-weight: 900;
         padding: 2px 8px; border-radius: 6px;
@@ -570,6 +614,13 @@
         font-size: 10px; font-weight: 700; color: #94a3b8; line-height: 1.5;
     }
     .grace-note i { font-size: 13px; flex-shrink: 0; }
+
+    .level-empty {
+        display: flex; flex-direction: column; align-items: center; gap: 8px;
+        padding: 24px; background: #f0fdf4; border: 2px solid #bbf7d0;
+        border-radius: 18px; font-size: 13px; font-weight: 800; color: #065f46;
+        text-align: center;
+    }
 
     /* ── PLACEMENT ── */
     .placement-card { border: 2px solid; border-bottom-width: 4px; border-radius: 18px; padding: 16px; }

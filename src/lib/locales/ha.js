@@ -894,4 +894,5 @@ export default {
     ,"placement.cat_rbq_short": "RBQ"
     ,"placement.cat_rtq_short": "RTQ"
     ,"placement.cat_tahfidz_short": "Tahfiz"
+    ,"profile.booking_past": "Ya wuce"
 };

@@ -121,6 +121,15 @@ const STREAK_MILESTONES = [
     { days: 365, badgeId: 'b6', freezes: 0 }
 ];
 
+// Jadwal setoran contoh selalu dihitung relatif terhadap hari ini: dua hari lagi
+// pukul 15.00. Tanggal mati di data contoh akan berubah menjadi jadwal yang sudah
+// lewat begitu waktu berjalan.
+function seedBooking() {
+    const d = new Date(Date.now() + 2 * DAY_MS);
+    d.setHours(15, 0, 0, 0);
+    return { musyrifName: 'Ust. Ahmad Zaki', time: d.toISOString(), surah: 'Ad-Dhuha', juz: 30 };
+}
+
 // Dua misi harian dari MISSION.md, tetapi jumlah XP-nya mengikuti XP.md:
 // satu paket misi harian bernilai 35 XP, dibagi 15 (log in) + 20 (hafal 1 ayat).
 export function makeDailyQuests() {
@@ -221,12 +230,7 @@ export function createAppState() {
         showLatin: true,
         loginStreak: 1,
         lastLoginDate: null,
-        scheduledBooking: {
-            musyrifName: 'Ust. Ahmad Zaki',
-            time: '2026-05-22T15:00:00', // ISO string waktu setoran
-            surah: 'Ad-Dhuha',
-            juz: 30
-        },
+        scheduledBooking: seedBooking(),
         badges: [
             { id: 'b1', icon: '🔥', name: 'Langkah Pertama', desc: 'Menyelesaikan 3 hari streak berturut-turut', earned: false },
             { id: 'b2', icon: '📅', name: 'Satu Pekan Istiqomah', desc: 'Menyelesaikan 7 hari streak berturut-turut', earned: false },
@@ -311,7 +315,13 @@ export function createAppState() {
         pos.completedTargets = [];
         delete pos.targetIndex;
     });
-    if (user.scheduledBooking === undefined) user.scheduledBooking = { musyrifName: 'Ust. Ahmad Zaki', time: '2026-05-22T15:00:00', surah: 'Ad-Dhuha', juz: 30 };
+    if (user.scheduledBooking === undefined) user.scheduledBooking = seedBooking();
+    // Jadwal contoh yang sudah lewat dimajukan kembali. Data mockup dengan tanggal
+    // mati pasti basi, dan jadwal basi tampil sebagai sesi yang seolah berlangsung
+    // sekarang di layar profil.
+    if (user.scheduledBooking && Date.parse(user.scheduledBooking.time) < Date.now()) {
+        user.scheduledBooking = { ...user.scheduledBooking, ...seedBooking() };
+    }
     if (user.badges === undefined) user.badges = [
         { id: 'b1', icon: '🔥', name: 'Langkah Pertama', desc: 'Menyelesaikan 3 hari streak berturut-turut', earned: false },
         { id: 'b2', icon: '📅', name: 'Satu Pekan Istiqomah', desc: 'Menyelesaikan 7 hari streak berturut-turut', earned: false },
