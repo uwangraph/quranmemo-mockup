@@ -16,7 +16,7 @@
     // Urutan langkah mengikuti "Alur Keseluruhan" di ONBOARDING.md. Langkah 'record'
     // dan 'pending' dilewati kalau user menjawab belum bisa membaca — meminta rekaman
     // bacaan dari orang yang belum bisa membaca tidak masuk akal.
-    const FLOW = ['intro', 'gate', 'record', 'pending', 'result', 'hafalan', 'surahs', 'recommendation', 'path', 'reminder'];
+    const FLOW = ['intro', 'gate', 'record', 'pending', 'result', 'hafalan', 'surahs', 'recommendation', 'reminder'];
 
     let step = $state('intro');
     // Riwayat langkah yang benar-benar dilalui — lebih jujur daripada menghitung
@@ -150,13 +150,9 @@
         goStep('reminder');
     }
 
-    // ── Jalur: Self-paced vs Roadmap Levelling ─────────────────────
+    // Jalur belajar ditetapkan oleh sistem setelah rekomendasi placement.
+    // User tidak perlu memilih mode roadmap/self-paced di onboarding.
     let pathMode = $state('roadmap');
-
-    function answerPath() {
-        appState.setPathMode(pathMode, pathMode === 'self' ? (selfPacedSurah || null) : null);
-        goStep('reminder');
-    }
 
     // ── Preferensi pengingat (STREAK.md — Onboarding Key Question) ─
     let dailyTarget = $state(1);
@@ -373,40 +369,7 @@
                 />
             {/if}
 
-            <div class="field path-choice-inline">
-                <span class="field-label">Cara belajar</span>
-                <div class="opt-list">
-                    <button class="option-card tall" class:selected={pathMode === 'roadmap'} onclick={() => (pathMode = 'roadmap')}>
-                        <span class="opt-icon"><i class="ti ti-map"></i></span><span><strong>{i18n.t('placement.path_roadmap')}</strong><small>{i18n.t('placement.path_roadmap_desc')}</small></span>
-                    </button>
-                    <button class="option-card tall" class:selected={pathMode === 'self'} onclick={() => (pathMode = 'self')}>
-                        <span class="opt-icon"><i class="ti ti-compass"></i></span><span><strong>{i18n.t('placement.path_self')}</strong><small>Pilih surah sendiri dan belajar sesuai ritmemu.</small></span>
-                    </button>
-                </div>
-            </div>
-
-        <!-- ── 9. Pilih jalur ────────────────────────────────────── -->
-        {:else if step === 'path'}
-            <h1 class="q-title">{i18n.t('placement.path_q')}</h1>
-            <p class="q-sub">{i18n.t('placement.path_desc')}</p>
-            <div class="opt-list">
-                <button class="option-card tall" class:selected={pathMode === 'roadmap'} onclick={() => (pathMode = 'roadmap')}>
-                    <span class="opt-icon"><i class="ti ti-map"></i></span>
-                    <span>
-                        <strong>{i18n.t('placement.path_roadmap')}</strong>
-                        <small>{i18n.t('placement.path_roadmap_desc')}</small>
-                    </span>
-                </button>
-                <button class="option-card tall" class:selected={pathMode === 'self'} onclick={() => (pathMode = 'self')}>
-                    <span class="opt-icon"><i class="ti ti-compass"></i></span>
-                    <span>
-                        <strong>{i18n.t('placement.path_self')}</strong>
-                        <small>{i18n.t('placement.path_self_desc')}</small>
-                    </span>
-                </button>
-            </div>
-
-        <!-- ── 10. Pengingat ─────────────────────────────────────── -->
+        <!-- ── Pengingat ────────────────────────────────────────── -->
         {:else if step === 'reminder'}
             <h1 class="q-title">{i18n.t('placement.reminder_q')}</h1>
             <p class="q-sub">{i18n.t('placement.reminder_desc')}</p>
@@ -458,8 +421,6 @@
             <button class="btn-duo" class:btn-green={ready} class:btn-disabled={!ready} disabled={!ready} onclick={answerRecommendation}>
                 {i18n.t('onboarding.next')}
             </button>
-        {:else if step === 'path'}
-            <button class="btn-duo btn-green" onclick={answerPath}>{i18n.t('onboarding.next')}</button>
         {:else}
             <button class="btn-duo btn-green" onclick={finish}>{i18n.t('placement.finish')}</button>
         {/if}
@@ -496,16 +457,16 @@
     .opt-list { display: grid; grid-template-columns: 1fr; gap: 12px; }
     .option-card {
         width: 100%; padding: 14px; border-radius: 12px;
-        border: 2px solid #e5e5e5; border-bottom: 4px solid #e5e5e5; background: #fff;
+        border: 2px solid #e5e5e5; --btn-edge: #cbd5e1; box-shadow: 0 4px 0 var(--btn-edge); background: #fff;
         font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 800; color: #3c3c3c;
         cursor: pointer; text-align: left; display: flex; align-items: center; gap: 12px;
         min-height: 56px; box-sizing: border-box;
-        transition: transform .1s ease, border-bottom-width .1s ease;
+        transition: transform .15s ease, box-shadow .15s ease;
     }
-    .option-card:hover { border-bottom-width: 3px; transform: translateY(1px); }
-    .option-card:active { border-bottom-width: 0; transform: translateY(3px); }
+    .option-card:hover { transform: translateY(2px); box-shadow: 0 2px 0 var(--btn-edge); }
+    .option-card:active { transform: translateY(4px); box-shadow: none; }
     .option-card.selected {
-        border-color: #1cb0f6; border-bottom-color: #0898dc;
+        border-color: #1cb0f6; --btn-edge: #0898dc;
         background: #ddf4ff; color: #0898dc;
     }
     .option-card.tall span:last-child { display: flex; flex-direction: column; gap: 3px; }
@@ -567,11 +528,11 @@
         padding: 9px 14px; border-radius: 99px; border: 2px solid #e5e5e5; background: #fff;
         font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 800; color: #475569;
         cursor: pointer; min-height: 40px; box-sizing: border-box;
-        border-bottom: 3px solid #cbd5e1;
-        transition: transform .1s ease, border-bottom-width .1s ease;
+        --btn-edge: #cbd5e1; box-shadow: 0 3px 0 var(--btn-edge);
+        transition: transform .15s ease, box-shadow .15s ease;
     }
-    .chip:hover { transform: translateY(1px); border-bottom-width: 2px; }
-    .chip:active { transform: translateY(3px); border-bottom-width: 0; }
+    .chip:hover { transform: translateY(1px); box-shadow: 0 1px 0 var(--btn-edge); }
+    .chip:active { transform: translateY(3px); box-shadow: none; }
     .chip.selected { background: #ddf4ff; border-color: #1cb0f6; color: #0898dc; }
 
     .rec-card {
