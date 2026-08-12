@@ -190,6 +190,8 @@ export function createAppState() {
         progress: {
             surahs: {},         // id surah -> jumlah ayat yang sudah selesai
             tadabbur: [],  // key node Tadabbur yang sudah diselesaikan
+            // Sesi hafalan yang dijeda: key "surahId:verseIndex" -> { step, totalSteps, savedAt }.
+            lessonResumes: {},
             // Posisi di struktur tangga LEVELLING.md, terpisah per level karena
             // pengguna bisa berpindah jalur tanpa kehilangan posisi jalur lamanya.
             // Beginner mulai di mini target ke-21 (Al-Insyirah), surah yang lessonnya ada.
@@ -414,6 +416,11 @@ export function createAppState() {
 
     // Run check on initialization
     if (typeof window !== 'undefined') {
+        // Data pengguna lama belum memiliki penyimpanan sesi jeda.
+        if (!user.progress.lessonResumes) {
+            user.progress.lessonResumes = {};
+            saveUser();
+        }
         checkMonthlyReset();
         checkMonthlyMissionReset();
         checkDailyReset();
@@ -703,6 +710,35 @@ export function createAppState() {
             user.progress.surahs = { ...user.progress.surahs, [id]: verseIndex + 1 };
             saveUser();
         }
+    }
+
+    function lessonResumeKey(surahId, verseIndex) {
+        return `${surahId}:${verseIndex}`;
+    }
+
+    function getLessonResume(surahId, verseIndex) {
+        return user.progress.lessonResumes?.[lessonResumeKey(surahId, verseIndex)] ?? null;
+    }
+
+    function saveLessonResume(surahId, verseIndex, resume) {
+        if (!surahId || !Number.isInteger(verseIndex) || !Number.isInteger(resume?.step)) return;
+        user.progress.lessonResumes = {
+            ...(user.progress.lessonResumes ?? {}),
+            [lessonResumeKey(surahId, verseIndex)]: {
+                step: resume.step,
+                totalSteps: Math.max(1, resume.totalSteps ?? 1),
+                savedAt: Date.now()
+            }
+        };
+        saveUser();
+    }
+
+    function clearLessonResume(surahId, verseIndex) {
+        const key = lessonResumeKey(surahId, verseIndex);
+        if (!user.progress.lessonResumes?.[key]) return;
+        const { [key]: _removed, ...remaining } = user.progress.lessonResumes;
+        user.progress.lessonResumes = remaining;
+        saveUser();
     }
 
     // Satu-satunya pintu penambahan XP. Selain menambah total sepanjang masa, XP
@@ -1037,6 +1073,9 @@ export function createAppState() {
         get activeSurah() { return activeSurah(); },
         surahProgress,
         advanceSurahProgress,
+        getLessonResume,
+        saveLessonResume,
+        clearLessonResume,
         addXp,
         xpForPeriod,
         updatePlacement,

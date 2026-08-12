@@ -70,6 +70,13 @@
     const surah = $derived(selectedSelfSurah ?? surahByName(targetName));
     const surahDone = $derived(surah ? appState.surahProgress(surah.id) : 0);
 
+    function lessonResumeProgress(verseIndex) {
+        if (!surah) return 0;
+        const saved = appState.getLessonResume(surah.id, verseIndex);
+        if (!Number.isInteger(saved?.step)) return 0;
+        return Math.min(100, Math.max(0, ((saved.step + 1) / Math.max(1, saved.totalSteps ?? 1)) * 100));
+    }
+
     const innerNodes = $derived.by(() => {
         if (!surah) return [];
         const getStatus = (i) => (surahDone > i ? 'completed' : surahDone === i ? 'current' : 'locked');
@@ -127,6 +134,15 @@
     }
 
     let showLadderMap = $state(false);
+
+    // Ukuran kotak node pada path/road.
+    // RING_BOX = kotak node aktif dengan progress-ring (104×104), sinkron dengan
+    // svg viewBox dan class .ring-button-wrapper. RING_RADIUS 48 → keliling 2π×48.
+    // SHELL_BOX = ukuran node terkunci/selesai (100×100).
+    // Tombol aktif 76px menyisakan celah 6px dari sisi dalam ring secara merata.
+    const RING_BOX = 104;
+    const RING_RADIUS = 48;
+    const SHELL_BOX = 100;
 </script>
 
 <div class="path-column">
@@ -235,39 +251,78 @@
         </div>
     {/if}
 
-    <div class="path-container">
+    <div class="road">
         {#each innerNodes as node, i}
-            <div class="node-wrapper" style="margin-left: {i % 2 === 0 ? '20px' : '-20px'}">
-                <button class="node-btn {node.type} {node.status}" onclick={() => handleNodeClick(node)}>
-                    {#if node.type === 'review'}
-                        <i class="ti ti-refresh"></i>
-                    {:else if node.type === 'tadabbur'}
-                        <i class="ti ti-books"></i>
-                    {:else if node.type === 'checkpoint'}
-                        <i class="ti ti-trophy"></i>
-                    {:else}
-                        <i class="ti ti-book"></i>
-                    {/if}
-
+            {@const ringProgress = node.status === 'completed' ? 100 : node.type === 'lesson' ? lessonResumeProgress(node.verseIndex) : 0}
+            {@const circumference = 2 * Math.PI * RING_RADIUS}
+            {@const just = i % 2 === 0 ? 'center' : (i % 4 === 1 ? 'flex-end' : 'flex-start')}
+            <div class="slot" style="justify-content: {just}">
+                <div class="node-outer {node.status !== 'current' ? 'no-ptr' : ''}">
                     {#if node.status === 'current'}
-                        <div class="node-popover">{i18n.t('learn.start')}</div>
+                        <div class="relative-wrapper">
+                            <div class="tooltip-container animate-bounce">
+                                <div class="tooltip-box"><span class="tooltip-text">{i18n.t('learn.start')}</span></div>
+                                <div class="tooltip-triangle"></div>
+                            </div>
+                            <div class="ring-button-wrapper" style="width: {RING_BOX}px; height: {RING_BOX}px;">
+                                <svg class="progress-ring" fill="none" viewBox="0 0 {RING_BOX} {RING_BOX}" style="width: {RING_BOX}px; height: {RING_BOX}px;" aria-hidden="true">
+                                    <circle cx={RING_BOX / 2} cy={RING_BOX / 2} r={RING_RADIUS} stroke-width="8" stroke="#e2e8f0"></circle>
+                                    <circle class="ring-value" cx={RING_BOX / 2} cy={RING_BOX / 2} r={RING_RADIUS} stroke-width="8"
+                                        stroke-linecap="round" stroke="#00978a"
+                                        stroke-dasharray={circumference} transform="rotate(-90 {RING_BOX / 2} {RING_BOX / 2})"
+                                        stroke-dashoffset={circumference - (circumference * ringProgress / 100)}></circle>
+                                </svg>
+                                <button type="button" class="three-d-button {node.type}" onclick={() => handleNodeClick(node)} aria-label={node.title}>
+                                    <span class="three-d-face">
+                                        {#if node.type === 'tadabbur'}
+                                            <i class="ti ti-books"></i>
+                                        {:else if node.type === 'checkpoint'}
+                                            <i class="ti ti-trophy"></i>
+                                        {:else}
+                                            <i class="ti ti-book"></i>
+                                        {/if}
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
+                    {:else}
+                        <div class="shell" style="width: {SHELL_BOX}px; height: {SHELL_BOX}px;">
+                            <button class="circle {node.status}" onclick={() => handleNodeClick(node)}
+                                disabled={node.status === 'locked' && node.type !== 'checkpoint'}
+                                aria-label={node.title}>
+                                {#if node.type === 'tadabbur'}
+                                    <i class="ti ti-books"></i>
+                                {:else if node.type === 'checkpoint'}
+                                    <i class="ti ti-trophy"></i>
+                                {:else}
+                                    <i class="ti ti-book"></i>
+                                {/if}
+                            </button>
+                        </div>
                     {/if}
-                </button>
-                <div class="node-title">{node.title}</div>
+                    <div class="lbl {node.status === 'current' ? '' : 'lbl-muted'}">
+                        <div class="lbl-main">{node.title}</div>
+                        {#if node.type === 'checkpoint'}
+                            <div class="lbl-sub">{i18n.t('learn.submit_full_surah')}</div>
+                        {/if}
+                    </div>
+                </div>
             </div>
-
-            {#if i < innerNodes.length - 1}
-                <div class="connector {innerNodes[i+1].status}"></div>
-            {/if}
         {/each}
 
         <!-- Gerbang penutup tangga -->
-        <div class="connector {gateStatus}"></div>
-        <div class="node-wrapper">
-            <div class="node-btn gate {gateStatus}">
-                <i class="ti {gateStatus === 'completed' ? 'ti-circle-check' : ladder.gate === 'badge' ? 'ti-award' : 'ti-flag-check'}"></i>
+        <div class="slot" style="justify-content: center;">
+            <div class="node-outer no-ptr">
+                <div class="shell game-shell" style="width: {SHELL_BOX}px; height: {SHELL_BOX}px;">
+                    <button class="circle gate {gateStatus}" disabled aria-label={i18n.t(`learn.gate_${ladder.gate}`)}>
+                        <i class="ti {gateStatus === 'completed' ? 'ti-circle-check' : ladder.gate === 'badge' ? 'ti-award' : 'ti-flag-check'}"></i>
+                    </button>
+                </div>
+                <div class="lbl lbl-muted">
+                    <div class="lbl-main">{i18n.t(`learn.gate_${ladder.gate}`)}</div>
+                    <div class="lbl-sub">{ladder.name}</div>
+                </div>
             </div>
-            <div class="node-title">{i18n.t(`learn.gate_${ladder.gate}`)} — {ladder.name}</div>
         </div>
     </div>
 
@@ -428,53 +483,111 @@
     .current-target-label strong { color: #1e293b; font-weight: 900; }
     :global(.desktop-browser) .current-target-label, :global(.tablet) .current-target-label { padding: 10px 0 0; }
 
-    .path-container { display: flex; flex-direction: column; align-items: center; padding-top: 30px; }
-    .node-wrapper { display: flex; flex-direction: column; align-items: center; position: relative; z-index: 2; }
-    .node-btn {
-        width: 60px; height: 56px; border-radius: 50%; border: none; border-bottom: 4px solid #e5e5e5;
-        background: #e5e5e5; color: #afafaf; font-size: 24px; display: flex; align-items: center; justify-content: center;
-        cursor: pointer; position: relative; transition: border-bottom-width 0.15s ease;
+    /* ===== Jalan (road) node sesuai desain ring-button ===== */
+    .road {
+        display: flex; flex-direction: column; gap: 6px;
+        padding: 20px 28px 0;
     }
-    .node-btn:not(.locked):hover { transform: none; border-bottom-width: 2px; }
-    .node-btn:not(.locked):active { transform: none; border-bottom-width: 0; }
+    .slot { display: flex; min-width: 0; }
+    :global(.desktop-browser) .road, :global(.tablet) .road { padding-left: 28px; padding-right: 28px; }
+    .node-outer { display: flex; flex-direction: column; align-items: center; position: relative; }
+    .no-ptr { pointer-events: none; }
 
-    .node-btn.completed { background: #00978a; border-bottom-color: #007a70; color: #fff; }
-    .node-btn.current { background: #00978a; border-bottom-color: #007a70; color: #fff; animation: pulse 2s infinite; }
-    .node-btn.locked { background: #e5e5e5; border-bottom-color: #afafaf; color: #afafaf; cursor: not-allowed; }
-
-    /* Terbuka tapi belum dikerjakan: berongga, untuk membedakannya dari node
-       terisi penuh yang berarti sudah selesai. */
-    .node-btn.available {
-        background: #fff;
-        border: 3px solid var(--duo-green);
-        border-bottom: 6px solid var(--duo-green-dark);
-        color: var(--duo-green-dark);
+    /* Node aktif: ring progress presisi membungkus tombol 3D */
+    .relative-wrapper { position: relative; }
+    .tooltip-container { display: flex; flex-direction: column; align-items: center; margin-bottom: 8px; }
+    .tooltip-box {
+        border: 2px solid #e2e8f0; background: #fff; border-radius: 8px;
+        padding: 4px 12px;
     }
-
-    .node-btn.tadabbur.completed { background: #ce82ff; border-bottom-color: #a52adb; }
-    .node-btn.tadabbur.available { border-color: #ce82ff; border-bottom-color: #a52adb; color: #a52adb; }
-    .node-btn.checkpoint.completed { background: #ffc800; border-bottom-color: #e5a000; }
-    .node-btn.gate { background: #f1f5f9; border-bottom-color: #cbd5e1; color: #94a3b8; cursor: default; }
-    .node-btn.gate.available { background: #e8f8f6; border-bottom-color: #5ccfc2; color: #008f83; }
-    .node-btn.gate.completed { background: #ffc800; border-bottom-color: #e5a000; color: #fff; }
-
-    @keyframes pulse {
-        0% { box-shadow: 0 0 0 0 rgba(0, 151, 138, 0.4); }
-        70% { box-shadow: 0 0 0 15px rgba(0, 151, 138, 0); }
-        100% { box-shadow: 0 0 0 0 rgba(0, 151, 138, 0); }
+    .tooltip-text { font-size: 10px; font-weight: 900; color: #0d9488; letter-spacing: 0.5px; }
+    .tooltip-triangle {
+        width: 0; height: 0; margin-top: -2px;
+        border-left: 6px solid transparent; border-right: 6px solid transparent;
+        border-top: 6px solid #e2e8f0;
+    }
+    .animate-bounce { animation: tooltipBounce 1.6s infinite; }
+    @keyframes tooltipBounce {
+        0%, 100% { transform: translateY(0); }
+        40% { transform: translateY(-4px); }
     }
 
-    .node-popover {
-        position: absolute; top: -40px; background: #fff; border: 2px solid #e5e5e5; padding: 4px 12px;
-        border-radius: 8px; font-size: 11px; font-weight: 900; color: var(--duo-green); box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    .ring-button-wrapper {
+        position: relative;
+        display: grid;
+        place-items: center;
+        flex: 0 0 auto;
+        border-radius: 50%;
     }
-    .node-popover::after {
-        content: ''; position: absolute; bottom: -6px; left: 50%; transform: translateX(-50%);
-        border-left: 6px solid transparent; border-right: 6px solid transparent; border-top: 6px solid #e5e5e5;
+    .ring-button-wrapper .progress-ring {
+        grid-area: 1 / 1;
+        display: block;
+        overflow: visible;
+        pointer-events: none;
+        z-index: 0;
     }
-    .node-title { font-size: 13px; font-weight: 800; color: #3c3c3c; margin-top: 8px; text-align: center; }
-    .connector { width: 8px; height: 40px; background: #e5e5e5; margin: 4px 0; z-index: 1; }
-    .connector.completed, .connector.current, .connector.available { background: #d7ffb2; }
+    .progress-ring circle { transition: stroke-dashoffset .25s ease; }
+    .ring-value { stroke: #00978a; stroke-linecap: round; }
+    .three-d-button {
+        /* Tombol dan kedalamannya satu lingkaran utuh. Shadow dibuat inset,
+           bukan ditambahkan di luar diameter tombol. */
+        --node-face: #00978a;
+        --node-edge: #007a70;
+        grid-area: 1 / 1;
+        position: relative;
+        z-index: 1;
+        width: 76px; height: 76px;
+        box-sizing: border-box;
+        margin: 0; padding: 0;
+        overflow: hidden;
+        border-radius: 50%; border: 0; cursor: pointer;
+        appearance: none; -webkit-appearance: none;
+        background: var(--node-face); color: #fff; font-size: 34px;
+        box-shadow: inset 0 -6px 0 var(--node-edge);
+        transition: box-shadow .12s ease;
+    }
+    .three-d-face {
+        position: relative;
+        z-index: 1;
+        width: 100%; height: 100%;
+        display: flex; align-items: center; justify-content: center;
+        transition: transform .12s ease;
+        transform: translateY(0);
+    }
+    .three-d-button:hover { transform: none; box-shadow: inset 0 -3px 0 var(--node-edge); }
+    .three-d-button:hover .three-d-face { transform: translateY(1px); }
+    .three-d-button:active { transform: none; box-shadow: inset 0 0 0 var(--node-edge); }
+    .three-d-button:active .three-d-face { transform: translateY(3px); }
+    .three-d-button.tadabbur { --node-face: #ce82ff; --node-edge: #a52adb; }
+    .three-d-button.checkpoint { --node-face: #ffc800; --node-edge: #e5a000; }
+
+    /* Node lain: cangkang bulat */
+    .shell { display: flex; align-items: center; justify-content: center; }
+    .circle {
+        width: 82px; height: 82px; border-radius: 50%; border: none; cursor: pointer;
+        background: #e5e5e5; color: #afafaf; font-size: 34px;
+        display: flex; align-items: center; justify-content: center;
+        box-shadow: 0 6px 0 #cbd5e1;
+        transition: transform .12s ease, box-shadow .12s ease;
+    }
+    .circle:not(:disabled):hover { transform: translateY(2px); box-shadow: 0 4px 0 #cbd5e1; }
+    .circle:not(:disabled):active { transform: translateY(6px); box-shadow: none; }
+    .circle:disabled { cursor: default; }
+    .circle.completed { background: #00978a; box-shadow: 0 6px 0 #007a70; color: #fff; }
+    .circle.locked { background: #e5e5e5; box-shadow: 0 6px 0 #cbd5e1; color: #afafaf; }
+    .circle.available {
+        background: #fff; box-shadow: 0 6px 0 var(--duo-green-dark);
+        border: 3px solid var(--duo-green); color: var(--duo-green-dark);
+    }
+    .circle.gate { background: #f1f5f9; box-shadow: 0 6px 0 #cbd5e1; color: #94a3b8; }
+    .circle.gate.available { background: #e8f8f6; box-shadow: 0 6px 0 #5ccfc2; color: #008f83; }
+    .circle.gate.completed { background: #ffc800; box-shadow: 0 6px 0 #e5a000; color: #fff; }
+
+    /* Label node */
+    .lbl { margin-top: 10px; text-align: center; }
+    .lbl-main { font-size: 13px; font-weight: 800; color: #3c3c3c; }
+    .lbl-sub { font-size: 11px; font-weight: 700; color: #94a3b8; margin-top: 2px; }
+    .lbl-muted .lbl-main { color: #9ca3af; }
 
     .all-done {
         margin: 20px 16px 0; padding: 26px 18px; text-align: center;
