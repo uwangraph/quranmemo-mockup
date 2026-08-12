@@ -905,4 +905,6 @@ export default {
     ,"musyrif.review_category_label": "Ƙayyade Rukuni"
     ,"musyrif.review_submit": "AJIYE HUKUNCI"
     ,"placement.rec_note_label": "Bayani daga musyrif"
+    ,"placement.own_surah_label": "Zaɓi sura"
+    ,"placement.own_surah_placeholder": "Zaɓi surar da kake son haddacewa"
 };

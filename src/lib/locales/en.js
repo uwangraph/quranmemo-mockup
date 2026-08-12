@@ -929,4 +929,6 @@ export default {
     ,"musyrif.review_category_label": "Set Category"
     ,"musyrif.review_submit": "SAVE DECISION"
     ,"placement.rec_note_label": "Note from musyrif"
+    ,"placement.own_surah_label": "Choose a surah"
+    ,"placement.own_surah_placeholder": "Choose the surah you want to memorize"
 };

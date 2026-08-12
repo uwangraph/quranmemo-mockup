@@ -908,4 +908,6 @@ export default {
     ,"musyrif.review_category_label": "حدد الفئة"
     ,"musyrif.review_submit": "حفظ القرار"
     ,"placement.rec_note_label": "ملاحظة من المشرف"
+    ,"placement.own_surah_label": "اختر سورة"
+    ,"placement.own_surah_placeholder": "اختر السورة التي تريد حفظها"
 };

@@ -907,4 +907,6 @@ export default {
     ,"musyrif.review_category_label": "Définir la catégorie"
     ,"musyrif.review_submit": "ENREGISTRER LA DÉCISION"
     ,"placement.rec_note_label": "Note du moushrif"
+    ,"placement.own_surah_label": "Choisir une sourate"
+    ,"placement.own_surah_placeholder": "Choisis la sourate que tu veux mémoriser"
 };

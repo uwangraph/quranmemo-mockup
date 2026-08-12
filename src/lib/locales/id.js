@@ -929,4 +929,6 @@ export default {
     ,"musyrif.review_category_label": "Tentukan Kategori"
     ,"musyrif.review_submit": "SIMPAN KEPUTUSAN"
     ,"placement.rec_note_label": "Catatan dari musyrif"
+    ,"placement.own_surah_label": "Pilih surah"
+    ,"placement.own_surah_placeholder": "Pilih surah yang ingin dihafal"
 };
