@@ -49,41 +49,41 @@
 			name: 'User',
 			color: '#00978A',
 			accent: '#DBF0EE',
-			icon: '👤',
-			screens: [
-				{ id: 'onboarding', icon: '✨' },
-				{ id: 'learn', icon: '🏠' },
-				{ id: 'murojaah', icon: '🤝' },
-				{ id: 'quests', icon: '🎁' },
-				{ id: 'guide', icon: '📋' },
-				{ id: 'feedback', icon: '⭐' },
-				{ id: 'tadabbur', icon: '📚' },
-				{ id: 'league', icon: '🏆' },
-				{ id: 'lesson', icon: '📖' },
-				{ id: 'profile', icon: '👤' },
-				{ id: 'language', icon: '🌍' }
+			icon: 'ti ti-user-circle',
+				screens: [
+					{ id: 'onboarding', icon: 'ti ti-rocket' },
+					{ id: 'learn', icon: 'ti ti-book-2' },
+					{ id: 'murojaah', icon: 'ti ti-refresh' },
+					{ id: 'quests', icon: 'ti ti-gift' },
+					{ id: 'guide', icon: 'ti ti-notebook' },
+					{ id: 'feedback', icon: 'ti ti-star' },
+					{ id: 'tadabbur', icon: 'ti ti-books' },
+					{ id: 'league', icon: 'ti ti-trophy' },
+					{ id: 'lesson', icon: 'ti ti-book' },
+					{ id: 'profile', icon: 'ti ti-user-circle' },
+					{ id: 'language', icon: 'ti ti-globe' }
 			]
 		},
 		{
 			name: 'Musyrif',
 			color: '#ff9600',
 			accent: '#fff4e0',
-			icon: '👳',
-			screens: [
-				{ id: 'musyrif', icon: '👳' },
-				{ id: 'livemarking', icon: '🔴' },
-				{ id: 'musyrif-earnings', icon: '💰' }
+			icon: 'ti ti-chalkboard-teacher',
+				screens: [
+					{ id: 'musyrif', icon: 'ti ti-chalkboard-teacher' },
+					{ id: 'livemarking', icon: 'ti ti-video' },
+					{ id: 'musyrif-earnings', icon: 'ti ti-wallet' }
 			]
 		},
 		{
 			name: 'Admin',
 			color: '#7c5cfc',
 			accent: '#ede8ff',
-			icon: '🛡️',
-			screens: [
-				{ id: 'admin-dashboard', icon: '📊' },
-				{ id: 'admin-users', icon: '👥' },
-				{ id: 'admin-musyrif', icon: '👨‍🏫' }
+			icon: 'ti ti-shield-check',
+				screens: [
+					{ id: 'admin-dashboard', icon: 'ti ti-chart-bar' },
+					{ id: 'admin-users', icon: 'ti ti-users' },
+					{ id: 'admin-musyrif', icon: 'ti ti-user-cog' }
 			]
 		}
 	];
@@ -95,24 +95,24 @@
 	const simulatedNavItems = $derived(
 		currentCategory.name === 'User'
 			? [
-					{ id: 'learn', icon: 'ti-home', label: 'nav.learn' },
+					{ id: 'learn', icon: 'ti-book-2', label: 'nav.learn' },
 					{ id: 'murojaah', icon: 'ti-refresh', label: 'nav.murojaah' },
-					{ id: 'tadabbur', icon: 'ti-book', label: 'nav.tadabbur' },
+					{ id: 'tadabbur', icon: 'ti-books', label: 'nav.tadabbur' },
 					{ id: 'quests', icon: 'ti-gift', label: 'Quests' },
 					{ id: 'guide', icon: 'ti-info-circle', label: 'nav.guide' },
 					{ id: 'league', icon: 'ti-trophy', label: 'nav.league' },
-					{ id: 'profile', icon: 'ti-user', label: 'nav.profile' }
+					{ id: 'profile', icon: 'ti-user-circle', label: 'nav.profile' }
 				]
 			: currentCategory.name === 'Musyrif'
 			? [
-					{ id: 'musyrif', icon: 'ti-category-2', label: 'screen.musyrif' },
+					{ id: 'musyrif', icon: 'ti-chalkboard-teacher', label: 'screen.musyrif' },
 					{ id: 'livemarking', icon: 'ti-video', label: 'screen.livemarking' },
 					{ id: 'musyrif-earnings', icon: 'ti-wallet', label: 'screen.musyrif-earnings' }
 				]
 			: [
 					{ id: 'admin-dashboard', icon: 'ti-chart-bar', label: 'screen.admin-dashboard' },
 					{ id: 'admin-users', icon: 'ti-users', label: 'screen.admin-users' },
-					{ id: 'admin-musyrif', icon: 'ti-school', label: 'screen.admin-musyrif' }
+					{ id: 'admin-musyrif', icon: 'ti-chalkboard-teacher', label: 'screen.admin-musyrif' }
 				]
 	);
 
@@ -125,35 +125,19 @@
 		isMenuOpen = false;
 	}
 
-	function getFlaticon(id) {
+	function getTablerIcon(id) {
 		const mapping = {
-			'onboarding': 'https://cdn-icons-png.flaticon.com/512/9716/9716852.png', // Rocket
-			'learn': 'https://cdn-icons-png.flaticon.com/512/2232/2232688.png', // Quran on Rehal
-			'murojaah': 'https://cdn-icons-png.flaticon.com/512/3468/3468081.png', // Handshake
-			'quests': 'https://cdn-icons-png.flaticon.com/512/4006/4006326.png', // Chest/Gift
-			'feedback': 'https://cdn-icons-png.flaticon.com/512/2107/2107957.png', // Star
-			'tadabbur': 'https://cdn-icons-png.flaticon.com/512/2947/2947998.png', // Study Book
-			'league': 'https://cdn-icons-png.flaticon.com/512/3112/3112946.png', // Gold Trophy
-			'lesson': 'https://cdn-icons-png.flaticon.com/512/3596/3596093.png', // Lesson pad
-			'guide': 'https://cdn-icons-png.flaticon.com/512/3330/3330327.png', // Guide book
-			'profile': 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png', // User Avatar
-			'language': 'https://cdn-icons-png.flaticon.com/512/3233/3233004.png', // Globe
-			'musyrif': 'https://cdn-icons-png.flaticon.com/512/3996/3996562.png', // Cleric/Ustadz
-			'livemarking': 'https://cdn-icons-png.flaticon.com/512/3221/3221803.png', // Recording
-			'musyrif-earnings': 'https://cdn-icons-png.flaticon.com/512/2953/2953423.png', // Earnings Bag
-			'admin-dashboard': 'https://cdn-icons-png.flaticon.com/512/2206/2206248.png', // Admin Shield
-			'admin-users': 'https://cdn-icons-png.flaticon.com/512/681/681494.png', // Users Shield
-			'admin-musyrif': 'https://cdn-icons-png.flaticon.com/512/4692/4692348.png' // Musyrif Shield
+			onboarding: 'ti-rocket', learn: 'ti-book', murojaah: 'ti-refresh',
+			quests: 'ti-gift', feedback: 'ti-star', tadabbur: 'ti-books', league: 'ti-trophy',
+			lesson: 'ti-book', guide: 'ti-notebook', profile: 'ti-user-circle', language: 'ti-globe',
+			musyrif: 'ti-chalkboard-teacher', livemarking: 'ti-video', 'musyrif-earnings': 'ti-wallet',
+			'admin-dashboard': 'ti-chart-bar', 'admin-users': 'ti-users', 'admin-musyrif': 'ti-user-cog'
 		};
-		return mapping[id] || 'https://cdn-icons-png.flaticon.com/512/2232/2232688.png';
+		return `ti ${mapping[id] || 'ti-book'}`;
 	}
 </script>
 
 <svelte:head>
-	<link
-		rel="stylesheet"
-		href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css"
-	/>
 </svelte:head>
 
 <svelte:window bind:innerWidth />
@@ -162,10 +146,10 @@
 	<!-- Mobile Top Bar -->
 	<div class="mobile-topbar">
 		<button class="menu-toggle" onclick={toggleMenu}>
-			<i class="ti ti-menu-2"></i>
+			<i class="ti ti-list"></i>
 		</button>
 		<div class="app-logo">
-			<span>📖</span>
+			<i class="ti ti-book-2" aria-hidden="true"></i>
 			<span>QuranMemo</span>
 		</div>
 		<div style="width: 40px"></div>
@@ -179,7 +163,7 @@
 	<!-- Sidebar / Drawer -->
 	<div class="snav" class:open={isMenuOpen} class:collapsed={!isSidebarExpanded}>
 		<div class="snav-logo">
-			<span style="font-size: 20px; flex-shrink: 0;">📖</span>
+			<i class="ti ti-book-2" style="font-size: 20px; flex-shrink: 0;" aria-hidden="true"></i>
 			{#if isSidebarExpanded}
 				<span class="logo-text">QuranMemo</span>
 			{/if}
@@ -204,7 +188,7 @@
 						style={appState.currentScreen === screen.id ? `--snb-edge: color-mix(in srgb, ${cat.color} 72%, #000); background: ${cat.color}; border-color: ${cat.color}; color: #fff;` : ''}
 						title={i18n.t('screen.' + screen.id)}
 					>
-						<img src={getFlaticon(screen.id)} alt="" style="width: 18px; height: 18px; object-fit: contain; margin-right: {isSidebarExpanded ? '10px' : '0'}; filter: {appState.currentScreen === screen.id ? 'brightness(0) invert(1)' : 'none'};" />
+						<i class="{getTablerIcon(screen.id)} snb-icon" aria-hidden="true"></i>
 						{#if isSidebarExpanded}
 							<span class="snb-text">{i18n.t('screen.' + screen.id)}</span>
 						{/if}
@@ -215,7 +199,7 @@
 
 		<!-- Sidebar Toggle Button (Desktop/Tablet) -->
 		<button class="sidebar-toggle-btn" class:collapsed={!isSidebarExpanded} onclick={() => isSidebarExpanded = !isSidebarExpanded} title="Toggle Sidebar">
-			<i class="ti ti-{isSidebarExpanded ? 'chevron-left' : 'chevron-right'}"></i>
+			<i class="ti ti-caret-{isSidebarExpanded ? 'left' : 'right'}"></i>
 		</button>
 	</div>
 
@@ -264,8 +248,8 @@
 							<div class="statusbar" dir="ltr" style="background: {currentCategory.color};">
 								<span>9:41</span>
 								<span style="display: flex; gap: 4px; align-items: center">
-									<i class="ti ti-wifi" style="font-size: 13px"></i>
-									<i class="ti ti-battery" style="font-size: 13px"></i>
+										<i class="ti ti-wifi" style="font-size: 13px"></i>
+										<i class="ti ti-battery" style="font-size: 13px"></i>
 								</span>
 							</div>
 
@@ -273,7 +257,7 @@
 
 							<!-- Role indicator at bottom of phone -->
 							<div class="role-indicator" style="background: {currentCategory.accent}; color: {currentCategory.color}; padding-bottom: 20px;">
-								{currentCategory.icon} {i18n.t('nav.' + currentCategory.name.toLowerCase()) || currentCategory.name} Mode
+				<i class={currentCategory.icon} aria-hidden="true"></i> {i18n.t('nav.' + currentCategory.name.toLowerCase()) || currentCategory.name} Mode
 							</div>
 						</div>
 				{:else if appState.mockupMode === 'tablet'}
@@ -290,13 +274,13 @@
 									<span style="font-weight: 700; color: #1cb0f6;">iPad Pro</span>
 								</div>
 								<div class="statusbar-center" style="display: flex; gap: 4px; align-items: center">
-									<i class="ti ti-lock" style="font-size: 11px; color: #10b981;"></i>
+										<i class="ti ti-lock" style="font-size: 11px; color: #10b981;"></i>
 									<span>quranmemo.app/{appState.currentScreen}</span>
 								</div>
 								<div class="statusbar-right" style="display: flex; gap: 6px; align-items: center">
 									<span>100%</span>
-									<i class="ti ti-battery-4" style="font-size: 14px"></i>
-									<i class="ti ti-wifi" style="font-size: 14px"></i>
+										<i class="ti ti-battery" style="font-size: 14px"></i>
+										<i class="ti ti-wifi" style="font-size: 14px"></i>
 								</div>
 							</div>
 
@@ -305,7 +289,7 @@
 									{#if appState.currentScreen !== 'lesson'}
 										<!-- Simulated Left Nav Rail for Tablet -->
 										<div class="mockup-left-rail" style="width: 76px; border-right: 2px solid #e5e5e5; background: #fff; display: flex; flex-direction: column; align-items: center; padding: 20px 0; gap: 24px; flex-shrink: 0;">
-											<div class="rail-logo" style="font-size: 24px; margin-bottom: 12px;">📖</div>
+											<div class="rail-logo" style="font-size: 24px; margin-bottom: 12px;"><i class="ti ti-book-2"></i></div>
 											
 											{#each simulatedNavItems as item}
 												<button 
@@ -314,7 +298,7 @@
 													onclick={() => appState.go(item.id)}
 													style="background: none; border: none; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 4px; color: {appState.currentScreen === item.id ? '#00978A' : '#afafaf'}; transition: all 0.2s; width: 100%; padding: 4px 0; -webkit-tap-highlight-color: transparent;"
 												>
-													<img src={getFlaticon(item.id)} alt="" style="width: 24px; height: 24px; object-fit: contain; filter: {appState.currentScreen === item.id ? 'none' : 'grayscale(100%) opacity(60%)'}; transition: all 0.2s;" />
+													<i class="{getTablerIcon(item.id)}" aria-hidden="true" style="font-size: 24px;"></i>
 													<span style="font-size: 9px; font-weight: 800; font-family: 'Nunito', sans-serif;">{i18n.t(item.label)}</span>
 												</button>
 											{/each}
@@ -324,7 +308,7 @@
 												onclick={() => appState.go('language')}
 												style="margin-top: auto; background: none; border: none; cursor: pointer; color: #afafaf; font-size: 20px;"
 											>
-												<i class="ti ti-settings"></i>
+											<i class="ti ti-settings"></i>
 											</button>
 										</div>
 									{/if}
@@ -338,7 +322,7 @@
 
 							<!-- Role indicator at bottom of tablet -->
 							<div class="tablet-role" style="background: {currentCategory.accent}; color: {currentCategory.color};">
-								{currentCategory.icon} {i18n.t('nav.' + currentCategory.name.toLowerCase()) || currentCategory.name} Tablet View
+				<i class={currentCategory.icon} aria-hidden="true"></i> {i18n.t('nav.' + currentCategory.name.toLowerCase()) || currentCategory.name} Tablet View
 							</div>
 					</div>
 				{:else}
@@ -356,17 +340,17 @@
 									<span class="chrome-dot green"></span>
 								</div>
 								<div class="chrome-nav">
-									<button class="chrome-nav-btn" onclick={() => appState.go('learn')} title="Back to Home"><i class="ti ti-chevron-left"></i></button>
-									<button class="chrome-nav-btn" disabled><i class="ti ti-chevron-right"></i></button>
+									<button class="chrome-nav-btn" onclick={() => appState.go('learn')} title="Back to Home"><i class="ti ti-caret-left"></i></button>
+									<button class="chrome-nav-btn" disabled><i class="ti ti-caret-right"></i></button>
 									<button class="chrome-nav-btn" onclick={() => window.location.reload()} title="Reload"><i class="ti ti-refresh"></i></button>
 								</div>
 								<div class="chrome-address">
-									<i class="ti ti-lock"></i>
+								<i class="ti ti-lock"></i>
 									<span>quranmemo.app/{appState.currentScreen}</span>
 								</div>
 								<div class="chrome-actions">
 									<span class="role-badge" style="background: {currentCategory.accent}; color: {currentCategory.color};">
-										{currentCategory.icon} {i18n.t('nav.' + currentCategory.name.toLowerCase()) || currentCategory.name} Mode
+										<i class={currentCategory.icon} aria-hidden="true"></i> {i18n.t('nav.' + currentCategory.name.toLowerCase()) || currentCategory.name} Mode
 									</span>
 								</div>
 							</div>
@@ -378,7 +362,7 @@
 										<!-- Simulated Left Sidebar for Desktop Widescreen -->
 										<div class="mockup-left-sidebar" style="width: 240px; border-right: 2px solid #e5e5e5; background: #fff; display: flex; flex-direction: column; padding: 24px 16px; gap: 24px; flex-shrink: 0;">
 											<div class="sidebar-logo" style="display: flex; align-items: center; gap: 10px; padding: 0 8px; margin-bottom: 8px;">
-												<span style="font-size: 28px;">📖</span>
+													<i class="ti ti-book-2" style="font-size: 28px;" aria-hidden="true"></i>
 												<span style="font-size: 18px; font-weight: 900; color: #3c3c3c; letter-spacing: -0.5px;">QuranMemo</span>
 											</div>
 											
@@ -389,7 +373,7 @@
 															class:active={appState.currentScreen === item.id}
 															onclick={() => appState.go(item.id)}
 														>
-														<img src={getFlaticon(item.id)} alt="" style="width: 22px; height: 22px; object-fit: contain; filter: {appState.currentScreen === item.id ? 'none' : 'grayscale(100%) opacity(60%)'}; transition: all 0.2s;" />
+														<i class="{getTablerIcon(item.id)}" aria-hidden="true" style="font-size: 22px;"></i>
 														<span style="font-size: 13px; font-weight: 800; font-family: 'Nunito', sans-serif;">{i18n.t(item.label)}</span>
 													</button>
 												{/each}
@@ -397,7 +381,7 @@
 											
 											<!-- User Profile Info at the bottom of desktop layout -->
 											<div class="sidebar-user" style="display: flex; align-items: center; gap: 12px; padding: 12px 8px; border-top: 1px solid #f0f0f0; margin-top: auto;">
-												<div style="width: 36px; height: 36px; border-radius: 50%; background: #f0f0f0; display: flex; align-items: center; justify-content: center; font-size: 18px;">👤</div>
+												<div style="width: 36px; height: 36px; border-radius: 50%; background: #f0f0f0; display: flex; align-items: center; justify-content: center; font-size: 18px;"><i class="ti ti-user"></i></div>
 												<div style="flex: 1; min-width: 0;">
 													<div style="font-size: 13px; font-weight: 800; color: #3c3c3c; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Abdullah Irfan</div>
 													<div style="font-size: 10px; font-weight: 700; color: #afafaf; text-transform: uppercase;">PRO USER</div>
@@ -406,7 +390,7 @@
 													onclick={() => appState.go('language')}
 													style="background: none; border: none; cursor: pointer; color: #afafaf; font-size: 18px;"
 												>
-													<i class="ti ti-settings"></i>
+										<i class="ti ti-settings"></i>
 												</button>
 											</div>
 										</div>
@@ -1054,14 +1038,14 @@
 	}
 
 	/* Unified Duolingo-style press feedback for interactive buttons. */
-	:global(button:not(:disabled):not(.btn-disabled):not(.btn-duo):not(.sidebar-item):not(.mc-cta):not(.snb):not(.unit-guide-btn)) {
+	:global(button:not(:disabled):not(.btn-disabled):not(.btn-duo):not(.sidebar-item):not(.mc-cta):not(.snb):not(.unit-guide-btn):not(.play-btn):not(.cat-card):not(.back-btn)) {
 		transition: transform 0.1s ease, box-shadow 0.1s ease;
 	}
-	:global(button:not(:disabled):not(.btn-disabled):not(.btn-duo):not(.sidebar-item):not(.mc-cta):not(.snb):not(.unit-guide-btn):hover) {
+	:global(button:not(:disabled):not(.btn-disabled):not(.btn-duo):not(.sidebar-item):not(.mc-cta):not(.snb):not(.unit-guide-btn):not(.play-btn):not(.cat-card):not(.back-btn):hover) {
 		transform: translateY(1px);
 		box-shadow: 0 2px 0 rgba(0, 0, 0, 0.18);
 	}
-	:global(button:not(:disabled):not(.btn-disabled):not(.btn-duo):not(.sidebar-item):not(.mc-cta):not(.snb):not(.unit-guide-btn):active) {
+	:global(button:not(:disabled):not(.btn-disabled):not(.btn-duo):not(.sidebar-item):not(.mc-cta):not(.snb):not(.unit-guide-btn):not(.play-btn):not(.cat-card):not(.back-btn):active) {
 		transform: translateY(3px);
 		box-shadow: none;
 	}

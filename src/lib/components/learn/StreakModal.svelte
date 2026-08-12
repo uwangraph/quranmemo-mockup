@@ -6,11 +6,11 @@
     let { onClose } = $props();
 
     const milestones = $derived([
-        { days: 3,   name: i18n.t('streak.m1_name'),    reward: i18n.t('streak.m1_reward'),              icon: '🔥', badgeId: 'b1' },
-        { days: 7,   name: i18n.t('streak.m2_name'), reward: i18n.t('streak.m2_reward'),  icon: '📅', badgeId: 'b2' },
-        { days: 30,  name: i18n.t('streak.m3_name'),       reward: i18n.t('streak.m3_reward'),   icon: '💎', badgeId: 'b4' },
-        { days: 100, name: i18n.t('streak.m4_name'),     reward: i18n.t('streak.m4_reward'),   icon: '🛡️', badgeId: 'b5' },
-        { days: 365, name: i18n.t('streak.m5_name'),    reward: i18n.t('streak.m5_reward'), icon: '👑', badgeId: 'b6' },
+        { days: 3,   name: i18n.t('streak.m1_name'),    reward: i18n.t('streak.m1_reward'),              icon: 'ti-flame', badgeId: 'b1' },
+        { days: 7,   name: i18n.t('streak.m2_name'), reward: i18n.t('streak.m2_reward'),  icon: 'ti-calendar', badgeId: 'b2' },
+        { days: 30,  name: i18n.t('streak.m3_name'),       reward: i18n.t('streak.m3_reward'),   icon: 'ti-diamond', badgeId: 'b4' },
+        { days: 100, name: i18n.t('streak.m4_name'),     reward: i18n.t('streak.m4_reward'),   icon: 'ti-shield-check', badgeId: 'b5' },
+        { days: 365, name: i18n.t('streak.m5_name'),    reward: i18n.t('streak.m5_reward'), icon: 'ti-crown', badgeId: 'b6' },
     ]);
 
     const streak = $derived(appState.user.streak);
@@ -75,7 +75,7 @@
     <div class="modal-header">
         <div class="streak-hero-container">
             <div class="hero-glow"></div>
-            <div class="streak-flame-big">🔥</div>
+            <div class="streak-flame-big"><i class="ti ti-flame"></i></div>
             <div class="hero-text">
                 <div class="streak-number-big">{streak}</div>
                 <div class="streak-label-big">{i18n.t('streak.days_count')}</div>
@@ -97,9 +97,9 @@
                 <div class="day-item" class:isToday={d.isToday}>
                     <div class="day-circle" class:done={d.done} class:isToday={d.isToday && !d.done}>
                         {#if d.done}
-                            <span class="day-icon">🔥</span>
+                            <span class="day-icon"><i class="ti ti-flame"></i></span>
                         {:else if d.isToday}
-                            <span class="day-icon">⏳</span>
+                            <span class="day-icon"><i class="ti ti-hourglass"></i></span>
                         {:else}
                             <span class="day-dot"></span>
                         {/if}
@@ -119,7 +119,7 @@
         <div class="milestone-card-premium">
             <div class="milestone-top">
                 <div class="milestone-icon-wrapper">
-                    <span class="milestone-icon-large">{nextMilestone.icon}</span>
+                    <span class="milestone-icon-large"><i class="ti {nextMilestone.icon}"></i></span>
                 </div>
                 <div class="milestone-info">
                     <div class="milestone-name">{nextMilestone.name}</div>
@@ -158,7 +158,7 @@
                     <div class="tier-marker" class:active={phase.active}></div>
                     <div class="tier-info">
                         <span class="tier-range">{phase.range}</span>
-                        <span class="tier-gems">💎 +{phase.gems} {i18n.t('profile.gems')}</span>
+                        <span class="tier-gems"><i class="ti ti-diamond"></i> +{phase.gems} {i18n.t('profile.gems')}</span>
                     </div>
                     {#if phase.active}
                         <div class="active-badge">{i18n.t('streak.phase_msg')}</div>
@@ -167,7 +167,7 @@
             {/each}
         </div>
         <div class="info-alert">
-            <i class="ti ti-info-circle-filled"></i>
+            <i class="ti ti-info-circle"></i>
             <span>{i18n.t('streak.reset_msg')}</span>
         </div>
     </div>
@@ -180,7 +180,7 @@
         <div class="recovery-grid">
             <!-- Freeze -->
             <div class="recovery-tool-card">
-                <div class="tool-icon">🌿</div>
+                <div class="tool-icon"><i class="ti ti-leaf"></i></div>
                 <div class="tool-content">
                     <div class="tool-title">{i18n.t('streak.freeze_title')}</div>
                     <div class="tool-count">
@@ -194,7 +194,7 @@
 
             <!-- Repair -->
             <div class="recovery-tool-card">
-                <div class="tool-icon">🔁</div>
+                <div class="tool-icon"><i class="ti ti-refresh"></i></div>
                 <div class="tool-content">
                     <div class="tool-title">{i18n.t('streak.repair_title')}</div>
                     <div class="tool-count">
@@ -216,7 +216,7 @@
             </div>
         {/if}
         <div class="info-alert secondary">
-            <i class="ti ti-clock-filled"></i>
+            <i class="ti ti-clock"></i>
             <span>{i18n.t('streak.grace_msg')}</span>
         </div>
     </div>
@@ -308,7 +308,7 @@
     .streak-number-big {
         font-size: 64px;
         font-weight: 900;
-        color: #ff6200;
+        color: #007A70;
         line-height: 0.9;
         letter-spacing: -2px;
     }
@@ -387,8 +387,8 @@
     }
 
     .day-circle.done {
-        background: #fff7ed;
-        border-color: #fed7aa;
+        background: #e8f8f6;
+        border-color: #99e5dc;
     }
 
     .day-circle.isToday {
@@ -414,8 +414,8 @@
 
     /* Milestone Card */
     .milestone-card-premium {
-        background: linear-gradient(135deg, #fffbeb, #fff7ed);
-        border: 2px solid #fde68a;
+        background: linear-gradient(135deg, #fffbeb, #e8f8f6);
+        border: 2px solid #99e5dc;
         border-radius: 24px;
         padding: 20px;
         box-shadow: 0 10px 20px -5px rgba(253, 230, 138, 0.3);
@@ -443,16 +443,16 @@
 
     .milestone-info { flex: 1; }
     .milestone-name { font-size: 16px; font-weight: 900; color: #92400e; }
-    .milestone-reward { font-size: 13px; font-weight: 700; color: #b45309; margin-top: 2px; }
+    .milestone-reward { font-size: 13px; font-weight: 700; color: #008f83; margin-top: 2px; }
 
     .milestone-days-tag {
         background: #fff;
-        border: 1.5px solid #fed7aa;
+        border: 1.5px solid #99e5dc;
         padding: 6px 12px;
         border-radius: 12px;
         font-size: 11px;
         font-weight: 900;
-        color: #ff6200;
+        color: #007A70;
         white-space: nowrap;
     }
 
@@ -463,12 +463,12 @@
         background: rgba(255,255,255,0.6);
         border-radius: 100px;
         overflow: hidden;
-        border: 1px solid #fed7aa;
+        border: 1px solid #99e5dc;
     }
 
     .progress-fill {
         height: 100%;
-        background: linear-gradient(90deg, #ff9600, #ff6200);
+        background: linear-gradient(90deg, #00978A, #007A70);
         border-radius: 100px;
         transition: width 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
@@ -479,7 +479,7 @@
         margin-top: 8px;
         font-size: 11px;
         font-weight: 800;
-        color: #b45309;
+        color: #008f83;
     }
 
     /* Reward Tiers */
@@ -504,7 +504,7 @@
     .tier-row.active {
         opacity: 1;
         background: #fff;
-        border-color: #ffedd5;
+        border-color: #d5f3ef;
         box-shadow: 0 4px 12px rgba(0,0,0,0.05);
         transform: scale(1.02);
     }
@@ -517,20 +517,20 @@
         transition: all 0.3s;
     }
 
-    .tier-marker.active { background: #ff9600; box-shadow: 0 0 0 4px rgba(255, 150, 0, 0.2); }
+    .tier-marker.active { background: #00978A; box-shadow: 0 0 0 4px rgba(255, 150, 0, 0.2); }
 
     .tier-info { flex: 1; display: flex; flex-direction: column; gap: 2px; }
     .tier-range { font-size: 13px; font-weight: 800; color: #475569; }
     .tier-gems { font-size: 12px; font-weight: 700; color: #00978A; }
 
     .active-badge {
-        background: #fff7ed;
-        color: #c2410c;
+        background: #e8f8f6;
+        color: #00665d;
         padding: 4px 10px;
         border-radius: 8px;
         font-size: 10px;
         font-weight: 900;
-        border: 1px solid #ffedd5;
+        border: 1px solid #d5f3ef;
     }
 
     /* Recovery Grid */
@@ -572,7 +572,7 @@
 
     .tool-btn:active:not(:disabled) { transform: translateY(2px); border-bottom-width: 1px; }
     .tool-btn:disabled { background: #e2e8f0; border-bottom-color: #cbd5e1; color: #94a3b8; cursor: not-allowed; }
-    .tool-btn.repair { background: #ff9600; border-bottom-color: #d97706; }
+    .tool-btn.repair { background: #00978A; border-bottom-color: #007A70; }
 
     /* Info Alert */
     .info-alert {

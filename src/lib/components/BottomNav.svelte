@@ -6,24 +6,12 @@
     // Maksimal 5 tab agar label tetap terbaca di lebar ponsel.
     // Tadabbur dicapai lewat node di roadmap, Halaqah lewat tab di layar Liga.
     const items = $derived([
-        { id: 'learn', label: i18n.t('nav.learn') },
-        { id: 'murojaah', label: i18n.t('nav.murojaah') },
-        { id: 'quests', label: i18n.t('nav.quests') },
-        { id: 'league', label: i18n.t('nav.league') },
-        { id: 'profile', label: i18n.t('nav.profile') }
+        { id: 'learn', label: i18n.t('nav.learn'), icon: 'ti-book-2' },
+        { id: 'murojaah', label: i18n.t('nav.murojaah'), icon: 'ti-refresh' },
+        { id: 'quests', label: i18n.t('nav.quests'), icon: 'ti-gift' },
+        { id: 'league', label: i18n.t('nav.league'), icon: 'ti-trophy' },
+        { id: 'profile', label: i18n.t('nav.profile'), icon: 'ti-user-circle' }
     ]);
-    function getFlaticon(id) {
-        const mapping = {
-            'learn': 'https://cdn-icons-png.flaticon.com/512/2232/2232688.png',
-            'murojaah': 'https://cdn-icons-png.flaticon.com/512/3468/3468081.png',
-            'tadabbur': 'https://cdn-icons-png.flaticon.com/512/2947/2947998.png',
-            'quests': 'https://cdn-icons-png.flaticon.com/512/4006/4006326.png', 
-            'halaqah': 'https://cdn-icons-png.flaticon.com/512/3364/3364024.png',
-            'league': 'https://cdn-icons-png.flaticon.com/512/3112/3112946.png',
-            'profile': 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'
-        };
-        return mapping[id] || 'https://cdn-icons-png.flaticon.com/512/2232/2232688.png';
-    }
 </script>
 
 
@@ -38,7 +26,7 @@
             <!-- Penanda tab aktif berupa batang, bukan warna saja, agar tetap terbaca
                  oleh pengguna dengan keterbatasan membedakan warna. -->
             <span class="nav-marker" aria-hidden="true"></span>
-            <img src={getFlaticon(item.id)} alt="" class="nav-icon" />
+            <i class="ti {item.icon} nav-icon" aria-hidden="true"></i>
             <span class="nav-label">{item.label}</span>
         </button>
     {/each}
@@ -49,8 +37,9 @@
         display: flex;
         background: #fff;
         border-top: 2px solid #e5e5e5;
-        padding: 8px 0 4px;
+        padding: 10px 8px 6px;
         margin-top: auto;
+        gap: 4px;
     }
     .nav-item {
         position: relative;
@@ -59,25 +48,26 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        gap: 2px;
+        gap: 4px;
         cursor: pointer;
         /* Target sentuh minimal 48px agar nyaman untuk jari anak maupun lansia. */
-        min-height: 48px;
-        padding: 4px 0;
+        min-height: 64px;
+        padding: 6px 4px;
         border: none;
         background: none;
-        border-radius: 12px;
-        transition: background 0.15s;
+        border-radius: 14px;
+        color: #475569;
+        transition: transform .1s ease, background-color .1s ease;
     }
 
     /* Batang penanda tab aktif — pembeda non-warna (WCAG 1.4.1). */
     .nav-marker {
         position: absolute;
-        top: -8px;
+        top: -10px;
         width: 0;
         height: 4px;
         border-radius: 0 0 4px 4px;
-        background: var(--duo-green-dark, #007A70);
+        background: var(--duo-green, #00978A);
         transition: width 0.15s ease;
     }
     .nav-item.active .nav-marker {
@@ -87,21 +77,23 @@
     .nav-icon {
         width: 24px;
         height: 24px;
-        object-fit: contain;
-        /* Ikon tab non-aktif tetap dibuat abu-abu, tetapi tanpa penurunan opasitas
-           supaya bentuknya tetap jelas terlihat. */
-        filter: grayscale(100%);
-        transition: filter 0.2s;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 25px;
+        color: currentColor;
+        transition: transform 0.2s ease, color 0.2s ease;
     }
     .nav-item.active .nav-icon {
-        filter: none;
+        color: var(--duo-green-dark, #007A70);
+        transform: scale(1.04);
     }
 
     .nav-label {
         /* rem agar ukuran teks ikut pengaturan ukuran font di perangkat pengguna. */
-        font-size: 0.6875rem;
+        font-size: 0.75rem;
         line-height: 1.2;
-        font-weight: 700;
+        font-weight: 800;
         /* #616161 = rasio kontras 6.19:1 terhadap latar putih (sebelumnya #afafaf, 2.19:1 — gagal WCAG AA). */
         color: #616161;
         font-family: "Nunito", sans-serif;
@@ -119,7 +111,12 @@
 
     /* Umpan balik saat ditekan — penting agar pengguna yakin sentuhannya diterima. */
     .nav-item:active {
-        background: #f0f0f0;
+        transform: translateY(3px);
+        background: #f0fdfa;
+    }
+    .nav-item:hover {
+        background: #f8fffe;
+        transform: translateY(1px);
     }
     .nav-item:focus-visible {
         outline: 3px solid var(--duo-green-dark, #007A70);

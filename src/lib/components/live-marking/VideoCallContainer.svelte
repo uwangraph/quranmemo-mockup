@@ -26,7 +26,7 @@
     <div class="call-action-bar">
         <div class="action-circle"><i class="ti ti-microphone"></i></div>
         <div class="action-circle"><i class="ti ti-video"></i></div>
-        <div class="action-circle danger" onclick={() => appState.go('musyrif')}><i class="ti ti-phone-off"></i></div>
+        <div class="action-circle danger" onclick={() => appState.go('musyrif')}><i class="ti ti-phone-x"></i></div>
     </div>
 
     <div class="main-video-stream">

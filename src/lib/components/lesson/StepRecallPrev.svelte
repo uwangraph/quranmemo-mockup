@@ -41,7 +41,7 @@
     </div>
 
     {#if recallMethod === 'voice'}
-        <div class="setor-quran-graphic">🎙️</div>
+        <div class="setor-quran-graphic"><i class="ti ti-microphone"></i></div>
         <div class="arabic-focus-text Amiri blurred">
             {previousVerse.arabic}
         </div>
@@ -66,7 +66,7 @@
             </span>
         {:else if recordState === 'recorded'}
             <div class="voice-matched-toast">
-                <i class="ti ti-circle-check-filled"></i>
+                <i class="ti ti-circle-check"></i>
                 {i18n.t('lesson.voice_recorded')}
             </div>
         {:else}

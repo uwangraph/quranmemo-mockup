@@ -7,7 +7,7 @@
 {#if showCompletion}
 <div class="completion-overlay" transition:fade={{duration: 200}}>
     <div class="completion-card" transition:fly={{y: 20, duration: 300}}>
-        <div class="completed-trophy-img">🏆</div>
+        <div class="completed-trophy-img"><i class="ti ti-trophy"></i></div>
         <div class="congrats-headline">{i18n.t('lesson.target_done')}</div>
         <div class="congrats-sub">
             {#if selectedVerseIndex > 0}
@@ -19,17 +19,17 @@
         
         <div class="reward-box">
             <div class="reward-item">
-                <span class="reward-icon gold">⚡</span>
+                <span class="reward-icon gold"><i class="ti ti-bolt"></i></span>
                 <span class="reward-value">+{lessonEarnedXP} XP</span>
                 <span class="reward-label">{i18n.t('lesson.xp_label')}</span>
             </div>
             <div class="reward-item memo-gems">
-                <span class="reward-icon diamond">💎</span>
+                <span class="reward-icon diamond"><i class="ti ti-diamond"></i></span>
                 <span class="reward-value-gems">+{lessonEarnedGems} {i18n.t('profile.gems')}</span>
                 <span class="reward-label-gems">{i18n.t('lesson.reward_label')}</span>
             </div>
             <div class="reward-item memo-cashback">
-                <span class="reward-icon teal">🎯</span>
+                <span class="reward-icon teal"><i class="ti ti-target"></i></span>
                 <span class="reward-value-teal">{accuracy}</span>
                 <span class="reward-label-teal">{i18n.t('lesson.accuracy_label')}</span>
             </div>
@@ -40,7 +40,7 @@
                 {#each breakdown.split('\n') as line}
                     {#if line.trim()}
                         <div class="breakdown-line">
-                            <i class="ti ti-circle-check-filled"></i> {line}
+                            <i class="ti ti-circle-check"></i> {line}
                         </div>
                     {/if}
                 {/each}
@@ -141,7 +141,7 @@
     .reward-value-gems {
         font-size: 15px;
         font-weight: 900;
-        color: #ff9600;
+        color: #00978A;
     }
     .reward-label {
         font-size: 9px;
@@ -156,12 +156,12 @@
     .reward-label-gems {
         font-size: 9px;
         font-weight: 700;
-        color: #ff9600;
+        color: #00978A;
     }
     .breakdown-box {
         width: 100%;
         background: #fdfdfd;
-        border: 2px dashed #ffe4b3;
+        border: 2px dashed #99e5dc;
         border-radius: 16px;
         padding: 12px 16px;
         margin-bottom: 24px;
@@ -171,7 +171,7 @@
     .breakdown-line {
         font-size: 12px;
         font-weight: 800;
-        color: #d97706;
+        color: #007A70;
         display: flex;
         align-items: center;
         gap: 6px;
@@ -182,7 +182,7 @@
     }
     .breakdown-line i {
         font-size: 14px;
-        color: #ff9600;
+        color: #00978A;
     }
     .button-column {
         display: flex;

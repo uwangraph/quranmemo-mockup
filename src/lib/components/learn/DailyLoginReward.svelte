@@ -81,7 +81,7 @@
             <div class="login-header">
                 <div class="reward-icon-container">
                     <div class="icon-glow"></div>
-                    <span class="main-reward-icon">🎁</span>
+                    <span class="main-reward-icon"><i class="ti ti-gift"></i></span>
                 </div>
                 <h2 class="login-title">{i18n.t('reward.title')}</h2>
                 <p class="login-sub">{i18n.t('reward.sub', { days: rewardInfo.streakDay })}</p>
@@ -101,9 +101,9 @@
                             {#if isPast}
                                 <i class="ti ti-check"></i>
                             {:else if isDay7}
-                                <span class="chest-icon">🎁</span>
+                                <span class="chest-icon"><i class="ti ti-gift"></i></span>
                             {:else if isCurrent}
-                                <span class="gems-icon">💎</span>
+                                <span class="gems-icon"><i class="ti ti-diamond"></i></span>
                             {:else}
                                 <i class="ti ti-lock"></i>
                             {/if}
@@ -124,10 +124,10 @@
                 <div class="featured-info">
                     <div class="featured-icon">
                         {#if isMilestone}
-                            <div class="sparkles">✨</div>
-                            🏆
+                            <div class="sparkles"><i class="ti ti-sparkle"></i></div>
+                            <i class="ti ti-trophy"></i>
                         {:else}
-                            💎
+                            <i class="ti ti-diamond"></i>
                         {/if}
                     </div>
                     <div class="featured-content">
@@ -265,7 +265,7 @@
 
     .day-node.current .node-circle {
         background: #fff;
-        border-color: #ff9600;
+        border-color: #00978A;
         box-shadow: 0 0 0 4px rgba(255, 150, 0, 0.2);
         transform: scale(1.2);
     }
@@ -293,7 +293,7 @@
     }
 
     .day-node.current .node-label {
-        color: #ff9600;
+        color: #00978A;
     }
 
     .node-gems {
@@ -331,8 +331,8 @@
     }
 
     .featured-reward.milestone {
-        background: linear-gradient(135deg, #fffbeb, #fff7ed);
-        border-color: #fde68a;
+        background: linear-gradient(135deg, #fffbeb, #e8f8f6);
+        border-color: #99e5dc;
     }
 
     .featured-info {
@@ -376,7 +376,7 @@
     }
 
     .milestone .phase-tag {
-        background: #fef3c7;
+        background: #e8f8f6;
         color: #92400e;
     }
 
@@ -418,4 +418,3 @@
         to { transform: rotate(360deg); }
     }
 </style>
-

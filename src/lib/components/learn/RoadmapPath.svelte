@@ -139,7 +139,7 @@
         <div class="banner-title">{surah?.name ?? pathConfig.unitTitle}</div>
         <div class="banner-desc">{surah ? `Surah ${surah.number} · ${surah.verses.length} ayat tersedia` : pathConfig.unitDesc}</div>
         {#if surah}
-            <div class="self-banner-icon"><i class="ti ti-book-2"></i></div>
+            <div class="self-banner-icon"><i class="ti ti-book"></i></div>
             {@const bannerDone = appState.surahProgress(surah.id)}
             {@const bannerProgress = Math.round((bannerDone / surah.verses.length) * 100)}
             <div class="self-stats">
@@ -194,7 +194,7 @@
                             {i18n.t('learn.mini_targets', { count: ladderTargetCount(l) })} · {i18n.t(`learn.gate_${l.gate}`)}
                         </div>
                     </div>
-                    <i class="ti {state === 'completed' ? 'ti-circle-check-filled' : state === 'current' ? 'ti-player-play-filled' : 'ti-lock'}"></i>
+                    <i class="ti {state === 'completed' ? 'ti-circle-check' : state === 'current' ? 'ti-player-play' : 'ti-lock'}"></i>
                 </div>
             {/each}
         </div>
@@ -218,7 +218,7 @@
         <!-- Semua yang bisa dikerjakan sudah tuntas. Lebih baik menyatakannya dan
              mengarahkan ke murajaah daripada meninggalkan layar buntu. -->
         <div class="all-done">
-            <span style="font-size:38px;">🎉</span>
+            <span style="font-size:38px;"><i class="ti ti-confetti"></i></span>
             <div class="ad-title">{i18n.t('learn.all_available_done')}</div>
             <div class="ad-sub">{i18n.t('learn.all_available_done_desc', { count: st.pending.length })}</div>
             <button class="btn-duo btn-green btn-auto" onclick={() => appState.go('murojaah')}>
@@ -229,7 +229,7 @@
         <!-- Jujur soal batas mockup: lebih baik menyatakan konten belum ada daripada
              menyajikan ayat surah lain di bawah nama mini target ini. -->
         <div class="no-content">
-            <span style="font-size:34px;">📝</span>
+            <span style="font-size:34px;"><i class="ti ti-notes"></i></span>
             <div class="nc-title">{i18n.t('learn.content_pending')}</div>
             <div class="nc-sub">{i18n.t('learn.content_pending_desc', { target: targetName ?? '—' })}</div>
         </div>
@@ -265,7 +265,7 @@
         <div class="connector {gateStatus}"></div>
         <div class="node-wrapper">
             <div class="node-btn gate {gateStatus}">
-                <i class="ti {gateStatus === 'completed' ? 'ti-circle-check-filled' : ladder.gate === 'badge' ? 'ti-award' : 'ti-flag-check'}"></i>
+                <i class="ti {gateStatus === 'completed' ? 'ti-circle-check' : ladder.gate === 'badge' ? 'ti-award' : 'ti-flag-check'}"></i>
             </div>
             <div class="node-title">{i18n.t(`learn.gate_${ladder.gate}`)} — {ladder.name}</div>
         </div>
@@ -431,15 +431,15 @@
     .path-container { display: flex; flex-direction: column; align-items: center; padding-top: 30px; }
     .node-wrapper { display: flex; flex-direction: column; align-items: center; position: relative; z-index: 2; }
     .node-btn {
-        width: 60px; height: 56px; border-radius: 50%; border: none; border-bottom: 6px solid #e5e5e5;
+        width: 60px; height: 56px; border-radius: 50%; border: none; border-bottom: 4px solid #e5e5e5;
         background: #e5e5e5; color: #afafaf; font-size: 24px; display: flex; align-items: center; justify-content: center;
-        cursor: pointer; position: relative; transition: all 0.1s;
+        cursor: pointer; position: relative; transition: border-bottom-width 0.15s ease;
     }
-    .node-btn:not(.locked):hover { transform: translateY(1px); border-bottom-width: 3px; }
-    .node-btn:not(.locked):active { transform: translateY(3px); border-bottom-width: 0; }
+    .node-btn:not(.locked):hover { transform: none; border-bottom-width: 2px; }
+    .node-btn:not(.locked):active { transform: none; border-bottom-width: 0; }
 
-    .node-btn.completed { background: var(--duo-green); border-bottom-color: var(--duo-green-dark); color: #fff; }
-    .node-btn.current { background: var(--duo-green); border-bottom-color: var(--duo-green-dark); color: #fff; animation: pulse 2s infinite; }
+    .node-btn.completed { background: #00978a; border-bottom-color: #007a70; color: #fff; }
+    .node-btn.current { background: #00978a; border-bottom-color: #007a70; color: #fff; animation: pulse 2s infinite; }
     .node-btn.locked { background: #e5e5e5; border-bottom-color: #afafaf; color: #afafaf; cursor: not-allowed; }
 
     /* Terbuka tapi belum dikerjakan: berongga, untuk membedakannya dari node
@@ -455,7 +455,7 @@
     .node-btn.tadabbur.available { border-color: #ce82ff; border-bottom-color: #a52adb; color: #a52adb; }
     .node-btn.checkpoint.completed { background: #ffc800; border-bottom-color: #e5a000; }
     .node-btn.gate { background: #f1f5f9; border-bottom-color: #cbd5e1; color: #94a3b8; cursor: default; }
-    .node-btn.gate.available { background: #fef3c7; border-bottom-color: #fbbf24; color: #b45309; }
+    .node-btn.gate.available { background: #e8f8f6; border-bottom-color: #5ccfc2; color: #008f83; }
     .node-btn.gate.completed { background: #ffc800; border-bottom-color: #e5a000; color: #fff; }
 
     @keyframes pulse {
@@ -499,5 +499,5 @@
     :global(.desktop-browser) .mobile-only-card { display: none; }
     :global(.tablet) .mobile-only-card { display: block; margin: 0 0 20px; }
     .goal-bar-bg { height: 8px; background: #e5e5e5; border-radius: 4px; overflow: hidden; }
-    .goal-bar-fill { height: 100%; background: #ff9600; border-radius: 4px; }
+    .goal-bar-fill { height: 100%; background: #00978A; border-radius: 4px; }
 </style>

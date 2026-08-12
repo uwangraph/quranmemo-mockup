@@ -17,7 +17,7 @@
         </div>
         <div class="header-right">
             <span class="arabic-title">{cat.arabic}</span>
-            <i class="ti {isOpen ? 'ti-chevron-up' : 'ti-chevron-down'} chevron-icon"></i>
+            <i class="ti {isOpen ? 'ti-caret-up' : 'ti-caret-down'} chevron-icon"></i>
         </div>
     </button>
 
@@ -35,7 +35,7 @@
                             <span class="circle-dot" style="border-color: {cat.bgColor};"></span>
                             <span class="item-name">{item.name}</span>
                         </div>
-                        <i class="ti {openItem === itemKey ? 'ti-chevron-up' : 'ti-chevron-right'} item-arrow"></i>
+                        <i class="ti {openItem === itemKey ? 'ti-caret-up' : 'ti-caret-right'} item-arrow"></i>
                     </button>
 
                     {#if openItem === itemKey}

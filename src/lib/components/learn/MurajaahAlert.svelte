@@ -25,7 +25,7 @@
 {#if due.length > 0}
     <div class="murajaah-card">
         <div class="mc-head">
-            <span class="mc-icon">🔄</span>
+        <span class="mc-icon"><i class="ti ti-refresh"></i></span>
             <div style="flex:1; min-width:0;">
                 <div class="mc-title">{i18n.t('murajaah.title')}</div>
                 <div class="mc-sub">{i18n.t('murajaah.subtitle', { days: MURAJAAH_DUE_DAYS })}</div>
@@ -40,7 +40,7 @@
                         <div class="mc-surah">{item.surah}</div>
                         <div class="mc-days">{i18n.t('murajaah.last_reviewed', { days: item.days })}</div>
                     </div>
-                    <button type="button" class="btn-duo btn-orange btn-xs btn-auto mc-cta" onclick={() => bookMurajaah(item.surah)}>
+                    <button type="button" class="btn-duo btn-green btn-xs btn-auto mc-cta" onclick={() => bookMurajaah(item.surah)}>
                         {i18n.t('murajaah.review_now')}
                     </button>
                 </div>
@@ -58,8 +58,8 @@
 <style>
     .murajaah-card {
         margin: 10px 16px 0;
-        background: linear-gradient(135deg, #fff7ed, #fffbf5);
-        border: 2px solid #fed7aa;
+        background: linear-gradient(135deg, #e8f8f6, #fffbf5);
+        border: 2px solid #99e5dc;
         border-bottom-width: 4px;
         border-radius: 18px;
         padding: 14px;
@@ -70,9 +70,9 @@
     .mc-head { display: flex; align-items: center; gap: 10px; }
     .mc-icon { font-size: 22px; }
     .mc-title { font-size: 14px; font-weight: 900; color: #92400e; }
-    .mc-sub { font-size: 11px; font-weight: 700; color: #b45309; margin-top: 2px; line-height: 1.4; }
+    .mc-sub { font-size: 11px; font-weight: 700; color: #008f83; margin-top: 2px; line-height: 1.4; }
     .mc-count {
-        background: #ff6200; color: #fff; font-size: 12px; font-weight: 900;
+        background: #007A70; color: #fff; font-size: 12px; font-weight: 900;
         min-width: 24px; height: 24px; border-radius: 99px;
         display: flex; align-items: center; justify-content: center; padding: 0 7px;
     }
@@ -80,20 +80,20 @@
     .mc-list { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
     .mc-item {
         display: flex; align-items: center; gap: 10px;
-        background: #fff; border: 2px solid #fed7aa; border-radius: 12px;
+        background: #fff; border: 2px solid #99e5dc; border-radius: 12px;
         padding: 10px 12px; cursor: default; font-family: 'Nunito', sans-serif;
-        min-height: 52px; border-bottom: 3px solid #fed7aa;
+        min-height: 52px; border-bottom: 3px solid #99e5dc;
     }
     .mc-surah { font-size: 14px; font-weight: 900; color: #1e293b; }
-    .mc-days { font-size: 11px; font-weight: 700; color: #b45309; margin-top: 2px; }
+    .mc-days { font-size: 11px; font-weight: 700; color: #008f83; margin-top: 2px; }
     /* Bentuk & warna dari gaya tombol bersama; di sini hanya penempatannya. */
     .mc-cta { flex-shrink: 0; align-self: center; }
 
     .mc-more {
         width: 100%; margin-top: 10px; padding: 8px; min-height: 40px;
         background: none; border: none; border-bottom: 3px solid transparent; cursor: pointer;
-        font-family: 'Nunito', sans-serif; font-size: 12px; font-weight: 800; color: #b45309;
+        font-family: 'Nunito', sans-serif; font-size: 12px; font-weight: 800; color: #008f83;
     }
-    .mc-more:hover { transform: translateY(1px); border-bottom-color: #fed7aa; }
+    .mc-more:hover { transform: translateY(1px); border-bottom-color: #99e5dc; }
     .mc-more:active { transform: translateY(3px); border-bottom-color: transparent; }
 </style>

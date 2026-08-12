@@ -96,7 +96,7 @@
         {#if phase === 'idle'}
             <i class="ti ti-microphone"></i> {i18n.t('lesson.press_to_record')}
         {:else if phase === 'recording'}
-            <i class="ti ti-point-filled" style="color: #ff4b4b; animation: blink 1s infinite;"></i> {i18n.t('lesson.recording_active')}
+            <i class="ti ti-circle" style="color: #ff4b4b; animation: blink 1s infinite;"></i> {i18n.t('lesson.recording_active')}
         {:else if phase === 'qari_playing'}
             <i class="ti ti-volume"></i> {i18n.t('lesson.playing_qari')}
         {:else if phase === 'user_playing'}
@@ -110,7 +110,7 @@
     <div class="wave-visualizer-row">
         {#if phase === 'recording'}
             <!-- Live mic waves -->
-            <div class="wave-avatar user-avatar">🎙️</div>
+            <div class="wave-avatar user-avatar"><i class="ti ti-microphone"></i></div>
             <div class="wave-bars-container">
                 {#each simulatedWaves as h}
                     <span class="wave-bar" style="height: {h}px; background: #ff4b4b;"></span>
@@ -123,7 +123,7 @@
             </div>
         {:else if phase === 'qari_playing'}
             <!-- Animated qari wave -->
-            <div class="wave-avatar">🕌</div>
+            <div class="wave-avatar"><i class="ti ti-mosque"></i></div>
             <div class="wave-bars-container">
                 {#each Array(15).fill(0) as _, i}
                     <span class="wave-bar qari-anim" style="height: {18 + Math.sin(i * 0.7) * 12}px; animation-delay: {i * 0.06}s;"></span>
@@ -131,7 +131,7 @@
             </div>
         {:else if phase === 'user_playing'}
             <!-- Playback waves -->
-            <div class="wave-avatar user-avatar">🎙️</div>
+            <div class="wave-avatar user-avatar"><i class="ti ti-microphone"></i></div>
             <div class="wave-bars-container">
                 {#each simulatedWaves as h}
                     <span class="wave-bar" style="height: {h}px; background: #10b981;"></span>
@@ -144,7 +144,7 @@
             </div>
         {:else}
             <!-- Flat idle wave -->
-            <div class="wave-avatar" style="opacity: 0.3;">🎙️</div>
+            <div class="wave-avatar" style="opacity: 0.3;"><i class="ti ti-microphone"></i></div>
             <div class="wave-bars-container">
                 {#each Array(15).fill(4) as h}
                     <span class="wave-bar" style="height: {h}px; background: #e2e8f0;"></span>
@@ -161,7 +161,7 @@
         </button>
     {:else if phase === 'recording'}
         <button class="main-action-btn btn-stop" onclick={(e) => { e.preventDefault(); e.stopPropagation(); startSimulatedRecording(); }} disabled={isChecked}>
-            <i class="ti ti-player-stop-filled" style="font-size: 22px;"></i>
+                <i class="ti ti-player-stop" style="font-size: 22px;"></i>
             <span>{i18n.t('lesson.mic_stop')}</span>
         </button>
     {:else if phase === 'qari_playing' || phase === 'user_playing'}
@@ -222,9 +222,9 @@
         transition: all 0.3s ease;
     }
     .flow-step.active .flow-step-dot {
-        background: #fff4e0;
-        border-color: #ff9600;
-        color: #ff9600;
+        background: #e8f8f6;
+        border-color: #00978A;
+        color: #00978A;
         box-shadow: 0 0 0 4px rgba(255, 150, 0, 0.15);
     }
     .flow-step.done .flow-step-dot {
@@ -239,7 +239,7 @@
         text-transform: uppercase;
         letter-spacing: 0.5px;
     }
-    .flow-step.active .flow-step-label { color: #ff9600; }
+    .flow-step.active .flow-step-label { color: #00978A; }
     .flow-step.done .flow-step-label { color: #16a34a; }
 
     .flow-connector {

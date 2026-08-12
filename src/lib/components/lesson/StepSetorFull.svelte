@@ -23,7 +23,7 @@
     {#if recordState === 'idle'}
         <!-- Idle State -->
         <div class="graphic-icon">
-            {#if type === 'setor_full'}📖{:else if type === 'recall_level1'}🏆{:else}🔗{/if}
+            {#if type === 'setor_full'}<i class="ti ti-book-2"></i>{:else if type === 'recall_level1'}<i class="ti ti-trophy"></i>{:else}<i class="ti ti-link"></i>{/if}
         </div>
         <div class="mic-container">
             <button class="mic-circle-btn giant" onclick={(e) => { e.preventDefault(); e.stopPropagation(); startSimulatedRecording(); }} disabled={isChecked} title={i18n.t('lesson.mic_title')}>
@@ -102,7 +102,7 @@
                         onclick={startComparePlay} 
                         disabled={isChecked}
                     >
-                        <i class="ti {isPlaying || isPlayingRecorded ? 'ti-player-pause-filled' : 'ti-headphones-filled'}"></i>
+                        <i class="ti {isPlaying || isPlayingRecorded ? 'ti-player-pause' : 'ti-headphones'}"></i>
                         {isPlaying ? i18n.t('lesson.playing_qari') : (isPlayingRecorded ? i18n.t('lesson.playing_my_record') : i18n.t('lesson.compare_reading'))}
                     </button>
                 {:else}
@@ -112,7 +112,7 @@
                         onclick={togglePlayRecorded} 
                         disabled={isChecked}
                     >
-                        <i class="ti {isPlayingRecorded ? 'ti-player-pause-filled' : 'ti-microphone-filled'}"></i>
+                        <i class="ti {isPlayingRecorded ? 'ti-player-pause' : 'ti-microphone'}"></i>
                         {isPlayingRecorded ? i18n.t('lesson.playing_my_record') : i18n.t('lesson.play_my_record')}
                     </button>
                 {/if}
@@ -254,7 +254,7 @@
         background: #0284c7;
     }
     .badge-pill.linking {
-        background: #ea580c;
+        background: #00978A;
     }
     .arabic-display {
         font-size: 28px;

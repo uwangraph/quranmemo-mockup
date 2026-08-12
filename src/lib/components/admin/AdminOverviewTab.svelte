@@ -40,9 +40,9 @@
     const barMax = Math.max(...monthlyBars.map(b => b.val));
 
     const alerts = [
-        { icon: '⚠️', text: '14 santri tidak ada submisi >7 hari', color: '#ef4444', bg: '#fef2f2' },
-        { icon: '📉', text: '3 musyrif tingkat penerimaan rendah', color: '#f59e0b', bg: '#fffbeb' },
-        { icon: '🎉', text: 'Rekor harian baru kemarin: 342 sesi', color: '#22c55e', bg: '#f0fdf4' },
+        { icon: 'warning', text: '14 santri tidak ada submisi >7 hari', color: '#ef4444', bg: '#fef2f2' },
+        { icon: 'trend-down', text: '3 musyrif tingkat penerimaan rendah', color: '#f59e0b', bg: '#fffbeb' },
+        { icon: 'confetti', text: 'Rekor harian baru kemarin: 342 sesi', color: '#22c55e', bg: '#f0fdf4' },
     ];
 </script>
 
@@ -67,7 +67,7 @@
                 <path d={sparklinePath(kpi.data)} fill="none" stroke="{kpi.color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
             <div class="kpi-change" style="color: {kpi.up ? '#22c55e' : '#ef4444'}">
-                <i class="ti ti-trending-{kpi.up ? 'up' : 'down'}" style="font-size: 9px;"></i>
+                <i class="ti ti-trend-{kpi.up ? 'up' : 'down'}" style="font-size: 9px;"></i>
                 {kpi.change} vs kemarin
             </div>
         </div>
@@ -75,19 +75,19 @@
 </div>
 
 <!-- Alerts -->
-<div class="section-label" style="font-size: 13px; font-weight: 800; color: #3c3c3c; margin-top: 8px; margin-bottom: 8px;">🔔 Notifikasi Penting</div>
+<div class="section-label" style="font-size: 13px; font-weight: 800; color: #3c3c3c; margin-top: 8px; margin-bottom: 8px;"><i class="ti ti-bell"></i> Notifikasi Penting</div>
 <div style="display: flex; flex-direction: column; gap: 6px;">
     {#each alerts as a}
         <div class="alert-row" style="background: {a.bg}; border-color: {a.color}20;">
-            <span style="font-size: 16px;">{a.icon}</span>
+            <span style="font-size: 16px;"><i class="ti {a.icon}"></i></span>
             <span class="alert-text" style="color: {a.color}">{a.text}</span>
-            <i class="ti ti-chevron-right" style="color: {a.color}; font-size: 12px; flex-shrink: 0;"></i>
+            <i class="ti ti-caret-right" style="color: {a.color}; font-size: 12px; flex-shrink: 0;"></i>
         </div>
     {/each}
 </div>
 
 <!-- Monthly Bar Chart -->
-<div class="section-label" style="font-size: 13px; font-weight: 800; color: #3c3c3c; margin-top: 16px; margin-bottom: 8px;">📈 Submisi per Bulan</div>
+<div class="section-label" style="font-size: 13px; font-weight: 800; color: #3c3c3c; margin-top: 16px; margin-bottom: 8px;"><i class="ti ti-chart-line"></i> Submisi per Bulan</div>
 <div class="chart-card">
     <div class="bar-chart">
         {#each monthlyBars as bar}
@@ -106,7 +106,7 @@
 </div>
 
 <!-- Donut Section -->
-<div class="section-label" style="font-size: 13px; font-weight: 800; color: #3c3c3c; margin-top: 16px; margin-bottom: 8px;">🎯 Tingkat Keberhasilan</div>
+<div class="section-label" style="font-size: 13px; font-weight: 800; color: #3c3c3c; margin-top: 16px; margin-bottom: 8px;"><i class="ti ti-target"></i> Tingkat Keberhasilan</div>
 <div class="donut-row">
     {#each [
         { label: 'Penyelesaian Program', pct: 72, color: '#7c5cfc', donut: completionDonut },

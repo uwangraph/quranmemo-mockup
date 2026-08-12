@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
+@import '@tabler/icons-webfont/dist/tabler-icons.min.css';
 
 :root {
   --duo-green: #00978A;
@@ -9,6 +10,52 @@
   --duo-gold: #ffc800;
   --duo-purple: #ce82ff;
   --duo-gray: #afafaf;
+}
+
+/* Consistent, visible currency icon used in the compact wallet pills. */
+.gem-icon {
+  display: inline-block;
+  font-size: 16px;
+  line-height: 1;
+  font-weight: 700;
+  vertical-align: -1px;
+  color: #1CB0F6 !important;
+}
+
+.gem-value {
+  color: #1CB0F6 !important;
+  font-weight: 800;
+}
+
+/* Gems always use the same brand color, regardless of the surrounding card. */
+.ti-diamond {
+  color: #1CB0F6 !important;
+}
+
+/* Duolingo-style press states: the control keeps its size while only the
+   bottom shadow changes between rest, hover, and press. */
+.audio-circle-play,
+.mic-circle-btn,
+.main-action-btn,
+.btn-duo {
+  transform: none !important;
+  transition: box-shadow 150ms ease, border-bottom-width 150ms ease !important;
+}
+
+.audio-circle-play:hover:not(:disabled),
+.mic-circle-btn:hover:not(:disabled),
+.main-action-btn:hover:not(:disabled),
+.btn-duo:hover:not(:disabled) {
+  transform: none !important;
+  border-bottom-width: 2px !important;
+}
+
+.audio-circle-play:active:not(:disabled),
+.mic-circle-btn:active:not(:disabled),
+.main-action-btn:active:not(:disabled),
+.btn-duo:active:not(:disabled) {
+  transform: none !important;
+  border-bottom-width: 0 !important;
 }
 
 * {

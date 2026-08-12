@@ -17,11 +17,11 @@
                 <div style="flex: 1">{i18n.t('marking.type_forget')}</div>
             </button>
             <button class="type-btn tajwid" onclick={() => onMark('tajwid')}>
-                <div class="type-icon">📏</div>
+                <div class="type-icon"><i class="ti ti-ruler"></i></div>
                 <div style="flex: 1">{i18n.t('marking.type_tajwid')}</div>
             </button>
             <button class="type-btn makhraj" onclick={() => onMark('makhraj')}>
-                <div class="type-icon">🗣️</div>
+                <div class="type-icon"><i class="ti ti-microphone"></i></div>
                 <div style="flex: 1">{i18n.t('marking.type_makhraj')}</div>
             </button>
         </div>

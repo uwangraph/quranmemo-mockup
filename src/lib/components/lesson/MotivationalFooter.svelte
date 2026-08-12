@@ -7,7 +7,7 @@
     <div class="sliding-feedback-panel {feedbackAnimClass}" class:correct={isCorrect} class:wrong={!isCorrect}>
         <div class="feedback-inner-content">
             <div class="feedback-badge" class:correct={isCorrect} class:wrong={!isCorrect}>
-                <i class="ti {isCorrect ? 'ti-check' : 'ti-alert-circle'}"></i>
+                <i class="ti {isCorrect ? 'ti-check' : 'ti-alert-triangle'}"></i>
                 {isCorrect ? currentMotivation || i18n.t('motivation.great_job') : i18n.t('motivation.incorrect')}
             </div>
             <p class="feedback-msg">

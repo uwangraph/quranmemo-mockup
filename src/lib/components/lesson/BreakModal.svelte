@@ -7,7 +7,7 @@
 {#if showBreakModal}
 <div class="completion-overlay" transition:fade={{duration: 200}}>
     <div class="completion-card" transition:fly={{y: 20, duration: 300}}>
-        <div class="break-emoji">☕</div>
+        <div class="break-emoji"><i class="ti ti-coffee"></i></div>
         <div class="congrats-headline">{i18n.t('break.title')}</div>
         <p class="break-description">
             {i18n.t('break.description')}
@@ -55,7 +55,7 @@
     .congrats-headline {
         font-size: 20px;
         font-weight: 950;
-        color: #f59e0b;
+        color: #00978a;
         margin-bottom: 6px;
         letter-spacing: -0.5px;
     }

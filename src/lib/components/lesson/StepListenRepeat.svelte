@@ -46,9 +46,9 @@
             title={recordState === 'recording' ? i18n.t('lesson.mic_stop') : recordState === 'recorded' ? i18n.t('lesson.mic_re_record') : i18n.t('lesson.mic_start')}
         >
             {#if recordState === 'recording'}
-                <i class="ti ti-player-stop-filled"></i>
+                <i class="ti ti-player-stop"></i>
             {:else if recordState === 'recorded'}
-                <i class="ti ti-rotate-clockwise"></i>
+                <i class="ti ti-arrow-back-up"></i>
             {:else}
                 <i class="ti ti-microphone"></i>
             {/if}
@@ -91,7 +91,7 @@
                 disabled={isChecked}
             >
                 {loopTimes === Infinity ? '∞' : loopTimes + 'x'}
-                <i class="ti ti-chevron-down" style="font-size: 14px;"></i>
+            <i class="ti ti-caret-down" style="font-size: 14px;"></i>
             </button>
             
             {#if isLoopDropdownOpen}

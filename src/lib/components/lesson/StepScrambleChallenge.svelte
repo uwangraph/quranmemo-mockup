@@ -181,7 +181,7 @@
                     disabled={isChecked}
                 >
                     {loopTimes === Infinity ? '∞' : loopTimes + 'x'}
-                    <i class="ti ti-chevron-down" style="font-size: 14px;"></i>
+                <i class="ti ti-caret-down" style="font-size: 14px;"></i>
                 </button>
                 
                 {#if isLoopDropdownOpen}

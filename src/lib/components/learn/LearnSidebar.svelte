@@ -8,17 +8,17 @@
                 name: i18n.t("lb.you"),
                 xp: appState.user.xp,
                 isMe: true,
-                avatar: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
+                avatar: "ti-user-circle",
             },
             {
                 name: "Ust. Ridwan",
                 xp: 1420,
-                avatar: "https://cdn-icons-png.flaticon.com/512/3996/3996562.png",
+                avatar: "ti-user-circle",
             },
             {
                 name: "Aisyah",
                 xp: 1380,
-                avatar: "https://cdn-icons-png.flaticon.com/512/3996/3996570.png",
+                avatar: "ti-user-circle",
             },
         ]
             .sort((a, b) => b.xp - a.xp)
@@ -81,11 +81,7 @@
                 class="widget-title"
                 style="display: flex; align-items: center; gap: 6px;"
             >
-                <img
-                    src="https://cdn-icons-png.flaticon.com/512/4006/4006326.png"
-                    alt="Quests"
-                    style="width:16px; height:16px; object-fit:contain;"
-                />
+                <i class="ti ti-gift" aria-hidden="true"></i>
                 {i18n.t("sidebar.quests")}
             </span>
             <span class="widget-action"
@@ -118,7 +114,7 @@
                                 {#if !quest.claimed}
                                     <span
                                         class="quest-reward"
-                                        style="font-size:10px; margin-left:0; color:#ff9600; font-weight:800; margin-top:2px;"
+                                        style="font-size:10px; margin-left:0; color:#00978A; font-weight:800; margin-top:2px;"
                                         >{i18n.t('common.reward')}: +{quest.xp} XP</span
                                     >
                                 {/if}
@@ -150,7 +146,7 @@
                                 <div
                                     style="width: {Math.round(
                                         (quest.current / quest.max) * 100,
-                                    )}%; height: 100%; background: #ff9600; border-radius: 2px;"
+                                    )}%; height: 100%; background: #00978A; border-radius: 2px;"
                                 ></div>
                             </div>
                         {/if}
@@ -166,7 +162,7 @@
                     style="color: #1cb0f6; font-size: 13px; font-weight: 800; cursor: pointer; text-transform: uppercase;"
                     onclick={() => appState.go("quests")}
                     >{i18n.t('common.view_all')} <i
-                        class="ti ti-chevron-right"
+                        class="ti ti-caret-right"
                         style="font-size: 12px;"
                     ></i></span
                 >
@@ -188,11 +184,7 @@
                 class="widget-action"
                 style="color: #00978A; display: flex; align-items: center; gap: 4px;"
             >
-                <img
-                    src="https://cdn-icons-png.flaticon.com/512/3112/3112946.png"
-                    alt=""
-                    style="width: 16px; height: 16px; object-fit: contain;"
-                />
+                <i class="ti ti-trophy" aria-hidden="true"></i>
                 {i18n.t("league.sapphire")}
             </span>
         </div>
@@ -204,11 +196,7 @@
                     class:first={r.rank === 1}
                 >
                     <span class="rank-num">{r.rank}</span>
-                    <img
-                        src={r.avatar}
-                        alt={r.name}
-                        style="width: 28px; height: 28px; object-fit: contain; border-radius: 50%;"
-                    />
+                    <i class="ti {r.avatar} rank-avatar" aria-hidden="true"></i>
                     <span class="name">{r.name}</span>
                     <span class="xp">{r.xp} XP</span>
                 </div>
@@ -258,7 +246,7 @@
     }
     .goal-bar-fill {
         height: 100%;
-        background: #ff9600;
+        background: #00978A;
         border-radius: 4px;
     }
 
@@ -295,7 +283,7 @@
     .widget-action {
         font-size: 12px;
         font-weight: 800;
-        color: #ff9600;
+        color: #00978A;
     }
 
     .calendar-grid {
@@ -317,13 +305,13 @@
     }
     .calendar-grid .day.active {
         background: #ffebe6;
-        color: #ff9600;
-        border-color: #ff9600;
+        color: #00978A;
+        border-color: #00978A;
     }
     .calendar-grid .day.current {
-        background: #ff9600;
+        background: #00978A;
         color: #fff;
-        border-color: #ff9600;
+        border-color: #00978A;
         animation: pulseStreak 2s infinite;
     }
     @keyframes pulseStreak {
@@ -407,6 +395,7 @@
         font-size: 10px;
         color: #94a3b8;
     }
+    .rank-avatar { width: 28px; height: 28px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; color: #64748b; font-size: 24px; }
     .rank-item.first .rank-num {
         color: #eab308;
     }
