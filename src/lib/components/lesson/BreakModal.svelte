@@ -28,7 +28,7 @@
     .completion-overlay {
         position: absolute;
         inset: 0;
-        background: rgba(255, 255, 255, 0.95);
+        background: rgba(248, 250, 252, 0.94);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -37,24 +37,32 @@
     .completion-card {
         background: #fff;
         border: 2px solid #e5e5e5;
-        border-bottom-width: 6px;
+        border-bottom-width: 5px;
         border-radius: 28px;
-        padding: 36px 24px;
+        padding: 30px 24px 28px;
         width: 90%;
         max-width: 340px;
         text-align: center;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        box-shadow: 0 7px 0 #e2e8f0, 0 12px 28px rgba(15, 23, 42, 0.08);
         display: flex;
         flex-direction: column;
         align-items: center;
     }
     .break-emoji {
-        font-size: 56px;
-        margin-bottom: 12px;
+        display: grid;
+        place-items: center;
+        width: 68px;
+        height: 68px;
+        margin-bottom: 14px;
+        border-radius: 50%;
+        background: #fff7ed;
+        color: #f59e0b;
+        font-size: 40px;
+        line-height: 1;
     }
     .congrats-headline {
         font-size: 20px;
-        font-weight: 950;
+        font-weight: 900;
         color: #00978a;
         margin-bottom: 6px;
         letter-spacing: -0.5px;
@@ -62,7 +70,7 @@
     .break-description {
         font-size: 13px;
         color: #64748b;
-        margin: 12px 0 24px;
+        margin: 12px 0 22px;
         line-height: 1.6;
         font-weight: 500;
     }
@@ -72,34 +80,11 @@
         gap: 10px;
         width: 100%;
     }
-    .btn-duo {
-        width: 100%;
-        padding: 14px;
-        border: 2px solid #e5e5e5;
-        border-bottom-width: 4px;
-        border-radius: 16px;
-        background: #fff;
-        font-size: 13px;
-        font-weight: 900;
-        color: #afafaf;
-        cursor: pointer;
-        transition: all 0.1s ease;
-        text-align: center;
-        box-sizing: border-box;
-    }
-    .btn-duo:active {
-        transform: translateY(2px);
-        border-bottom-width: 2px;
-    }
-    .btn-duo.btn-green {
-        background: #00978A;
-        border-color: #00978A;
-        border-bottom-color: #007A70;
-        color: #fff;
-    }
-    .btn-duo.btn-outline {
-        border-color: #f1f5f9;
-        background: #fff;
-        color: #64748b;
-    }
+    /* Tombolnya sengaja TIDAK didefinisikan ulang di sini. .btn-duo/.btn-green/
+       .btn-outline sudah ada di app.css sebagai gaya acuan bersama (box-shadow
+       untuk efek 3D, bukan border-bottom-width yang ikut menentukan tinggi
+       elemen). Definisi lokal sebelumnya menimpa itu dengan border-bottom-width
+       yang menyusut saat hover/aktif — pola lama yang sama yang bikin elemen di
+       sekitarnya ikut bergeser — dan border outline-nya (#f1f5f9) nyaris tidak
+       kelihatan di atas kartu putih. */
 </style>

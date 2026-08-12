@@ -445,10 +445,10 @@ export default {
     "motivation.correct_msg": "Masya Allah! Jawabanmu 100% tepat. Hafalan tajwid dan visualmu makin kokoh!",
     "motivation.incorrect_msg": "Perhatikan susunan kata dan lafal aslinya. Jangan menyerah, ayo coba lagi!",
 
-    "break.title": "Istirahat Sejenak",
-    "break.description": "Istirahat sejenak agar pikiran tetap segar. Hafalan yang dilanjutkan dengan tenang akan lebih melekat di ingatan. 🌙",
-    "break.continue": "LANJUTKAN HAFALAN",
-    "break.exit": "KEMBALI KE DASHBOARD",
+    "break.title": "Ambil Jeda Sebentar",
+    "break.description": "Tarik napas sejenak. Hafalanmu aman, lanjutkan lagi kapan pun kamu siap.",
+    "break.continue": "LANJUT SAAT SIAP",
+    "break.exit": "SIMPAN & KEMBALI",
 
     "scramble.latin_toggle": "🔠 Latin",
     "scramble.latin_on": "ON",

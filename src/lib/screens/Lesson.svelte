@@ -25,6 +25,24 @@
     // State Variables bound to appState selectedVerseIndex
     const selectedVerseIndex = $derived(appState.selectedVerseIndex);
     let currentStep = $state(0); // 0 to 9 (corresponds to steps 1 to 10)
+    function readResume() {
+        if (!activeSurah || !Number.isInteger(selectedVerseIndex)) return null;
+        return appState.getLessonResume(activeSurah.id, selectedVerseIndex);
+    }
+
+    function saveResume() {
+        if (!activeSurah || !Number.isInteger(selectedVerseIndex) || !currentStepConfig) return;
+        appState.saveLessonResume(activeSurah.id, selectedVerseIndex, {
+            step: currentStep,
+            totalSteps: stepsPipeline.length
+        });
+    }
+
+    function clearResume() {
+        if (!activeSurah || !Number.isInteger(selectedVerseIndex)) return;
+        appState.clearLessonResume(activeSurah.id, selectedVerseIndex);
+        clearPersistedRecording();
+    }
     let isPlaying = $state(false);
     let currentWordIndex = $state(-1);
     let selectedOptionIdx = $state(null);
@@ -49,9 +67,49 @@
     let audioChunks = [];
     let recordedAudioUrl = $state(null);
     let recordedAudio = $state(null);
+    let recordedAudioBlob = null;
     let isPlayingRecorded = $state(false);
     let drawWaveRafId = 0;
     let activeVisCtx = null;
+
+    const RECORDING_DB = 'quranmemo-recordings';
+    const RECORDING_STORE = 'lesson-audio';
+    const recordingKey = $derived(`${activeSurah?.id ?? 'default'}:${selectedVerseIndex ?? 0}`);
+
+    function recordingStore(mode = 'readonly') {
+        if (typeof indexedDB === 'undefined') return Promise.resolve(null);
+        return new Promise((resolve) => {
+            const request = indexedDB.open(RECORDING_DB, 1);
+            request.onupgradeneeded = () => request.result.createObjectStore(RECORDING_STORE);
+            request.onerror = () => resolve(null);
+            request.onsuccess = () => resolve(request.result.transaction(RECORDING_STORE, mode).objectStore(RECORDING_STORE));
+        });
+    }
+
+    async function persistRecording(blob) {
+        if (!blob) return;
+        const store = await recordingStore('readwrite');
+        store?.put(blob, recordingKey);
+    }
+
+    async function restoreRecording() {
+        const store = await recordingStore();
+        if (!store) return;
+        const request = store.get(recordingKey);
+        request.onsuccess = () => {
+            if (!request.result) return;
+            recordedAudioBlob = request.result;
+            recordedAudioUrl = URL.createObjectURL(recordedAudioBlob);
+            recordedAudio = new Audio(recordedAudioUrl);
+            recordedAudio.onended = () => { isPlayingRecorded = false; isComparing = false; recordState = 'recorded'; };
+            recordState = 'recorded';
+        };
+    }
+
+    async function clearPersistedRecording() {
+        const store = await recordingStore('readwrite');
+        store?.delete(recordingKey);
+    }
 
     // Scramble / Word Selection states
     let scrambledWords = $state([]);
@@ -649,7 +707,8 @@
         }
         lastInitVerse = selectedVerseIndex;
         if (selectedVerseIndex !== null && selectedVerseIndex !== undefined) {
-            currentStep = 0;
+            const resume = readResume();
+            currentStep = Number.isInteger(resume?.step) ? Math.max(0, resume.step) : 0;
             isChecked = false;
             isCorrect = false;
             incorrectQueue = [];
@@ -664,6 +723,7 @@
             correctStepIds = new Set();
             releaseRecording(); // rekaman ayat sebelumnya tidak dipakai lagi
             setupAudio();
+            restoreRecording();
             setupScramble();
             // Auto-play for the first step
             if (audio) {
@@ -758,6 +818,7 @@
             URL.revokeObjectURL(recordedAudioUrl);
             recordedAudioUrl = null;
         }
+        recordedAudioBlob = null;
     }
 
     function setupAudio() {
@@ -863,6 +924,25 @@
             audio.pause();
             isPlaying = false;
         }
+        if (showBreakModal) saveResume();
+        // Jika pengguna menekan Break ketika mikrofon masih aktif, finalkan
+        // potongan suara yang sudah terekam agar tidak hilang.
+        if (showBreakModal && mediaRecorder && mediaRecorder.state !== 'inactive') {
+            mediaRecorder.stop();
+        }
+    }
+
+    function exitToDashboard() {
+        // Break menyimpan resume; keluar ke dashboard tidak boleh menghapusnya.
+        saveResume();
+        showBreakModal = false;
+        if (audio) audio.pause();
+        if (recordedAudio) recordedAudio.pause();
+        isPlaying = false;
+        isPlayingRecorded = false;
+        releaseRecording();
+        clearInterval(waveInterval);
+        appState.go('learn');
     }
 
     async function startSimulatedRecording() {
@@ -923,6 +1003,8 @@
                     // Blob URL rekaman sebelumnya harus dilepas, kalau tidak setiap
                     // pengulangan rekam menyisakan blob yang tidak pernah dibebaskan.
                     releaseRecording();
+                    recordedAudioBlob = audioBlob;
+                    persistRecording(audioBlob);
                     recordedAudioUrl = URL.createObjectURL(audioBlob);
                     recordedAudio = new Audio(recordedAudioUrl);
                     
@@ -1120,6 +1202,7 @@
             appState.triggerLoginRewardCheck();
             appState.saveUser();
 
+            clearResume();
             showCompletion = true;
             triggerCompletionEffects();
         }
@@ -1216,6 +1299,7 @@
     function exitLesson() {
         if (audio) audio.pause();
         clearInterval(waveInterval);
+        clearResume();
         appState.go('learn');
     }
 
@@ -1241,7 +1325,7 @@
             <div class="prog-bar-fill" style="width: {showCompletion ? 100 : ((currentStep + 1) / stepsPipeline.length) * 100}%"></div>
         </div>
         <button onclick={toggleBreak} disabled={isChecked} style="background: none; border: none; cursor: pointer; display: flex; align-items: center; margin-right: 8px; opacity: {isChecked ? 0.5 : 1}; pointer-events: {isChecked ? 'none' : 'auto'};" title={i18n.t('lesson.break')}>
-            <i class="ti ti-coffee" style="font-size: 18px; color: #00978a;"></i>
+            <i class="ti ti-coffee" style="font-size: 18px; color: #f59e0b;"></i>
         </button>
         <button onclick={() => showTajwidModal = true} disabled={isChecked} style="background: none; border: none; cursor: pointer; display: flex; align-items: center; margin-right: 8px; opacity: {isChecked ? 0.5 : 1}; pointer-events: {isChecked ? 'none' : 'auto'};" title={i18n.t('tajwid.title')}>
             <i class="ti ti-info-circle" style="font-size: 18px; color: #00978a;"></i>
@@ -1579,7 +1663,7 @@
     <BreakModal
         {showBreakModal}
         onContinue={() => (showBreakModal = false)}
-        onExit={exitLesson}
+        onExit={exitToDashboard}
     />
 
     <!-- 3. COMPLETED ALL STAGES SCREEN OVERLAY -->
@@ -1818,38 +1902,36 @@
         text-transform: uppercase;
         letter-spacing: 0.5px;
         border: none;
-        border-bottom: 3px solid;
         cursor: pointer;
-        transition: all 0.15s;
+        box-shadow: 0 4px 0 var(--btn-edge, transparent);
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
         display: flex;
         align-items: center;
         justify-content: center;
         gap: 8px;
     }
     .btn-duo:hover:not(:disabled) {
-        transform: translateY(1px);
-        border-bottom-width: 2px;
-        box-shadow: none;
+        transform: translateY(2px);
+        box-shadow: 0 2px 0 var(--btn-edge, transparent);
     }
     .btn-duo:active:not(:disabled) {
-        transform: translateY(3px);
-        border-bottom-width: 0;
+        transform: translateY(4px);
         box-shadow: none;
     }
     .btn-duo.outline {
         background: #fff;
         color: #00978A;
-        border-color: #e5e5e5;
+        --btn-edge: #e5e5e5;
     }
     .btn-duo.btn-green {
         background: #00978A;
         color: #fff;
-        border-color: #007A70;
+        --btn-edge: #007A70;
     }
     .btn-duo.btn-red {
         background: #ff4b4b;
         color: #fff;
-        border-color: #d63d3d;
+        --btn-edge: #d63d3d;
     }
     .btn-duo:disabled, .btn-disabled {
         background: #e5e5e5;
