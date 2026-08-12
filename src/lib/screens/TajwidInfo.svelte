@@ -27,7 +27,7 @@
     <!-- Header -->
     <header class="app-header">
         <button class="icon-btn" onclick={() => { if (onClose) onClose(); else appState.go('lesson'); }}>
-            <i class="ti ti-arrow-left"></i>
+        <i class="ti ti-arrow-left"></i>
         </button>
         <h1 class="page-title">{i18n.t('tajwid.title')}</h1>
         <div style="width: 40px;"></div>

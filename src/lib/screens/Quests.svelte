@@ -14,8 +14,8 @@
     // XP per misi dibaca dari definisi misi harian agar tidak ada dua sumber angka.
     const questXp = Object.fromEntries(makeDailyQuests().map(q => [q.id, q.xp]));
     const monthlyItems = $derived([
-        { icon: '📅', text: i18n.t('quest.daily_login'), current: monthly.loginDays, max: daysInMonth, xp: questXp.m_login },
-        { icon: '📖', text: i18n.t('quest.memorize_verse'), current: monthly.versesMemorized, max: daysInMonth, xp: questXp.m_verse }
+        { icon: 'ti-calendar', text: i18n.t('quest.daily_login'), current: monthly.loginDays, max: daysInMonth, xp: questXp.m_login },
+        { icon: 'ti-book-2', text: i18n.t('quest.memorize_verse'), current: monthly.versesMemorized, max: daysInMonth, xp: questXp.m_verse }
     ]);
     let showCustomAlert = $state(false);
     let alertMessage = $state("");
@@ -41,10 +41,10 @@
     <div class="top-header">
         <div class="wallet-pills">
             <div class="pill">
-                <i class="ti ti-star-filled" style="color:#ff9600"></i> <span style="color: #3c3c3c;">{appState.user.xp}</span>
+                <i class="ti ti-star" style="color:#00978A"></i> <span style="color: #3c3c3c;">{appState.user.xp}</span>
             </div>
             <div class="pill">
-                <i class="ti ti-diamond-filled" style="color:#00978A"></i> <span style="color: #3c3c3c;">{appState.user.gems}</span>
+                <i class="ti ti-diamond gem-icon"></i> <span class="gem-value">{appState.user.gems}</span>
             </div>
         </div>
     </div>
@@ -67,7 +67,7 @@
                             <p>{i18n.t('quests.daily_desc')}</p>
                             </div>
                             <div class="banner-icon">
-                                <img src="https://cdn-icons-png.flaticon.com/512/3238/3238125.png" alt="Quran" />
+                                <i class="ti ti-book" aria-hidden="true"></i>
                             </div>
                         </div>
                     </div>
@@ -112,7 +112,7 @@
                                 {#if !appState.user.dailyQuests.completedAll}
                                     <div class="quest-card" style="background: linear-gradient(135deg, #f0fdf4, #fff); border-color: #bbf7d0; border-style: dashed;">
                                         <div class="card-icon">
-                                            <div style="background: #d1fae5; border: 2px solid #6ee7b7; border-radius: 12px; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; font-size: 22px;">🎯</div>
+                                            <div style="background: #d1fae5; border: 2px solid #6ee7b7; border-radius: 12px; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; font-size: 22px;"><i class="ti ti-target"></i></div>
                                         </div>
                                         <div class="card-content">
                                             <div style="font-size:14px; font-weight:900; color:#065f46;">{i18n.t('quests.complete_all')}</div>
@@ -122,7 +122,7 @@
                                 {:else}
                                     <div class="quest-card" style="background: linear-gradient(135deg, #ecfdf5, #f0fdf4); border-color: #6ee7b7;">
                                         <div class="card-icon">
-                                            <div style="background: #d1fae5; border: 2px solid #6ee7b7; border-radius: 12px; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; font-size: 22px;">✅</div>
+                                            <div style="background: #d1fae5; border: 2px solid #6ee7b7; border-radius: 12px; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; font-size: 22px;"><i class="ti ti-circle-check"></i></div>
                                         </div>
                                         <div class="card-content">
                                             <div style="font-size:14px; font-weight:900; color:#065f46;">{i18n.t('quests.all_complete')}</div>
@@ -183,7 +183,7 @@
                                 {@const pct = Math.min(100, Math.round((item.current / item.max) * 100))}
                                 <div class="quest-card active-card">
                                     <div class="card-icon">
-                                        <div class="monthly-icon">{item.icon}</div>
+                                        <div class="monthly-icon"><i class="ti {item.icon}"></i></div>
                                     </div>
                                     <div class="card-content">
                                         <div class="quest-title">{item.text}</div>
@@ -199,9 +199,9 @@
                                 </div>
                             {/each}
 
-                            <div class="quest-card" style="background: linear-gradient(135deg, #fffbeb, #fff); border-color: #fde68a;">
+                            <div class="quest-card" style="background: linear-gradient(135deg, #fffbeb, #fff); border-color: #99e5dc;">
                                 <div class="card-icon">
-                                    <div class="monthly-icon" style="background:#fef3c7; border-color:#fde68a;">⚡</div>
+                                    <div class="monthly-icon" style="background:#e8f8f6; border-color:#99e5dc;"><i class="ti ti-bolt"></i></div>
                                 </div>
                                 <div class="card-content">
                                     <div style="font-size:14px; font-weight:900; color:#92400e;">{i18n.t('quests.monthly_xp_total')}</div>
@@ -225,7 +225,7 @@
                             <div class="badge-cluster">
                                 <div class="badge-circle green-badge"></div>
                                 <div class="badge-circle yellow-badge">
-                                    <img src="https://cdn-icons-png.flaticon.com/512/3238/3238125.png" alt="Quran" style="width:36px; height:36px; object-fit:contain; filter:brightness(0) invert(1);" />
+                                    <i class="ti ti-book" aria-hidden="true"></i>
                                 </div>
                             </div>
                         </div>
@@ -393,11 +393,11 @@
 
     /* Banner - QuranMemo Branding */
     .quests-banner {
-        background: #00978A; /* QuranMemo Primary Color */
+        background: linear-gradient(135deg, #14b8a6, #00978a);
         border-radius: 16px;
         padding: 24px;
         margin-bottom: 32px;
-        box-shadow: 0 4px 0 #007a6f;
+        box-shadow: 0 4px 0 #007a70;
     }
     .banner-body {
         display: flex;
@@ -417,10 +417,14 @@
         color: #e0f2f1;
         line-height: 1.4;
     }
-    .banner-icon img {
+    .banner-icon i {
         width: 90px;
         height: 90px;
-        object-fit: contain;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 72px;
+        color: #fff;
     }
 
     /* Quests Section */
@@ -439,7 +443,7 @@
     .timer {
         font-size: 14px;
         font-weight: 800;
-        color: #ff9600; /* QuranMemo Orange */
+        color: #00978A; /* QuranMemo Orange */
         display: flex;
         align-items: center;
         gap: 6px;
@@ -515,7 +519,7 @@
     }
     .progress-bar-fill {
         height: 100%;
-        background: #ff9600; /* QuranMemo Orange */
+        background: #00978A; /* QuranMemo Orange */
         border-radius: 8px;
         display: flex;
         align-items: center;
@@ -533,7 +537,7 @@
     .reward-tag {
         font-size: 14px;
         font-weight: 900;
-        color: #ff9600;
+        color: #00978A;
     }
 
     .reward-pill {
@@ -624,14 +628,14 @@
     .yellow-badge {
         width: 64px;
         height: 64px;
-        background: #ff9600; /* QuranMemo Orange */
+        background: #00978A; /* QuranMemo Orange */
         left: 0;
         bottom: 0;
         z-index: 2;
         display: flex;
         align-items: center;
         justify-content: center;
-        box-shadow: 0 4px 0 #cc7800;
+        box-shadow: 0 4px 0 #007A70;
     }
     
     .start-lesson-btn {
@@ -700,7 +704,7 @@
         color: #3c3c3c;
     }
     .guide-steps i {
-        color: #ff9600;
+        color: #00978A;
     }
     .guide-note {
         margin-top: 12px;

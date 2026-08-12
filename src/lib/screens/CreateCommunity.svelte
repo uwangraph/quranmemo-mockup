@@ -98,7 +98,7 @@
                     <div class="radio-group">
                         <label class="radio-card {commMode === 'open' ? 'selected' : ''}">
                             <input type="radio" name="mode" value="open" bind:group={commMode} class="hidden" />
-                            <div class="icon">🌍</div>
+                            <div class="icon"><i class="ti ti-globe"></i></div>
                             <div class="details">
                                 <div class="title">{i18n.t('community.open')}</div>
                                 <div class="desc">{i18n.t('community.open_desc')}</div>
@@ -108,7 +108,7 @@
                         
                         <label class="radio-card {commMode === 'private' ? 'selected' : ''}">
                             <input type="radio" name="mode" value="private" bind:group={commMode} class="hidden" />
-                            <div class="icon">🔒</div>
+                            <div class="icon"><i class="ti ti-lock"></i></div>
                             <div class="details">
                                 <div class="title">{i18n.t('community.private')}</div>
                                 <div class="desc">{i18n.t('community.private_desc')}</div>
@@ -139,7 +139,7 @@
                         </div>
                     </div>
                     <button class="btn-outline" onclick={addHalaqah} style="margin-top: 12px; width: 100%;">
-                        <i class="ti ti-plus"></i> {i18n.t('community.add_halaqah')}
+                    <i class="ti ti-plus"></i> {i18n.t('community.add_halaqah')}
                     </button>
                     <div style="font-size: 10px; color: #afafaf; text-align: center; margin-top: 6px;">{i18n.t('community.capacity_range')}</div>
                 </div>
@@ -149,12 +149,12 @@
                     <h4>{i18n.t('community.halaqah_list')} ({halaqahs.length})</h4>
                     {#each halaqahs as h}
                         <div class="halaqah-item">
-                            <div class="h-icon">📖</div>
+                            <div class="h-icon"><i class="ti ti-book-2"></i></div>
                             <div class="h-details">
                                 <div class="h-name">{h.name}</div>
                                 <div class="h-cap">{i18n.t('community.max_capacity')}: {h.capacity} {i18n.t('halaqah.people')}</div>
                             </div>
-                            <button class="h-del-btn" onclick={() => removeHalaqah(h.id)}><i class="ti ti-trash"></i></button>
+                    <button class="h-del-btn" onclick={() => removeHalaqah(h.id)}><i class="ti ti-trash"></i></button>
                         </div>
                     {/each}
                     {#if halaqahs.length === 0}
@@ -167,7 +167,7 @@
             <!-- STEP 3: Review -->
             <div class="step-content">
                 <div class="review-card">
-                    <div class="r-badge">{commMode === 'open' ? '🌍 ' + i18n.t('community.open_upper') : '🔒 ' + i18n.t('community.private_upper')}</div>
+                    <div class="r-badge"><i class="ti {commMode === 'open' ? 'ti-globe' : 'ti-lock'}"></i> {commMode === 'open' ? i18n.t('community.open_upper') : i18n.t('community.private_upper')}</div>
                     <div class="r-title">{commName}</div>
                     <div class="r-desc">{commDesc || i18n.t('community.no_description')}</div>
                     

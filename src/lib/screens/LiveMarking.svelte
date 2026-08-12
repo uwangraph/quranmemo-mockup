@@ -31,7 +31,7 @@
         const type = i18n.t(`marking.type_${typeKey}`);
         const colorMap = {
             forget: "#ff4b4b",
-            tajwid: "#ff9600",
+            tajwid: "#00978A",
             makhraj: "#1cb0f6"
         };
         
@@ -60,7 +60,7 @@
             </button>
             <div style="flex: 1">
                 <div style="font-size: 14px; font-weight: 900">{session.studentName}</div>
-                <div style="font-size: 10px; font-weight: 700; color: #00978A">🔴 {i18n.t('marking.live')} — {session.surah}: {session.ayah}</div>
+                <div style="font-size: 10px; font-weight: 700; color: #00978A"><i class="ti ti-broadcast"></i> {i18n.t('marking.live')} — {session.surah}: {session.ayah}</div>
             </div>
             <div class="timer-bubble">04:20</div>
         </div>
@@ -94,7 +94,7 @@
                     <div class="log-container">
                         {#if corrections.length === 0}
                             <div class="empty-log">
-                                <i class="ti ti-notes" style="font-size: 24px; margin-bottom: 8px; opacity: 0.5;"></i>
+                                <i class="ti ti-notebook" style="font-size: 24px; margin-bottom: 8px; opacity: 0.5;"></i>
                                 <div>{i18n.t('marking.empty')}</div>
                             </div>
                         {:else}

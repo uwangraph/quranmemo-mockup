@@ -7,10 +7,10 @@
     const maxVal = Math.max(...weeklyData);
     
     let transactions = $state([
-        { id: 1, type: 'Recitation', student: 'Ahmad Hafidz', date: 'Today, 09:30', amount: '+15 💎', status: 'Completed' },
-        { id: 2, type: 'Recitation', student: 'Sarah Amira', date: 'Yesterday, 20:15', amount: '+15 💎', status: 'Completed' },
-        { id: 3, type: 'Withdrawal', student: 'To Bank BCA', date: '10 May, 14:00', amount: '-1000 💎', status: 'Processing' },
-        { id: 4, type: 'Recitation', student: 'Zaid Fawwaz', date: '10 May, 08:45', amount: '+15 💎', status: 'Completed' },
+        { id: 1, type: 'Recitation', student: 'Ahmad Hafidz', date: 'Today, 09:30', amount: '+15', status: 'Completed' },
+        { id: 2, type: 'Recitation', student: 'Sarah Amira', date: 'Yesterday, 20:15', amount: '+15', status: 'Completed' },
+        { id: 3, type: 'Withdrawal', student: 'To Bank BCA', date: '10 May, 14:00', amount: '-1000', status: 'Processing' },
+        { id: 4, type: 'Recitation', student: 'Zaid Fawwaz', date: '10 May, 08:45', amount: '+15', status: 'Completed' },
     ]);
     
     let showWithdrawModal = $state(false);
@@ -78,7 +78,7 @@
                     type: 'Withdrawal', 
                     student: 'To Bank BCA', 
                     date: 'Today, ' + new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}), 
-                    amount: `-${amountToWithdraw} 💎`, 
+                    amount: `-${amountToWithdraw}`, 
                     status: 'Processing' 
                 },
                 ...transactions
@@ -110,17 +110,26 @@
 
     <div class="scroll-content no-scrollbar" style="padding: 20px;">
         <!-- Balance Card -->
-        <div class="balance-card" style="background: linear-gradient(135deg, #1cb0f6, #0898dc); box-shadow: 0 10px 20px rgba(28, 176, 246, 0.2);">
+        <div class="balance-card">
             <div class="balance-info">
-                <div style="font-size: 11px; font-weight: 800; color: #ffffff; opacity: 0.8; text-transform: uppercase;">{i18n.t('earnings.total_gems')}</div>
-                <div style="font-size: 32px; font-weight: 900; color: #ffffff; margin: 4px 0;">{appState.musyrifBalance} <i class="ti ti-diamond-filled"></i></div>
-                <div style="display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 800; color: #ffffff;">
-                    <span style="background: rgba(255,255,255,0.2); padding: 4px 8px; border-radius: 6px;">≈ Rp {(appState.musyrifBalance * 672).toLocaleString('id-ID')}</span>
-                    <span style="opacity: 0.8;">{i18n.t('earnings.rupiah_estimate')}</span>
+                <div class="balance-top">
+                    <span class="balance-eyebrow">{i18n.t('earnings.total_gems')}</span>
+                    <!-- Ikon berlian gems selalu biru (#1cb0f6) di seluruh aplikasi. Sebelumnya
+                         warna itu diletakkan langsung di atas gradasi oranye kartu ini — satu-
+                         satunya tempat biru bertemu oranye secara langsung, dan keduanya
+                         bentrok. Diberi lencana bundar putih supaya birunya tetap dikenali
+                         tanpa langsung menempel ke latar oranye. -->
+                    <span class="balance-gem-badge" aria-hidden="true"><i class="ti ti-diamond"></i></span>
+                </div>
+                <div class="balance-total-value">{appState.musyrifBalance}</div>
+                <div class="balance-estimate">
+                    <span class="balance-estimate-amount">≈ Rp {(appState.musyrifBalance * 672).toLocaleString('id-ID')}</span>
+                    <span class="balance-estimate-label">{i18n.t('earnings.rupiah_estimate')}</span>
                 </div>
             </div>
-            <button class="withdraw-btn" onclick={() => showWithdrawModal = true} disabled={appState.musyrifBalance <= 0} style={appState.musyrifBalance <= 0 ? "opacity: 0.6; cursor: not-allowed;" : ""}>
-                <i class="ti ti-wallet" style="font-size: 18px;"></i>
+
+            <button class="withdraw-btn" onclick={() => showWithdrawModal = true} disabled={appState.musyrifBalance <= 0}>
+                <i class="ti ti-wallet"></i>
                 <span>{i18n.t('earnings.withdraw_rupiah')}</span>
             </button>
         </div>
@@ -197,14 +206,14 @@
                 {#each transactions as tx}
                     <div class="transaction-item">
                         <div class="tx-icon" style="background: {tx.type === 'Recitation' ? '#f0f0f0' : '#ffeded'};">
-                            <i class="ti ti-{tx.type === 'Recitation' ? 'book' : 'arrow-up-right'}" style="color: {tx.type === 'Recitation' ? '#3c3c3c' : '#ff4b4b'};"></i>
+                            <i class="ti ti-{tx.type === 'Recitation' ? 'book-open' : 'arrow-up-right'}" style="color: {tx.type === 'Recitation' ? '#3c3c3c' : '#ff4b4b'};"></i>
                         </div>
                         <div style="flex: 1">
                             <div style="font-size: 13px; font-weight: 800; color: #3c3c3c;">{tx.student}</div>
                             <div style="font-size: 10px; font-weight: 700; color: #afafaf;">{tx.date}</div>
                         </div>
                         <div style="text-align: right">
-                            <div style="font-size: 13px; font-weight: 900; color: {tx.amount.startsWith('+') ? '#00978A' : '#ff4b4b'};">{tx.amount}</div>
+                            <div style="font-size: 13px; font-weight: 900; color: {tx.amount.startsWith('+') ? '#00978A' : '#ff4b4b'};">{tx.amount} <i class="ti ti-diamond"></i></div>
                             <div style="font-size: 9px; font-weight: 800; color: #afafaf; text-transform: uppercase;">{tx.status}</div>
                         </div>
                     </div>
@@ -246,11 +255,11 @@
         <div class="custom-alert-box" onclick={e => e.stopPropagation()}>
             {#if alertStatus === 'success'}
                 <div class="alert-icon" style="color: #10b981; background: #e6f4ea;">
-                    <i class="ti ti-circle-check" style="font-size: 28px;"></i>
+                <i class="ti ti-circle-check" style="font-size: 28px;"></i>
                 </div>
             {:else}
                 <div class="alert-icon" style="color: #ef4444; background: #fce8e6;">
-                    <i class="ti ti-circle-x" style="font-size: 28px;"></i>
+                <i class="ti ti-circle-x" style="font-size: 28px;"></i>
                 </div>
             {/if}
             <div style="font-size: 16px; font-weight: 900; margin-bottom: 8px;">{alertTitle}</div>
@@ -281,22 +290,46 @@
         cursor: pointer;
     }
 
+    /* Gradasi oranye ditulis langsung di sini, bukan lagi lewat style inline yang
+       menimpa gradasi biru bawaan kelas ini pada satu-satunya tempat kelas ini
+       dipakai — dua definisi warna untuk satu kartu yang sama tidak pernah perlu. */
     .balance-card {
-        background: linear-gradient(135deg, #1cb0f6, #0898dc);
+        background: linear-gradient(135deg, #ff9600, #e66f00);
         border-radius: 24px;
-        padding: 24px;
+        padding: 22px 24px;
         display: flex;
         flex-direction: column;
-        gap: 20px;
-        box-shadow: 0 10px 20px rgba(28, 176, 246, 0.2);
+        gap: 18px;
+        box-shadow: 0 10px 20px rgba(230, 111, 0, 0.28);
         margin-bottom: 24px;
     }
+    .balance-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+    .balance-eyebrow {
+        font-size: 11px; font-weight: 800; color: #fff; opacity: 0.85;
+        text-transform: uppercase; letter-spacing: 0.6px;
+    }
+    /* Ikon gems selalu biru di seluruh aplikasi; lencana putih ini memberinya
+       permukaan netral supaya birunya tidak bentrok langsung dengan oranye kartu. */
+    .balance-gem-badge {
+        width: 30px; height: 30px; border-radius: 50%; flex-shrink: 0;
+        background: rgba(255,255,255,0.92);
+        display: flex; align-items: center; justify-content: center;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    }
+    .balance-gem-badge i { color: #1cb0f6; font-size: 16px; }
+    .balance-total-value {
+        font-size: 36px; font-weight: 900; color: #fff; line-height: 1.15; margin-top: 6px;
+    }
+    .balance-estimate { display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
+    .balance-estimate-amount { font-size: 14px; font-weight: 800; color: #fff; }
+    .balance-estimate-label { font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.75); }
+
     .withdraw-btn {
         background: #fff;
-        border: none;
+        border: 2px solid #d97706;
         padding: 12px;
         border-radius: 16px;
-        color: #1cb0f6;
+        color: #c2410c;
         font-weight: 900;
         font-size: 13px;
         display: flex;
@@ -304,10 +337,12 @@
         justify-content: center;
         gap: 8px;
         cursor: pointer;
-        transition: all 0.2s;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        transition: transform .1s ease, box-shadow .1s ease;
+        box-shadow: 0 4px 0 #d97706;
     }
-    .withdraw-btn:active { transform: scale(0.98); box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+    .withdraw-btn:hover { transform: translateY(2px); box-shadow: 0 2px 0 #d97706; }
+    .withdraw-btn:active { transform: translateY(4px); box-shadow: none; }
+    .withdraw-btn:disabled { opacity: 0.6; cursor: not-allowed; }
 
     /* Modal Styles */
     .custom-alert-overlay {

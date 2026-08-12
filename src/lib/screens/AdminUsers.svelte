@@ -27,7 +27,7 @@
         <div class="section-label">{i18n.t('admin.user_attention')}</div>
         <div class="user-list">
             <div class="user-card warning">
-                <div class="user-icon" style="background: #ede8ff;">📉</div>
+                <div class="user-icon" style="background: #ede8ff;"><i class="ti ti-trending-down"></i></div>
                 <div style="flex: 1;">
                     <div class="user-name">Budi Santoso</div>
                     <div class="user-status" style="color: #ef4444;">{i18n.t('admin.streak_broken')}</div>
@@ -36,7 +36,7 @@
             </div>
             
             <div class="user-card warning">
-                <div class="user-icon" style="background: #ede8ff;">⏳</div>
+                <div class="user-icon" style="background: #ede8ff;"><i class="ti ti-hourglass"></i></div>
                 <div style="flex: 1;">
                     <div class="user-name">Siti Aminah</div>
                     <div class="user-status" style="color: #a16207;">{i18n.t('admin.no_submission_week')}</div>

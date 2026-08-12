@@ -11,8 +11,8 @@
             content: 'guide.about_content'
         },
         {
-            icon: 'ti-route',
-            color: '#ff9600',
+            icon: 'ti-map',
+            color: '#00978A',
             title: 'guide.start_title',
             steps: [
                 'guide.start_1', 'guide.start_2', 'guide.start_3', 'guide.start_4'
@@ -63,7 +63,7 @@
         <div class="guide-header-inner">
             <div class="header-ornament left"></div>
             <div class="header-content">
-                <div class="header-icon">📖</div>
+                <div class="header-icon"><i class="ti ti-book-2"></i></div>
                 <h1>{i18n.t('guide.title')}</h1>
                 <p>{i18n.t('guide.subtitle')}</p>
             </div>
@@ -125,7 +125,7 @@
 
     /* ── Header ── */
     .guide-header {
-        background: linear-gradient(135deg, #006633 0%, #00978A 100%);
+        background: linear-gradient(135deg, #14b8a6 0%, #00978a 100%);
         padding: 20px 16px 16px;
         position: relative;
         overflow: hidden;
@@ -161,6 +161,8 @@
         font-size: 32px;
         line-height: 1;
         margin-bottom: 4px;
+        color: #00978a;
+        filter: drop-shadow(0 1px 0 rgba(112, 66, 0, 0.35));
     }
     .guide-header h1 {
         font-size: 20px;

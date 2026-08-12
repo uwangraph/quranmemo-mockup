@@ -82,15 +82,15 @@
     ]);
     
     const allMusyrifs = $derived([
-        { name: "Ust. Ahmad Fauzi", gender: "ustadz", rating: 4.9, status: "online", tier: "bersanad", icon: "👳", schedule: [i18n.t('market.day_today') + ", 20:00", ...defaultSchedule] },
-        { name: "Ust. Ridwan Hakim", gender: "ustadz", rating: 4.8, status: "online", tier: "reguler", icon: "👨‍🏫", schedule: defaultSchedule },
-        { name: "Ustadzah Siti Aminah", gender: "ustadzah", rating: 5.0, status: "offline", tier: "bersanad", icon: "🧕", schedule: [i18n.t('market.day_tomorrow') + ", 09:00", i18n.t('market.day_tomorrow') + ", 16:00", i18n.t('market.day_after_tomorrow') + ", 10:00"] },
-        { name: "Ust. Budi Santoso", gender: "ustadz", rating: 4.7, status: "online", tier: "reguler", icon: "🧔", schedule: defaultSchedule },
-        { name: "Ustadzah Aisyah", gender: "ustadzah", rating: 4.9, status: "online", tier: "reguler", icon: "🧕", schedule: [i18n.t('market.day_today') + ", 19:00", ...defaultSchedule] },
-        { name: "Ust. Hasanuddin", gender: "ustadz", rating: 5.0, status: "online", tier: "bersanad", icon: "👳", schedule: defaultSchedule },
-        { name: "Ustadzah Fatimah", gender: "ustadzah", rating: 4.6, status: "offline", tier: "reguler", icon: "🧕", schedule: defaultSchedule },
-        { name: "Ust. Zulkifli", gender: "ustadz", rating: 4.8, status: "online", tier: "bersanad", icon: "👨‍🏫", schedule: defaultSchedule },
-        { name: "Ustadzah Khadijah", gender: "ustadzah", rating: 4.9, status: "online", tier: "bersanad", icon: "🧕", schedule: defaultSchedule }
+        { name: "Ust. Ahmad Fauzi", gender: "ustadz", rating: 4.9, status: "online", tier: "bersanad", icon: "ti-chalkboard-teacher", schedule: [i18n.t('market.day_today') + ", 20:00", ...defaultSchedule] },
+        { name: "Ust. Ridwan Hakim", gender: "ustadz", rating: 4.8, status: "online", tier: "reguler", icon: "ti-chalkboard-teacher", schedule: defaultSchedule },
+        { name: "Ustadzah Siti Aminah", gender: "ustadzah", rating: 5.0, status: "offline", tier: "bersanad", icon: "ti-user-circle", schedule: [i18n.t('market.day_tomorrow') + ", 09:00", i18n.t('market.day_tomorrow') + ", 16:00", i18n.t('market.day_after_tomorrow') + ", 10:00"] },
+        { name: "Ust. Budi Santoso", gender: "ustadz", rating: 4.7, status: "online", tier: "reguler", icon: "ti-user-circle", schedule: defaultSchedule },
+        { name: "Ustadzah Aisyah", gender: "ustadzah", rating: 4.9, status: "online", tier: "reguler", icon: "ti-user-circle", schedule: [i18n.t('market.day_today') + ", 19:00", ...defaultSchedule] },
+        { name: "Ust. Hasanuddin", gender: "ustadz", rating: 5.0, status: "online", tier: "bersanad", icon: "ti-chalkboard-teacher", schedule: defaultSchedule },
+        { name: "Ustadzah Fatimah", gender: "ustadzah", rating: 4.6, status: "offline", tier: "reguler", icon: "ti-user-circle", schedule: defaultSchedule },
+        { name: "Ust. Zulkifli", gender: "ustadz", rating: 4.8, status: "online", tier: "bersanad", icon: "ti-chalkboard-teacher", schedule: defaultSchedule },
+        { name: "Ustadzah Khadijah", gender: "ustadzah", rating: 4.9, status: "online", tier: "bersanad", icon: "ti-user-circle", schedule: defaultSchedule }
     ]);
 
     const musyrifs = $derived(
@@ -149,11 +149,11 @@
     <div class="topbar wallet-header">
         <div class="wallet-pills">
 
-            <div class="pill xp-pill" style="color: #ff9600; border-color: #fff7e6; background: #fffbf2;">
-                <i class="ti ti-star-filled"></i> <span>{appState.user.xp}</span>
+            <div class="pill xp-pill" style="color: #d99000; border-color: #ffe08a; background: #fff3c4;">
+                        <i class="ti ti-star"></i> <span>{appState.user.xp}</span>
             </div>
-            <div class="pill gem-pill" style="color: #00978A; border-color: #e0f2f1; background: #e0f2f1;">
-                <i class="ti ti-diamond-filled"></i> <span>{appState.user.gems}</span>
+            <div class="pill gem-pill" style="color: #1CB0F6; border-color: #d9f2ff; background: #e8f8ff;">
+                        <i class="ti ti-diamond gem-icon"></i> <span>{appState.user.gems}</span>
             </div>
         </div>
         <button class="topup-btn">
@@ -178,7 +178,7 @@
                     </div>
                     <div class="price-badge">
                         <span>{i18n.t('market.price_label')} 15</span>
-                        <i class="ti ti-diamond-filled" aria-hidden="true"></i>
+                        <i class="ti ti-diamond" aria-hidden="true"></i>
                     </div>
                 </div>
                 
@@ -188,7 +188,7 @@
                         <div class="custom-select-wrapper" style="position: relative;">
                             <div class="custom-select-box" onclick={() => showDropdown = !showDropdown}>
                                 <span>{selectedSurah}</span>
-                                <i class="ti ti-chevron-down"></i>
+                                <i class="ti ti-caret-down"></i>
                             </div>
                             {#if showDropdown}
                                 <!-- svelte-ignore a11y_click_events_have_key_events -->
@@ -211,7 +211,7 @@
                         <div class="ayah-range-controls">
                             <div class="custom-select-wrapper ayah-custom-select">
                                 <div class="custom-select-box" role="button" tabindex="0" onclick={() => { showAyahFromDropdown = !showAyahFromDropdown; showAyahToDropdown = false; }} onkeydown={(event) => event.key === 'Enter' && (showAyahFromDropdown = !showAyahFromDropdown)}>
-                                    <span>Dari {selectedAyahFrom}</span><i class="ti ti-chevron-down"></i>
+                                    <span>Dari {selectedAyahFrom}</span><i class="ti ti-caret-down"></i>
                                 </div>
                                 {#if showAyahFromDropdown}
                                     <div class="dropdown-menu-overlay" onclick={() => showAyahFromDropdown = false}></div>
@@ -226,7 +226,7 @@
                             </div>
                             <div class="custom-select-wrapper ayah-custom-select">
                                 <div class="custom-select-box" role="button" tabindex="0" onclick={() => { showAyahToDropdown = !showAyahToDropdown; showAyahFromDropdown = false; }} onkeydown={(event) => event.key === 'Enter' && (showAyahToDropdown = !showAyahToDropdown)}>
-                                    <span>Sampai {selectedAyahTo}</span><i class="ti ti-chevron-down"></i>
+                                    <span>Sampai {selectedAyahTo}</span><i class="ti ti-caret-down"></i>
                                 </div>
                                 {#if showAyahToDropdown}
                                     <div class="dropdown-menu-overlay" onclick={() => showAyahToDropdown = false}></div>
@@ -262,14 +262,14 @@
             {#each displayMusyrifs as m}
                 <div class="musyrif-card" class:offline={m.status === 'offline'}>
                     <div style="display:flex; align-items: center; gap: 16px; width: 100%;">
-                        <div class="m-avatar">{m.icon}</div>
+                        <div class="m-avatar"><i class="ti {m.icon}"></i></div>
                         <div style="flex:1">
                             <div style="display:flex; align-items:center; gap:6px;">
                                 <span style="font-size:14px; font-weight:800; color:#3c3c3c;">{m.name}</span>
                             </div>
                             <div style="display:flex; align-items:center; gap:10px; margin-top:4px;">
-                                <div style="font-size:12px; font-weight:800; color:#ff9600; display:flex; align-items:center; gap:2px;">
-                                    <i class="ti ti-star-filled"></i> {m.rating}
+                                <div style="font-size:12px; font-weight:800; color:#00978A; display:flex; align-items:center; gap:2px;">
+                                    <i class="ti ti-star"></i> {m.rating}
                                 </div>
                                 <div style="font-size:12px; font-weight:700; color:#afafaf;">{i18n.t(`status.${m.status}`)}</div>
                             </div>
@@ -333,14 +333,14 @@
             
             <div class="musyrif-card" style="flex-direction: row; align-items: center; justify-content: space-between;">
                 <div style="display: flex; align-items: center; gap: 16px;">
-                    <div class="m-avatar" style="background: #fffbf2; border-color: #fff7e6; color: #ff9600;"><i class="ti ti-snowflake"></i></div>
+                    <div class="m-avatar" style="background: #f0fbfa; border-color: #e8f8f6; color: #00978A;"><i class="ti ti-snowflake"></i></div>
                     <div>
                         <div style="font-size:16px; font-weight:900; color:#3c3c3c;">{i18n.t('market.freeze_title')}</div>
                         <div style="font-size:13px; font-weight:700; color:#afafaf; margin-top:4px;">{i18n.t('market.freeze_desc')}</div>
                         <div style="font-size:11px; font-weight:800; color:#1cb0f6; margin-top:4px;">{i18n.t('market.freeze_owned', { count: appState.user.streakFreezes || 0 })}</div>
                     </div>
                 </div>
-                <button class="btn-duo" style="background: #ff9600; color: #fff; --btn-edge: #cc7800; font-size: 13px;" onclick={() => {
+                <button class="btn-duo" style="background: #00978A; color: #fff; --btn-edge: #007A70; font-size: 13px;" onclick={() => {
                     // Harga meningkat (fee 5, 10)
                     const cost = (appState.user.streakFreezes || 0) > 0 ? 10 : 5;
                     if (appState.user.gems >= cost) {
@@ -353,7 +353,7 @@
                     } else {
                         customAlert(i18n.t('market.alert_not_enough_gems', { cost, have: appState.user.gems }));
                     }
-                }}>{(appState.user.streakFreezes || 0) > 0 ? '10' : '5'} <i class="ti ti-diamond-filled"></i></button>
+                }}>{(appState.user.streakFreezes || 0) > 0 ? '10' : '5'} <i class="ti ti-diamond"></i></button>
             </div>
         {/if}
     </div>
@@ -368,9 +368,9 @@
         <div class="custom-alert-box" onclick={e => e.stopPropagation()}>
             <div class="alert-icon">
                 {#if alertType === 'alert'}
-                    <i class="ti ti-info-circle-filled"></i>
+                    <i class="ti ti-info-circle"></i>
                 {:else}
-                    <i class="ti ti-help-hexagon-filled"></i>
+                    <i class="ti ti-help"></i>
                 {/if}
             </div>
             <div class="alert-text">{alertMessage}</div>
@@ -408,7 +408,7 @@
         border: 2px solid var(--border-main);
     }
     .ticket-pill { color: var(--duo-blue); border-color: #e1f5fe; background: #f1faff; }
-    .point-pill { color: #ff9600; border-color: #fff7e6; background: #fffbf2; }
+    .point-pill { color: #00978A; border-color: #e8f8f6; background: #f0fbfa; }
     
     .topup-btn {
         width: 36px;
@@ -641,7 +641,7 @@
         text-transform: uppercase;
         letter-spacing: 0.5px;
     }
-    .tier-badge.bersanad { background: #fff7e6; color: #cc7000; border: 1px solid #ffe4b3; }
+    .tier-badge.bersanad { background: #e8f8f6; color: #007A70; border: 1px solid #ffe4b3; }
     .tier-badge.reguler { background: #f1f5f9; color: #64748b; border: 1px solid #e2e8f0; }
 
     /* Desktop/Tablet Responsive Styles */

@@ -10,7 +10,7 @@
     let scope = $state('global');
     let activePeriod = $state('weekly');
 
-    const MY_REGION = '🇮🇩';
+    const MY_REGION = 'ID';
     const periods = $derived([
         { id: 'weekly', label: i18n.t('lb.weekly') },
         { id: 'monthly', label: i18n.t('lb.monthly') },
@@ -27,50 +27,50 @@
     const myHalaqahContribution = $derived(appState.user.halaqahXp ?? 0);
 
     const tabs = $derived([
-        { id: 'my-community', label: i18n.t('lb.tab_my_community') || 'Komunitasku', icon: '👥' },
-        { id: 'my-halaqah', label: i18n.t('lb.tab_my_halaqah') || 'Halaqahku', icon: '🤝' },
-        { id: 'explore-komunitas', label: 'Eksplor Komunitas', icon: '🏘️' },
-        { id: 'explore-halaqah', label: 'Eksplor Halaqah', icon: '📖' },
+        { id: 'my-community', label: i18n.t('lb.tab_my_community') || 'Komunitasku', icon: 'ti-users' },
+        { id: 'my-halaqah', label: i18n.t('lb.tab_my_halaqah') || 'Halaqahku', icon: 'ti-hand-stop' },
+        { id: 'explore-komunitas', label: 'Eksplor Komunitas', icon: 'ti-buildings' },
+        { id: 'explore-halaqah', label: 'Eksplor Halaqah', icon: 'ti-book-2' },
     ]);
 
     // Mock Data for Explore (Global)
     const halaqahList = $derived([
-        { name: 'Halaqah Al-Fatih', xp: scaled(12400), members: 15, avatar: '🟢', region: '🇮🇩' },
-        { name: 'Halaqah An-Nur', xp: scaled(11200), members: 18, avatar: '🔵', region: '🇲🇾' },
-        { name: 'Halaqah Al-Huda', xp: scaled(9800), members: 12, avatar: '🟡', region: '🇮🇩' },
-        { name: 'Halaqah Ar-Rahman', xp: scaled(8500), members: 20, avatar: '🟣', region: '🇸🇦' },
-        { name: 'Halaqah Al-Amin', xp: scaled(7200), members: 10, avatar: '🟠', region: '🇳🇬' },
+        { name: 'Halaqah Al-Fatih', xp: scaled(12400), members: 15, avatar: 'ti-users', region: 'ID' },
+        { name: 'Halaqah An-Nur', xp: scaled(11200), members: 18, avatar: 'ti-users', region: 'MY' },
+        { name: 'Halaqah Al-Huda', xp: scaled(9800), members: 12, avatar: 'ti-users', region: 'ID' },
+        { name: 'Halaqah Ar-Rahman', xp: scaled(8500), members: 20, avatar: 'ti-users', region: 'SA' },
+        { name: 'Halaqah Al-Amin', xp: scaled(7200), members: 10, avatar: 'ti-users', region: 'NG' },
     ].sort((a, b) => b.xp - a.xp).map((h, i) => ({ ...h, rank: i + 1 })));
 
     const komunitasList = $derived([
-        { name: 'Pesantren Al-Hikmah', xp: scaled(45200), members: 120, halaqah: 8, avatar: '🏛️', region: '🇮🇩' },
-        { name: 'Madrasah An-Nur', xp: scaled(38900), members: 85, halaqah: 6, avatar: '🕌', region: '🇲🇾' },
-        { name: 'QuranHub Global', xp: scaled(32100), members: 200, halaqah: 12, avatar: '🌐', region: '🇸🇦' },
-        { name: 'Tahfiz Center', xp: scaled(28700), members: 65, halaqah: 4, avatar: '📚', region: '🇮🇩' },
+        { name: 'Pesantren Al-Hikmah', xp: scaled(45200), members: 120, halaqah: 8, avatar: 'ti-buildings', region: 'ID' },
+        { name: 'Madrasah An-Nur', xp: scaled(38900), members: 85, halaqah: 6, avatar: 'ti-mosque', region: 'MY' },
+        { name: 'QuranHub Global', xp: scaled(32100), members: 200, halaqah: 12, avatar: 'ti-globe', region: 'SA' },
+        { name: 'Tahfiz Center', xp: scaled(28700), members: 65, halaqah: 4, avatar: 'ti-books', region: 'ID' },
     ].sort((a, b) => b.xp - a.xp).map((k, i) => ({ ...k, rank: i + 1 })));
 
     // Mock Data for "My Community"
     const myCommunityMembers = $derived([
-        { name: 'Siti Nurhaliza', xp: scaled(3200), avatar: '🧕', halaqah: 'Al-Fatih' },
-        { name: i18n.t('lb.you') || 'Kamu', xp: appState.xpForPeriod(activePeriod), avatar: '👤', halaqah: 'Al-Fatih', isMe: true },
-        { name: 'Ahmad Dani', xp: scaled(2100), avatar: '🧔', halaqah: 'An-Nur' },
-        { name: 'Budi Utomo', xp: scaled(1800), avatar: '👨', halaqah: 'Al-Fatih' },
-        { name: 'Sarah W.', xp: scaled(1500), avatar: '👩', halaqah: 'An-Nur' },
-        { name: 'Rizky B.', xp: scaled(1200), avatar: '👦', halaqah: 'Al-Huda' },
+        { name: 'Siti Nurhaliza', xp: scaled(3200), avatar: 'ti-user-circle', halaqah: 'Al-Fatih' },
+        { name: i18n.t('lb.you') || 'Kamu', xp: appState.xpForPeriod(activePeriod), avatar: 'ti-user-circle', halaqah: 'Al-Fatih', isMe: true },
+        { name: 'Ahmad Dani', xp: scaled(2100), avatar: 'ti-user-circle', halaqah: 'An-Nur' },
+        { name: 'Budi Utomo', xp: scaled(1800), avatar: 'ti-user-circle', halaqah: 'Al-Fatih' },
+        { name: 'Sarah W.', xp: scaled(1500), avatar: 'ti-user-circle', halaqah: 'An-Nur' },
+        { name: 'Rizky B.', xp: scaled(1200), avatar: 'ti-user-circle', halaqah: 'Al-Huda' },
     ].sort((a, b) => b.xp - a.xp).map((u, i) => ({ ...u, rank: i + 1 })));
 
     const myCommunityHalaqahs = $derived([
-        { name: 'Halaqah Al-Fatih', xp: scaled(8200), members: 15, avgXp: 547, avatar: '🟢' },
-        { name: 'Halaqah An-Nur', xp: scaled(6800), members: 12, avgXp: 567, avatar: '🔵' },
-        { name: 'Halaqah Al-Huda', xp: scaled(5400), members: 10, avgXp: 540, avatar: '🟡' },
+        { name: 'Halaqah Al-Fatih', xp: scaled(8200), members: 15, avgXp: 547, avatar: 'ti-users' },
+        { name: 'Halaqah An-Nur', xp: scaled(6800), members: 12, avgXp: 567, avatar: 'ti-users' },
+        { name: 'Halaqah Al-Huda', xp: scaled(5400), members: 10, avgXp: 540, avatar: 'ti-users' },
     ].sort((a, b) => b.xp - a.xp).map((h, i) => ({ ...h, rank: i + 1 })));
 
     const myHalaqahMembers = $derived([
-        { name: 'Siti Nurhaliza', xp: scaled(3200), avatar: '🧕' },
-        { name: i18n.t('lb.you') || 'Kamu', xp: appState.xpForPeriod(activePeriod), avatar: '👤', isMe: true },
-        { name: 'Budi Utomo', xp: scaled(1800), avatar: '👨' },
-        { name: 'Dewi Sartika', xp: scaled(1600), avatar: '👩' },
-        { name: 'Hasan Ali', xp: scaled(1400), avatar: '🧔' },
+        { name: 'Siti Nurhaliza', xp: scaled(3200), avatar: 'ti-user-circle' },
+        { name: i18n.t('lb.you') || 'Kamu', xp: appState.xpForPeriod(activePeriod), avatar: 'ti-user-circle', isMe: true },
+        { name: 'Budi Utomo', xp: scaled(1800), avatar: 'ti-user-circle' },
+        { name: 'Dewi Sartika', xp: scaled(1600), avatar: 'ti-user-circle' },
+        { name: 'Hasan Ali', xp: scaled(1400), avatar: 'ti-user-circle' },
     ].sort((a, b) => b.xp - a.xp).map((u, i) => ({ ...u, rank: i + 1 })));
 
     // Peringkat regional adalah daftar global yang disaring per negara, lalu
@@ -101,7 +101,7 @@
             <i class="ti ti-arrow-left" style="font-size: 20px; color: #fff;"></i>
         </button>
         <span style="font-size: 16px; font-weight: 900; color: #fff; flex: 1; text-align: center;">
-            🤝 Hub Komunitas & Halaqah
+            <i class="ti ti-hand-stop"></i> Hub Komunitas & Halaqah
         </span>
         <div style="width: 20px"></div>
     </div>
@@ -115,7 +115,7 @@
                     class:active={activeTab === tab.id}
                     onclick={() => { activeTab = tab.id; communityView = 'all-member'; }}
                 >
-                    <span class="tab-icon">{tab.icon}</span>
+                    <span class="tab-icon"><i class="ti {tab.icon}"></i></span>
                     <span class="tab-label">{tab.label}</span>
                 </button>
             {/each}
@@ -124,10 +124,10 @@
         {#if isExplore}
             <div class="scope-toggle">
                 <button class="ctog" class:active={scope === 'global'} onclick={() => scope = 'global'}>
-                    🌍 {i18n.t('lb.tab_global_user')}
+                    <i class="ti ti-globe"></i> {i18n.t('lb.tab_global_user')}
                 </button>
                 <button class="ctog" class:active={scope === 'regional'} onclick={() => scope = 'regional'}>
-                    {MY_REGION} {i18n.t('lb.tab_regional')}
+                    <i class="ti ti-map-pin"></i> {i18n.t('lb.tab_regional')}
                 </button>
             </div>
         {/if}
@@ -142,7 +142,7 @@
 
         {#if activeTab === 'my-community'}
             <div class="info-banner">
-                <div class="info-banner-icon">🏘️</div>
+                <div class="info-banner-icon"><i class="ti ti-buildings"></i></div>
                 <div style="flex: 1;">
                     <div style="font-size: 13px; font-weight: 900; color: #3c3c3c;">Pesantren Al-Hikmah</div>
                     <div style="font-size: 10px; font-weight: 700; color: #afafaf;">120 {i18n.t('lb.members')} · 8 {i18n.t('lb.tab_halaqah')} · {i18n.t('lb.private')}</div>
@@ -150,15 +150,15 @@
             </div>
             <div class="community-toggle">
                 <button class="ctog" class:active={communityView === 'all-member'} onclick={() => communityView = 'all-member'}>
-                    👤 {i18n.t('lb.all_members') || 'Semua Anggota'}
+                    <i class="ti ti-users"></i> {i18n.t('lb.all_members') || 'Semua Anggota'}
                 </button>
                 <button class="ctog" class:active={communityView === 'per-halaqah'} onclick={() => communityView = 'per-halaqah'}>
-                    📖 {i18n.t('lb.per_halaqah') || 'Per Halaqah'}
+                    <i class="ti ti-book-2"></i> {i18n.t('lb.per_halaqah') || 'Per Halaqah'}
                 </button>
             </div>
         {:else if activeTab === 'my-halaqah'}
             <div class="info-banner">
-                <div class="info-banner-icon">🟢</div>
+                <div class="info-banner-icon"><i class="ti ti-users"></i></div>
                 <div style="flex: 1;">
                     <div style="font-size: 13px; font-weight: 900; color: #3c3c3c;">Halaqah Al-Fatih</div>
                     <div style="font-size: 10px; font-weight: 700; color: #afafaf;">15/20 {i18n.t('lb.members')} · Pesantren Al-Hikmah</div>
@@ -167,7 +167,7 @@
             <!-- Setiap setoran anggota menyumbang XP ke halaqahnya (XP.md — XP Halaqah).
                  Sebelumnya angka ini dicatat tapi tidak pernah terlihat di mana pun. -->
             <div class="contrib-card">
-                <span class="contrib-icon">🤝</span>
+                <span class="contrib-icon"><i class="ti ti-hand-stop"></i></span>
                 <div style="flex:1; min-width:0;">
                     <div class="contrib-label">{i18n.t('lb.src_halaqah')}</div>
                     <div class="contrib-sub">{i18n.t('halaqah.your_contribution')}</div>
@@ -202,7 +202,7 @@
             {#each currentData as r}
                 <div class="rank-item" class:is-me={r.isMe}>
                     <div class="rank-num">{r.rank}</div>
-                    <div class="rank-avatar">{r.avatar}</div>
+                    <div class="rank-avatar"><i class="ti {r.members ? 'ti-buildings' : 'ti-user-circle'}"></i></div>
                     <div class="rank-info">
                         <div class="rank-name">
                             {r.name}

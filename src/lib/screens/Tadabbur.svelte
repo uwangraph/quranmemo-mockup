@@ -20,11 +20,11 @@
     const tadabburVerse = $derived(tadabburSurah?.verses?.[0] ?? null);
 
     const tadabburSteps = $derived([
-        { t: "At-Tilawah", d: i18n.t('tadabbur.s1d'), i: "📖" },
-        { t: "Al-Fahmu", d: i18n.t('tadabbur.s2d'), i: "📚" },
-        { t: "Al-Aqlu", d: i18n.t('tadabbur.s3d'), i: "👳" },
-        { t: "Al-Fikru", d: i18n.t('tadabbur.s4d'), i: "🌐" },
-        { t: "Adz-Dzikru", d: i18n.t('tadabbur.s5d'), i: "👤", hasTextarea: true },
+        { t: "At-Tilawah", d: i18n.t('tadabbur.s1d'), i: "ti-book-2" },
+        { t: "Al-Fahmu", d: i18n.t('tadabbur.s2d'), i: "ti-books" },
+        { t: "Al-Aqlu", d: i18n.t('tadabbur.s3d'), i: "ti-chalkboard-teacher" },
+        { t: "Al-Fikru", d: i18n.t('tadabbur.s4d'), i: "ti-globe" },
+        { t: "Adz-Dzikru", d: i18n.t('tadabbur.s5d'), i: "ti-user" , hasTextarea: true },
         { t: "Al-Qoulu", d: i18n.t('tadabbur.s6d'), i: "✨" },
         { t: "Al-Amalu", d: i18n.t('tadabbur.s7d'), i: "✅", hasOptions: true },
     ]);
@@ -104,7 +104,7 @@
             </div>
             
             <div class="step-card">
-                <div style="font-size:48px;margin-bottom:16px;">{step.i}</div>
+                <div style="font-size:48px;margin-bottom:16px;"><i class="ti {step.i}"></i></div>
                 <div style="font-size:20px;font-weight:900;color:#3c3c3c;margin-bottom:12px;">{step.t}</div>
                 <div style="font-size:14px;font-weight:700;color:#afafaf;line-height:1.6;">{step.d}</div>
                 
@@ -159,11 +159,11 @@
         box-shadow: none;
     }
     .verse-card {
-        background: linear-gradient(135deg, #1a6b3c, #2ea65c);
+        background: linear-gradient(135deg, #14b8a6, #00978a);
         border-radius: 16px;
         padding: 20px;
         margin-bottom: 14px;
-        box-shadow: 0 4px 12px rgba(46, 166, 92, 0.2);
+        box-shadow: 0 4px 12px rgba(0, 151, 138, 0.22);
     }
     .verse-label {
         font-size: 10px;
@@ -208,7 +208,7 @@
     }
     .theme-card.blue { --theme-shadow: #0898dc; background: #ddf4ff; color: #0898dc; }
     .theme-card.green { --theme-shadow: #46a302; background: #d7ffb2; color: #46a302; }
-    .theme-card.orange { --theme-shadow: #cc7000; background: #fff7e6; color: #cc7000; }
+    .theme-card.orange { --theme-shadow: #007A70; background: #e8f8f6; color: #007A70; }
     .theme-card.red { --theme-shadow: #cc0000; background: #ffdfe0; color: #cc0000; }
     .theme-card.purple { --theme-shadow: #7b1fa2; background: #f3e5f5; color: #7b1fa2; }
     .theme-card.cyan { --theme-shadow: #00838f; background: #e0f7fa; color: #00838f; }

@@ -384,7 +384,7 @@
     let sparkleParticles = $state([]);
 
     function spawnSparkles() {
-        const icons = ['✨', '⭐', '🌟', '💫', '🌸', '🎈'];
+        const icons = ['ti-sparkle', 'ti-star', 'ti-stars', 'ti-sparkle', 'ti-flower', 'ti-balloon'];
         const particles = Array.from({ length: 24 }, (_, i) => {
             const angle = (i * (360 / 24)) * (Math.PI / 180); // convert to radians
             const distance = 90 + Math.random() * 110;
@@ -585,7 +585,7 @@
 
         let pipeline = [];
 
-        // 🔹 0. RECALL (Sebelum mulai ayat baru) - hanya jika selectedVerseIndex > 0
+        // 0. RECALL (Sebelum mulai ayat baru) - hanya jika selectedVerseIndex > 0
         if (selectedVerseIndex > 0) {
             pipeline.push({
                 id: 0,
@@ -599,7 +599,7 @@
         // Add STAGE 1, 2, 3
         pipeline.push(...baseSteps);
 
-        // 🔹 11. RECALL (Setelah satu ayat hafal)
+        // 11. RECALL (Setelah satu ayat hafal)
         pipeline.push({
             id: 11,
             stage: 4,
@@ -1241,7 +1241,7 @@
             <div class="prog-bar-fill" style="width: {showCompletion ? 100 : ((currentStep + 1) / stepsPipeline.length) * 100}%"></div>
         </div>
         <button onclick={toggleBreak} disabled={isChecked} style="background: none; border: none; cursor: pointer; display: flex; align-items: center; margin-right: 8px; opacity: {isChecked ? 0.5 : 1}; pointer-events: {isChecked ? 'none' : 'auto'};" title={i18n.t('lesson.break')}>
-            <i class="ti ti-coffee" style="font-size: 18px; color: #f59e0b;"></i>
+            <i class="ti ti-coffee" style="font-size: 18px; color: #00978a;"></i>
         </button>
         <button onclick={() => showTajwidModal = true} disabled={isChecked} style="background: none; border: none; cursor: pointer; display: flex; align-items: center; margin-right: 8px; opacity: {isChecked ? 0.5 : 1}; pointer-events: {isChecked ? 'none' : 'auto'};" title={i18n.t('tajwid.title')}>
             <i class="ti ti-info-circle" style="font-size: 18px; color: #00978a;"></i>
@@ -1519,7 +1519,7 @@
                                     animation-delay: {s.delay}s;
                                 "
                             >
-                                {s.icon}
+                                <i class="ti {s.icon}"></i>
                             </div>
                         {/each}
                     </div>
@@ -1532,7 +1532,7 @@
                 <div class="lesson-footer-actions" style="margin-top: auto; padding: 12px 0 0;">
                     {#if currentStepConfig.type === 'musyrif_submission'}
                         <button class="btn-duo btn-green" onclick={goToMusyrifSubmission}>
-                            <i class="ti ti-calendar-event"></i> {i18n.t('lesson.btn_musyrif_submission')}
+                            <i class="ti ti-calendar-check"></i> {i18n.t('lesson.btn_musyrif_submission')}
                         </button>
                     {:else if currentStepConfig.type === 'read_listen'}
                         <button class="btn-duo btn-green" onclick={checkAnswer}>
@@ -1583,7 +1583,7 @@
     />
 
     <!-- 3. COMPLETED ALL STAGES SCREEN OVERLAY -->
-    <canvas bind:this={confettiCanvas} class="confetti-canvas"></canvas>
+    <canvas bind:this={confettiCanvas} class="confetti-palette"></canvas>
     <LessonCompletion bind:showCompletion={showCompletion} {selectedVerseIndex} {activeVerse} {lessonEarnedXP} {lessonEarnedGems} breakdown={lessonBreakdown} accuracy={accuracyPercent + '%'} onFinish={exitLesson} />
 
 </div>
@@ -1596,14 +1596,14 @@
         position: absolute;
         top: -15px;
         right: -10px;
-        color: #ff9600;
+        color: #00978A;
         font-weight: 900;
         font-size: 14px;
         animation: floatUp 1s ease-out forwards;
     }
     
     /* Streak overlay dihapus — konsep streak tidak lagi dipakai */
-    .confetti-canvas {
+    .confetti-palette {
         position: absolute;
         top: 0;
         left: 0;
@@ -1729,7 +1729,7 @@
         display: flex; justify-content: space-between; align-items: center;
         padding: 16px 20px; border-bottom: 2px solid #f1f5f9;
     }
-    .modal-header h3 { margin: 0; font-size: 18px; font-weight: 800; color: #ff9600; }
+    .modal-header h3 { margin: 0; font-size: 18px; font-weight: 800; color: #00978A; }
     .close-btn { background: none; border: none; font-size: 18px; font-weight: bold; color: #94a3b8; cursor: pointer; }
     .modal-body { padding: 20px; text-align: center; }
     .modal-body p { margin: 0 0 20px 0; font-size: 14px; color: #475569; font-weight: 600; line-height: 1.5; }

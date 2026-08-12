@@ -26,9 +26,9 @@
     let tipAmount = $state(0);
     
     const tags = [
-        { id: 'clear', label: 'feedback.tag_clear', icon: '🗣️' },
-        { id: 'patient', label: 'feedback.tag_patient', icon: '🧘' },
-        { id: 'detail', label: 'feedback.tag_detail', icon: '🔍' }
+        { id: 'clear', label: 'feedback.tag_clear', icon: 'ti-microphone' },
+        { id: 'patient', label: 'feedback.tag_patient', icon: 'ti-heart' },
+        { id: 'detail', label: 'feedback.tag_detail', icon: 'ti-search' }
     ];
     
     const tipOptions = [10, 20, 50];
@@ -45,7 +45,7 @@
 <div class="screen no-scrollbar" style="background: #007A70;">
     <div class="scroll-content no-scrollbar" style="padding: 0 0 20px;">
         <div class="feedback-header">
-            <div class="success-icon">✨</div>
+            <div class="success-icon"><i class="ti ti-sparkles"></i></div>
             <h1 style="font-size: 26px; font-weight: 900; color: #fff; margin: 16px 0 4px;">{i18n.t('feedback.title')}</h1>
             <p style="font-size: 14px; font-weight: 700; color: rgba(255,255,255,0.8);">{session.surah}: {session.range}</p>
         </div>
@@ -55,14 +55,14 @@
             <div class="musyrif-card">
                 <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Malik" alt="Ustadz" class="avatar" />
                 <div style="font-size: 18px; font-weight: 900; color: #3c3c3c;">Ustadz Malik</div>
-                <div style="font-size: 11px; font-weight: 800; color: #ff9600; text-transform: uppercase;">{i18n.t('musyrif.partner_tier')}</div>
+                <div style="font-size: 11px; font-weight: 800; color: #00978A; text-transform: uppercase;">{i18n.t('musyrif.partner_tier')}</div>
             </div>
 
             <!-- Nilai musyrif + XP yang didapat. Besarannya dari XP.md, bukan angka
                  yang ditulis ulang di sini. -->
             <div class="grade-card" class:mumtaz={session.grade === 'mumtaz'}>
                 <div class="grade-top">
-                    <span class="grade-emoji">{session.grade === 'mumtaz' ? '⭐' : '✅'}</span>
+                    <span class="grade-emoji"><i class="ti {session.grade === 'mumtaz' ? 'ti-star' : 'ti-circle-check'}"></i></span>
                     <div style="flex:1; min-width:0;">
                         <div class="grade-label">{i18n.t('feedback.grade')}</div>
                         <div class="grade-value">{i18n.t(`feedback.grade_${session.grade}`)}</div>
@@ -99,7 +99,7 @@
                         class:active={rating >= star}
                         onclick={() => rating = star}
                     >
-                        <i class="ti ti-star-filled"></i>
+                        <i class="ti ti-star"></i>
                     </button>
                 {/each}
             </div>
@@ -116,7 +116,7 @@
                             class:selected={selectedTags.includes(tag.id)}
                             onclick={() => toggleTag(tag.id)}
                         >
-                            <span>{tag.icon}</span> {i18n.t(tag.label)}
+                            <span><i class="ti {tag.icon}"></i></span> {i18n.t(tag.label)}
                         </button>
                     {/each}
                 </div>
@@ -135,7 +135,7 @@
                             class:selected={tipAmount === amount}
                             onclick={() => tipAmount = amount}
                         >
-                            <i class="ti ti-diamond"></i> {amount}
+                        <i class="ti ti-diamond"></i> {amount}
                         </button>
                     {/each}
                     <button class="tip-btn" class:selected={tipAmount === 'custom'} onclick={() => tipAmount = 'custom'}>
@@ -167,11 +167,12 @@
     .feedback-header {
         text-align: center;
         padding: 50px 20px 90px;
-        background: linear-gradient(135deg, var(--duo-green), var(--duo-green-dark));
+        background: linear-gradient(135deg, #14b8a6, #00978a);
         position: relative;
     }
     .success-icon {
-        font-size: 64px;
+        font-size: 58px;
+        color: #ffd43b;
         line-height: 1;
         animation: bounce 1.5s infinite ease-in-out alternate;
         text-shadow: 0 10px 20px rgba(0,0,0,0.1);
@@ -209,14 +210,14 @@
         background: #fff; border: 2px solid #e5e5e5; border-bottom-width: 4px;
         border-radius: 20px; padding: 16px; margin-bottom: 28px;
     }
-    .grade-card.mumtaz { background: #fffbeb; border-color: #fde68a; }
+    .grade-card.mumtaz { background: #fff8dc; border-color: #99e5dc; }
     .grade-top { display: flex; align-items: center; gap: 12px; }
-    .grade-emoji { font-size: 28px; }
+    .grade-emoji { font-size: 30px; color: #ffc800; line-height: 1; }
     .grade-label {
         font-size: 10px; font-weight: 900; color: #94a3b8;
         text-transform: uppercase; letter-spacing: 0.5px;
     }
-    .grade-value { font-size: 18px; font-weight: 900; color: #b45309; }
+    .grade-value { font-size: 18px; font-weight: 900; color: #008f83; }
     .xp-lines { margin-top: 12px; border-top: 1.5px solid rgba(0,0,0,0.06); padding-top: 8px; }
     .xp-line {
         display: flex; justify-content: space-between; align-items: center;
@@ -290,10 +291,10 @@
     }
 
     .tipping-section {
-        background: linear-gradient(135deg, #ce82ff, #a52adb);
+        background: linear-gradient(135deg, #14b8a6, #00978a);
         padding: 24px;
         border-radius: 24px;
-        box-shadow: 0 8px 16px rgba(206, 130, 255, 0.3);
+        box-shadow: 0 8px 16px rgba(0, 151, 138, 0.25);
     }
     .tip-options {
         display: flex;
@@ -319,7 +320,7 @@
     }
     .tip-btn.selected {
         background: #fff;
-        color: #a52adb;
+        color: #00978a;
         border-color: #fff;
         transform: scale(1.05);
     }

@@ -49,7 +49,7 @@
     <div class="musyrif-profile-header">
         <div style="display: flex; justify-content: space-between; align-items: flex-start; width: 100%;">
             <div style="display: flex; align-items: center; gap: 16px">
-                <div class="m-avatar-large">👳</div>
+                <div class="m-avatar-large"><i class="ti ti-chalkboard-teacher"></i></div>
                 <div>
                     <div style="font-size: 18px; font-weight: 900">Ustadz Malik</div>
                     <div class="tier-badge-gold">{i18n.t('musyrif.partner_tier')}</div>
@@ -57,10 +57,10 @@
             </div>
             <div class="earnings-pill-mini" onclick={() => appState.go('musyrif-earnings')} style="display: flex; align-items: center; gap: 8px;">
                 <div>
-                    <div style="font-size: 14px; font-weight: 900; color: #1cb0f6;">{appState.musyrifBalance} <i class="ti ti-diamond-filled"></i></div>
+                    <div style="font-size: 14px; font-weight: 900; color: #1cb0f6;">{appState.musyrifBalance} <i class="ti ti-diamond"></i></div>
                     <div style="font-size: 9px; font-weight: 800; opacity: 0.7; text-transform: uppercase;">{i18n.t('musyrif.balance')}</div>
                 </div>
-                <i class="ti ti-chevron-right" style="color: #afafaf;"></i>
+                <i class="ti ti-caret-right" style="color: #afafaf;"></i>
             </div>
         </div>
     </div>
@@ -81,7 +81,7 @@
         </div>
 
         <!-- Antrean verifikasi placement, SLA 1x24 jam -->
-        <div class="section-label">🎤 {i18n.t('musyrif.placement_queue')} ({queue.length})</div>
+        <div class="section-label"><i class="ti ti-microphone"></i> {i18n.t('musyrif.placement_queue')} ({queue.length})</div>
         {#each queue as entry}
             {@const decision = entry.self ? null : appState.demoPlacementDecisions[entry.id]}
             {@const cat = decision ? CATS.find((c) => c.id === decision.category) : null}
@@ -89,7 +89,7 @@
             <div class="pl-card" class:urgent>
                 <div class="pl-head">
                     <div class="pl-avatar" style={cat ? `background:${cat.bg}` : ''}>
-                        {cat ? cat.icon : '🎧'}
+                        {#if cat}<i class={cat.icon}></i>{:else}<i class="ti ti-headphones"></i>{/if}
                     </div>
                     <div class="pl-info">
                         <div class="pl-name">
@@ -105,7 +105,7 @@
 
                 {#if cat}
                     <div class="pl-verdict" style="background:{cat.bg}; color:{cat.color};">
-                        <i class="ti ti-circle-check-filled"></i>
+                        <i class="ti ti-circle-check"></i>
                         {i18n.t(`placement.cat_${cat.id}`)}
                     </div>
                 {:else}
@@ -123,10 +123,10 @@
         
         {#if isAvailable}
             <div class="request-card">
-                <div style="width: 48px; height: 48px; border-radius: 50%; background: #fff4e0; display: flex; align-items: center; justify-content: center; font-size: 24px;">🧑‍🎓</div>
+                <div style="width: 48px; height: 48px; border-radius: 50%; background: #fff4e0; display: flex; align-items: center; justify-content: center; font-size: 24px;"><i class="ti ti-school"></i></div>
                 <div style="flex: 1">
                     <div style="font-size: 14px; font-weight: 900; color: #3c3c3c">Ahmad Hafidz</div>
-                    <div style="font-size: 11px; font-weight: 700; color: #ff9600">{i18n.t('admin.serving')}: Al-Insyirah (Instan) • +15 <i class="ti ti-diamond-filled" style="color: #1cb0f6;"></i></div>
+                    <div style="font-size: 11px; font-weight: 700; color: #ff9600">{i18n.t('admin.serving')}: Al-Insyirah (Instan) • +15 <i class="ti ti-diamond" style="color: #1cb0f6;"></i></div>
                 </div>
                 <button class="btn-duo btn-orange btn-sm btn-auto" onclick={acceptInstantRequest}>
                     {i18n.t('musyrif.accept')}
@@ -134,7 +134,7 @@
             </div>
         {:else}
             <div style="text-align: center; padding: 40px 20px; color: #afafaf;">
-                <div style="font-size: 32px; margin-bottom: 12px;">😴</div>
+                <div style="font-size: 32px; margin-bottom: 12px;"><i class="ti ti-moon"></i></div>
                 <div style="font-size: 13px; font-weight: 800;">{i18n.t('status.offline')}</div>
                 <div style="font-size: 11px; font-weight: 700;">{i18n.t('musyrif.offline_msg')}</div>
             </div>
@@ -145,10 +145,10 @@
             <div class="booking-card">
                 <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
                     <div style="font-size: 12px; font-weight: 800; color: #1cb0f6;">Besok, 10:00</div>
-                    <div style="font-size: 11px; font-weight: 800; color: #1cb0f6; background: #e1f5fe; padding: 2px 8px; border-radius: 6px;">+15 <i class="ti ti-diamond-filled"></i></div>
+                    <div style="font-size: 11px; font-weight: 800; color: #1cb0f6; background: #e1f5fe; padding: 2px 8px; border-radius: 6px;">+15 <i class="ti ti-diamond"></i></div>
                 </div>
                 <div style="display: flex; align-items: center; gap: 12px;">
-                    <div style="width: 36px; height: 36px; border-radius: 50%; background: #e0f2fe; display: flex; align-items: center; justify-content: center; font-size: 18px;">👧</div>
+                    <div style="width: 36px; height: 36px; border-radius: 50%; background: #e0f2fe; display: flex; align-items: center; justify-content: center; font-size: 18px;"><i class="ti ti-user-circle"></i></div>
                     <div style="flex: 1">
                         <div style="font-size: 14px; font-weight: 900; color: #3c3c3c">Aisyah Putri</div>
                         <div style="font-size: 11px; font-weight: 700; color: #64748b">Surah: Al-Mulk 1-10</div>
@@ -159,10 +159,10 @@
             <div class="booking-card">
                 <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
                     <div style="font-size: 12px; font-weight: 800; color: #1cb0f6;">Lusa, 14:00</div>
-                    <div style="font-size: 11px; font-weight: 800; color: #1cb0f6; background: #e1f5fe; padding: 2px 8px; border-radius: 6px;">+15 <i class="ti ti-diamond-filled"></i></div>
+                    <div style="font-size: 11px; font-weight: 800; color: #1cb0f6; background: #e1f5fe; padding: 2px 8px; border-radius: 6px;">+15 <i class="ti ti-diamond"></i></div>
                 </div>
                 <div style="display: flex; align-items: center; gap: 12px;">
-                    <div style="width: 36px; height: 36px; border-radius: 50%; background: #fef08a; display: flex; align-items: center; justify-content: center; font-size: 18px;">👨</div>
+                    <div style="width: 36px; height: 36px; border-radius: 50%; background: #fef08a; display: flex; align-items: center; justify-content: center; font-size: 18px;"><i class="ti ti-user-circle"></i></div>
                     <div style="flex: 1">
                         <div style="font-size: 14px; font-weight: 900; color: #3c3c3c">Budi Santoso</div>
                         <div style="font-size: 11px; font-weight: 700; color: #64748b">Surah: An-Naba 1-20</div>
@@ -178,7 +178,7 @@
                 <div style="font-size: 10px; font-weight: 800; color: #afafaf">{i18n.t('musyrif.sessions_week')}</div>
             </div>
             <div class="stat-card">
-                <div style="font-size: 20px; font-weight: 900; color: #ffc800">4.9 ★</div>
+                <div style="font-size: 20px; font-weight: 900; color: #ffc800">4.9 <i class="ti ti-star"></i></div>
                 <div style="font-size: 10px; font-weight: 800; color: #afafaf">{i18n.t('musyrif.avg_rating')}</div>
             </div>
         </div>

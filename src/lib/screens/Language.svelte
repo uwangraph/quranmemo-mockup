@@ -58,8 +58,8 @@
         transform: translateY(2px);
     }
     .lang-card.active {
-        border-color: #1cb0f6;
-        background: #ddf4ff;
+        border-color: #00978a;
+        background: #e8f8f6;
     }
     .flag-circle {
         width: 48px;
@@ -73,7 +73,7 @@
         border: 2px solid #e5e5e5;
     }
     .active .flag-circle {
-        border-color: #1cb0f6;
+        border-color: #00978a;
         background: #fff;
     }
     .lang-name {
@@ -83,10 +83,10 @@
         color: #3c3c3c;
     }
     .active .lang-name {
-        color: #0898dc;
+        color: #00978a;
     }
     .check-icon {
-        color: #1cb0f6;
+        color: #00978a;
         font-size: 20px;
         font-weight: 900;
     }

@@ -14,9 +14,9 @@
     const PRAYER_TIMES = { subuh: '04:40', dzuhur: '12:00', ashar: '15:15', maghrib: '18:00', isya: '19:10' };
 
     const LEVELS = [
-        { id: 'ringan', count: 3, icon: '🍃', color: '#10b981', bg: '#f0fdf4', border: '#bbf7d0' },
-        { id: 'sedang', count: 5, icon: '🔔', color: '#f59e0b', bg: '#fffbeb', border: '#fde68a' },
-        { id: 'kritis', count: 10, icon: '🚨', color: '#ef4444', bg: '#fef2f2', border: '#fecaca' }
+        { id: 'ringan', count: 3, icon: 'ti-leaf', color: '#10b981', bg: '#f0fdf4', border: '#bbf7d0' },
+        { id: 'sedang', count: 5, icon: 'ti-bell', color: '#f59e0b', bg: '#fffbeb', border: '#99e5dc' },
+        { id: 'kritis', count: 10, icon: 'ti-alarm', color: '#ef4444', bg: '#fef2f2', border: '#fecaca' }
     ];
 
     // Geser jam "HH:MM" sebanyak n jam, dibungkus dalam 24 jam.
@@ -86,12 +86,12 @@
 
     <div class="scroll-content no-scrollbar">
         <div class="intro">
-            <span style="font-size:34px;">🔔</span>
+            <span style="font-size:34px;"><i class="ti ti-bell"></i></span>
             <p>{i18n.t('reminder.intro')}</p>
         </div>
 
         <!-- Target harian -->
-        <div class="section-label">🎯 {i18n.t('placement.daily_target')}</div>
+        <div class="section-label"><i class="ti ti-target"></i> {i18n.t('placement.daily_target')}</div>
         <div class="pad">
             <div class="chip-grid">
                 {#each [1, 2, 3, 5, 10] as n}
@@ -114,7 +114,7 @@
         </div>
 
         <!-- Tingkat pengingat -->
-        <div class="section-label">📶 {i18n.t('reminder.level_label')}</div>
+        <div class="section-label"><i class="ti ti-broadcast"></i> {i18n.t('reminder.level_label')}</div>
         <div class="pad">
             <div class="level-list">
                 {#each LEVELS as lv}
@@ -124,7 +124,7 @@
                         style={reminder.level === lv.id ? `background:${lv.bg}; border-color:${lv.border};` : ''}
                         onclick={() => appState.setReminderPrefs({ level: lv.id })}
                     >
-                        <span class="level-icon">{lv.icon}</span>
+                        <span class="level-icon"><i class="ti {lv.icon}"></i></span>
                         <div style="flex:1; min-width:0; text-align:left;">
                             <div class="level-name" style={reminder.level === lv.id ? `color:${lv.color}` : ''}>
                                 {i18n.t(`placement.reminder_${lv.id}`)}
@@ -140,7 +140,7 @@
         </div>
 
         <!-- Jadwal yang benar-benar akan dikirim -->
-        <div class="section-label">🗓️ {i18n.t('reminder.schedule_label')}</div>
+        <div class="section-label"><i class="ti ti-calendar"></i> {i18n.t('reminder.schedule_label')}</div>
         <div class="pad">
             <div class="schedule-card" style="border-color:{activeLevel.border};">
                 <div class="schedule-head" style="color:{activeLevel.color};">
@@ -158,7 +158,7 @@
         </div>
 
         <!-- Murajaah alert: terpisah dari pengingat streak (STREAK.md) -->
-        <div class="section-label">🔄 {i18n.t('murajaah.title')}</div>
+        <div class="section-label"><i class="ti ti-refresh"></i> {i18n.t('murajaah.title')}</div>
         <div class="pad">
             <div class="murajaah-info">
                 <i class="ti ti-info-circle"></i>
@@ -247,12 +247,12 @@
 
     .murajaah-info {
         display: flex; align-items: flex-start; gap: 8px;
-        background: #fff7ed; border: 1.5px solid #fed7aa; border-radius: 12px;
-        padding: 12px; font-size: 12px; font-weight: 700; color: #b45309; line-height: 1.5;
+        background: #e8f8f6; border: 1.5px solid #99e5dc; border-radius: 12px;
+        padding: 12px; font-size: 12px; font-weight: 700; color: #008f83; line-height: 1.5;
     }
     .murajaah-info i { font-size: 16px; flex-shrink: 0; }
     .due-now {
-        margin-top: 8px; background: #ff6200; color: #fff; border-radius: 10px;
+        margin-top: 8px; background: #007A70; color: #fff; border-radius: 10px;
         padding: 10px 12px; font-size: 12px; font-weight: 900; text-align: center;
     }
 </style>

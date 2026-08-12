@@ -7,6 +7,11 @@
     import { appState } from '$lib/app.svelte.js';
     import { i18n } from '$lib/i18n.svelte.js';
     import { SURAHS } from '$lib/data/surahs.js';
+    import Dropdown from '$lib/components/Dropdown.svelte';
+
+    const surahOptions = Object.values(SURAHS)
+        .sort((a, b) => a.number - b.number)
+        .map((s) => ({ value: s.name, label: s.name }));
 
     // Urutan langkah mengikuti "Alur Keseluruhan" di ONBOARDING.md. Langkah 'record'
     // dan 'pending' dilewati kalau user menjawab belum bisa membaca — meminta rekaman
@@ -39,9 +44,9 @@
     ];
 
     const CATEGORIES = {
-        rbq: { icon: '🌱', color: '#f59e0b', bg: '#fffbeb', border: '#fde68a' },
-        rtq: { icon: '📖', color: '#0284c7', bg: '#eff6ff', border: '#bfdbfe' },
-        tahfidz: { icon: '🏅', color: '#00978A', bg: '#f0fdfa', border: '#99f6e4' }
+        rbq: { icon: 'ti ti-plant', color: '#f59e0b', bg: '#fffbeb', border: '#99e5dc' },
+        rtq: { icon: 'ti ti-book-2', color: '#0284c7', bg: '#eff6ff', border: '#bfdbfe' },
+        tahfidz: { icon: 'ti ti-medal', color: '#00978A', bg: '#f0fdfa', border: '#99f6e4' }
     };
 
     const stepIndex = $derived(FLOW.indexOf(step));
@@ -188,14 +193,14 @@
         <!-- ── 1. Intro ──────────────────────────────────────────── -->
         {#if step === 'intro'}
             <div class="intro-hero">
-                <div class="intro-emoji">🕌</div>
+                <div class="intro-emoji"><i class="ti ti-mosque"></i></div>
                 <h1 class="q-title">{i18n.t('placement.intro_title')}</h1>
                 <p class="q-sub">{i18n.t('placement.intro_desc')}</p>
             </div>
             <div class="cat-legend">
                 {#each Object.entries(CATEGORIES) as [key, c]}
                     <div class="cat-row" style="background:{c.bg}; border-color:{c.border};">
-                        <span class="cat-emoji">{c.icon}</span>
+                        <span class="cat-emoji"><i class={c.icon}></i></span>
                         <div>
                             <div class="cat-name" style="color:{c.color}">{i18n.t(`placement.cat_${key}`)}</div>
                             <div class="cat-desc">{i18n.t(`placement.cat_${key}_desc`)}</div>
@@ -210,11 +215,11 @@
             <p class="q-sub">{i18n.t('placement.gate_desc')}</p>
             <div class="opt-list">
                 <button class="option-card" class:selected={canRead === true} onclick={() => (canRead = true)}>
-                    <span class="opt-icon">✅</span>
+                    <span class="opt-icon"><i class="ti ti-circle-check"></i></span>
                     <span>{i18n.t('placement.gate_yes')}</span>
                 </button>
                 <button class="option-card" class:selected={canRead === false} onclick={() => (canRead = false)}>
-                    <span class="opt-icon">🌱</span>
+                    <span class="opt-icon"><i class="ti ti-plant"></i></span>
                     <span>{i18n.t('placement.gate_no')}</span>
                 </button>
             </div>
@@ -227,7 +232,7 @@
             <div class="recorder">
                 <button class="rec-btn" class:recording onclick={toggleRecord}
                         aria-label={recording ? i18n.t('placement.rec_stop') : i18n.t('placement.rec_start')}>
-                    <i class="ti {recording ? 'ti-player-stop-filled' : 'ti-microphone'}"></i>
+                    <i class="ti {recording ? 'ti-player-stop' : 'ti-microphone'}"></i>
                 </button>
                 <div class="rec-time">{mmss}</div>
                 <div class="rec-hint">
@@ -243,7 +248,7 @@
         <!-- ── 4. Menunggu verifikasi musyrif ────────────────────── -->
         {:else if step === 'pending'}
             <div class="intro-hero">
-                <div class="intro-emoji pulse">⏳</div>
+                <div class="intro-emoji pulse"><i class="ti ti-hourglass"></i></div>
                 <h1 class="q-title">{i18n.t('placement.pending_title')}</h1>
                 <p class="q-sub">{i18n.t('placement.pending_desc', { musyrif: placement.musyrifName ?? '—' })}</p>
             </div>
@@ -260,7 +265,7 @@
                 <div class="mock-btns">
                     {#each Object.keys(CATEGORIES) as key}
                         <button class="btn-duo btn-outline btn-sm" onclick={() => simulateMusyrif(key)}>
-                            {CATEGORIES[key].icon} {i18n.t(`placement.cat_${key}`)}
+                            <i class={CATEGORIES[key].icon}></i> {i18n.t(`placement.cat_${key}`)}
                         </button>
                     {/each}
                 </div>
@@ -270,7 +275,7 @@
         {:else if step === 'result'}
             {@const cat = CATEGORIES[placement.category] ?? CATEGORIES.rbq}
             <div class="intro-hero">
-                <div class="intro-emoji">{cat.icon}</div>
+                <div class="intro-emoji"><i class={cat.icon}></i></div>
                 <div class="result-eyebrow">{i18n.t('placement.result_title')}</div>
                 <h1 class="q-title" style="color:{cat.color}">{i18n.t(`placement.cat_${placement.category}`)}</h1>
                 <p class="q-sub">{i18n.t(`placement.cat_${placement.category}_desc`)}</p>
@@ -301,11 +306,11 @@
             <p class="q-sub">{i18n.t('placement.hafalan_desc')}</p>
             <div class="opt-list">
                 <button class="option-card" class:selected={everMemorized === true} onclick={() => (everMemorized = true)}>
-                    <span class="opt-icon">📚</span>
+                    <span class="opt-icon"><i class="ti ti-books"></i></span>
                     <span>{i18n.t('placement.hafalan_yes')}</span>
                 </button>
                 <button class="option-card" class:selected={everMemorized === false} onclick={() => (everMemorized = false)}>
-                    <span class="opt-icon">🌱</span>
+                    <span class="opt-icon"><i class="ti ti-plant"></i></span>
                     <span>{i18n.t('placement.hafalan_no')}</span>
                 </button>
             </div>
@@ -332,14 +337,14 @@
             {#if placement.recommendation?.surah || placement.recommendation?.note}
                 <!-- Musyrif boleh mengirim hanya catatan tanpa rekomendasi surah lewat
                      layar Verifikasi Placement, jadi kedua baris dijaga terpisah —
-                     tanpa itu baris surah tampil sebagai "📖 null · Juz null". -->
+                     tanpa itu baris surah tampil sebagai "surah null · Juz null". -->
                 <div class="rec-card">
                     <div class="rec-head">
                         <span class="rec-badge">{i18n.t('placement.rec_from_musyrif')}</span>
                     </div>
                     {#if placement.recommendation.surah}
                         <div class="rec-target">
-                            📖 {placement.recommendation.surah} · Juz {placement.recommendation.juz}
+                            <i class="ti ti-book-2"></i> {placement.recommendation.surah} · Juz {placement.recommendation.juz}
                         </div>
                     {/if}
                     {#if placement.recommendation.note}
@@ -350,32 +355,32 @@
 
             <div class="opt-list">
                 <button class="option-card" class:selected={followRecommendation === true} onclick={() => (followRecommendation = true)}>
-                    <span class="opt-icon">👍</span>
+                    <span class="opt-icon"><i class="ti ti-thumb-up"></i></span>
                     <span>{i18n.t('placement.rec_follow')}</span>
                 </button>
                 <button class="option-card" class:selected={followRecommendation === false} onclick={() => (followRecommendation = false)}>
-                    <span class="opt-icon">🎯</span>
+                    <span class="opt-icon"><i class="ti ti-target"></i></span>
                     <span>{i18n.t('placement.rec_own')}</span>
                 </button>
             </div>
 
             {#if followRecommendation === false}
-                <select class="own-input" bind:value={selfPacedSurah} aria-label="Pilih surah">
-                    <option value="">Pilih surah yang ingin dihafal</option>
-                    {#each Object.values(SURAHS).sort((a, b) => a.number - b.number) as surah}
-                        <option value={surah.name}>{surah.name}</option>
-                    {/each}
-                </select>
+                <Dropdown
+                    bind:value={selfPacedSurah}
+                    options={surahOptions}
+                    placeholder={i18n.t('placement.own_surah_placeholder')}
+                    ariaLabel={i18n.t('placement.own_surah_label')}
+                />
             {/if}
 
             <div class="field path-choice-inline">
                 <span class="field-label">Cara belajar</span>
                 <div class="opt-list">
                     <button class="option-card tall" class:selected={pathMode === 'roadmap'} onclick={() => (pathMode = 'roadmap')}>
-                        <span class="opt-icon">🗺️</span><span><strong>{i18n.t('placement.path_roadmap')}</strong><small>{i18n.t('placement.path_roadmap_desc')}</small></span>
+                        <span class="opt-icon"><i class="ti ti-map"></i></span><span><strong>{i18n.t('placement.path_roadmap')}</strong><small>{i18n.t('placement.path_roadmap_desc')}</small></span>
                     </button>
                     <button class="option-card tall" class:selected={pathMode === 'self'} onclick={() => (pathMode = 'self')}>
-                        <span class="opt-icon">🧭</span><span><strong>{i18n.t('placement.path_self')}</strong><small>Pilih surah sendiri dan belajar sesuai ritmemu.</small></span>
+                        <span class="opt-icon"><i class="ti ti-compass"></i></span><span><strong>{i18n.t('placement.path_self')}</strong><small>Pilih surah sendiri dan belajar sesuai ritmemu.</small></span>
                     </button>
                 </div>
             </div>
@@ -386,14 +391,14 @@
             <p class="q-sub">{i18n.t('placement.path_desc')}</p>
             <div class="opt-list">
                 <button class="option-card tall" class:selected={pathMode === 'roadmap'} onclick={() => (pathMode = 'roadmap')}>
-                    <span class="opt-icon">🗺️</span>
+                    <span class="opt-icon"><i class="ti ti-map"></i></span>
                     <span>
                         <strong>{i18n.t('placement.path_roadmap')}</strong>
                         <small>{i18n.t('placement.path_roadmap_desc')}</small>
                     </span>
                 </button>
                 <button class="option-card tall" class:selected={pathMode === 'self'} onclick={() => (pathMode = 'self')}>
-                    <span class="opt-icon">🧭</span>
+                    <span class="opt-icon"><i class="ti ti-compass"></i></span>
                     <span>
                         <strong>{i18n.t('placement.path_self')}</strong>
                         <small>{i18n.t('placement.path_self_desc')}</small>
@@ -532,8 +537,8 @@
 
     .sla-pill {
         display: flex; align-items: center; justify-content: center; gap: 6px;
-        background: #fff7ed; border: 1.5px solid #fed7aa; border-radius: 99px;
-        padding: 8px 14px; font-size: 12px; font-weight: 900; color: #b45309;
+        background: #e8f8f6; border: 1.5px solid #99e5dc; border-radius: 99px;
+        padding: 8px 14px; font-size: 12px; font-weight: 900; color: #008f83;
     }
 
     .mock-panel {

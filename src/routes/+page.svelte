@@ -2,7 +2,7 @@
     import { appState } from '$lib/app.svelte.js';
     import Onboarding from '$lib/screens/Onboarding.svelte';
     import Learn from '$lib/screens/Learn.svelte';
-    import Marketplace from '$lib/screens/Marketplace.svelte';
+    import Murajaah from '$lib/screens/Murajaah.svelte';
     import League from '$lib/screens/League.svelte';
     import Profile from '$lib/screens/Profile.svelte';
     import Language from '$lib/screens/Language.svelte';
@@ -43,7 +43,7 @@
     {:else if appState.currentScreen === 'halaqah'}
         <HalaqahHub />
     {:else if appState.currentScreen === 'murojaah'}
-        <Marketplace />
+        <Murajaah />
     {:else if appState.currentScreen === 'feedback'}
         <SessionFeedback />
     {:else if appState.currentScreen === 'league'}
@@ -79,7 +79,7 @@
     {:else}
         <!-- Fallback for screens not yet ported -->
         <div class="screen" style="padding: 40px; text-align: center; color: #afafaf;">
-            <div style="font-size: 48px; margin-bottom: 20px;">🏗️</div>
+            <div style="font-size: 48px; margin-bottom: 20px;"><i class="ti ti-buildings"></i></div>
             <div style="font-size: 16px; font-weight: 900; color: #3c3c3c;">Layar {appState.currentScreen}</div>
             <p style="font-size: 13px; margin-top: 8px;">Sedang dalam proses migrasi ke Svelte 5...</p>
             <button class="btn-duo btn-green" style="margin-top: 20px;" onclick={() => appState.go('learn')}>

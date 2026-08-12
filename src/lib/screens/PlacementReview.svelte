@@ -8,6 +8,7 @@
     import { i18n } from '$lib/i18n.svelte.js';
     import { SURAHS } from '$lib/data/surahs.js';
     import { PLACEMENT_CATEGORIES } from '$lib/data/placementCategories.js';
+    import Dropdown from '$lib/components/Dropdown.svelte';
 
     const entry = $derived(appState.placementReview);
 
@@ -72,7 +73,11 @@
         });
     });
 
-    const surahOptions = $derived(Object.values(SURAHS).sort((a, b) => b.juz - a.juz || b.number - a.number));
+    const surahOptions = $derived(
+        Object.values(SURAHS)
+            .sort((a, b) => b.juz - a.juz || b.number - a.number)
+            .map((s) => ({ value: s.name, label: `${s.name} · Juz ${s.juz}` }))
+    );
 
     const canSubmit = $derived(selectedCategory !== null);
 
@@ -104,7 +109,7 @@
     {#if !entry}
         <div class="scroll-content no-scrollbar" style="display:flex; align-items:center; justify-content:center;">
             <div class="not-found">
-                <span style="font-size:34px;">🎧</span>
+                <span style="font-size:34px;"><i class="ti ti-headphones"></i></span>
                 <p>{i18n.t('musyrif.review_not_found')}</p>
                 <button class="btn-duo btn-green btn-auto" onclick={() => appState.go('musyrif')}>
                     {i18n.t('common.back')}
@@ -115,7 +120,7 @@
         <div class="scroll-content no-scrollbar">
             <!-- Identitas santri -->
             <div class="student-card">
-                <div class="student-avatar">🎧</div>
+                <div class="student-avatar"><i class="ti ti-headphones"></i></div>
                 <div style="flex:1; min-width:0;">
                     <div class="student-name">
                         {entry.name}
@@ -127,7 +132,7 @@
             </div>
 
             <!-- Pemutar rekaman -->
-            <div class="section-label">🎙️ {i18n.t('musyrif.review_recording')}</div>
+            <div class="section-label"><i class="ti ti-microphone"></i> {i18n.t('musyrif.review_recording')}</div>
             <div class="pad">
                 <div class="player-card">
                     <button
@@ -135,7 +140,7 @@
                         onclick={togglePlay}
                         aria-label={i18n.t(playing ? 'musyrif.review_pause' : 'musyrif.review_play')}
                     >
-                        <i class="ti {playing ? 'ti-player-pause-filled' : 'ti-player-play-filled'}"></i>
+                        <i class="ti {playing ? 'ti-player-pause' : 'ti-player-play'}"></i>
                     </button>
                     <div style="flex:1; min-width:0;">
                         <div class="wave-row">
@@ -152,7 +157,7 @@
             </div>
 
             <!-- Catatan untuk santri -->
-            <div class="section-label">📝 {i18n.t('musyrif.review_notes_label')}</div>
+            <div class="section-label"><i class="ti ti-notes"></i> {i18n.t('musyrif.review_notes_label')}</div>
             <div class="pad">
                 <textarea
                     class="note-input"
@@ -163,18 +168,18 @@
             </div>
 
             <!-- Rekomendasi surah -->
-            <div class="section-label">📖 {i18n.t('musyrif.review_surah_label')}</div>
+            <div class="section-label"><i class="ti ti-book-2"></i> {i18n.t('musyrif.review_surah_label')}</div>
             <div class="pad">
-                <select class="own-input" bind:value={selectedSurah} aria-label={i18n.t('musyrif.review_surah_label')}>
-                    <option value="">{i18n.t('musyrif.review_surah_placeholder')}</option>
-                    {#each surahOptions as s}
-                        <option value={s.name}>{s.name} · Juz {s.juz}</option>
-                    {/each}
-                </select>
+                <Dropdown
+                    bind:value={selectedSurah}
+                    options={surahOptions}
+                    placeholder={i18n.t('musyrif.review_surah_placeholder')}
+                    ariaLabel={i18n.t('musyrif.review_surah_label')}
+                />
             </div>
 
             <!-- Kategori -->
-            <div class="section-label">🎯 {i18n.t('musyrif.review_category_label')}</div>
+            <div class="section-label"><i class="ti ti-target"></i> {i18n.t('musyrif.review_category_label')}</div>
             <div class="pad cat-list">
                 {#each PLACEMENT_CATEGORIES as c}
                     <button
@@ -184,7 +189,7 @@
                         style={selectedCategory === c.id ? `background:${c.bg}; border-color:${c.edge};` : ''}
                         onclick={() => (selectedCategory = c.id)}
                     >
-                        <span class="cat-icon">{c.icon}</span>
+                        <span class="cat-icon"><i class={c.icon}></i></span>
                         <div style="flex:1; min-width:0; text-align:left;">
                             <div class="cat-name" style={selectedCategory === c.id ? `color:${c.color}` : ''}>
                                 {i18n.t(`placement.cat_${c.id}`)}
@@ -192,7 +197,7 @@
                             <div class="cat-desc">{i18n.t(`placement.cat_${c.id}_desc`)}</div>
                         </div>
                         {#if selectedCategory === c.id}
-                            <i class="ti ti-circle-check-filled" style="color:{c.color}; font-size:20px; flex-shrink:0;"></i>
+                            <i class="ti ti-circle-check" style="color:{c.color}; font-size:20px; flex-shrink:0;"></i>
                         {/if}
                     </button>
                 {/each}
@@ -259,7 +264,8 @@
         font-size: 18px; cursor: pointer;
         transition: transform .1s ease, box-shadow .1s ease;
     }
-    .play-btn:active { transform: translateY(2px); box-shadow: 0 1px 0 #007a6e; }
+    .play-btn:hover { transform: translateY(1px); box-shadow: 0 2px 0 #007a6e; }
+    .play-btn:active { transform: translateY(3px); box-shadow: none; }
     .wave-row {
         display: flex; align-items: center; gap: 2px; height: 30px;
     }
@@ -280,20 +286,16 @@
     }
     .note-input:focus { outline: none; border-color: #1cb0f6; }
 
-    .own-input {
-        width: 100%; padding: 13px 14px; border: 2px solid #e5e5e5; border-radius: 12px;
-        background: #fff; font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 700;
-        color: #3c3c3c; min-height: 48px; box-sizing: border-box;
-    }
-    .own-input:focus { outline: none; border-color: #1cb0f6; }
-
     .cat-list { display: flex; flex-direction: column; gap: 10px; }
     .cat-card {
         display: flex; align-items: center; gap: 12px; width: 100%;
-        background: #fff; border: 2px solid #e5e5e5; border-bottom-width: 4px;
-        border-radius: 16px; padding: 12px 14px; cursor: pointer;
-        font-family: 'Nunito', sans-serif; min-height: 56px;
+        background: #fff; border: 2px solid #e5e5e5; border-bottom: 3px solid #cbd5e1;
+        border-radius: 16px; padding: 12px 14px; cursor: pointer; box-sizing: border-box;
+        font-family: 'Nunito', sans-serif; height: 80px;
+        transition: transform .1s ease, border-bottom-width .1s ease;
     }
+    .cat-card:hover { transform: translateY(1px); border-bottom-width: 2px; box-shadow: none; }
+    .cat-card:active { transform: translateY(3px); border-bottom-width: 0; box-shadow: none; }
     .cat-icon { font-size: 24px; flex-shrink: 0; }
     .cat-name { font-size: 14px; font-weight: 900; color: #1e293b; }
     .cat-desc { font-size: 11px; font-weight: 600; color: #64748b; margin-top: 2px; line-height: 1.4; }

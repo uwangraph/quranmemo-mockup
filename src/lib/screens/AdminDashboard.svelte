@@ -12,7 +12,7 @@
     <!-- Header -->
     <div class="topbar" style="background: var(--admin-purple); color: #fff; border-bottom: none;">
         <div style="display: flex; align-items: center; gap: 8px;">
-            <span style="font-size: 18px;">🛡️</span>
+            <i class="ti ti-shield-check" style="font-size: 18px;"></i>
             <div>
                 <div style="font-size: 13px; font-weight: 900; letter-spacing: -0.3px;">{i18n.t('admin.dash.title')}</div>
                 <div style="font-size: 9px; font-weight: 700; opacity: 0.7; text-transform: uppercase;">{i18n.t('admin.dash.analytics')}</div>
@@ -31,13 +31,13 @@
 
     <!-- Tab Nav -->
     <div class="tab-nav">
-        {#each [['overview','📊',i18n.t('admin.dash.tab_overview')], ['users','👥',i18n.t('admin.dash.tab_users')], ['musyrif','👳',i18n.t('admin.dash.tab_musyrif')]] as [id, icon, label]}
+        {#each [['overview','ti-chart-bar',i18n.t('admin.dash.tab_overview')], ['users','ti-users',i18n.t('admin.dash.tab_users')], ['musyrif','ti-chalkboard-teacher',i18n.t('admin.dash.tab_musyrif')]] as [id, icon, label]}
             <button
                 class="tab-btn"
                 class:active={activeTab === id}
                 onclick={() => activeTab = id}
             >
-                {icon} {label}
+                <i class="ti {icon}"></i> {label}
             </button>
         {/each}
     </div>

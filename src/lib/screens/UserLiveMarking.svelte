@@ -35,9 +35,9 @@
             <span>ANDA</span>
         </div>
         <div class="call-controls">
-            <button class:active={isMuted} aria-label="Mikrofon" onclick={() => isMuted = !isMuted}><i class="ti" class:ti-microphone-off={isMuted} class:ti-microphone={!isMuted}></i></button>
-            <button class:active={!isCameraOn} aria-label="Kamera" onclick={() => isCameraOn = !isCameraOn}><i class="ti" class:ti-video-off={!isCameraOn} class:ti-video={isCameraOn}></i></button>
-            <button class="hangup" aria-label="Akhiri" onclick={() => appState.go('murojaah')}><i class="ti ti-phone-off"></i></button>
+            <button class:active={isMuted} aria-label="Mikrofon" onclick={() => isMuted = !isMuted}><i class="ti {isMuted ? 'ti-microphone-off' : 'ti-microphone'}"></i></button>
+            <button class:active={!isCameraOn} aria-label="Kamera" onclick={() => isCameraOn = !isCameraOn}><i class="ti {isCameraOn ? 'ti-video' : 'ti-camera-off'}"></i></button>
+            <button class="hangup" aria-label="Akhiri" onclick={() => appState.go('murojaah')}><i class="ti ti-phone-x"></i></button>
         </div>
     </div>
 
@@ -57,7 +57,7 @@
                 <span class="missing">Ayat belum tersedia di data latihan.</span>
             {/if}
         </div>
-        <div class="status-row"><i class="ti ti-circle-check-filled"></i> Terhubung dengan {session.musyrifName}</div>
+        <div class="status-row"><i class="ti ti-circle-check"></i> Terhubung dengan {session.musyrifName}</div>
     </section>
 
     <footer class="session-footer">

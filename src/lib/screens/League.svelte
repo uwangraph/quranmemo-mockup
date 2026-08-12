@@ -9,8 +9,8 @@
     let activePeriod = $state('weekly');
 
     const tabs = $derived([
-        { id: 'global-user', label: i18n.t('lb.tab_global_user'), icon: '🌍' },
-        { id: 'regional-user', label: i18n.t('lb.tab_regional'), icon: '🏳️' },
+        { id: 'global-user', label: i18n.t('lb.tab_global_user'), icon: 'ti-globe' },
+        { id: 'regional-user', label: i18n.t('lb.tab_regional'), icon: 'ti-flag' },
     ]);
 
     // Empat periode sesuai LEARDERBOARD.md — termasuk periode Event.
@@ -23,13 +23,13 @@
 
     // Besaran XP dibaca dari aturan bersama agar tidak pernah menyimpang dari XP.md.
     const xpSources = $derived([
-        { icon: '📝', label: i18n.t('lb.src_step'), value: `+${XP.step} XP` },
-        { icon: '🎯', label: i18n.t('lb.src_daily_mission'), value: `+${XP.dailyMissionTotal} XP` },
-        { icon: '📖', label: i18n.t('lb.src_surah'), value: `+${surahCompletionXp(1)}–${surahCompletionXp(999)} XP` },
-        { icon: '🏁', label: i18n.t('lb.src_checkpoint'), value: `+${XP.checkpoint} XP` },
-        { icon: '🎤', label: i18n.t('lb.src_setoran'), value: `+${XP.setoran} XP` },
+        { icon: 'ti-notes', label: i18n.t('lb.src_step'), value: `+${XP.step} XP` },
+        { icon: 'ti-target', label: i18n.t('lb.src_daily_mission'), value: `+${XP.dailyMissionTotal} XP` },
+        { icon: 'ti-book-2', label: i18n.t('lb.src_surah'), value: `+${surahCompletionXp(1)}–${surahCompletionXp(999)} XP` },
+        { icon: 'ti-flag', label: i18n.t('lb.src_checkpoint'), value: `+${XP.checkpoint} XP` },
+        { icon: 'ti-microphone', label: i18n.t('lb.src_setoran'), value: `+${XP.setoran} XP` },
         { icon: '⭐', label: i18n.t('lb.src_mumtaz'), value: `+${XP.mumtaz} XP` },
-        { icon: '🤝', label: i18n.t('lb.src_halaqah'), value: `+${XP.halaqahPerSetoran} XP` },
+        { icon: 'ti-hand-stop', label: i18n.t('lb.src_halaqah'), value: `+${XP.halaqahPerSetoran} XP` },
     ]);
 
     // Mock data generators
@@ -39,14 +39,14 @@
     const scaled = (n) => Math.round(n * periodScale);
 
     const globalUsers = $derived([
-        { name: 'Siti Nurhaliza', xp: scaled(4820), avatar: '🧕', country: '🇮🇩', streak: 42 },
-        { name: 'Ahmad Dani', xp: scaled(4350), avatar: '🧔', country: '🇮🇩', streak: 38 },
-        { name: i18n.t('lb.you'), xp: appState.xpForPeriod(activePeriod), avatar: '👤', country: '🇮🇩', streak: appState.user.streak, isMe: true },
-        { name: 'Fatimah Az-Zahra', xp: scaled(2100), avatar: '🧕', country: '🇲🇾', streak: 21 },
-        { name: 'Omar Farooq', xp: scaled(1950), avatar: '🧔', country: '🇸🇦', streak: 19 },
-        { name: 'Aisha Bello', xp: scaled(1800), avatar: '🧕', country: '🇳🇬', streak: 15 },
-        { name: 'Yusuf Ibrahim', xp: scaled(1650), avatar: '👨', country: '🇮🇩', streak: 12 },
-        { name: 'Khadijah Musa', xp: scaled(1500), avatar: '🧕', country: '🇲🇾', streak: 10 },
+        { name: 'Siti Nurhaliza', xp: scaled(4820), avatar: 'ti-user-circle', country: 'ID', streak: 42 },
+        { name: 'Ahmad Dani', xp: scaled(4350), avatar: 'ti-user-circle', country: 'ID', streak: 38 },
+        { name: i18n.t('lb.you'), xp: appState.xpForPeriod(activePeriod), avatar: 'ti-user-circle', country: 'ID', streak: appState.user.streak, isMe: true },
+        { name: 'Fatimah Az-Zahra', xp: scaled(2100), avatar: 'ti-user-circle', country: 'MY', streak: 21 },
+        { name: 'Omar Farooq', xp: scaled(1950), avatar: 'ti-user-circle', country: 'SA', streak: 19 },
+        { name: 'Aisha Bello', xp: scaled(1800), avatar: 'ti-user-circle', country: 'NG', streak: 15 },
+        { name: 'Yusuf Ibrahim', xp: scaled(1650), avatar: 'ti-user-circle', country: 'ID', streak: 12 },
+        { name: 'Khadijah Musa', xp: scaled(1500), avatar: 'ti-user-circle', country: 'MY', streak: 10 },
     ].sort((a, b) => b.xp - a.xp).map((u, i) => ({ ...u, rank: i + 1 })));
 
     const regionalUsers = $derived(
@@ -90,7 +90,7 @@
     <!-- Top Bar -->
     <div class="topbar" style="background: linear-gradient(135deg, #00978A, #00bfa5); padding: 14px 16px 10px;">
         <span style="font-size: 16px; font-weight: 900; color: #fff; flex: 1; text-align: center;">
-            🏆 Leaderboard
+            <i class="ti ti-trophy"></i> Leaderboard
         </span>
     </div>
 
@@ -103,13 +103,13 @@
                     class:active={activeTab === tab.id}
                     onclick={() => activeTab = tab.id}
                 >
-                    <span class="tab-icon">{tab.icon}</span>
+                    <span class="tab-icon"><i class="ti {tab.icon}"></i></span>
                     <span class="tab-label">{tab.label}</span>
                 </button>
             {/each}
             <!-- Papan peringkat halaqah/komunitas punya layarnya sendiri (LEARDERBOARD.md). -->
             <button class="tab-chip" onclick={() => appState.go('halaqah')}>
-                <span class="tab-icon">👥</span>
+                <span class="tab-icon"><i class="ti ti-users"></i></span>
                 <span class="tab-label">{i18n.t('nav.halaqah')}</span>
             </button>
         </div>
@@ -137,7 +137,7 @@
             <div class="podium-section">
                 <!-- 2nd place -->
                 <div class="podium-item">
-                    <div class="podium-avatar" style="border-color: {getMedalColor(2)};">{top3[1].avatar}</div>
+                    <div class="podium-avatar" style="border-color: {getMedalColor(2)};"><i class="ti ti-user-circle"></i></div>
                     <div class="podium-name">{top3[1].name}</div>
                     <div class="podium-xp">{top3[1].xp.toLocaleString()} XP</div>
                     <div class="podium-bar" style="height: {getPodiumHeight(2)}; background: linear-gradient(to top, #e0e0e0, #f5f5f5);">
@@ -146,8 +146,8 @@
                 </div>
                 <!-- 1st place -->
                 <div class="podium-item first">
-                    <div class="crown">👑</div>
-                    <div class="podium-avatar gold" style="border-color: {getMedalColor(1)};">{top3[0].avatar}</div>
+                    <div class="crown"><i class="ti ti-crown"></i></div>
+                    <div class="podium-avatar gold" style="border-color: {getMedalColor(1)};"><i class="ti ti-user-circle"></i></div>
                     <div class="podium-name">{top3[0].name}</div>
                     <div class="podium-xp">{top3[0].xp.toLocaleString()} XP</div>
                     <div class="podium-bar" style="height: {getPodiumHeight(1)}; background: linear-gradient(to top, #FFD700, #FFF8DC);">
@@ -156,7 +156,7 @@
                 </div>
                 <!-- 3rd place -->
                 <div class="podium-item">
-                    <div class="podium-avatar" style="border-color: {getMedalColor(3)};">{top3[2].avatar}</div>
+                    <div class="podium-avatar" style="border-color: {getMedalColor(3)};"><i class="ti ti-user-circle"></i></div>
                     <div class="podium-name">{top3[2].name}</div>
                     <div class="podium-xp">{top3[2].xp.toLocaleString()} XP</div>
                     <div class="podium-bar" style="height: {getPodiumHeight(3)}; background: linear-gradient(to top, #CD7F32, #f5e6d3);">
@@ -171,7 +171,7 @@
             {#each rest as r}
                 <div class="rank-item" class:is-me={r.isMe}>
                     <div class="rank-num">{r.rank}</div>
-                    <div class="rank-avatar">{r.avatar}</div>
+                    <div class="rank-avatar"><i class="ti ti-user-circle"></i></div>
                     <div class="rank-info">
                         <div class="rank-name">
                             {r.name}
@@ -180,7 +180,7 @@
                             {/if}
                         </div>
                         {#if r.streak}
-                            <div class="rank-sub">🔥 {r.streak} {i18n.t('lb.day_streak')}</div>
+                            <div class="rank-sub"><i class="ti ti-flame"></i> {r.streak} {i18n.t('lb.day_streak')}</div>
                         {/if}
                     </div>
                     <div class="rank-xp-col">
@@ -194,10 +194,10 @@
         <!-- XP Source Info -->
         <div class="xp-info-card">
             <div style="font-size: 13px; font-weight: 900; color: #3c3c3c; margin-bottom: 8px;">
-                ⚡ {i18n.t('lb.xp_sources')}
+                <i class="ti ti-bolt"></i> {i18n.t('lb.xp_sources')}
             </div>
             {#each xpSources as src}
-                <div class="xp-row"><span>{src.icon} {src.label}</span><span class="xp-val">{src.value}</span></div>
+                <div class="xp-row"><span><i class="ti {src.icon}"></i> {src.label}</span><span class="xp-val">{src.value}</span></div>
             {/each}
         </div>
 

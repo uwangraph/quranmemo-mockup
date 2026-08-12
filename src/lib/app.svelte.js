@@ -232,12 +232,12 @@ export function createAppState() {
         lastLoginDate: null,
         scheduledBooking: seedBooking(),
         badges: [
-            { id: 'b1', icon: '🔥', name: 'Langkah Pertama', desc: 'Menyelesaikan 3 hari streak berturut-turut', earned: false },
-            { id: 'b2', icon: '📅', name: 'Satu Pekan Istiqomah', desc: 'Menyelesaikan 7 hari streak berturut-turut', earned: false },
-            { id: 'b3', icon: '🏅', name: 'Penghafal Juz 30', desc: 'Menyelesaikan seluruh hafalan Juz 30', earned: false },
-            { id: 'b4', icon: '💎', name: 'Sebulan Teguh', desc: 'Menyelesaikan 30 hari streak berturut-turut', earned: false },
-            { id: 'b5', icon: '🛡️', name: 'Penghafal Setia', desc: 'Mencapai 100 hari streak berturut-turut', earned: false },
-            { id: 'b6', icon: '👑', name: 'Istiqomah Sejati', desc: 'Mencapai 365 hari streak berturut-turut. Lencana Permanen!', earned: false }
+            { id: 'b1', icon: 'ti-flame', name: 'Langkah Pertama', desc: 'Menyelesaikan 3 hari streak berturut-turut', earned: false },
+            { id: 'b2', icon: 'ti-calendar', name: 'Satu Pekan Istiqomah', desc: 'Menyelesaikan 7 hari streak berturut-turut', earned: false },
+            { id: 'b3', icon: 'ti-medal', name: 'Penghafal Juz 30', desc: 'Menyelesaikan seluruh hafalan Juz 30', earned: false },
+            { id: 'b4', icon: 'ti-diamond', name: 'Sebulan Teguh', desc: 'Menyelesaikan 30 hari streak berturut-turut', earned: false },
+            { id: 'b5', icon: 'ti-shield-check', name: 'Penghafal Setia', desc: 'Mencapai 100 hari streak berturut-turut', earned: false },
+            { id: 'b6', icon: 'ti-crown', name: 'Istiqomah Sejati', desc: 'Mencapai 365 hari streak berturut-turut. Lencana Permanen!', earned: false }
         ],
         certificates: [],   // Diberikan saat seluruh tangga sebuah level tuntas
 
@@ -323,12 +323,12 @@ export function createAppState() {
         user.scheduledBooking = { ...user.scheduledBooking, ...seedBooking() };
     }
     if (user.badges === undefined) user.badges = [
-        { id: 'b1', icon: '🔥', name: 'Langkah Pertama', desc: 'Menyelesaikan 3 hari streak berturut-turut', earned: false },
-        { id: 'b2', icon: '📅', name: 'Satu Pekan Istiqomah', desc: 'Menyelesaikan 7 hari streak berturut-turut', earned: false },
-        { id: 'b3', icon: '🏅', name: 'Penghafal Juz 30', desc: 'Menyelesaikan seluruh hafalan Juz 30', earned: false },
-        { id: 'b4', icon: '💎', name: 'Sebulan Teguh', desc: 'Menyelesaikan 30 hari streak berturut-turut', earned: false },
-        { id: 'b5', icon: '🛡️', name: 'Penghafal Setia', desc: 'Mencapai 100 hari streak berturut-turut', earned: false },
-        { id: 'b6', icon: '👑', name: 'Istiqomah Sejati', desc: 'Mencapai 365 hari streak berturut-turut. Lencana Permanen!', earned: false }
+        { id: 'b1', icon: 'ti-flame', name: 'Langkah Pertama', desc: 'Menyelesaikan 3 hari streak berturut-turut', earned: false },
+        { id: 'b2', icon: 'ti-calendar', name: 'Satu Pekan Istiqomah', desc: 'Menyelesaikan 7 hari streak berturut-turut', earned: false },
+        { id: 'b3', icon: 'ti-medal', name: 'Penghafal Juz 30', desc: 'Menyelesaikan seluruh hafalan Juz 30', earned: false },
+        { id: 'b4', icon: 'ti-diamond', name: 'Sebulan Teguh', desc: 'Menyelesaikan 30 hari streak berturut-turut', earned: false },
+        { id: 'b5', icon: 'ti-shield-check', name: 'Penghafal Setia', desc: 'Mencapai 100 hari streak berturut-turut', earned: false },
+        { id: 'b6', icon: 'ti-crown', name: 'Istiqomah Sejati', desc: 'Mencapai 365 hari streak berturut-turut. Lencana Permanen!', earned: false }
     ];
     if (user.certificates === undefined) user.certificates = [];
     // Data contoh lama menandai lencana dan sertifikat sebagai sudah diraih untuk
@@ -806,7 +806,7 @@ export function createAppState() {
             const id = `ladder_${ladder.id}`;
             if (!user.badges.some(b => b.id === id)) {
                 user.badges = [...user.badges, {
-                    id, icon: '🏅', name: ladder.name,
+                    id, icon: 'ti-medal', name: ladder.name,
                     desc: `Menuntaskan ${ladder.name}`, earned: true, dynamic: true
                 }];
             }
@@ -823,7 +823,7 @@ export function createAppState() {
         if (user.certificates.some(c => c.id === id)) return;
         user.certificates = [...user.certificates, {
             id, title: `certificate.level_${path}`, type: 'certificate.memorization',
-            date: dayKey(serverNow()), icon: '📜'
+            date: dayKey(serverNow()), icon: 'ti-file-text'
         }];
     }
 
@@ -934,6 +934,12 @@ export function createAppState() {
         saveUser();
     }
 
+    function markMurajaah(surah) {
+        if (!surah) return;
+        user.murajaahLog = { ...user.murajaahLog, [surah]: streakDayKey() };
+        saveUser();
+    }
+
     // Surah yang lebih dari 14 hari tidak diulang, yang paling lama menganggur dulu.
     function murajaahDue() {
         return Object.entries(user.murajaahLog ?? {})
@@ -946,7 +952,7 @@ export function createAppState() {
     const screenLabels = {
         onboarding: "Onboarding",
         learn: "Learn",
-        murojaah: "Marketplace",
+        murojaah: "Murajaah",
         feedback: "Session Feedback",
         league: "League",
         musyrif: "Musyrif Dashboard",
@@ -1045,6 +1051,7 @@ export function createAppState() {
         setPathMode,
         setReminderPrefs,
         recordSetoran,
+        markMurajaah,
         markSurahReviewed,
         get murajaahDue() { return murajaahDue(); }
     };

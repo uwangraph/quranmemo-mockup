@@ -4,7 +4,6 @@
     import LearnSidebar from '$lib/components/learn/LearnSidebar.svelte';
     import BottomNav from '../components/BottomNav.svelte';
     import StreakModal from '$lib/components/learn/StreakModal.svelte';
-    import MurajaahAlert from '$lib/components/learn/MurajaahAlert.svelte';
 
     let showStreakModal = $state(false);
 </script>
@@ -13,13 +12,10 @@
     <LearnTopbar onOpenStreakModal={() => showStreakModal = true} />
 
     <div class="scroll-content no-scrollbar" style="background: #fff;">
-        <!-- Prioritas revisi tampil di atas roadmap: hafalan lama yang mulai
-             menguap lebih mendesak daripada target berikutnya (STREAK.md). -->
         <div class="learn-layout-container">
 
             <!-- Left Column: Memorization Path -->
             <div class="path-col">
-                <MurajaahAlert />
                 <RoadmapPath />
             </div>
 

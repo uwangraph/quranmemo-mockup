@@ -72,9 +72,9 @@
     // Hasil Placement Test (ONBOARDING.md) — kategori ditentukan musyrif.
     const placement = $derived(appState.user.placement);
     const placementStyle = {
-        rbq: { icon: '🌱', color: '#b45309', bg: '#fffbeb', border: '#fde68a' },
-        rtq: { icon: '📖', color: '#0369a1', bg: '#eff6ff', border: '#bfdbfe' },
-        tahfidz: { icon: '🏅', color: '#0f766e', bg: '#f0fdfa', border: '#99f6e4' }
+        rbq: { icon: 'ti ti-plant', color: '#008f83', bg: '#fffbeb', border: '#99e5dc' },
+        rtq: { icon: 'ti ti-book-2', color: '#0369a1', bg: '#eff6ff', border: '#bfdbfe' },
+        tahfidz: { icon: 'ti ti-medal', color: '#0f766e', bg: '#f0fdfa', border: '#99f6e4' }
     };
 </script>
 
@@ -101,7 +101,7 @@
         <div class="profile-hero">
             <div class="avatar-container">
                 <div class="avatar-ring">
-                    <div class="avatar-large">👤</div>
+                    <div class="avatar-large"><i class="ti ti-user"></i></div>
                 </div>
                 <button class="edit-avatar-btn"><i class="ti ti-camera"></i></button>
             </div>
@@ -112,22 +112,22 @@
             <!-- Mini stats row -->
             <div class="hero-stats">
                 <div class="hero-stat">
-                    <span class="hs-val">🔥 {user.streak}</span>
+            <span class="hs-val"><i class="ti ti-flame"></i> {user.streak}</span>
                     <span class="hs-label">{i18n.t('profile.streak')}</span>
                 </div>
                 <div class="hs-divider"></div>
                 <div class="hero-stat">
-                    <span class="hs-val">⚡ {user.xp.toLocaleString()}</span>
+            <span class="hs-val"><i class="ti ti-bolt"></i> {user.xp.toLocaleString()}</span>
                     <span class="hs-label">{i18n.t('profile.total_xp')}</span>
                 </div>
                 <div class="hs-divider"></div>
                 <div class="hero-stat">
-                    <span class="hs-val">🏅 {earnedBadges.length}</span>
+            <span class="hs-val"><i class="ti ti-medal"></i> {earnedBadges.length}</span>
                     <span class="hs-label">{i18n.t('profile.badges')}</span>
                 </div>
                 <div class="hs-divider"></div>
                 <div class="hero-stat">
-                    <span class="hs-val">📜 {certs.length}</span>
+            <span class="hs-val"><i class="ti ti-file-text"></i> {certs.length}</span>
                     <span class="hs-label">{i18n.t('profile.certificates')}</span>
                 </div>
             </div>
@@ -136,12 +136,12 @@
         <!-- ══════════════════════════════════
              1. SCHEDULED BOOKING
         ══════════════════════════════════ -->
-        <div class="section-label">📅 {i18n.t('profile.booking')}</div>
+        <div class="section-label"><i class="ti ti-calendar"></i> {i18n.t('profile.booking')}</div>
         <div class="section-pad">
             {#if booking}
                 <button class="booking-card" onclick={() => appState.go('musyrif')}>
                     <div class="booking-left">
-                        <div class="booking-avatar">👳</div>
+                        <div class="booking-avatar"><i class="ti ti-chalkboard-teacher"></i></div>
                     </div>
                     <div class="booking-info">
                         <div class="booking-musyrif">{booking.musyrifName}</div>
@@ -163,11 +163,11 @@
                             {/if}
                         </div>
                     </div>
-                    <i class="ti ti-chevron-right booking-arrow"></i>
+                    <i class="ti ti-caret-right booking-arrow"></i>
                 </button>
             {:else}
                 <div class="empty-booking">
-                    <span style="font-size:32px;">📋</span>
+                    <span style="font-size:32px;"><i class="ti ti-clipboard-text"></i></span>
                     <span>{i18n.t('profile.no_booking')}</span>
                     <button class="btn-duo btn-green btn-sm btn-auto">{i18n.t('profile.create_booking')}</button>
                 </div>
@@ -177,13 +177,13 @@
         <!-- ══════════════════════════════════
              2. HASIL PLACEMENT TEST
         ══════════════════════════════════ -->
-        <div class="section-label">🎯 {i18n.t('placement.result_title')}</div>
+        <div class="section-label"><i class="ti ti-target"></i> {i18n.t('placement.result_title')}</div>
         <div class="section-pad">
             {#if placement?.status === 'done' && placement.category}
                 {@const ps = placementStyle[placement.category]}
                 <div class="placement-card" style="background:{ps.bg}; border-color:{ps.border};">
                     <div class="placement-top">
-                        <span class="placement-emoji">{ps.icon}</span>
+                        <span class="placement-emoji"><i class={ps.icon}></i></span>
                         <div style="flex:1; min-width:0;">
                             <div class="placement-cat" style="color:{ps.color}">{i18n.t(`placement.cat_${placement.category}`)}</div>
                             <div class="placement-mod">{i18n.t(`placement.module_${placement.category}`)}</div>
@@ -192,7 +192,7 @@
                     {#if placement.recommendation?.surah}
                         <div class="placement-rec">
                             <span class="placement-rec-label">{i18n.t('placement.rec_from_musyrif')}</span>
-                            <span class="placement-rec-target">📖 {placement.recommendation.surah} · Juz {placement.recommendation.juz}</span>
+                            <span class="placement-rec-target"><i class="ti ti-book-2"></i> {placement.recommendation.surah} · Juz {placement.recommendation.juz}</span>
                         </div>
                     {/if}
                     {#if placement.recommendation?.note}
@@ -209,16 +209,16 @@
                 </div>
             {:else if placement?.status === 'pending'}
                 <button class="placement-pending" onclick={() => appState.go('onboarding')}>
-                    <span class="placement-emoji">⏳</span>
+                    <span class="placement-emoji"><i class="ti ti-hourglass"></i></span>
                     <div style="flex:1; text-align:left;">
-                        <div class="placement-cat" style="color:#b45309;">{i18n.t('placement.pending_title')}</div>
+                        <div class="placement-cat" style="color:#008f83;">{i18n.t('placement.pending_title')}</div>
                         <div class="placement-mod">{i18n.t('placement.sla_left', { hours: appState.placementSlaHoursLeft() ?? 24 })}</div>
                     </div>
-                    <i class="ti ti-chevron-right" style="color:#d97706;"></i>
+                    <i class="ti ti-caret-right" style="color:#007A70;"></i>
                 </button>
             {:else}
                 <button class="placement-empty" onclick={() => appState.go('onboarding')}>
-                    <span style="font-size:32px;">🎤</span>
+                    <span style="font-size:32px;"><i class="ti ti-microphone"></i></span>
                     <span>{i18n.t('placement.not_taken')}</span>
                     <span class="btn-duo btn-green btn-sm btn-auto placement-cta">{i18n.t('placement.start')}</span>
                 </button>
@@ -228,7 +228,7 @@
         <!-- ══════════════════════════════════
              3. LEVELLING
         ══════════════════════════════════ -->
-        <div class="section-label">📖 {i18n.t('profile.memorization_level')}</div>
+        <div class="section-label"><i class="ti ti-book-2"></i> {i18n.t('profile.memorization_level')}</div>
         <div class="section-pad">
             {#if levelInfo}
             <div class="level-card">
@@ -238,22 +238,22 @@
                         <span>{levelInfo.surah}</span>
                         <span class="level-surah-ar">{levelInfo.surahAr}</span>
                     </div>
-                    <div class="level-xp-pill">⚡ {user.xp.toLocaleString()} XP</div>
+                    <div class="level-xp-pill"><i class="ti ti-bolt"></i> {user.xp.toLocaleString()} XP</div>
                 </div>
 
                 <div class="level-stats-row">
                     <div class="level-stat-box" style="background:#eff6ff; border-color:#bfdbfe;">
-                        <div class="lsb-icon">📖</div>
+                    <div class="lsb-icon"><i class="ti ti-book-2"></i></div>
                         <div class="lsb-val">Juz {levelInfo.juz}</div>
                         <div class="lsb-label">{i18n.t('profile.juz')}</div>
                     </div>
                     <div class="level-stat-box" style="background:#f0fdf4; border-color:#bbf7d0;">
-                        <div class="lsb-icon">🌿</div>
+                    <div class="lsb-icon"><i class="ti ti-leaf"></i></div>
                         <div class="lsb-val">{levelInfo.surah}</div>
                         <div class="lsb-label">{i18n.t('profile.surah')}</div>
                     </div>
-                    <div class="level-stat-box" style="background:#fff7ed; border-color:#fed7aa;">
-                        <div class="lsb-icon">🎯</div>
+                    <div class="level-stat-box" style="background:#e8f8f6; border-color:#99e5dc;">
+                    <div class="lsb-icon"><i class="ti ti-target"></i></div>
                         <div class="lsb-val">{levelInfo.ayatSelesai}/{levelInfo.ayat}</div>
                         <div class="lsb-label">{i18n.t('profile.verse')}</div>
                     </div>
@@ -273,7 +273,7 @@
             {:else}
                 <!-- Tidak ada surah aktif: seluruh konten yang tersedia sudah selesai. -->
                 <div class="level-empty">
-                    <span style="font-size:30px;">🎉</span>
+                    <span style="font-size:30px;"><i class="ti ti-confetti"></i></span>
                     <span>{i18n.t('learn.all_available_done')}</span>
                 </div>
             {/if}
@@ -284,13 +284,13 @@
         ══════════════════════════════════ -->
         <div class="profile-tabs" style="margin: 20px 16px 0; display: flex; background: #f1f5f9; border-radius: 12px; padding: 4px;">
             <button class="p-tab {activeTab === 'streak' ? 'active' : ''}" onclick={() => activeTab = 'streak'}>
-                🔥 {i18n.t('profile.daily_streak')}
+                <i class="ti ti-flame"></i> {i18n.t('profile.daily_streak')}
             </button>
             <button class="p-tab {activeTab === 'badge' ? 'active' : ''}" onclick={() => activeTab = 'badge'}>
-                🎖️ {i18n.t('profile.badges')} ({earnedBadges.length})
+                <i class="ti ti-medal"></i> {i18n.t('profile.badges')} ({earnedBadges.length})
             </button>
             <button class="p-tab {activeTab === 'cert' ? 'active' : ''}" onclick={() => activeTab = 'cert'}>
-                📜 {i18n.t('profile.certificates')} ({certs.length})
+                <i class="ti ti-file-text"></i> {i18n.t('profile.certificates')} ({certs.length})
             </button>
         </div>
 
@@ -325,7 +325,7 @@
                                 class:today={d.isToday && !d.done}
                                 class:missed={!d.done && !d.isToday}>
                                 {#if d.done}
-                                    <span class="week-fire">🔥</span>
+                                    <span class="week-fire"><i class="ti ti-flame"></i></span>
                                 {:else if d.isToday}
                                     <span>⏳</span>
                                 {:else}
@@ -342,7 +342,7 @@
                     {@const nextMs = [3,7,30,100,365].find(m => m > user.streak) ?? 365}
                     <div class="streak-next-ms">
                         <div class="snm-left">
-                            <span>🎯 {i18n.t('profile.next_target')}: <strong>{nextMs} {i18n.t('profile.days')}</strong></span>
+                            <span><i class="ti ti-target"></i> {i18n.t('profile.next_target')}: <strong>{nextMs} {i18n.t('profile.days')}</strong></span>
                         </div>
                         <div class="snm-right">{i18n.t('profile.days_left', {days: nextMs - user.streak})}</div>
                     </div>
@@ -353,7 +353,7 @@
                 {#if appState.repairOffer}
                     {@const done = Math.min(2, appState.repairOffer.targetsDone)}
                     <div class="repair-box">
-                        <div class="repair-title">🩹 {i18n.t('streak.repair_title')}</div>
+                        <div class="repair-title"><i class="ti ti-first-aid-kit"></i> {i18n.t('streak.repair_title')}</div>
                         <div class="repair-desc">{i18n.t('streak.repair_progress', { done, lost: appState.repairOffer.lostStreak })}</div>
                         <div class="repair-dots">
                             <span class="repair-dot" class:on={done >= 1}></span>
@@ -373,7 +373,7 @@
                     <div class="badge-grid">
                         {#each earnedBadges as badge}
                             <div class="badge-card earned">
-                                <div class="badge-icon-wrap earned">{badge.icon}</div>
+                                <div class="badge-icon-wrap earned"><i class="ti {badge.icon}"></i></div>
                                 <div class="badge-name">{badgeName(badge)}</div>
                                 <div class="badge-desc">{badgeDesc(badge)}</div>
                             </div>
@@ -387,7 +387,7 @@
                     <div class="badge-grid">
                         {#each lockedBadges as badge}
                             <div class="badge-card locked">
-                                <div class="badge-icon-wrap locked">{badge.icon}</div>
+                                <div class="badge-icon-wrap locked"><i class="ti {badge.icon}"></i></div>
                                 <div class="badge-name locked-text">{badgeName(badge)}</div>
                                 <div class="badge-desc">{badgeDesc(badge)}</div>
                             </div>
@@ -399,7 +399,7 @@
                     <div class="certs-list">
                         {#each certs as cert}
                             <div class="cert-card">
-                                <div class="cert-icon">{cert.icon}</div>
+                                <div class="cert-icon"><i class="ti {cert.icon}"></i></div>
                                 <div class="cert-info">
                                     <div class="cert-title">{i18n.t(cert.title)}</div>
                                     <div class="cert-meta">
@@ -415,7 +415,7 @@
                     </div>
                 {:else}
                     <div class="empty-cert">
-                        <span style="font-size:36px">🎓</span>
+                        <span style="font-size:36px"><i class="ti ti-school"></i></span>
                         <span>{i18n.t('profile.no_certificates')}</span>
                         <span style="font-size:11px; color:#94a3b8;">{i18n.t('profile.no_certificates_desc')}</span>
                     </div>
@@ -486,22 +486,22 @@
     /* ── BOOKING ── */
     .booking-card {
         width: 100%; display: flex; align-items: center; gap: 14px;
-        background: linear-gradient(135deg, #fff7ed, #fffbf2);
-        border: 2px solid #fed7aa; border-bottom-width: 4px;
+        background: linear-gradient(135deg, #e8f8f6, #f0fbfa);
+        border: 2px solid #99e5dc; border-bottom-width: 4px;
         border-radius: 18px; padding: 16px;
         cursor: pointer; text-align: left; transition: transform 0.15s;
     }
     .booking-card:active { transform: scale(0.98); }
     .booking-left { flex-shrink: 0; }
     .booking-avatar {
-        width: 52px; height: 52px; background: #ffedd5; border-radius: 16px;
+        width: 52px; height: 52px; background: #d5f3ef; border-radius: 16px;
         display: flex; align-items: center; justify-content: center; font-size: 28px;
-        border: 2px solid #fed7aa;
+        border: 2px solid #99e5dc;
     }
     .booking-info { flex: 1; min-width: 0; }
     .booking-musyrif { font-size: 15px; font-weight: 900; color: #92400e; }
     .booking-detail {
-        font-size: 12px; font-weight: 700; color: #b45309;
+        font-size: 12px; font-weight: 700; color: #008f83;
         display: flex; align-items: center; gap: 4px; margin-top: 4px;
     }
     .booking-time-row {
@@ -509,13 +509,13 @@
         font-size: 11px; font-weight: 700; color: #78716c;
         flex-wrap: wrap;
     }
-    .booking-badge.muted { background: #fed7aa; color: #9a3412; }
+    .booking-badge.muted { background: #99e5dc; color: #9a3412; }
     .booking-badge.past { background: #e2e8f0; color: #64748b; }
     .booking-badge {
-        background: #ff6200; color: #fff; font-size: 10px; font-weight: 900;
+        background: #007A70; color: #fff; font-size: 10px; font-weight: 900;
         padding: 2px 8px; border-radius: 6px;
     }
-    .booking-arrow { color: #d97706; font-size: 18px; flex-shrink: 0; }
+    .booking-arrow { color: #007A70; font-size: 18px; flex-shrink: 0; }
     .empty-booking {
         display: flex; flex-direction: column; align-items: center; gap: 8px;
         padding: 24px; background: #f8fafc; border-radius: 16px;
@@ -540,8 +540,8 @@
     }
     .level-surah-ar { font-size: 18px; color: #00978A; font-weight: 700; }
     .level-xp-pill {
-        font-size: 11px; font-weight: 900; color: #ff9600;
-        background: #fffbeb; border: 1.5px solid #fde68a; border-radius: 99px;
+        font-size: 11px; font-weight: 900; color: #00978A;
+        background: #fffbeb; border: 1.5px solid #99e5dc; border-radius: 99px;
         padding: 3px 10px;
     }
     .level-stats-row { display: flex; gap: 8px; }
@@ -575,7 +575,7 @@
     .streak-divider { width: 1px; height: 44px; background: #e2e8f0; }
     .streak-num-block { display: flex; flex-direction: column; align-items: center; gap: 2px; }
     .streak-num {
-        font-size: 32px; font-weight: 900; color: #ff6200;
+        font-size: 32px; font-weight: 900; color: #007A70;
         font-family: 'Nunito', sans-serif; line-height: 1;
     }
     .streak-num.terbanyak { color: #7c3aed; }
@@ -590,7 +590,7 @@
         font-size: 18px; border: 2px solid #f1f5f9; background: #f8fafc;
         transition: all 0.2s;
     }
-    .week-dot.done { background: #fff7ed; border-color: #fed7aa; }
+    .week-dot.done { background: #e8f8f6; border-color: #99e5dc; }
     .week-dot.today { background: #ecfdf5; border-color: #6ee7b7; }
     .week-dot.missed { background: #fef2f2; border-color: #fecaca; }
     .week-fire { font-size: 20px; }
@@ -655,7 +655,7 @@
     .placement-by { font-size: 11px; font-weight: 700; color: #64748b; margin-top: 10px; }
     .placement-pending {
         width: 100%; display: flex; align-items: center; gap: 12px;
-        background: #fffbeb; border: 2px solid #fde68a; border-bottom-width: 4px;
+        background: #fffbeb; border: 2px solid #99e5dc; border-bottom-width: 4px;
         border-radius: 18px; padding: 16px; cursor: pointer;
     }
     .placement-empty {
@@ -675,8 +675,8 @@
         transition: transform 0.15s;
     }
     .badge-card.earned {
-        background: linear-gradient(135deg, #fffbeb, #fff7ed);
-        border-color: #fde68a;
+        background: linear-gradient(135deg, #fffbeb, #e8f8f6);
+        border-color: #99e5dc;
     }
     .badge-card.locked {
         background: #f8fafc; border-color: #e2e8f0; opacity: 0.55;
@@ -686,7 +686,7 @@
         width: 52px; height: 52px; border-radius: 50%;
         display: flex; align-items: center; justify-content: center; font-size: 26px;
     }
-    .badge-icon-wrap.earned { background: #fef3c7; border: 2px solid #fde68a; }
+    .badge-icon-wrap.earned { background: #e8f8f6; border: 2px solid #99e5dc; }
     .badge-icon-wrap.locked { background: #f1f5f9; border: 2px solid #e2e8f0; filter: grayscale(1); }
     .badge-name { font-size: 12px; font-weight: 900; color: #92400e; }
     .badge-name.locked-text { color: #94a3b8; }
