@@ -410,14 +410,14 @@
     .btn-duo {
         padding: 8px 16px;
         border: 2px solid #e5e5e5;
-        border-bottom-width: 4px;
         border-radius: 12px;
         background: #fff;
         font-size: 12px;
         font-weight: 850;
         color: #afafaf;
         cursor: pointer;
-        transition: all 0.1s ease;
+        box-shadow: 0 2px 0 var(--btn-edge, #e5e5e5);
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
         text-align: center;
         box-sizing: border-box;
         display: inline-flex;
@@ -425,8 +425,8 @@
         gap: 6px;
     }
     .btn-duo:active {
-        transform: translateY(2px);
-        border-bottom-width: 2px;
+        transform: none;
+        box-shadow: none;
     }
     .btn-duo.outline {
         border-color: #00978A; 

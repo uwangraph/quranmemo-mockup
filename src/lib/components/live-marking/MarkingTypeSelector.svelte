@@ -33,8 +33,8 @@
     .modal-content { background: #fff; width: 100%; border-radius: 32px 32px 0 0; padding: 32px 24px; box-shadow: 0 -10px 40px rgba(0,0,0,0.2); animation: slideUp 0.3s ease-out; }
     @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
     .type-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
-    .type-btn { display: flex; align-items: center; gap: 20px; padding: 18px 24px; border: 2px solid #e5e5e5; border-bottom-width: 5px; border-radius: 20px; background: #fff; font-family: inherit; font-size: 16px; font-weight: 900; color: #3c3c3c; cursor: pointer; transition: all 0.1s; }
-    .type-btn:active { transform: translateY(2px); border-bottom-width: 2px; }
+    .type-btn { display: flex; align-items: center; gap: 20px; padding: 18px 24px; border: 2px solid #e5e5e5; border-radius: 20px; background: #fff; font-family: inherit; font-size: 16px; font-weight: 900; color: #3c3c3c; cursor: pointer; --btn-edge: #cbd5e1; box-shadow: 0 4px 0 var(--btn-edge); transition: transform .15s ease, box-shadow .15s ease; }
+    .type-btn:active { transform: translateY(4px); box-shadow: none; }
     .type-icon { font-size: 24px; }
     .type-btn.forget { border-color: #ff4b4b; color: #ff4b4b; }
     .type-btn.tajwid { border-color: #ff9600; color: #ff9600; }

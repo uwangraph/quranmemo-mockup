@@ -444,7 +444,7 @@ export default {
     "motivation.incorrect_msg": "Pay attention to the word order and original pronunciation. Don't give up, try again!",
 
     "break.title": "Take a Short Break",
-    "break.description": "Take a short break to keep your mind fresh. Memorization continued calmly will stick better in memory. 🌙",
+    "break.description": "Take a breath. Your progress is safe — pick up again whenever you're ready.",
     "break.continue": "CONTINUE MEMORIZING",
     "break.exit": "BACK TO DASHBOARD",
 

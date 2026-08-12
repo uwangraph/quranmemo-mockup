@@ -324,8 +324,8 @@
         transform: translateY(-1px);
     }
     .minimal-btn:active:not(:disabled) {
-        transform: translateY(1px);
-        border-bottom-width: 2px;
+        transform: translateY(4px);
+        box-shadow: none;
     }
     .minimal-btn.active {
         color: #fff;

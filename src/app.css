@@ -36,24 +36,21 @@
    bottom shadow changes between rest, hover, and press. */
 .audio-circle-play,
 .mic-circle-btn,
-.main-action-btn,
-.btn-duo {
+.main-action-btn {
   transform: none !important;
   transition: box-shadow 150ms ease, border-bottom-width 150ms ease !important;
 }
 
 .audio-circle-play:hover:not(:disabled),
 .mic-circle-btn:hover:not(:disabled),
-.main-action-btn:hover:not(:disabled),
-.btn-duo:hover:not(:disabled) {
+.main-action-btn:hover:not(:disabled) {
   transform: none !important;
   border-bottom-width: 2px !important;
 }
 
 .audio-circle-play:active:not(:disabled),
 .mic-circle-btn:active:not(:disabled),
-.main-action-btn:active:not(:disabled),
-.btn-duo:active:not(:disabled) {
+.main-action-btn:active:not(:disabled) {
   transform: none !important;
   border-bottom-width: 0 !important;
 }
@@ -163,10 +160,14 @@ body {
 
 /* ===================== BUTTONS ===================== */
 .btn-duo {
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   width: 100%;
+  min-width: 0;
   padding: 14px;
-  border-radius: 16px;
+  border-radius: 12px;
   font-family: "Nunito", sans-serif;
   font-size: 15px;
   font-weight: 800;
@@ -183,22 +184,25 @@ body {
 
      Warna tepian datang dari --btn-edge yang disetel tiap varian warna, supaya
      satu aturan tekan cukup untuk semuanya. */
-  box-shadow: 0 3px 0 var(--btn-edge, transparent);
-  transition: transform 0.1s ease, box-shadow 0.1s ease;
+  /* Transform tidak memengaruhi layout, jadi efek tekan tetap terasa tanpa
+     mendorong komponen di sekitar tombol. */
+  box-shadow: 0 4px 0 var(--btn-edge, transparent);
+  transition: transform 150ms ease, box-shadow 150ms ease;
+  will-change: transform;
 }
 
 .btn-duo:not(.btn-disabled):hover {
-  transform: translateY(1px);
-  box-shadow: 0 2px 0 var(--btn-edge, transparent);
+  transform: translateY(2px) !important;
+  box-shadow: 0 2px 0 var(--btn-edge, transparent) !important;
 }
 
 .btn-duo:not(.btn-disabled):active {
-  transform: translateY(3px);
-  box-shadow: none;
+  transform: translateY(4px) !important;
+  box-shadow: none !important;
 }
 
 .btn-green {
-  background: var(--duo-green);
+  background: linear-gradient(135deg, #0aa99c, var(--duo-green));
   color: #fff;
   --btn-edge: var(--duo-green-dark);
 }
@@ -246,7 +250,7 @@ body {
 }
 
 .btn-duo.btn-auto {
-  display: inline-block;
+  display: inline-flex;
   width: auto;
 }
 
@@ -263,7 +267,7 @@ body {
   border-radius: 8px;
   letter-spacing: 0.2px;
   min-height: 26px;
-  box-shadow: 0 2px 0 var(--btn-edge, transparent);
+  box-shadow: 0 3px 0 var(--btn-edge, transparent);
 }
 
 /* Jarak tekan dihitung ulang dari tepian 2px agar gerakannya tetap terasa. */
@@ -273,8 +277,46 @@ body {
 }
 
 .btn-duo.btn-xs:not(.btn-disabled):active {
-  transform: translateY(2px);
+  transform: translateY(3px);
   box-shadow: none;
+}
+
+/* Semua tombol aksi memakai ilusi 3D yang sama. Transform tidak memengaruhi
+   flow layout, jadi elemen lain tidak ikut terdorong saat tombol ditekan. */
+button:not(:disabled):not(.btn-disabled):not(.btn-duo):not(.sidebar-item):not(.snb):not(.back-btn):not(.menu-toggle):not(.close-menu-btn):not(.chrome-nav-btn):not(.zoom-btn):not(.three-d-button):not(.circle) {
+  transition: transform 150ms ease, box-shadow 150ms ease !important;
+}
+
+button:not(:disabled):not(.btn-disabled):not(.btn-duo):not(.sidebar-item):not(.snb):not(.back-btn):not(.menu-toggle):not(.close-menu-btn):not(.chrome-nav-btn):not(.zoom-btn):not(.three-d-button):not(.circle):hover {
+  transform: translateY(2px) !important;
+  box-shadow: 0 2px 0 var(--btn-edge, rgba(0, 0, 0, 0.18)) !important;
+}
+
+button:not(:disabled):not(.btn-disabled):not(.btn-duo):not(.sidebar-item):not(.snb):not(.back-btn):not(.menu-toggle):not(.close-menu-btn):not(.chrome-nav-btn):not(.zoom-btn):not(.three-d-button):not(.circle):active {
+  transform: translateY(4px) !important;
+  box-shadow: none !important;
+}
+
+/* Beberapa step lesson punya CSS lokal lama. Paksa tombol footer lesson memakai
+   shadow saja supaya perubahan state tidak mengubah tinggi elemen atau layout. */
+.lesson-footer-actions .btn-duo,
+.success-recording-box .btn-duo,
+.button-column .btn-duo {
+  border-bottom-width: initial !important;
+}
+
+.lesson-footer-actions .btn-duo:hover:not(:disabled),
+.success-recording-box .btn-duo:hover:not(:disabled),
+.button-column .btn-duo:hover:not(:disabled) {
+  transform: translateY(2px) !important;
+  box-shadow: 0 2px 0 var(--btn-edge, #e5e5e5) !important;
+}
+
+.lesson-footer-actions .btn-duo:active:not(:disabled),
+.success-recording-box .btn-duo:active:not(:disabled),
+.button-column .btn-duo:active:not(:disabled) {
+  transform: translateY(4px) !important;
+  box-shadow: none !important;
 }
 
 /* Target sentuh minimum, supaya varian kecil tetap nyaman ditekan. */

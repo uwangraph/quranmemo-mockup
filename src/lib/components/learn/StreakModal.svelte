@@ -570,7 +570,7 @@
         transition: all 0.1s;
     }
 
-    .tool-btn:active:not(:disabled) { transform: translateY(2px); border-bottom-width: 1px; }
+    .tool-btn:active:not(:disabled) { transform: translateY(4px); box-shadow: none; }
     .tool-btn:disabled { background: #e2e8f0; border-bottom-color: #cbd5e1; color: #94a3b8; cursor: not-allowed; }
     .tool-btn.repair { background: #00978A; border-bottom-color: #007A70; }
 

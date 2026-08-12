@@ -209,7 +209,7 @@
     }
     .audio-circle-play.small { width: 36px; height: 36px; font-size: 16px; border-bottom-width: 3px; }
     .audio-circle-play.slow-btn { background: #10B981; border: none; border-bottom: 3px solid #059669; }
-    .audio-circle-play:active:not(:disabled) { transform: translateY(2px); border-bottom-width: 1px; }
+    .audio-circle-play:active:not(:disabled) { transform: translateY(4px); box-shadow: none; }
     .audio-circle-play:disabled { opacity: 0.5; cursor: not-allowed; }
     .snail-icon-small { width: 18px; height: 18px; object-fit: contain; }
     .challenge-arabic-blank {
@@ -262,20 +262,21 @@
         align-items: flex-end;
         background: #fff;
         border: 2px solid #e5e5e5;
-        border-bottom-width: 4px;
+        --btn-edge: #cbd5e1;
+        box-shadow: 0 4px 0 var(--btn-edge);
         border-radius: 16px;
         padding: 14px 16px;
         cursor: pointer;
         text-align: left;
-        transition: all 0.1s;
+        transition: transform .15s ease, box-shadow .15s ease;
         box-sizing: border-box;
     }
     .choice-card-button:hover:not(:disabled) {
         border-color: #cbd5e1;
     }
     .choice-card-button:active:not(:disabled) {
-        transform: translateY(2px);
-        border-bottom-width: 2px;
+        transform: translateY(4px);
+        box-shadow: none;
     }
     /* Terpilih memakai biru, bukan hijau. Hijau di layar ini berarti "jawabanmu
        benar"; memakainya juga untuk sekadar menandai pilihan membuat jawaban salah

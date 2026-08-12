@@ -397,7 +397,7 @@ export default {
     "motivation.incorrect_msg": "Faites attention à l'ordre des mots et à la prononciation d'origine. N'abandonnez pas, réessayez !",
 
     "break.title": "Faites une Courte Pause",
-    "break.description": "Faites une courte pause pour garder l'esprit frais. La mémorisation poursuivie calmement restera mieux en mémoire. 🌙",
+    "break.description": "Respire un instant. Ta progression est en sécurité — reprends quand tu es prêt(e).",
     "break.continue": "CONTINUER LA MÉMORISATION",
     "break.exit": "RETOUR AU TABLEAU DE BORD",
 

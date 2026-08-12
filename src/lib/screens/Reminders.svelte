@@ -213,11 +213,11 @@
     .level-list { display: flex; flex-direction: column; gap: 10px; }
     .level-card {
         display: flex; align-items: center; gap: 12px; width: 100%;
-        background: #fff; border: 2px solid #e5e5e5; border-bottom-width: 4px;
+        background: #fff; border: 2px solid #e5e5e5; --btn-edge: #cbd5e1; box-shadow: 0 4px 0 var(--btn-edge);
         border-radius: 16px; padding: 14px; cursor: pointer;
         font-family: 'Nunito', sans-serif; min-height: 64px; transition: all 0.15s;
     }
-    .level-card:active { transform: translateY(2px); border-bottom-width: 2px; }
+    .level-card:active { transform: translateY(4px); box-shadow: none; }
     .level-icon { font-size: 24px; }
     .level-name { font-size: 15px; font-weight: 900; color: #1e293b; }
     .level-desc { font-size: 11px; font-weight: 600; color: #64748b; margin-top: 2px; line-height: 1.4; }

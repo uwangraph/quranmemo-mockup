@@ -1037,16 +1037,4 @@
 		color: #00978A;
 	}
 
-	/* Unified Duolingo-style press feedback for interactive buttons. */
-	:global(button:not(:disabled):not(.btn-disabled):not(.btn-duo):not(.sidebar-item):not(.mc-cta):not(.snb):not(.unit-guide-btn):not(.play-btn):not(.cat-card):not(.back-btn)) {
-		transition: transform 0.1s ease, box-shadow 0.1s ease;
-	}
-	:global(button:not(:disabled):not(.btn-disabled):not(.btn-duo):not(.sidebar-item):not(.mc-cta):not(.snb):not(.unit-guide-btn):not(.play-btn):not(.cat-card):not(.back-btn):hover) {
-		transform: translateY(1px);
-		box-shadow: 0 2px 0 rgba(0, 0, 0, 0.18);
-	}
-	:global(button:not(:disabled):not(.btn-disabled):not(.btn-duo):not(.sidebar-item):not(.mc-cta):not(.snb):not(.unit-guide-btn):not(.play-btn):not(.cat-card):not(.back-btn):active) {
-		transform: translateY(3px);
-		box-shadow: none;
-	}
 </style>

@@ -612,7 +612,7 @@
     .musyrif-card {
         background: #fff;
         border: 2px solid var(--border-main);
-        border-bottom-width: 4px;
+        --btn-edge: var(--border-main); box-shadow: 0 4px 0 var(--btn-edge);
         border-radius: 20px;
         padding: 16px;
         display: flex;
@@ -620,7 +620,7 @@
         gap: 16px;
         transition: transform 0.1s;
     }
-    .musyrif-card:active { transform: translateY(2px); border-bottom-width: 2px; }
+    .musyrif-card:active { transform: translateY(4px); box-shadow: none; }
     .musyrif-card.offline { opacity: 0.6; grayscale: 0.5; }
     .m-avatar {
         width: 56px;

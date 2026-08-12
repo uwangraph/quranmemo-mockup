@@ -289,13 +289,13 @@
     .cat-list { display: flex; flex-direction: column; gap: 10px; }
     .cat-card {
         display: flex; align-items: center; gap: 12px; width: 100%;
-        background: #fff; border: 2px solid #e5e5e5; border-bottom: 3px solid #cbd5e1;
+        background: #fff; border: 2px solid #e5e5e5; --btn-edge: #cbd5e1; box-shadow: 0 4px 0 var(--btn-edge);
         border-radius: 16px; padding: 12px 14px; cursor: pointer; box-sizing: border-box;
         font-family: 'Nunito', sans-serif; height: 80px;
-        transition: transform .1s ease, border-bottom-width .1s ease;
+        transition: transform .15s ease, box-shadow .15s ease;
     }
-    .cat-card:hover { transform: translateY(1px); border-bottom-width: 2px; box-shadow: none; }
-    .cat-card:active { transform: translateY(3px); border-bottom-width: 0; box-shadow: none; }
+    .cat-card:hover { transform: translateY(2px); box-shadow: 0 2px 0 var(--btn-edge); }
+    .cat-card:active { transform: translateY(4px); box-shadow: none; }
     .cat-icon { font-size: 24px; flex-shrink: 0; }
     .cat-name { font-size: 14px; font-weight: 900; color: #1e293b; }
     .cat-desc { font-size: 11px; font-weight: 600; color: #64748b; margin-top: 2px; line-height: 1.4; }

@@ -194,29 +194,29 @@
         width: 100%;
         padding: 14px;
         border: 2px solid #e5e5e5;
-        border-bottom-width: 4px;
         border-radius: 16px;
         background: #fff;
         font-size: 13px;
         font-weight: 900;
         color: #afafaf;
         cursor: pointer;
-        transition: all 0.1s ease;
+        box-shadow: 0 2px 0 var(--btn-edge, #e5e5e5);
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
         text-align: center;
         box-sizing: border-box;
     }
     .btn-duo:active {
-        transform: translateY(2px);
-        border-bottom-width: 2px;
+        transform: none;
+        box-shadow: none;
     }
     .btn-duo.btn-green {
         background: #00978A;
         border-color: #00978A;
-        border-bottom-color: #007A70;
+        --btn-edge: #007A70;
         color: #fff;
     }
     .btn-duo.btn-green:active {
-        border-bottom-color: #00978A;
+        box-shadow: none;
     }
     .btn-duo.btn-outline {
         border: 2px solid #e2e8f0;

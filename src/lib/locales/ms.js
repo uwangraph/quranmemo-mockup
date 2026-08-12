@@ -397,7 +397,7 @@ export default {
     "motivation.incorrect_msg": "Perhatikan susunan kata dan sebutan asalnya. Jangan menyerah, mari cuba lagi!",
 
     "break.title": "Rehat Sejenak",
-    "break.description": "Rehat sejenak agar fikiran tetap segar. Hafalan yang diteruskan dengan tenang akan lebih melekat di ingatan. 🌙",
+    "break.description": "Tarik nafas sebentar. Hafalan anda selamat — sambung semula bila-bila masa anda bersedia.",
     "break.continue": "TERUSKAN HAFALAN",
     "break.exit": "KEMBALI KE DASHBOARD",
 

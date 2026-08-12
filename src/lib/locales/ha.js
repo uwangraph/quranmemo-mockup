@@ -397,7 +397,7 @@ export default {
     "motivation.incorrect_msg": "Kula da tsarin kalmomi da ainihin lafazi. Kada ku karaya, sake gwadawa!",
 
     "break.title": "Huta Kadan",
-    "break.description": "Huta kadan domin kiyaye ranka sabo. Haddace da aka ci gaba da shi cikin natsuwa zai fi tsayawa a ƙwaƙwalwa. 🌙",
+    "break.description": "Ɗauki numfashi. Haddarka na lafiya — ka ci gaba duk lokacin da ka shirya.",
     "break.continue": "CI GABA DA HADDACE",
     "break.exit": "KOMA ZUWA DASHBOARD",
     "lesson.instruct_listen_repeat": "Danna mai ƙara don sauraro, sannan danna makirofon don kwaikwayo!",
