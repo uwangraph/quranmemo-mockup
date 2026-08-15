@@ -164,6 +164,7 @@ export function createAppState() {
         name: "Ahmad Fulan",
         xp: 0,
         gems: 0,
+        subscription: { plan: 'free', purchasedAt: null },
         streak: 0,
         maxStreak: 0,          // Runtunan terbanyak sepanjang masa
         activeDays: [],         // Tanggal (YYYY-MM-DD) yang punya minimal 1 step hafalan
@@ -252,6 +253,8 @@ export function createAppState() {
     if (user.showLatin === undefined) user.showLatin = true;
     if (user.learningPath === undefined) user.learningPath = 'beginner';
     if (user.gems === undefined) { user.gems = user.coins || 350; delete user.coins; }
+    if (!user.subscription || typeof user.subscription !== 'object') user.subscription = { plan: 'free', purchasedAt: null };
+    if (!user.subscription.plan) user.subscription.plan = 'free';
     if (user.loginStreak === undefined) user.loginStreak = 1;
     if (user.lastLoginDate === undefined) user.lastLoginDate = null;
     if (user.maxStreak === undefined) user.maxStreak = user.streak || 1;

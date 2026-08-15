@@ -2,6 +2,7 @@
     import { appState } from '$lib/app.svelte.js';
     import { i18n } from '$lib/i18n.svelte.js';
     import BottomNav from '../components/BottomNav.svelte';
+    import UserTopbar from '$lib/components/UserTopbar.svelte';
 
     const user = $derived(appState.user);
 
@@ -68,6 +69,20 @@
     
     // PROFILE.md: Streak, Badge, dan Certification berada di satu grup tab.
     let activeTab = $state('streak');
+    let subscriptionMessage = $state('');
+    const plans = [
+        { id: 'free', name: 'Free', gems: 0, price: 'Gratis', desc: 'Belajar mandiri; belum bisa setoran ke musyrif.' },
+        { id: 'standard', name: 'Standard', gems: 100, price: '100 Gems · Rp30.000', desc: 'Akses setoran dasar ke musyrif.' },
+        { id: 'pro', name: 'Pro', gems: 300, price: '300 Gems · Rp75.000', desc: 'Akses setoran dan fitur premium.' }
+    ];
+    function choosePlan(plan) {
+        if (plan.id === 'free') return;
+        if (user.gems < plan.gems) { subscriptionMessage = `Gems belum cukup. Butuh ${plan.gems} Gems.`; return; }
+        user.gems -= plan.gems;
+        user.subscription = { plan: plan.id, purchasedAt: new Date().toISOString() };
+        appState.saveUser();
+        subscriptionMessage = `Paket ${plan.name} berhasil diaktifkan.`;
+    }
 
     // Hasil Placement Test (ONBOARDING.md) — kategori ditentukan musyrif.
     const placement = $derived(appState.user.placement);
@@ -80,18 +95,7 @@
 
 <div class="screen">
     <!-- Topbar -->
-    <div class="topbar">
-        <span style="font-size: 16px; font-weight: 900; color: #3c3c3c; flex: 1; text-align: center;">
-            {i18n.t('profile.title')}
-        </span>
-        <button
-            style="background:none; border:none; color:#afafaf; cursor:pointer;"
-            onclick={() => appState.go('reminders')}
-            aria-label={i18n.t('reminder.title')}
-        >
-            <i class="ti ti-bell" style="font-size:20px;"></i>
-        </button>
-    </div>
+    <UserTopbar title={i18n.t('profile.title')} showBack={false} />
 
     <div class="scroll-content no-scrollbar">
 
@@ -133,13 +137,35 @@
             </div>
         </div>
 
+        <button class="profile-quests-card" onclick={() => appState.go('quests')}>
+            <span class="profile-quests-icon"><i class="ti ti-gift"></i></span>
+            <span class="profile-quests-copy">
+                <strong>{i18n.t('nav.quests')}</strong>
+                <small>{i18n.t('quests.daily_desc')}</small>
+            </span>
+            <i class="ti ti-chevron-right profile-quests-arrow"></i>
+        </button>
+
+        <section class="subscription-card">
+            <div class="subscription-heading"><span><i class="ti ti-crown"></i> Paket Langganan</span><small>Aktif: {user.subscription?.plan ?? 'free'}</small></div>
+            <div class="subscription-plans">
+                {#each plans as plan}
+                    <button class="subscription-plan {user.subscription?.plan === plan.id ? 'active' : ''}" onclick={() => choosePlan(plan)}>
+                        <div class="subscription-plan-top"><strong>{plan.name}</strong>{#if user.subscription?.plan === plan.id}<i class="ti ti-circle-check"></i>{/if}</div>
+                        <b>{plan.price}</b><small>{plan.desc}</small>
+                    </button>
+                {/each}
+            </div>
+            {#if subscriptionMessage}<div class="subscription-message">{subscriptionMessage}</div>{/if}
+        </section>
+
         <!-- ══════════════════════════════════
              1. SCHEDULED BOOKING
         ══════════════════════════════════ -->
         <div class="section-label"><i class="ti ti-calendar"></i> {i18n.t('profile.booking')}</div>
         <div class="section-pad">
             {#if booking}
-                <button class="booking-card" onclick={() => appState.go('musyrif')}>
+                <button class="booking-card" onclick={() => appState.go('user-livemarking')}>
                     <div class="booking-left">
                         <div class="booking-avatar"><i class="ti ti-chalkboard-teacher"></i></div>
                     </div>
@@ -430,6 +456,9 @@
 </div>
 
 <style>
+    .screen-back-btn { width: 38px; height: 38px; flex: 0 0 38px; display: inline-flex; align-items: center; justify-content: center; padding: 0; border: 1px solid #e2e8f0; border-radius: 12px; background: #fff; color: #64748b; cursor: pointer; box-shadow: 0 3px 0 #cbd5e1; transition: transform .1s ease, box-shadow .1s ease; }
+    .screen-back-btn:hover { transform: translateY(1px); box-shadow: 0 2px 0 #cbd5e1; }
+    .screen-back-btn:active { transform: translateY(3px); box-shadow: none; }
     /* ── Layout ── */
     .section-pad { padding: 0 16px 20px; }
     .section-label {
@@ -742,4 +771,34 @@
     .p-tab.active {
         background: #fff; color: #1e293b; box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     }
+    .profile-quests-card {
+        width: calc(100% - 32px); margin: 14px 16px 4px; padding: 12px 14px;
+        display: flex; align-items: center; gap: 10px; text-align: left;
+        border: 1px solid #f2cf70; border-radius: 14px; background: #fffaf0;
+        color: #3c3c3c; cursor: pointer; box-shadow: 0 3px 0 #d99000;
+        font-family: 'Nunito', sans-serif; transition: transform .12s ease, box-shadow .12s ease;
+    }
+    .profile-quests-card:hover { transform: translateY(1px); box-shadow: 0 2px 0 #d99000; }
+    .profile-quests-card:active { transform: translateY(3px); box-shadow: none; }
+    .profile-quests-icon {
+        width: 34px; height: 34px; display: inline-flex; align-items: center; justify-content: center;
+        border-radius: 10px; background: #fff3c4; color: #d99000; font-size: 19px; flex-shrink: 0;
+    }
+    .profile-quests-copy { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; }
+    .profile-quests-copy strong { font-size: 13px; font-weight: 900; }
+    .profile-quests-copy small { font-size: 10px; font-weight: 700; color: #927b42; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .profile-quests-arrow { color: #d99000; font-size: 18px; }
+    .subscription-card { margin: 14px 16px 4px; padding: 14px; border: 1px solid #99e5dc; border-radius: 16px; background: #f0fdfa; }
+    .subscription-heading { display: flex; align-items: center; justify-content: space-between; gap: 8px; color: #007a70; font-size: 13px; font-weight: 900; }
+    .subscription-heading span { display: inline-flex; align-items: center; gap: 6px; }
+    .subscription-heading small { color: #64748b; font-size: 10px; text-transform: uppercase; }
+    .subscription-plans { display: grid; gap: 8px; margin-top: 10px; }
+    .subscription-plan { padding: 10px; text-align: left; border: 1px solid #d6dee8; border-radius: 12px; background: #fff; color: #1e293b; cursor: pointer; font-family: inherit; box-shadow: 0 3px 0 #d6dee8; transition: transform .12s ease, box-shadow .12s ease; }
+    .subscription-plan.active { border-color: #00978a; box-shadow: 0 3px 0 #007a70; background: #e6faf8; }
+    .subscription-plan:hover { transform: translateY(1px); box-shadow: 0 2px 0 #d6dee8; }
+    .subscription-plan:active { transform: translateY(3px); box-shadow: none; }
+    .subscription-plan-top { display: flex; justify-content: space-between; color: #007a70; font-size: 14px; }
+    .subscription-plan b { display: block; margin-top: 3px; color: #d99000; font-size: 11px; }
+    .subscription-plan small { display: block; margin-top: 4px; color: #64748b; font-size: 10px; font-weight: 700; line-height: 1.35; }
+    .subscription-message { margin-top: 8px; color: #007a70; font-size: 11px; font-weight: 800; }
 </style>
