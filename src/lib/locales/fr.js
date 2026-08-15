@@ -9,10 +9,12 @@ export default {
     "nav.tadabbur": "Méditer",
     "nav.league": "Ligue",
     "nav.profile": "Profil",
+    "nav.submission": "Dépôt",
 
     "screen.onboarding": "Démarrage",
     "screen.learn": "Apprendre",
-    "screen.murojaah": "Marché",
+    "screen.murojaah": "Révision",
+    "screen.marketplace": "Dépôt",
     "screen.feedback": "Avis",
     "screen.league": "Ligue",
     "screen.musyrif": "Tableau Musyrif",

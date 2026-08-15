@@ -24,6 +24,7 @@
     import CreateHalaqah from '$lib/screens/CreateHalaqah.svelte';
     import HalaqahHub from '$lib/screens/HalaqahHub.svelte';
     import Reminders from '$lib/screens/Reminders.svelte';
+    import Marketplace from '$lib/screens/Marketplace.svelte';
     import DailyLoginReward from '$lib/components/learn/DailyLoginReward.svelte';
 </script>
 
@@ -34,6 +35,8 @@
         <Learn />
     {:else if appState.currentScreen === 'quests'}
         <Quests />
+    {:else if appState.currentScreen === 'marketplace'}
+        <Marketplace />
     {:else if appState.currentScreen === 'guide'}
         <Guide />
     {:else if appState.currentScreen === 'create_community'}

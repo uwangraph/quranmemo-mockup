@@ -11,10 +11,12 @@ export default {
     "nav.guide": "Panduan",
     "nav.league": "Liga",
     "nav.profile": "Profil",
+    "nav.submission": "Setoran",
 
     "screen.onboarding": "Mulai",
     "screen.learn": "Belajar",
-    "screen.murojaah": "Setoran & Toko",
+    "screen.murojaah": "Murojaah",
+    "screen.marketplace": "Setoran",
     "screen.feedback": "Ulasan",
     "screen.league": "Liga",
     "screen.musyrif": "Dasbor Musyrif",
@@ -776,6 +778,7 @@ export default {
     ,"lesson.submission_desc": "Pilih musyrif dan jadwal setoran untuk melanjutkan hafalanmu dengan bimbingan langsung."
     ,"lesson.self_practice_done": "Latihan mandiri sudah selesai"
     ,"lesson.btn_musyrif_submission": "Lanjut ke Setoran Musyrif"
+    ,"lesson.btn_continue_memorizing": "Lanjut Menghafal"
     ,"lesson.compare_reading": "Bandingkan Bacaan"
     ,"quran.94_1_translation": "Bukankah Kami telah melapangkan dadamu (untukmu)?"
     ,"quran.94_2_translation": "Dan Kami pun telah menurunkan bebanmu darimu,"

@@ -1311,7 +1311,15 @@
         appState.marketplaceTab = 'instant';
         appState.marketplaceSurah = activeSurah.name;
         appState.marketplaceAyah = String(verseNumber);
-        appState.go('murojaah');
+        appState.go('marketplace');
+    }
+
+    function continueMemorizing() {
+        if (audio) audio.pause();
+        clearInterval(waveInterval);
+        clearResume();
+        advanceStep();
+        appState.go('learn');
     }
 </script>
 
@@ -1615,9 +1623,14 @@
                 <!-- Action Footer Buttons -->
                 <div class="lesson-footer-actions" style="margin-top: auto; padding: 12px 0 0;">
                     {#if currentStepConfig.type === 'musyrif_submission'}
-                        <button class="btn-duo btn-green" onclick={goToMusyrifSubmission}>
-                            <i class="ti ti-calendar-check"></i> {i18n.t('lesson.btn_musyrif_submission')}
-                        </button>
+                        <div class="completion-actions">
+                            <button class="btn-duo btn-green" onclick={continueMemorizing}>
+                                <i class="ti ti-book-2"></i> {i18n.t('lesson.btn_continue_memorizing')}
+                            </button>
+                            <button class="btn-duo btn-outline" onclick={goToMusyrifSubmission}>
+                                <i class="ti ti-microphone"></i> {i18n.t('lesson.btn_musyrif_submission')}
+                            </button>
+                        </div>
                     {:else if currentStepConfig.type === 'read_listen'}
                         <button class="btn-duo btn-green" onclick={checkAnswer}>
                             {i18n.t('lesson.btn_understood')}
@@ -1893,6 +1906,9 @@
         width: 100%;
         background: #fff;
     }
+    .completion-actions { display: flex; flex-direction: column; gap: 10px; width: 100%; }
+    .completion-actions .btn-duo { width: 100%; }
+    .completion-actions .btn-outline { border: 1px solid #e2e8f0; }
     .btn-duo {
         width: 100%;
         padding: 16px;

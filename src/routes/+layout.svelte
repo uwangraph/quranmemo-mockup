@@ -50,10 +50,11 @@
 			color: '#00978A',
 			accent: '#DBF0EE',
 			icon: 'ti ti-user-circle',
-				screens: [
+					screens: [
 					{ id: 'onboarding', icon: 'ti ti-rocket' },
 					{ id: 'learn', icon: 'ti ti-book-2' },
 					{ id: 'murojaah', icon: 'ti ti-refresh' },
+					{ id: 'marketplace', icon: 'ti ti-shopping-cart' },
 					{ id: 'quests', icon: 'ti ti-gift' },
 					{ id: 'guide', icon: 'ti ti-notebook' },
 					{ id: 'feedback', icon: 'ti ti-star' },
@@ -97,6 +98,7 @@
 			? [
 					{ id: 'learn', icon: 'ti-book-2', label: 'nav.learn' },
 					{ id: 'murojaah', icon: 'ti-refresh', label: 'nav.murojaah' },
+					{ id: 'marketplace', icon: 'ti-shopping-cart', label: 'screen.marketplace' },
 					{ id: 'tadabbur', icon: 'ti-books', label: 'nav.tadabbur' },
 					{ id: 'quests', icon: 'ti-gift', label: 'Quests' },
 					{ id: 'guide', icon: 'ti-info-circle', label: 'nav.guide' },
@@ -127,7 +129,7 @@
 
 	function getTablerIcon(id) {
 		const mapping = {
-			onboarding: 'ti-rocket', learn: 'ti-book', murojaah: 'ti-refresh',
+			onboarding: 'ti-rocket', learn: 'ti-book', murojaah: 'ti-refresh', marketplace: 'ti-shopping-cart',
 			quests: 'ti-gift', feedback: 'ti-star', tadabbur: 'ti-books', league: 'ti-trophy',
 			lesson: 'ti-book', guide: 'ti-notebook', profile: 'ti-user-circle', language: 'ti-globe',
 			musyrif: 'ti-chalkboard-teacher', livemarking: 'ti-video', 'musyrif-earnings': 'ti-wallet',

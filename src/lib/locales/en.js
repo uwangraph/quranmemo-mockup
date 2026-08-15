@@ -10,10 +10,12 @@ export default {
     "nav.halaqah": "Halaqah",
     "nav.league": "League",
     "nav.profile": "Profile",
+    "nav.submission": "Submission",
 
     "screen.onboarding": "Onboarding",
     "screen.learn": "Learn",
-    "screen.murojaah": "Recitation & Market",
+    "screen.murojaah": "Review",
+    "screen.marketplace": "Submission",
     "screen.feedback": "Feedback",
     "screen.league": "League",
     "screen.musyrif": "Musyrif Dashboard",
@@ -776,6 +778,7 @@ export default {
     ,"lesson.submission_desc": "Choose a Musyrif and submission schedule to continue memorization with direct guidance."
     ,"lesson.self_practice_done": "Independent practice completed"
     ,"lesson.btn_musyrif_submission": "Continue to Musyrif Submission"
+    ,"lesson.btn_continue_memorizing": "Continue Memorizing"
     ,"lesson.compare_reading": "Compare Recitations"
     ,"quran.94_1_translation": "Have We not expanded your chest for you?"
     ,"quran.94_2_translation": "And removed from you your burden,"

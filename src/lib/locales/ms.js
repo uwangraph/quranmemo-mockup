@@ -9,10 +9,12 @@ export default {
     "nav.tadabbur": "Tadabbur",
     "nav.league": "Liga",
     "nav.profile": "Profil",
+    "nav.submission": "Setoran",
 
     "screen.onboarding": "Permulaan",
     "screen.learn": "Belajar",
-    "screen.murojaah": "Ulangkaji",
+    "screen.murojaah": "Ulang Kaji",
+    "screen.marketplace": "Setoran",
     "screen.feedback": "Maklum Balas",
     "screen.league": "Liga",
     "screen.musyrif": "Papan Pemuka Musyrif",

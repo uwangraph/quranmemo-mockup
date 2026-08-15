@@ -9,10 +9,12 @@ export default {
     "nav.tadabbur": "تدبر",
     "nav.league": "الدوري",
     "nav.profile": "ملفي",
+    "nav.submission": "التسميع",
 
     "screen.onboarding": "بدء",
     "screen.learn": "تعلم",
-    "screen.murojaah": "السوق",
+    "screen.murojaah": "المراجعة",
+    "screen.marketplace": "التسميع",
     "screen.feedback": "التقييم",
     "screen.league": "الدوري",
     "screen.musyrif": "لوحة المشرف",

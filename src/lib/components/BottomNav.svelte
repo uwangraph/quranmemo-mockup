@@ -8,7 +8,7 @@
     const items = $derived([
         { id: 'learn', label: i18n.t('nav.learn'), icon: 'ti-book-2' },
         { id: 'murojaah', label: i18n.t('nav.murojaah'), icon: 'ti-refresh' },
-        { id: 'quests', label: i18n.t('nav.quests'), icon: 'ti-gift' },
+        { id: 'marketplace', label: i18n.t('nav.submission'), icon: 'ti-microphone' },
         { id: 'league', label: i18n.t('nav.league'), icon: 'ti-trophy' },
         { id: 'profile', label: i18n.t('nav.profile'), icon: 'ti-user-circle' }
     ]);

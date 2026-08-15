@@ -9,10 +9,12 @@ export default {
     "nav.tadabbur": "Tadabbur",
     "nav.league": "Gasar",
     "nav.profile": "Bayanan",
+    "nav.submission": "Gabatarwa",
 
     "screen.onboarding": "Farawa",
     "screen.learn": "Koya",
     "screen.murojaah": "Bita",
+    "screen.marketplace": "Gabatarwa",
     "screen.feedback": "Ra'ayi",
     "screen.league": "Gasar",
     "screen.musyrif": "Dashboard Musyrif",
