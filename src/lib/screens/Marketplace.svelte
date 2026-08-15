@@ -2,6 +2,8 @@
     import { appState } from '$lib/app.svelte.js';
     import { i18n } from '$lib/i18n.svelte.js';
     import BottomNav from '../components/BottomNav.svelte';
+    import StreakModal from '$lib/components/learn/StreakModal.svelte';
+    import StatsPills from '$lib/components/StatsPills.svelte';
     import { SURAHS } from '$lib/data/surahs.js';
 
     let selectedSurah = $state(appState.marketplaceSurah);
@@ -15,6 +17,22 @@
     // Setiap kali halaman Marketplace dibuka dari awal, mulai dari tab pertama.
     // Tab terakhir tidak dibawa dari kunjungan sebelumnya.
     let activeTab = $state('instant');
+    let showStreakModal = $state(false);
+    let showTopup = $state(false);
+    let topupMessage = $state('');
+
+    const topupOptions = [
+        { gems: 100, price: 'Rp 30.000' },
+        { gems: 300, price: 'Rp 75.000' },
+        { gems: 600, price: 'Rp 140.000' }
+    ];
+
+    function buyTopup(option) {
+        appState.user.gems += option.gems;
+        appState.saveUser();
+        topupMessage = `+${option.gems} Gems berhasil ditambahkan`;
+        showTopup = false;
+    }
 
     let showCustomAlert = $state(false);
     let alertMessage = $state("");
@@ -147,19 +165,34 @@
 
 <div class="screen">
     <div class="topbar wallet-header">
-        <div class="wallet-pills">
-
-            <div class="pill xp-pill" style="color: #d99000; border-color: #ffe08a; background: #fff3c4;">
-                        <i class="ti ti-star"></i> <span>{appState.user.xp}</span>
-            </div>
-            <div class="pill gem-pill" style="color: #1CB0F6; border-color: #d9f2ff; background: #e8f8ff;">
-                        <i class="ti ti-diamond gem-icon"></i> <span>{appState.user.gems}</span>
-            </div>
-        </div>
-        <button class="topup-btn">
+        <StatsPills showStreak={true} onOpenStreak={() => showStreakModal = true} />
+        <button class="topup-btn" type="button" aria-label="Top up" title="Top up" onclick={() => showTopup = true}>
             <i class="ti ti-plus"></i>
         </button>
     </div>
+
+    {#if topupMessage}
+        <button class="topup-toast" onclick={() => topupMessage = ''}>{topupMessage}</button>
+    {/if}
+    {#if showTopup}
+        <div class="topup-overlay" role="presentation" onclick={() => showTopup = false}>
+            <section class="topup-modal" role="dialog" aria-label="Top up Gems" onclick={(event) => event.stopPropagation()}>
+                <div class="topup-modal-head"><strong>Top Up Gems</strong><button onclick={() => showTopup = false} aria-label="Tutup"><i class="ti ti-x"></i></button></div>
+                <p>Pilih paket Gems yang ingin kamu beli.</p>
+                <div class="topup-options">
+                    {#each topupOptions as option}
+                        <button class="topup-option" onclick={() => buyTopup(option)}>
+                            <strong><i class="ti ti-diamond"></i> {option.gems}</strong><span>{option.price}</span>
+                        </button>
+                    {/each}
+                </div>
+            </section>
+        </div>
+    {/if}
+
+    {#if showStreakModal}
+        <StreakModal onClose={() => showStreakModal = false} />
+    {/if}
 
     <div class="market-tabs">
         <button class="m-tab" class:active={activeTab === 'instant'} onclick={() => {activeTab = 'instant'; hasSearched = false;}}>{i18n.t('market.tab_instant')}</button>
@@ -358,7 +391,7 @@
         {/if}
     </div>
 
-    <BottomNav active="murojaah" />
+    <BottomNav active="marketplace" />
 </div>
 
 {#if showCustomAlert}
@@ -392,29 +425,43 @@
         border-bottom: 2px solid var(--border-main);
         justify-content: space-between;
         padding: 12px 20px;
+        gap: 10px;
     }
+    .screen-back-btn { width: 38px; height: 38px; flex: 0 0 38px; display: inline-flex; align-items: center; justify-content: center; padding: 0; border: 1px solid #e2e8f0; border-radius: 12px; background: #fff; color: #64748b; cursor: pointer; box-shadow: 0 3px 0 #cbd5e1; transition: transform .1s ease, box-shadow .1s ease; }
+    .screen-back-btn:hover { transform: translateY(1px); box-shadow: 0 2px 0 #cbd5e1; }
+    .screen-back-btn:active { transform: translateY(3px); box-shadow: none; }
     .wallet-pills {
         display: flex;
         gap: 8px;
     }
-    .pill {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        padding: 6px 12px;
-        border-radius: 100px;
-        font-weight: 900;
-        font-size: 14px;
-        border: 2px solid var(--border-main);
+    .streak-pill,
+    .xp-pill,
+    .gems-pill {
+        display: inline-flex; align-items: center; justify-content: center; gap: 5px;
+        min-width: 46px; height: 32px; box-sizing: border-box;
+        padding: 0 10px; border-radius: 999px;
+        font-weight: 900; font-size: 14px; line-height: 1;
+        border: 1px solid; font-family: 'Nunito', sans-serif;
+        transition: transform .12s ease, box-shadow .12s ease, background-color .12s ease;
     }
-    .ticket-pill { color: var(--duo-blue); border-color: #e1f5fe; background: #f1faff; }
-    .point-pill { color: #00978A; border-color: #e8f8f6; background: #f0fbfa; }
+    .wallet-pills .streak-pill { color: #ff6200; background: #fff7ed; border: 1px solid #ff6200; box-shadow: 0 3px 0 #ff6200; cursor: pointer; }
+    .wallet-pills .streak-pill:hover { transform: translateY(1px); box-shadow: 0 2px 0 #ff6200; background: #fff0df; }
+    .wallet-pills .streak-pill:active { transform: translateY(3px); box-shadow: none; }
+    .wallet-pills .streak-pill i { color: #ff6200; }
+    .wallet-pills .xp-pill { color: #d99000 !important; border: 1px solid #d99000 !important; background: #fff3c4 !important; box-shadow: 0 3px 0 #d99000 !important; }
+    .wallet-pills .gems-pill { color: #1cb0f6 !important; border: 1px solid #1cb0f6 !important; background: #e1f5fe !important; box-shadow: 0 3px 0 #1cb0f6 !important; }
+    .wallet-pills .xp-pill i { color: #e5a900 !important; }
+    .wallet-pills .gem-icon { color: #1cb0f6 !important; }
+    .wallet-pills .gems-pill:hover { transform: translateY(1px); }
+    .wallet-pills .xp-pill:hover { box-shadow: 0 2px 0 #d99000 !important; background: #fff0b8 !important; }
+    .wallet-pills .gems-pill:hover { box-shadow: 0 2px 0 #1cb0f6 !important; background: #d8f1fc !important; }
+    .wallet-pills .gems-pill:active { transform: translateY(3px); box-shadow: none !important; }
     
     .topup-btn {
         width: 36px;
         height: 36px;
         border-radius: 50%;
-        border: 2px solid var(--border-main);
+        border: 1px solid #d6dee8;
         background: #fff;
         color: var(--duo-blue);
         display: flex;
@@ -422,50 +469,75 @@
         justify-content: center;
         cursor: pointer;
         font-size: 18px;
+        box-shadow: 0 3px 0 #d6dee8;
+        transition: transform .12s ease, box-shadow .12s ease;
     }
+    .topup-btn:hover { transform: translateY(1px); box-shadow: 0 2px 0 #d6dee8; }
+    .topup-btn:active { transform: translateY(3px); box-shadow: none; }
+    .topup-overlay { position: fixed; inset: 0; z-index: 200; display: flex; align-items: flex-end; justify-content: center; background: rgba(15,23,42,.35); }
+    .topup-modal { width: min(100% - 24px, 380px); margin-bottom: 18px; padding: 18px; border-radius: 20px; background: #fff; box-shadow: 0 10px 30px rgba(15,23,42,.2); }
+    .topup-modal-head { display: flex; align-items: center; justify-content: space-between; color: #1e293b; font-size: 18px; }
+    .topup-modal-head button { border: 0; background: transparent; color: #94a3b8; font-size: 20px; cursor: pointer; }
+    .topup-modal p { margin: 6px 0 14px; color: #64748b; font-size: 12px; font-weight: 700; }
+    .topup-options { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .topup-option { display: flex; flex-direction: column; gap: 6px; align-items: center; padding: 12px 6px; border: 1px solid #1cb0f6; border-radius: 12px; background: #e1f5fe; color: #087fbc; cursor: pointer; box-shadow: 0 3px 0 #1cb0f6; font-family: inherit; }
+    .topup-option:hover { transform: translateY(1px); box-shadow: 0 2px 0 #1cb0f6; }
+    .topup-option:active { transform: translateY(3px); box-shadow: none; }
+    .topup-option strong { font-size: 14px; }
+    .topup-option span { font-size: 10px; font-weight: 900; color: #64748b; }
+    .topup-toast { position: fixed; left: 50%; bottom: 86px; transform: translateX(-50%); z-index: 210; border: 0; border-radius: 12px; padding: 10px 14px; background: #00978a; color: #fff; font: 800 12px 'Nunito', sans-serif; box-shadow: 0 3px 0 #007a70; cursor: pointer; }
 
     .market-tabs {
         display: flex;
         background: #fff;
-        padding: 0 20px;
-        border-bottom: 2px solid var(--border-main);
+        padding: 0 16px;
+        border-bottom: 0;
     }
     .m-tab {
-        flex: 1;
+        flex: 1; min-width: 0;
         background: none;
-        border: none;
-        padding: 16px 0;
-        font-size: 14px;
-        font-weight: 800;
-        color: #afafaf;
-        cursor: pointer;
+        appearance: none; -webkit-appearance: none;
+        border: 0;
         border-bottom: 3px solid transparent;
-        transition: all 0.2s;
+        margin-bottom: 0;
+        padding: 14px 4px 12px;
+        font: 900 12px/1.2 'Nunito', sans-serif;
+        color: #94a3b8;
+        cursor: pointer;
+        transition: color .16s ease, border-color .16s ease;
+        white-space: nowrap;
     }
     .m-tab.active {
-        color: #1cb0f6;
-        border-bottom: 3px solid #1cb0f6;
+        color: #087f77;
+        border-bottom-color: #08b4a7;
     }
+    .m-tab:not(.active):hover {
+        color: #94a3b8;
+        border-bottom-color: transparent;
+    }
+    .m-tab:focus { outline: none; }
+    .m-tab:focus-visible { outline: 2px solid #08b4a7; outline-offset: -4px; border-radius: 8px; }
 
     .hero-card {
-        background: linear-gradient(135deg, #1cb0f6, #0898dc);
-        padding: 24px;
-        border-radius: 24px;
-        margin-top: 16px;
-        margin-bottom: 24px;
+        background: linear-gradient(145deg, #11a398, #08b4a7);
+        padding: 20px;
+        border-radius: 20px;
+        margin-top: 12px;
+        margin-bottom: 20px;
         display: flex;
         flex-direction: column;
-        gap: 20px;
-        box-shadow: 0 10px 20px rgba(28, 176, 246, 0.2);
+        gap: 16px;
+        box-shadow: 0 6px 0 #07988e;
         color: #fff;
     }
     .price-badge {
         display: inline-flex;
         align-items: center;
         gap: 5px;
-        padding: 5px 10px;
+        padding: 6px 10px;
         border-radius: 999px;
-        background: rgba(255, 255, 255, 0.2);
+        background: rgba(255, 255, 255, 0.18);
+        border: 1px solid rgba(255, 255, 255, 0.16);
         font-size: 11px;
         font-weight: 900;
         line-height: 1;
@@ -475,12 +547,12 @@
     .target-selector {
         display: flex;
         flex-direction: column;
-        gap: 12px;
-        margin-top: 16px;
-        background: rgba(255, 255, 255, 0.15);
+        gap: 10px;
+        margin-top: 14px;
+        background: rgba(255, 255, 255, 0.14);
         padding: 12px;
-        border-radius: 16px;
-        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 14px;
+        border: 1px solid rgba(255, 255, 255, 0.18);
     }
     .target-field {
         flex: 1;
@@ -505,12 +577,13 @@
     .target-field input,
     .native-target-select {
         background: #fff;
-        border: none;
+        border: 1px solid #dceced;
         padding: 8px 12px;
-        border-radius: 8px;
+        border-radius: 10px;
         font-size: 13px;
         font-weight: 700;
         color: #3c3c3c;
+        box-shadow: 0 2px 0 #c7e4e1;
         outline: none;
         font-family: inherit;
         box-sizing: border-box;
@@ -528,7 +601,10 @@
         justify-content: space-between;
         align-items: center;
         cursor: pointer;
+        transition: box-shadow .12s ease;
     }
+    .custom-select-box:hover { box-shadow: 0 1px 0 #c7e4e1; }
+    .custom-select-box:active { box-shadow: none; }
     .dropdown-menu-overlay {
         position: fixed;
         inset: 0;
@@ -567,15 +643,15 @@
     
     .find-btn {
         background: #fff; 
-        color: #1cb0f6; 
+        color: #087f77;
         font-size: 14px; 
         padding: 14px 20px;
         width: 100%; height: 48px; box-sizing: border-box; flex-shrink: 0;
-        border: 0; cursor: pointer;
-        box-shadow: 0 3px 0 #0284c7;
+        border: 1px solid rgba(255,255,255,.72); cursor: pointer;
+        box-shadow: 0 3px 0 #c7e4e1;
         transition: transform .1s ease, box-shadow .1s ease;
     }
-    .find-btn:hover { transform: translateY(1px); box-shadow: 0 2px 0 #0284c7; }
+    .find-btn:hover { transform: translateY(1px); box-shadow: 0 2px 0 #c7e4e1; }
     .find-btn:active { transform: translateY(3px); box-shadow: none; }
     
     .section-header {
