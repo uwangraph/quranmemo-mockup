@@ -130,6 +130,13 @@ body {
   z-index: 999;
 }
 
+.phone.theme-user .statusbar {
+  color: #fff;
+}
+.phone.theme-user .statusbar i {
+  color: inherit;
+}
+
 .screen {
   display: flex;
   flex-direction: column;
@@ -283,19 +290,35 @@ body {
 
 /* Semua tombol aksi memakai ilusi 3D yang sama. Transform tidak memengaruhi
    flow layout, jadi elemen lain tidak ikut terdorong saat tombol ditekan. */
-button:not(:disabled):not(.btn-disabled):not(.btn-duo):not(.sidebar-item):not(.snb):not(.back-btn):not(.menu-toggle):not(.close-menu-btn):not(.chrome-nav-btn):not(.zoom-btn):not(.three-d-button):not(.circle) {
+button:not(:disabled):not(.btn-disabled):not(.btn-duo):not(.sidebar-item):not(.snb):not(.back-btn):not(.menu-toggle):not(.close-menu-btn):not(.chrome-nav-btn):not(.zoom-btn):not(.three-d-button):not(.circle):not(.notification-button):not(.streak-pill):not(.xp-pill):not(.gems-pill) {
   transition: transform 150ms ease, box-shadow 150ms ease !important;
 }
 
-button:not(:disabled):not(.btn-disabled):not(.btn-duo):not(.sidebar-item):not(.snb):not(.back-btn):not(.menu-toggle):not(.close-menu-btn):not(.chrome-nav-btn):not(.zoom-btn):not(.three-d-button):not(.circle):hover {
+button:not(:disabled):not(.btn-disabled):not(.btn-duo):not(.sidebar-item):not(.snb):not(.back-btn):not(.menu-toggle):not(.close-menu-btn):not(.chrome-nav-btn):not(.zoom-btn):not(.three-d-button):not(.circle):not(.notification-button):not(.streak-pill):not(.xp-pill):not(.gems-pill):not(.m-tab):hover {
   transform: translateY(2px) !important;
   box-shadow: 0 2px 0 var(--btn-edge, rgba(0, 0, 0, 0.18)) !important;
 }
 
-button:not(:disabled):not(.btn-disabled):not(.btn-duo):not(.sidebar-item):not(.snb):not(.back-btn):not(.menu-toggle):not(.close-menu-btn):not(.chrome-nav-btn):not(.zoom-btn):not(.three-d-button):not(.circle):active {
+button:not(:disabled):not(.btn-disabled):not(.btn-duo):not(.sidebar-item):not(.snb):not(.back-btn):not(.menu-toggle):not(.close-menu-btn):not(.chrome-nav-btn):not(.zoom-btn):not(.three-d-button):not(.circle):not(.notification-button):not(.streak-pill):not(.xp-pill):not(.gems-pill):not(.m-tab):active {
   transform: translateY(4px) !important;
   box-shadow: none !important;
 }
+
+/* Circular controls use the same Duolingo-style depth: the face stays in place
+   while only the lower edge compresses on hover and disappears on press. */
+.audio-circle-play,
+.mic-circle-btn,
+.action-circle {
+    border: 1px solid rgba(255,255,255,.35) !important;
+    box-shadow: 0 5px 0 rgba(0,0,0,.18) !important;
+    transition: box-shadow .12s ease, transform .12s ease !important;
+}
+.audio-circle-play:hover,
+.mic-circle-btn:hover,
+.action-circle:hover { transform: translateY(2px) !important; box-shadow: 0 3px 0 rgba(0,0,0,.18) !important; }
+.audio-circle-play:active,
+.mic-circle-btn:active,
+.action-circle:active { transform: translateY(5px) !important; box-shadow: none !important; }
 
 /* Beberapa step lesson punya CSS lokal lama. Paksa tombol footer lesson memakai
    shadow saja supaya perubahan state tidak mengubah tinggi elemen atau layout. */

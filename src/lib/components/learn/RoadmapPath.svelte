@@ -20,6 +20,7 @@
     const ladderIndex = $derived(st.ladderIndex);
     const ladder = $derived(st.ladder);
     const doneCount = $derived(st.targets.filter(t => t.done).length);
+    const ladderTargetTotal = $derived(st.targets.length);
 
     const pathConfig = $derived.by(() => {
         if (appState.user.pathMode === 'self') {
@@ -156,8 +157,8 @@
         <div class="banner-desc">{surah ? `Surah ${surah.number} · ${surah.verses.length} ayat tersedia` : pathConfig.unitDesc}</div>
         {#if surah}
             <div class="self-banner-icon"><i class="ti ti-book"></i></div>
-            {@const bannerDone = appState.surahProgress(surah.id)}
-            {@const bannerProgress = Math.round((bannerDone / surah.verses.length) * 100)}
+            {@const bannerDone = surahDone}
+            {@const bannerProgress = surah.verses.length ? Math.round((bannerDone / surah.verses.length) * 100) : 0}
             <div class="self-stats">
                 <div><strong>{bannerDone}</strong><small>Target selesai</small></div>
                 <div><strong>{Math.max(0, surah.verses.length - bannerDone)}</strong><small>Sisa target</small></div>
@@ -174,7 +175,7 @@
                 </span>
                 <span class="ladder-name">{ladder.name}</span>
             </div>
-            <span class="ladder-progress">{doneCount}/{targets.length}</span>
+            <span class="ladder-progress">{doneCount}/{ladderTargetTotal}</span>
         </div>
 
         <div class="unit-actions">
@@ -275,11 +276,18 @@
                                 <button type="button" class="three-d-button {node.type}" onclick={() => handleNodeClick(node)} aria-label={node.title}>
                                     <span class="three-d-face">
                                         {#if node.type === 'tadabbur'}
-                                            <i class="ti ti-books"></i>
+                                            <svg class="node-action-icon" aria-hidden="true" viewBox="0 0 24 24">
+                                                <path d="M4 11a1 1 0 0 1 .117 1.993L4 13H3a1 1 0 0 1-.117-1.993L3 11h1zM12 2a1 1 0 0 1 .993.883L13 3v1a1 1 0 0 1-1.993.117L11 4V3a1 1 0 0 1 1-1zm9 9a1 1 0 0 1 .117 1.993L21 13h-1a1 1 0 0 1-.117-1.993L20 11h1zM4.893 4.893a1 1 0 0 1 1.32-.083l.094.083.7.7a1 1 0 0 1-1.32 1.497l-.094-.083-.7-.7a1 1 0 0 1 0-1.414zm12.8 0a1 1 0 0 1 1.497 1.32l-.083.094-.7.7a1 1 0 0 1-1.497-1.32l.083-.094.7-.7zM14 18a1 1 0 0 1 1 1a3 3 0 0 1-6 0a1 1 0 0 1 .883-.993L10 18h4zm-2-12a6 6 0 0 1 3.6 10.8a1 1 0 0 1-.471.192L15 17H9a1 1 0 0 1-.6-.2A6 6 0 0 1 12 6z" />
+                                            </svg>
                                         {:else if node.type === 'checkpoint'}
-                                            <i class="ti ti-trophy"></i>
+                                            <svg class="node-action-icon" aria-hidden="true" viewBox="0 0 24 24">
+                                                <path d="M17 3a1 1 0 0 1 .993.883L18 4v2.17a3 3 0 1 1 0 5.659V12a6.002 6.002 0 0 1-5 5.917V20h3a1 1 0 0 1 .117 1.993L16 22H8a1 1 0 0 1-.117-1.993L8 20h3v-2.083A6.002 6.002 0 0 1 6.004 12v-.171a3 3 0 1 1-.001-5.659V4a1 1 0 0 1 1-1h10zM5 8a1 1 0 1 0 0 2a1 1 0 0 0 0-2m14 0a1 1 0 1 0 0 2a1 1 0 0 0 0-2" />
+                                            </svg>
                                         {:else}
-                                            <i class="ti ti-book"></i>
+                                            <svg class="node-book-icon" aria-hidden="true" viewBox="0 0 24 24">
+                                                <path d="M12 2l.117.007a1 1 0 0 1 .876.876L13 3v4l.005.15a2 2 0 0 0 1.838 1.844L15 9h4l.117.007a1 1 0 0 1 .876.876L20 10v9a3 3 0 0 1-2.824 2.995L17 22H7a3 3 0 0 1-2.995-2.824L4 19V5a3 3 0 0 1 2.824-2.995L7 2h5zm3 14H9a1 1 0 0 0 0 2h6a1 1 0 0 0 0-2m0-4H9a1 1 0 0 0 0 2h6a1 1 0 0 0 0-2m-5-4H9a1 1 0 1 0 0 2h1a1 1 0 1 0 0-2" />
+                                                <path d="M19 7h-4L15 2.999z" />
+                                            </svg>
                                         {/if}
                                     </span>
                                 </button>
@@ -291,11 +299,18 @@
                                 disabled={node.status === 'locked' && node.type !== 'checkpoint'}
                                 aria-label={node.title}>
                                 {#if node.type === 'tadabbur'}
-                                    <i class="ti ti-books"></i>
+                                    <svg class="node-action-icon" aria-hidden="true" viewBox="0 0 24 24">
+                                        <path d="M4 11a1 1 0 0 1 .117 1.993L4 13H3a1 1 0 0 1-.117-1.993L3 11h1zM12 2a1 1 0 0 1 .993.883L13 3v1a1 1 0 0 1-1.993.117L11 4V3a1 1 0 0 1 1-1zm9 9a1 1 0 0 1 .117 1.993L21 13h-1a1 1 0 0 1-.117-1.993L20 11h1zM4.893 4.893a1 1 0 0 1 1.32-.083l.094.083.7.7a1 1 0 0 1-1.32 1.497l-.094-.083-.7-.7a1 1 0 0 1 0-1.414zm12.8 0a1 1 0 0 1 1.497 1.32l-.083.094-.7.7a1 1 0 0 1-1.497-1.32l.083-.094.7-.7zM14 18a1 1 0 0 1 1 1a3 3 0 0 1-6 0a1 1 0 0 1 .883-.993L10 18h4zm-2-12a6 6 0 0 1 3.6 10.8a1 1 0 0 1-.471.192L15 17H9a1 1 0 0 1-.6-.2A6 6 0 0 1 12 6z" />
+                                    </svg>
                                 {:else if node.type === 'checkpoint'}
-                                    <i class="ti ti-trophy"></i>
+                                    <svg class="node-action-icon" aria-hidden="true" viewBox="0 0 24 24">
+                                        <path d="M17 3a1 1 0 0 1 .993.883L18 4v2.17a3 3 0 1 1 0 5.659V12a6.002 6.002 0 0 1-5 5.917V20h3a1 1 0 0 1 .117 1.993L16 22H8a1 1 0 0 1-.117-1.993L8 20h3v-2.083A6.002 6.002 0 0 1 6.004 12v-.171a3 3 0 1 1-.001-5.659V4a1 1 0 0 1 1-1h10zM5 8a1 1 0 1 0 0 2a1 1 0 0 0 0-2" />
+                                    </svg>
                                 {:else}
-                                    <i class="ti ti-book"></i>
+                                    <svg class="node-book-icon" aria-hidden="true" viewBox="0 0 24 24">
+                                        <path d="M12 2l.117.007a1 1 0 0 1 .876.876L13 3v4l.005.15a2 2 0 0 0 1.838 1.844L15 9h4l.117.007a1 1 0 0 1 .876.876L20 10v9a3 3 0 0 1-2.824 2.995L17 22H7a3 3 0 0 1-2.995-2.824L4 19V5a3 3 0 0 1 2.824-2.995L7 2h5zm3 14H9a1 1 0 0 0 0 2h6a1 1 0 0 0 0-2m0-4H9a1 1 0 0 0 0 2h6a1 1 0 0 0 0-2m-5-4H9a1 1 0 1 0 0 2h1a1 1 0 1 0 0-2" />
+                                        <path d="M19 7h-4L15 2.999z" />
+                                    </svg>
                                 {/if}
                             </button>
                         </div>
@@ -342,20 +357,25 @@
 </div>
 
 <style>
-    .path-column { width: 100%; }
+    .path-column {
+        --roadmap-green-start: #11a398;
+        --roadmap-green: #08b4a7;
+        --roadmap-green-edge: #07988e;
+        --roadmap-green-highlight: #47cfc5;
+        width: 100%;
+    }
     :global(.desktop-browser) .path-column { flex: 1; max-width: 700px; }
     :global(.tablet) .path-column { width: 100%; max-width: 100%; }
 
     .unit-banner {
-        background: linear-gradient(135deg, var(--duo-green), var(--duo-green-dark));
-        padding: 24px 20px;
+        background: linear-gradient(145deg, var(--roadmap-green-start), var(--roadmap-green));
+        padding: 20px;
         margin: 10px 16px 20px;
         border-radius: 20px;
-        box-shadow: 0 6px 0 #00665d;
+        box-shadow: 0 6px 0 var(--roadmap-green-edge);
         position: relative;
         overflow: hidden;
     }
-    .unit-banner { background: linear-gradient(145deg, #11a398, #08b4a7); padding: 20px; border-radius: 20px; box-shadow: 0 6px 0 #07988e; }
     .unit-banner .ladder-strip { display: none; }
     .unit-banner .unit-actions { margin-top: 16px; }
     .unit-banner .unit-actions button:nth-child(n + 2) { display: none; }
@@ -488,7 +508,7 @@
         display: flex; flex-direction: column; gap: 6px;
         padding: 20px 28px 0;
     }
-    .slot { display: flex; min-width: 0; }
+    .slot { display: flex; min-width: 0; padding: 0 12px; }
     :global(.desktop-browser) .road, :global(.tablet) .road { padding-left: 28px; padding-right: 28px; }
     .node-outer { display: flex; flex-direction: column; align-items: center; position: relative; }
     .no-ptr { pointer-events: none; }
@@ -527,24 +547,29 @@
         z-index: 0;
     }
     .progress-ring circle { transition: stroke-dashoffset .25s ease; }
-    .ring-value { stroke: #00978a; stroke-linecap: round; }
+    .ring-value { stroke: var(--roadmap-green); stroke-linecap: round; }
     .three-d-button {
         /* Tombol dan kedalamannya satu lingkaran utuh. Shadow dibuat inset,
            bukan ditambahkan di luar diameter tombol. */
-        --node-face: #00978a;
-        --node-edge: #007a70;
+        --node-face: var(--roadmap-green);
+        --node-edge: var(--roadmap-green-edge);
+        --node-highlight: var(--roadmap-green-highlight);
         grid-area: 1 / 1;
         position: relative;
         z-index: 1;
-        width: 76px; height: 76px;
+        width: 76px; height: 70px;
         box-sizing: border-box;
         margin: 0; padding: 0;
         overflow: hidden;
         border-radius: 50%; border: 0; cursor: pointer;
         appearance: none; -webkit-appearance: none;
         background: var(--node-face); color: #fff; font-size: 34px;
-        box-shadow: inset 0 -6px 0 var(--node-edge);
-        transition: box-shadow .12s ease;
+        border: 0;
+        background: var(--node-face);
+        box-shadow: 0 6px 0 var(--node-edge), inset 0 3px 0 rgba(255,255,255,.1);
+        transform: translateY(-3px);
+        transition: transform .12s ease, box-shadow .12s ease;
+        isolation: isolate;
     }
     .three-d-face {
         position: relative;
@@ -554,34 +579,99 @@
         transition: transform .12s ease;
         transform: translateY(0);
     }
-    .three-d-button:hover { transform: none; box-shadow: inset 0 -3px 0 var(--node-edge); }
-    .three-d-button:hover .three-d-face { transform: translateY(1px); }
-    .three-d-button:active { transform: none; box-shadow: inset 0 0 0 var(--node-edge); }
-    .three-d-button:active .three-d-face { transform: translateY(3px); }
-    .three-d-button.tadabbur { --node-face: #ce82ff; --node-edge: #a52adb; }
-    .three-d-button.checkpoint { --node-face: #ffc800; --node-edge: #e5a000; }
+    .node-book-icon {
+        position: relative;
+        z-index: 1;
+        width: 34px;
+        height: 34px;
+        display: block;
+        fill: currentColor;
+    }
+    .node-action-icon {
+        position: relative;
+        z-index: 1;
+        width: 34px;
+        height: 34px;
+        display: block;
+        fill: currentColor;
+    }
+    .three-d-button::before,
+    .circle::before {
+        content: '';
+        position: absolute;
+        width: 80%;
+        height: auto;
+        aspect-ratio: 1;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        border-radius: 50%;
+        background: var(--node-highlight, #42e3c5);
+        opacity: .76;
+        pointer-events: none;
+        z-index: 0;
+    }
+    .three-d-button::after,
+    .circle::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+            135deg,
+            transparent 0 37%,
+            var(--node-face, #00978a) 37% 47%,
+            transparent 47% 60%,
+            var(--node-face, #00978a) 60% 88%,
+            transparent 88% 100%
+        );
+        pointer-events: none;
+        z-index: 0;
+    }
+    .three-d-button:hover { transform: translateY(-2px); box-shadow: 0 4px 0 var(--node-edge), inset 0 2px 0 rgba(255,255,255,.1); }
+    .three-d-button:hover .three-d-face { transform: none; }
+    .three-d-button:active { transform: translateY(0); box-shadow: none; }
+    .three-d-button:active .three-d-face { transform: none; }
+    .three-d-button.tadabbur { --node-face: #ce82ff; --node-edge: #a52adb; --node-highlight: #e3b6ff; }
+    .three-d-button.checkpoint { --node-face: #ffc800; --node-edge: #e5a000; --node-highlight: #ffdf4d; }
 
     /* Node lain: cangkang bulat */
     .shell { display: flex; align-items: center; justify-content: center; }
     .circle {
-        width: 82px; height: 82px; border-radius: 50%; border: none; cursor: pointer;
+        --node-face: #e5e5e5;
+        --node-edge: #cbd5e1;
+        --node-inset: rgba(255,255,255,.35);
+        position: relative;
+        overflow: hidden;
+        width: 82px; height: 76px; border-radius: 50%; border: none; cursor: pointer;
         background: #e5e5e5; color: #afafaf; font-size: 34px;
         display: flex; align-items: center; justify-content: center;
-        box-shadow: 0 6px 0 #cbd5e1;
+        border: 0;
+        background: #e5e5e5;
+        box-shadow: 0 6px 0 var(--node-edge), inset 0 3px 0 var(--node-inset);
+        transform: translateY(-3px);
+        isolation: isolate;
         transition: transform .12s ease, box-shadow .12s ease;
     }
-    .circle:not(:disabled):hover { transform: translateY(2px); box-shadow: 0 4px 0 #cbd5e1; }
-    .circle:not(:disabled):active { transform: translateY(6px); box-shadow: none; }
+    .circle > i,
+    .circle > .node-book-icon,
+    .circle > .node-action-icon { position: relative; z-index: 1; }
+    .circle:not(:disabled):hover { transform: translateY(-2px); box-shadow: 0 4px 0 var(--node-edge), inset 0 2px 0 var(--node-inset); }
+    .circle:not(:disabled):active { transform: translateY(0); box-shadow: none; }
     .circle:disabled { cursor: default; }
-    .circle.completed { background: #00978a; box-shadow: 0 6px 0 #007a70; color: #fff; }
-    .circle.locked { background: #e5e5e5; box-shadow: 0 6px 0 #cbd5e1; color: #afafaf; }
+    .circle.completed { --node-face: var(--roadmap-green); --node-edge: var(--roadmap-green-edge); --node-highlight: var(--roadmap-green-highlight); --node-inset: rgba(255,255,255,.1); background: var(--roadmap-green); box-shadow: 0 6px 0 var(--node-edge), inset 0 3px 0 var(--node-inset); color: #fff; }
+    .circle.locked { --node-edge: #cbd5e1; background: #e5e5e5; box-shadow: 0 6px 0 var(--node-edge), inset 0 3px 0 var(--node-inset); color: #afafaf; }
+    .circle.locked::before,
+    .circle.locked::after { display: none; }
     .circle.available {
-        background: #fff; box-shadow: 0 6px 0 var(--duo-green-dark);
-        border: 3px solid var(--duo-green); color: var(--duo-green-dark);
+        --node-face: #fff;
+        --node-edge: var(--roadmap-green-edge);
+        --node-inset: rgba(255,255,255,.5);
+        background: #fff; box-shadow: 0 6px 0 var(--node-edge), inset 0 3px 0 var(--node-inset);
+        border: 3px solid var(--roadmap-green); color: var(--roadmap-green-edge);
     }
-    .circle.gate { background: #f1f5f9; box-shadow: 0 6px 0 #cbd5e1; color: #94a3b8; }
-    .circle.gate.available { background: #e8f8f6; box-shadow: 0 6px 0 #5ccfc2; color: #008f83; }
-    .circle.gate.completed { background: #ffc800; box-shadow: 0 6px 0 #e5a000; color: #fff; }
+    .circle.gate { --node-face: #f1f5f9; --node-edge: #cbd5e1; --node-inset: rgba(255,255,255,.45); background: #f1f5f9; box-shadow: 0 6px 0 var(--node-edge), inset 0 3px 0 var(--node-inset); color: #94a3b8; }
+    .circle.gate.available { --node-face: #e8f8f6; --node-edge: #5ccfc2; background: #e8f8f6; box-shadow: 0 6px 0 var(--node-edge), inset 0 3px 0 var(--node-inset); color: #008f83; }
+    .circle.gate.completed { --node-face: #ffc800; --node-edge: #e5a000; --node-highlight: #ffdf4d; --node-inset: rgba(255,255,255,.2); background: #ffc800; box-shadow: 0 6px 0 var(--node-edge), inset 0 3px 0 var(--node-inset); color: #fff; }
 
     /* Label node */
     .lbl { margin-top: 10px; text-align: center; }
