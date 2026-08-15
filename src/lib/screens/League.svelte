@@ -2,6 +2,7 @@
     import { appState, XP, surahCompletionXp } from '$lib/app.svelte.js';
     import { i18n } from '$lib/i18n.svelte.js';
     import BottomNav from '../components/BottomNav.svelte';
+    import UserTopbar from '$lib/components/UserTopbar.svelte';
 
     // Active board type tab
     let activeTab = $state('global-user');
@@ -87,12 +88,7 @@
 </script>
 
 <div class="screen">
-    <!-- Top Bar -->
-    <div class="topbar" style="background: linear-gradient(135deg, #00978A, #00bfa5); padding: 14px 16px 10px;">
-        <span style="font-size: 16px; font-weight: 900; color: #fff; flex: 1; text-align: center;">
-            <i class="ti ti-trophy"></i> Leaderboard
-        </span>
-    </div>
+    <UserTopbar title="Leaderboard" showBack={false} />
 
     <div class="scroll-content no-scrollbar">
         <!-- Tab Scroller -->
@@ -208,6 +204,9 @@
 </div>
 
 <style>
+    .screen-back-btn { width: 38px; height: 38px; flex: 0 0 38px; display: inline-flex; align-items: center; justify-content: center; padding: 0; border: 1px solid rgba(255,255,255,.55); border-radius: 12px; background: rgba(255,255,255,.16); color: #fff; cursor: pointer; box-shadow: 0 3px 0 rgba(0,105,96,.7); transition: transform .1s ease, box-shadow .1s ease; }
+    .screen-back-btn:hover { transform: translateY(1px); box-shadow: 0 2px 0 rgba(0,105,96,.7); }
+    .screen-back-btn:active { transform: translateY(3px); box-shadow: none; }
     .tab-scroller {
         display: flex;
         gap: 6px;

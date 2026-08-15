@@ -1,7 +1,7 @@
 <script>
     import { appState, XP, makeDailyQuests } from '$lib/app.svelte.js';
     import { i18n } from '$lib/i18n.svelte.js';
-    import BottomNav from '../components/BottomNav.svelte';
+    import UserTopbar from '$lib/components/UserTopbar.svelte';
 
     let activeTab = $state('misi');
 
@@ -37,17 +37,7 @@
 </script>
 
 <div class="screen quests-screen">
-    <!-- Mobile & Desktop Header -->
-    <div class="top-header">
-        <div class="wallet-pills">
-            <div class="pill">
-                <i class="ti ti-star" style="color:#00978A"></i> <span style="color: #3c3c3c;">{appState.user.xp}</span>
-            </div>
-            <div class="pill">
-                <i class="ti ti-diamond gem-icon"></i> <span class="gem-value">{appState.user.gems}</span>
-            </div>
-        </div>
-    </div>
+    <UserTopbar title={i18n.t('nav.quests')} backTo="learn" />
 
     <div class="scroll-content">
         <div class="quests-layout">
@@ -246,9 +236,6 @@
         </div>
     </div>
 
-    <!-- Mobile Navigation -->
-    <BottomNav active="quests" />
-
     <!-- Custom Alert Modal -->
     {#if showCustomAlert}
         <div class="alert-overlay" onclick={() => {
@@ -291,45 +278,10 @@
         overflow: hidden;
     }
 
-    /* Mobile & Desktop Header */
-    .top-header {
-        display: flex;
-        padding: 16px 20px 0;
-        justify-content: center;
-        background: #f1f5f9;
-        z-index: 10;
-        position: sticky;
-        top: 0;
-    }
-    :global(.desktop-browser) .top-header {
-        padding: 24px 32px 0;
-        justify-content: flex-end;
-        position: static;
-    }
-    
-    .wallet-pills {
-        display: flex;
-        gap: 12px;
-    }
-    :global(.desktop-browser) .wallet-pills {
-        gap: 20px;
-    }
-    .pill {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        font-size: 15px;
-        font-weight: 800;
-        background: #fff;
-        padding: 6px 14px;
-        border: 2px solid #e5e5e5;
-        border-radius: 100px;
-    }
-
     .scroll-content {
         flex: 1;
         overflow-y: auto;
-        padding: 0 16px 100px; /* Space for bottom nav */
+        padding: 0 16px 24px;
     }
     :global(.desktop-browser) .scroll-content {
         padding: 32px;

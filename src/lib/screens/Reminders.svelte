@@ -7,6 +7,7 @@
     import { appState, MURAJAAH_DUE_DAYS } from '$lib/app.svelte.js';
     import { i18n } from '$lib/i18n.svelte.js';
     import BottomNav from '../components/BottomNav.svelte';
+    import UserTopbar from '$lib/components/UserTopbar.svelte';
 
     const reminder = $derived(appState.user.reminder);
 
@@ -74,15 +75,7 @@
 </script>
 
 <div class="screen">
-    <div class="topbar">
-        <button class="back-btn" onclick={() => appState.go('profile')} aria-label={i18n.t('common.back')}>
-            <i class="ti ti-arrow-left"></i>
-        </button>
-        <span style="font-size:16px; font-weight:900; color:#3c3c3c; flex:1; text-align:center;">
-            {i18n.t('reminder.title')}
-        </span>
-        <div style="width:40px;"></div>
-    </div>
+    <UserTopbar title={i18n.t('reminder.title')} backTo="profile" />
 
     <div class="scroll-content no-scrollbar">
         <div class="intro">

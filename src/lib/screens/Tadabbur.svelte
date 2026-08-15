@@ -2,6 +2,7 @@
     import { appState } from '$lib/app.svelte.js';
     import { i18n } from '$lib/i18n.svelte.js';
     import BottomNav from '../components/BottomNav.svelte';
+    import UserTopbar from '$lib/components/UserTopbar.svelte';
     import { SURAHS, surahByName } from '$lib/data/surahs.js';
 
     // Ayat renungan mengikuti surah yang sedang dihafal. Sebelumnya selalu Al-Mulk:1
@@ -64,13 +65,7 @@
 </script>
 
 <div class="screen">
-    <div class="topbar">
-        <button onclick={() => currentStep = -1} style="background: none; border: none; cursor: pointer">
-            <i class="ti ti-arrow-left" style="font-size: 20px; color: #afafaf"></i>
-        </button>
-        <span style="font-size: 15px; font-weight: 800; color: #3c3c3c; flex: 1; text-align: center;">{i18n.t('tadabbur.title')}</span>
-        <div style="width: 28px"></div>
-    </div>
+    <UserTopbar title={i18n.t('tadabbur.title')} onBack={() => currentStep = -1} />
 
     {#if currentStep === -1}
         <div class="scroll-content" style="padding: 0 16px;">

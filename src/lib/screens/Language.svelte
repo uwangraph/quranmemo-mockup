@@ -1,6 +1,7 @@
 <script>
     import { appState } from '$lib/app.svelte.js';
     import { i18n, locales } from '$lib/i18n.svelte.js';
+    import UserTopbar from '$lib/components/UserTopbar.svelte';
     
     function selectLanguage(code) {
         i18n.locale = code;
@@ -9,13 +10,7 @@
 </script>
 
 <div class="screen">
-    <div class="topbar">
-        <button onclick={() => appState.go('profile')} style="background:none; border:none; color:#afafaf;">
-            <i class="ti ti-arrow-left" style="font-size:20px;"></i>
-        </button>
-        <span style="font-size: 16px; font-weight: 900; color: #3c3c3c; flex: 1; text-align: center;">{i18n.t('settings.language')}</span>
-        <div style="width: 20px;"></div>
-    </div>
+    <UserTopbar title={i18n.t('settings.language')} backTo="profile" />
 
     <div class="scroll-content" style="padding: 16px;">
         <div class="lang-grid">

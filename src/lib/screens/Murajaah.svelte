@@ -1,6 +1,8 @@
 <script>
     import { appState, MURAJAAH_DUE_DAYS } from '$lib/app.svelte.js';
     import { i18n } from '$lib/i18n.svelte.js';
+    import UserTopbar from '$lib/components/UserTopbar.svelte';
+    import BottomNav from '$lib/components/BottomNav.svelte';
 
     const due = $derived(appState.murajaahDue);
     let activeSurah = $state(null);
@@ -24,13 +26,7 @@
 </script>
 
 <div class="screen murajaah-screen">
-    <div class="topbar">
-        <button class="back-btn" onclick={() => appState.go('learn')} aria-label={i18n.t('common.back')}>
-            <i class="ti ti-arrow-left"></i>
-        </button>
-        <span class="page-title">Murojaah</span>
-        <div class="topbar-spacer"></div>
-    </div>
+    <UserTopbar title="Murojaah" showBack={false} />
 
     {#if activeSurah}
         <div class="review-panel">
@@ -93,6 +89,7 @@
             {/if}
         </div>
     {/if}
+    <BottomNav active="murajaah" />
 </div>
 
 <style>

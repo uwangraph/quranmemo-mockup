@@ -1,6 +1,7 @@
 <script>
     import { appState } from '$lib/app.svelte.js';
     import { i18n } from '$lib/i18n.svelte.js';
+    import StatsPills from '$lib/components/StatsPills.svelte';
     
     let showToast = $state(false);
     let { onOpenStreakModal } = $props();
@@ -18,20 +19,12 @@
     });
 </script>
 
-<div class="topbar" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
-    <!-- Streak pill — bisa diklik untuk detail -->
-    <button class="streak-pill" onclick={onOpenStreakModal} title={i18n.t('streak.view_details')}>
-        <i class="ti ti-flame"></i>
-        <span>{appState.user.streak}</span>
+<div class="topbar learn-topbar">
+    <StatsPills showStreak={true} onOpenStreak={onOpenStreakModal} />
+
+    <button class="notification-button" type="button" onclick={() => appState.go('reminders')} aria-label="Notifikasi" title="Notifikasi">
+        <i class="ti ti-bell"></i>
     </button>
-    
-    <div class="xp-pill">
-        <i class="ti ti-star"></i><span>{appState.user.xp}</span>
-    </div>
-    
-    <div class="gems-pill" onclick={() => appState.go('murojaah')} role="button" tabindex="0">
-        <i class="ti ti-diamond gem-icon" aria-hidden="true"></i><span>{appState.user.gems}</span>
-    </div>
 </div>
 
 {#if showToast}
@@ -46,6 +39,19 @@
 {/if}
 
 <style>
+    .learn-topbar { justify-content: space-between; width: 100%; }
+    .notification-button {
+        width: 36px; height: 36px; padding: 0;
+        display: inline-flex; align-items: center; justify-content: center;
+        border: 1px solid #d6dee8; border-radius: 50%;
+        background: #fff; color: #7c8a99; font-size: 19px;
+        cursor: pointer; font-family: inherit;
+        box-shadow: 0 4px 0 #d6dee8;
+        transition: transform .12s ease, box-shadow .12s ease;
+    }
+    .notification-button:hover { transform: translateY(2px); box-shadow: 0 2px 0 #d6dee8; }
+    .notification-button:active { transform: translateY(4px); box-shadow: none; }
+
     .achievement-toast {
         position: absolute;
         top: 70px;
@@ -67,45 +73,4 @@
         to { opacity: 1; transform: translateY(0); }
     }
     .close-toast { background: none; border: none; cursor: pointer; color: #afafaf; font-size: 18px; }
-    .streak-pill {
-        display: flex; align-items: center; gap: 4px; font-size: 14px; font-weight: 800;
-        color: #ff6200; background: #fff7ed; border: 2px solid #fed7aa;
-        padding: 5px 12px; border-radius: 100px; cursor: pointer;
-        transition: all 0.15s; font-family: 'Nunito', sans-serif;
-    }
-    .streak-pill:hover { background: #fff0df; transform: scale(1.05); }
-    .xp-pill {
-        display: inline-flex; align-items: center; justify-content: center; gap: 4px;
-        min-width: 46px; height: 32px; padding: 0 10px; box-sizing: border-box;
-        border: 2px solid #ffe08a; border-radius: 999px; background: #fff3c4; color: #d99000;
-        font-size: 14px; font-weight: 900; line-height: 1; font-family: 'Nunito', sans-serif;
-    }
-    .xp-pill i { color: #e5a900; }
-    .gems-pill {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 4px;
-        min-width: 46px;
-        height: 32px;
-        box-sizing: border-box;
-        padding: 0 10px;
-        border: 0;
-        border-radius: 999px;
-        background: #e1f5fe;
-        color: #1cb0f6;
-        font-size: 14px;
-        font-weight: 900;
-        line-height: 1;
-        cursor: pointer;
-        font-family: 'Nunito', sans-serif;
-    }
-    .gem-icon {
-        display: inline-block;
-        flex: 0 0 auto;
-        color: #1cb0f6 !important;
-        font-size: 16px;
-        line-height: 1;
-    }
-    .gems-pill span { line-height: 1; }
 </style>
