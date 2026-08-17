@@ -10,7 +10,18 @@
     });
     let isMuted = $state(false);
     let isCameraOn = $state(true);
-    let elapsed = $state('04:20');
+
+    // Timer sesi realtime (countup mm:ss) mengikuti waktu sungguhan sejak layar dibuka.
+    let elapsedSeconds = $state(0);
+    $effect(() => {
+        const id = setInterval(() => { elapsedSeconds += 1; }, 1000);
+        return () => clearInterval(id);
+    });
+    const elapsed = $derived.by(() => {
+        const mm = String(Math.floor(elapsedSeconds / 60)).padStart(2, '0');
+        const ss = String(elapsedSeconds % 60).padStart(2, '0');
+        return `${mm}:${ss}`;
+    });
 </script>
 
 <div class="screen user-live-screen">

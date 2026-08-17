@@ -11,6 +11,19 @@
     let isFinished = $state(false);
     let selectedWord = $state(null);
     let showTypeSelector = $state(false);
+
+    // Timer sesi realtime: menghitung naik (countup) dalam format mm:ss,
+    // mengikuti waktu sungguhan sejak layar dibuka.
+    let elapsedSeconds = $state(0);
+    $effect(() => {
+        const id = setInterval(() => { elapsedSeconds += 1; }, 1000);
+        return () => clearInterval(id);
+    });
+    const elapsedLabel = $derived.by(() => {
+        const mm = String(Math.floor(elapsedSeconds / 60)).padStart(2, '0');
+        const ss = String(elapsedSeconds % 60).padStart(2, '0');
+        return `${mm}:${ss}`;
+    });
     
     const session = $derived(appState.liveSession);
     const selectedVerses = $derived.by(() => {
@@ -62,7 +75,7 @@
                 <div style="font-size: 14px; font-weight: 900">{session.studentName}</div>
                 <div style="font-size: 10px; font-weight: 700; color: #00978A"><i class="ti ti-broadcast"></i> {i18n.t('marking.live')} — {session.surah}: {session.ayah}</div>
             </div>
-            <div class="timer-bubble">04:20</div>
+            <div class="timer-bubble">{elapsedLabel}</div>
         </div>
 
         <div class="scroll-content no-scrollbar" style="padding-top: 0;">
