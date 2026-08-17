@@ -331,7 +331,7 @@
         {/if}
         
         {#if activeTab === 'toko'}
-            <div class="hero-card" style="background: linear-gradient(135deg, #00978A, #007a6f); margin-top: 16px;">
+            <div class="hero-card" style="background: linear-gradient(145deg, #11a398, #08b4a7); margin-top: 16px;">
                 <div style="flex:1">
                     <div style="font-size:18px; font-weight:900; color:#fff;">{i18n.t('market.shop_title')}</div>
                     <div style="font-size:12px; font-weight:700; color:rgba(255,255,255,0.8); margin-top:4px;">{i18n.t('market.shop_desc')}</div>
@@ -351,7 +351,7 @@
                         <div style="font-size:13px; font-weight:700; color:#afafaf; margin-top:4px;">{i18n.t('market.ads_desc')}</div>
                     </div>
                 </div>
-                <button class="btn-duo" style="background: #fff; color: #1cb0f6; --btn-edge: #e5e5e5;" onclick={() => {
+                <button class="btn-duo" style="background: #fff; color: #00978A; --btn-edge: #e5e5e5;" onclick={() => {
                     customConfirm(i18n.t('market.ads_confirm'), () => {
                         appState.user.gems += 50;
                         appState.saveUser();
@@ -370,7 +370,7 @@
                     <div>
                         <div style="font-size:16px; font-weight:900; color:#3c3c3c;">{i18n.t('market.freeze_title')}</div>
                         <div style="font-size:13px; font-weight:700; color:#afafaf; margin-top:4px;">{i18n.t('market.freeze_desc')}</div>
-                        <div style="font-size:11px; font-weight:800; color:#1cb0f6; margin-top:4px;">{i18n.t('market.freeze_owned', { count: appState.user.streakFreezes || 0 })}</div>
+                        <div style="font-size:11px; font-weight:800; color:#00978a; margin-top:4px;">{i18n.t('market.freeze_owned', { count: appState.user.streakFreezes || 0 })}</div>
                     </div>
                 </div>
                 <button class="btn-duo" style="background: #00978A; color: #fff; --btn-edge: #007A70; font-size: 13px;" onclick={() => {
@@ -463,7 +463,7 @@
         border-radius: 50%;
         border: 1px solid #d6dee8;
         background: #fff;
-        color: var(--duo-blue);
+        color: var(--duo-green);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -480,8 +480,8 @@
     .topup-modal-head button { border: 0; background: transparent; color: #94a3b8; font-size: 20px; cursor: pointer; }
     .topup-modal p { margin: 6px 0 14px; color: #64748b; font-size: 12px; font-weight: 700; }
     .topup-options { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-    .topup-option { display: flex; flex-direction: column; gap: 6px; align-items: center; padding: 12px 6px; border: 1px solid #1cb0f6; border-radius: 12px; background: #e1f5fe; color: #087fbc; cursor: pointer; box-shadow: 0 3px 0 #1cb0f6; font-family: inherit; }
-    .topup-option:hover { transform: translateY(1px); box-shadow: 0 2px 0 #1cb0f6; }
+    .topup-option { display: flex; flex-direction: column; gap: 6px; align-items: center; padding: 12px 6px; border: 1px solid #00978a; border-radius: 12px; background: #e6faf8; color: #087f77; cursor: pointer; box-shadow: 0 3px 0 #00978a; font-family: inherit; }
+    .topup-option:hover { transform: translateY(1px); box-shadow: 0 2px 0 #00978a; }
     .topup-option:active { transform: translateY(3px); box-shadow: none; }
     .topup-option strong { font-size: 14px; }
     .topup-option span { font-size: 10px; font-weight: 900; color: #64748b; }
@@ -536,23 +536,40 @@
         gap: 5px;
         padding: 6px 10px;
         border-radius: 999px;
-        background: rgba(255, 255, 255, 0.18);
-        border: 1px solid rgba(255, 255, 255, 0.16);
+        color: #fff;
         font-size: 11px;
         font-weight: 900;
         line-height: 1;
         white-space: nowrap;
+        position: relative;
+        background: linear-gradient(135deg, rgba(255,255,255,0.35), rgba(255,255,255,0.14));
+        border: 1px solid rgba(255,255,255,0.42);
+        box-shadow: 0 8px 24px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.45);
+        -webkit-backdrop-filter: blur(18px) saturate(160%);
+        backdrop-filter: blur(18px) saturate(160%);
+        overflow: hidden;
     }
-    .price-badge i { font-size: 13px; color: #fff; }
+    .price-badge span { color: #fff; font-weight: 900; }
+    .price-badge i {
+        font-size: 14px;
+        color: #fff !important;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        line-height: 1;
+    }
     .target-selector {
         display: flex;
         flex-direction: column;
         gap: 10px;
         margin-top: 14px;
-        background: rgba(255, 255, 255, 0.14);
-        padding: 12px;
-        border-radius: 14px;
-        border: 1px solid rgba(255, 255, 255, 0.18);
+        background: linear-gradient(135deg, rgba(255,255,255,0.28), rgba(255,255,255,0.10));
+        padding: 14px;
+        border-radius: 18px;
+        border: 1px solid rgba(255,255,255,0.35);
+        box-shadow: 0 12px 32px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.4);
+        -webkit-backdrop-filter: blur(20px) saturate(170%);
+        backdrop-filter: blur(20px) saturate(170%);
     }
     .target-field {
         flex: 1;
@@ -576,14 +593,16 @@
     .custom-select-box,
     .target-field input,
     .native-target-select {
-        background: #fff;
-        border: 1px solid #dceced;
+        background: rgba(255,255,255,0.72);
+        border: 1px solid rgba(255,255,255,0.6);
         padding: 8px 12px;
-        border-radius: 10px;
+        border-radius: 12px;
         font-size: 13px;
         font-weight: 700;
         color: #3c3c3c;
-        box-shadow: 0 2px 0 #c7e4e1;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.5);
+        -webkit-backdrop-filter: blur(12px) saturate(160%);
+        backdrop-filter: blur(12px) saturate(160%);
         outline: none;
         font-family: inherit;
         box-sizing: border-box;
@@ -615,10 +634,12 @@
         top: calc(100% + 4px);
         left: 0;
         right: 0;
-        background: #fff;
-        border: 1px solid #e5e5e5;
-        border-radius: 12px;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        background: rgba(255,255,255,0.75);
+        border: 1px solid rgba(255,255,255,0.6);
+        border-radius: 14px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.5);
+        -webkit-backdrop-filter: blur(18px) saturate(170%);
+        backdrop-filter: blur(18px) saturate(170%);
         max-height: 200px;
         overflow-y: auto;
         z-index: 50;
@@ -681,7 +702,7 @@
     }
     .gender-filter button.active {
         background: #fff;
-        color: #1cb0f6;
+        color: #00978A;
         box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     }
     
@@ -787,7 +808,7 @@
     }
     .alert-icon {
         font-size: 48px;
-        color: #1cb0f6;
+        color: #00978A;
         margin-bottom: 16px;
     }
     .alert-text {
@@ -815,12 +836,12 @@
         transform: translateY(2px);
     }
     .alert-btn.primary {
-        background: #1cb0f6;
+        background: #00978A;
         color: #fff;
-        box-shadow: 0 4px 0 #1899d6;
+        box-shadow: 0 4px 0 #007A70;
     }
     .alert-btn.primary:active {
-        box-shadow: 0 2px 0 #1899d6;
+        box-shadow: 0 2px 0 #007A70;
     }
     .alert-btn.secondary {
         background: #f1f5f9;
@@ -866,8 +887,8 @@
         margin-top: 1px;
     }
     .schedule-chip.instant {
-        background: #1cb0f6;
+        background: #00978A;
         color: #fff;
-        border-color: #1899d6;
+        border-color: #007A70;
     }
 </style>
