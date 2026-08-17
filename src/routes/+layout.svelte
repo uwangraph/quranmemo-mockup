@@ -10,6 +10,66 @@
 	// Simple zoom state — starts at 100%
 	let zoom = $state(1);
 
+	// Jam statusbar — mengikuti waktu asli perangkat, diperbarui tiap detik.
+	let now = $state(new Date());
+	$effect(() => {
+		const id = setInterval(() => { now = new Date(); }, 1000);
+		return () => clearInterval(id);
+	});
+	// Jam ponsel: "9:41" (24 jam) — jam tablet otomatis memakai AM/PM sesuai locale.
+	function formatPhoneTime(d) {
+		return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
+	}
+
+	// Baterai asli perangkat via Battery Status API (kalau didukung).
+	// Browser modern mungkin tidak menyediakannya; kalau tidak ada, fallback '100'.
+	let batteryLevel = $state(100);
+	let batteryCharging = $state(false);
+	$effect(() => {
+		let bm = null;
+		let cancelled = false;
+		const sync = (b) => {
+			if (!b || cancelled) return;
+			batteryLevel = Math.max(0, Math.min(1, b.level)) * 100;
+			batteryCharging = b.charging;
+		};
+		if (typeof navigator !== 'undefined' && typeof navigator.getBattery === 'function') {
+			navigator.getBattery().then(bm => {
+				bm = bm;
+				sync(bm);
+				bm.addEventListener('levelchange', () => sync(bm));
+				bm.addEventListener('chargingchange', () => sync(bm));
+			}).catch(() => {});
+		}
+		return () => { cancelled = true; if (bm) { bm.removeEventListener?.('levelchange', () => {}); } };
+	});
+	const batteryPercent = $derived(Math.round(batteryLevel));
+
+	// Status jaringan. Browser TIDAK menyediakan "kekuatan sinyal" (bar sinyal),
+	// jadi yang diikuti adalah status koneksi (online/offline) + jenis koneksi
+	// (slow-2g/2g/3g/4g) via Network Information API (kalau tersedia).
+	let isOnline = $state(true);
+	let connectionType = $state(null);
+	$effect(() => {
+		if (typeof navigator === 'undefined') return;
+		isOnline = navigator.onLine;
+		const c = navigator.connection;
+		if (c) {
+			connectionType = c.effectiveType ?? null;
+			const onChange = () => { connectionType = c.effectiveType ?? null; };
+			c.addEventListener?.('change', onChange);
+			return () => c.removeEventListener?.('change', onChange);
+		}
+		const onOnline = () => { isOnline = true; };
+		const onOffline = () => { isOnline = false; };
+		window.addEventListener('online', onOnline);
+		window.addEventListener('offline', onOffline);
+		return () => { window.removeEventListener('online', onOnline); window.removeEventListener('offline', onOffline); };
+	});
+	const networkLabel = $derived(isOnline ? (connectionType && connectionType !== '4g'
+		? connectionType.toUpperCase()
+		: (connectionType === '4g' ? '4G' : '')) : 'OFF');
+
 	function adjustZoom(delta) {
 		zoom = Math.min(3, Math.max(0.2, zoom + delta));
 	}
@@ -248,10 +308,15 @@
 						dir={i18n.getDir()}
 						>
 							<div class="statusbar" dir="ltr" style="background: {currentCategory.color};">
-								<span>9:41</span>
+								<span>{formatPhoneTime(now)}</span>
 								<span style="display: flex; gap: 4px; align-items: center">
-										<i class="ti ti-wifi" style="font-size: 13px"></i>
-										<i class="ti ti-battery" style="font-size: 13px"></i>
+										<i class="ti {isOnline ? 'ti-wifi' : 'ti-wifi-off'}" style="font-size: 13px" title={isOnline ? 'Online' : 'Offline'}></i>
+										{#if networkLabel}<span style="font-size: 10px; font-weight: 900;">{networkLabel}</span>{/if}
+										<span class="battery-group">
+											<span class="battery-bar"><span class="battery-fill" style="width:{batteryPercent}%"></span></span>
+											<span class="battery-tip"></span>
+										</span>
+										<span style="font-size: 10px; font-weight: 900;" title={batteryCharging ? 'Charging' : ''}>{batteryPercent}%</span>
 								</span>
 							</div>
 
@@ -272,7 +337,7 @@
 							<!-- iPad statusbar -->
 							<div class="tablet-statusbar" dir="ltr">
 								<div class="statusbar-left" style="display: flex; gap: 6px; align-items: center">
-									<span>9:41 AM</span>
+									<span>{now.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}</span>
 									<span style="font-weight: 700; color: #1cb0f6;">iPad Pro</span>
 								</div>
 								<div class="statusbar-center" style="display: flex; gap: 4px; align-items: center">
@@ -280,9 +345,12 @@
 									<span>quranmemo.app/{appState.currentScreen}</span>
 								</div>
 								<div class="statusbar-right" style="display: flex; gap: 6px; align-items: center">
-									<span>100%</span>
-										<i class="ti ti-battery" style="font-size: 14px"></i>
-										<i class="ti ti-wifi" style="font-size: 14px"></i>
+									<span>{batteryPercent}%</span>
+										<span class="battery-group">
+											<span class="battery-bar battery-lg"><span class="battery-fill" style="width:{batteryPercent}%"></span></span>
+											<span class="battery-tip battery-tip-lg"></span>
+										</span>
+										<i class="ti {isOnline ? 'ti-wifi' : 'ti-wifi-off'}" style="font-size: 14px" title={isOnline ? 'Online' : 'Offline'}></i>
 								</div>
 							</div>
 
@@ -745,6 +813,33 @@
 		text-transform: uppercase;
 		letter-spacing: 1px;
 	}
+
+	/* Bar baterai kustom — isi mengikuti level baterai asli device */
+	.battery-group { display: inline-flex; align-items: center; gap: 1px; }
+	.battery-bar {
+		position: relative;
+		width: 18px;
+		height: 9px;
+		border: 1px solid rgba(255,255,255,0.55);
+		border-radius: 3px;
+		background: rgba(255,255,255,0.18);
+		overflow: hidden;
+	}
+	.battery-bar .battery-fill {
+		display: block;
+		height: 100%;
+		background: rgba(255,255,255,0.95);
+		border-radius: 2px;
+		transition: width .3s ease;
+	}
+	.battery-tip {
+		width: 2px;
+		height: 4px;
+		background: rgba(255,255,255,0.7);
+		border-radius: 0 2px 2px 0;
+	}
+	.battery-lg { width: 24px; height: 12px; }
+	.battery-tip-lg { width: 3px; height: 6px; }
 
 	/* Theme Specific Tablet Overrides */
 	.tablet.theme-musyrif .tablet-statusbar {
