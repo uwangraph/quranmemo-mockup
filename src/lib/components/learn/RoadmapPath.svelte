@@ -227,10 +227,6 @@
         {/each}
     </div>
 
-    <div class="current-target-label">
-        {i18n.t('learn.current_mini_target')}: <strong>{targetName ?? '—'}</strong>
-    </div>
-
     {#if !surah && st.availableAllDone}
         <!-- Semua yang bisa dikerjakan sudah tuntas. Lebih baik menyatakannya dan
              mengarahkan ke murajaah daripada meninggalkan layar buntu. -->
@@ -496,12 +492,6 @@
     .target-chip.current { border-color: var(--duo-green); background: #e6faf8; color: var(--duo-green-dark); }
     .target-label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .target-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
-
-    .current-target-label {
-        padding: 10px 16px 0; font-size: 12px; font-weight: 700; color: #64748b;
-    }
-    .current-target-label strong { color: #1e293b; font-weight: 900; }
-    :global(.desktop-browser) .current-target-label, :global(.tablet) .current-target-label { padding: 10px 0 0; }
 
     /* ===== Jalan (road) node sesuai desain ring-button ===== */
     .road {
