@@ -11,9 +11,11 @@
 		"test:streak": "node src/lib/streak.test.js",
 		"prepare": "svelte-kit sync || echo ''",
 		"test:rules": "node src/lib/rules.test.js",
-		"test": "npm run test:streak && npm run test:rules && npm run test:content && npm run check:i18n",
+		"test": "npm run test:streak && npm run test:rules && npm run test:content && npm run test:tadabbur && npm run check:i18n",
 		"test:content": "node src/lib/content.test.js",
-		"fetch:surah": "node scripts/fetch-surah.js"
+		"fetch:surah": "node scripts/fetch-surah.js",
+		"test:tadabbur": "node src/lib/tadabbur.test.js",
+		"fetch:tafsir": "node scripts/fetch-tafsir.js"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-cloudflare": "^7.2.8",
