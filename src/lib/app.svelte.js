@@ -300,6 +300,10 @@ export function createAppState() {
     };
     if (user.monthlyMission === undefined) user.monthlyMission = { month: null, loginDays: 0, versesMemorized: 0, xpEarned: 0 };
     if (!Array.isArray(user.progress?.tadabbur)) user.progress.tadabbur = [];
+    // Jurnal tadabbur per ayat, dikunci "surahId:nomorAyat" (TADABBUR.md §3.3).
+    if (!user.tadabburJournal) user.tadabburJournal = {};
+    // Segmen usia menentukan prompt jurnal (§2.3); null berarti belum dipilih.
+    if (user.tadabburSegment === undefined) user.tadabburSegment = null;
     if (!Array.isArray(user.progress.completedLadders)) user.progress.completedLadders = [];
     if (!user.progress.surahs) {
         // Progres lama hanya mengenal satu surah; pindahkan ke kunci surahnya.
@@ -536,6 +540,65 @@ export function createAppState() {
         user.progress.tadabbur = [...user.progress.tadabbur, key];
         saveUser();
         return true;
+    }
+
+    // ====== Jurnal Tadabbur (TADABBUR.md §3.3) ======
+    //
+    // Jurnal adalah inti modul ini, tetapi sebelumnya tidak pernah tersimpan: kolom
+    // refleksi tanpa binding dan pilihan amal yang hanya menyalakan kelas CSS pada
+    // elemen DOM. Begitu layar ditutup, seluruh tulisan pengguna hilang.
+    //
+    // Jurnal bersifat privat (§4.4) — hanya dipakai untuk personalisasi prompt dan
+    // tidak pernah dibagikan ke mana pun.
+
+    const journalKey = (surahId, verseNumber) => `${surahId}:${verseNumber}`;
+
+    function getTadabburJournal(surahId, verseNumber) {
+        return user.tadabburJournal?.[journalKey(surahId, verseNumber)] ?? null;
+    }
+
+    // Simpan sebagian isi jurnal. Dipanggil tiap langkah agar tulisan tidak hilang
+    // ketika pengguna mundur satu langkah atau menutup layar di tengah jalan.
+    function saveTadabburJournal(surahId, verseNumber, patch) {
+        const key = journalKey(surahId, verseNumber);
+        const prev = user.tadabburJournal[key] ?? { createdAt: new Date().toISOString() };
+        user.tadabburJournal = {
+            ...user.tadabburJournal,
+            [key]: { ...prev, ...patch, surahId, verseNumber, updatedAt: new Date().toISOString() }
+        };
+        saveUser();
+    }
+
+    // Sesi dianggap selesai ketika pengguna menuntaskan langkah ke-7 (amal).
+    function completeTadabburSession(surahId, verseNumber) {
+        const key = journalKey(surahId, verseNumber);
+        const entry = user.tadabburJournal[key];
+        if (!entry || entry.completedAt) return false;
+        user.tadabburJournal = {
+            ...user.tadabburJournal,
+            [key]: { ...entry, completedAt: new Date().toISOString() }
+        };
+        saveUser();
+        return true;
+    }
+
+    // Riwayat jurnal, terbaru lebih dulu. Dipakai layar riwayat sekaligus sebagai
+    // bahan "flashback" jurnal lama (§3.3).
+    function tadabburHistory() {
+        return Object.values(user.tadabburJournal ?? {})
+            .filter((e) => e.completedAt)
+            .sort((a, b) => Date.parse(b.completedAt) - Date.parse(a.completedAt));
+    }
+
+    // Jumlah sesi Guided yang sudah tuntas — dasar Progressive Unlocking (§3.2):
+    // Free Mode terbuka setelah 10 sesi.
+    function tadabburSessionCount() {
+        return tadabburHistory().length;
+    }
+
+    function setTadabburSegment(segment) {
+        user.tadabburSegment = segment;
+        saveUser();
     }
 
     // ====== Streak-related functions ======
@@ -1066,6 +1129,12 @@ export function createAppState() {
         addStreak,
         markDailyProgress,
         completeTadabbur,
+        getTadabburJournal,
+        saveTadabburJournal,
+        completeTadabburSession,
+        setTadabburSegment,
+        get tadabburHistory() { return tadabburHistory(); },
+        get tadabburSessionCount() { return tadabburSessionCount(); },
         triggerLoginRewardCheck,
         clearPendingRewardInfo,
         get repairOffer() { return repairOffer(); },

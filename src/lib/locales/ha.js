@@ -202,24 +202,6 @@ export default {
     "tadabbur.next": "CI GABA",
     "tadabbur.save": "AJIYE AIKIN",
     "tadabbur.reflect": "Rubuta tunaninka anan...",
-    "tadabbur.complete": "Alhamdulillah! Tadabbur ya ƙare.",
-    "tadabbur.s1d": "Karanta aya akai-akai — har sai kun haddace.",
-    "tadabbur.s2d": "Karanta tafsirin aya don tunanin ku ya tsaya a cikin mahalli.",
-    "tadabbur.s3d": "Karanta ra'ayoyin malamai game da wannan aya.",
-    "tadabbur.s4d": "Yi tunani kuma ku haɗa da abubuwan da suka faru na zahiri.",
-    "tadabbur.s5d": "Yi tunani kuma ku haɗa da abubuwan da kuka fuskanta.",
-    "tadabbur.s6d": "Takaita jumla ɗaya mai ƙarfi da ta zama ka'ida.",
-    "tadabbur.s7d": "Ƙayyade aiki guda ɗaya na yau.",
-    "tadabbur.t1": "Imani & Tauhidi",
-    "tadabbur.t2": "Ibadar",
-    "tadabbur.t3": "Hali",
-    "tadabbur.t4": "Iyali",
-    "tadabbur.t5": "Rai & Hankali",
-    "tadabbur.t6": "Ilmi & Hanka",
-    "tadabbur.a1": "Ba da sadaka yau",
-    "tadabbur.a2": "Yi sallah a kan lokaci",
-    "tadabbur.a3": "Yi kyautatawa ga iyaye",
-    "tadabbur.verse_trans": "Albarka ta tabbata ga wanda mulki yake a hannunSa",
 
     "tier.bersanad": "Mai Sanadi",
     "tier.reguler": "Na Yau da Kullun",
@@ -670,7 +652,7 @@ export default {
     "footer.terms": "SHARUƊAN AMFANI",
     "footer.privacy": "MANUFAR SIRRI",
     "streak.view_details": "Duba bayanin jerin kwanaki",
-    "tadabbur.unlock_hint": "Zai buɗe bayan zaman 10",
+    "tadabbur.unlock_hint": "Yanayin 'Yanci zai buɗe bayan ƙarin zaman jagora {count}",
     "tajwid.letters": "Haruffa",
     "tajwid.example": "Misali",
     "lesson.toggle_latin": "Kunna ko kashe rubutun Latin nan take",
@@ -909,4 +891,33 @@ export default {
     ,"placement.rec_note_label": "Bayani daga musyrif"
     ,"placement.own_surah_label": "Zaɓi sura"
     ,"placement.own_surah_placeholder": "Zaɓi surar da kake son haddacewa"
+    ,"tadabbur.step_baca": "Karanta Akai-akai"
+    ,"tadabbur.step_baca_desc": "Karanta ayar akai-akai — mafi kyau har sai ka haddace."
+    ,"tadabbur.step_tafsir": "Karanta Tafsiri"
+    ,"tadabbur.step_tafsir_desc": "Karanta tafsirin ayar don kada tadabburi ya fita daga ma'anarsa."
+    ,"tadabbur.step_ulama": "Ra'ayin Malamai"
+    ,"tadabbur.step_ulama_desc": "Karanta ra'ayin malamai game da wannan aya."
+    ,"tadabbur.step_faktual": "Haɗa da Abin da Ke Faruwa"
+    ,"tadabbur.step_faktual_desc": "Yi tunani ka haɗa da abubuwan da ke faruwa a zahiri."
+    ,"tadabbur.step_diri": "Haɗa da Kanka"
+    ,"tadabbur.step_diri_desc": "Yi tunani ka haɗa da abin da ka taɓa fuskanta."
+    ,"tadabbur.step_simpulkan": "Cire Darasi"
+    ,"tadabbur.step_simpulkan_desc": "Taƙaita cikin jimla ɗaya mai ƙarfi da za ta zama ka'idarka."
+    ,"tadabbur.step_amal": "Aiwatar"
+    ,"tadabbur.step_amal_desc": "Tadabburi ba tare da aiki ba bai cika ba. Zaɓi aiki ɗaya na zahiri yau."
+    ,"tadabbur.corpus_missing_tafsir": "Babu tafsiri da aka tantance don wannan aya tukuna."
+    ,"tadabbur.corpus_missing_ulama": "Ra'ayin malamai babu a korpus tukuna. Maimakon hasashe, wannan matakin zai kasance babu har sai an ƙara abun ciki da aka tantance."
+    ,"tadabbur.corpus_missing_faktual": "Haɗin da abubuwan zahiri na buƙatar binciken malamai kafin su bayyana. Rubuta tunaninka a ƙasa."
+    ,"tadabbur.hikmah_prompt": "Jimla ɗaya da za ta zama ka'idarka"
+    ,"tadabbur.hikmah_placeholder": "Misali: haƙuri ba nufin zama ba tare da yin komai ba…"
+    ,"tadabbur.amal_prompt": "Aiki ɗaya na zahiri da za ka yi yau"
+    ,"tadabbur.amal_placeholder": "Misali: kira iyayena yau da dare"
+    ,"tadabbur.your_hikmah": "Darasinka"
+    ,"tadabbur.segment_q": "Wa ke yin wannan tadabburi?"
+    ,"tadabbur.pick_verse": "Zaɓi aya"
+    ,"tadabbur.theme_pending": "Babu ma'ajiya tukuna"
+    ,"tadabbur.themes_note": "Jigogi za su buɗe bayan Ma'ajiyar Alkur'ani ta tsara ayoyinsu. Ba a taɓa haɗa aya da jigo bisa hasashe ba."
+    ,"tadabbur.history_link": "Littafin tadabburina ({count})"
+    ,"tadabbur.history_empty": "Babu tadabburi tukuna. Kammala zama ɗaya sai a ajiye shi anan."
+    ,"lesson.btn_continue_memorizing": "Ci Gaba da Haddacewa"
 };

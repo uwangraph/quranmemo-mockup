@@ -245,24 +245,6 @@ export default {
     "tadabbur.next": "LANJUT",
     "tadabbur.save": "SIMPAN AMAL",
     "tadabbur.reflect": "Tulis tadabburmu di sini...",
-    "tadabbur.complete": "Alhamdulillah! Tadabbur selesai.",
-    "tadabbur.s1d": "Baca ayat secara berulang — idealnya sampai hafal.",
-    "tadabbur.s2d": "Baca tafsir ayat agar tadabbur tidak keluar dari konteks.",
-    "tadabbur.s3d": "Baca pendapat para ulama tentang ayat tersebut.",
-    "tadabbur.s4d": "Renungi dan hubungkan dengan kejadian faktual atau aktual.",
-    "tadabbur.s5d": "Renungi dan hubungkan dengan pengalaman diri sendiri.",
-    "tadabbur.s6d": "Simpulkan satu kalimat kuat yang menjadi prinsip.",
-    "tadabbur.s7d": "Tentukan satu tindakan nyata hari ini.",
-    "tadabbur.t1": "Iman & Tauhid",
-    "tadabbur.t2": "Ibadah",
-    "tadabbur.t3": "Akhlak",
-    "tadabbur.t4": "Keluarga",
-    "tadabbur.t5": "Jiwa & Mental",
-    "tadabbur.t6": "Ilmu & Akal",
-    "tadabbur.a1": "Bersedekah hari ini",
-    "tadabbur.a2": "Sholat tepat waktu",
-    "tadabbur.a3": "Berbuat baik ke orang tua",
-    "tadabbur.verse_trans": "Mahasuci Allah yang di tangan-Nya segala kerajaan",
 
     "tier.bersanad": "Bersanad",
     "tier.reguler": "Reguler",
@@ -733,7 +715,7 @@ export default {
     ,"footer.terms": "KETENTUAN LAYANAN"
     ,"footer.privacy": "KEBIJAKAN PRIVASI"
     ,"streak.view_details": "Lihat detail streak"
-    ,"tadabbur.unlock_hint": "Terbuka setelah 10 sesi"
+    ,"tadabbur.unlock_hint": "Mode Bebas terbuka setelah {count} sesi terpandu lagi"
     ,"tajwid.letters": "Huruf"
     ,"tajwid.example": "Contoh"
     ,"lesson.toggle_latin": "Aktif/nonaktifkan transliterasi Latin secara instan"
@@ -934,4 +916,32 @@ export default {
     ,"placement.rec_note_label": "Catatan dari musyrif"
     ,"placement.own_surah_label": "Pilih surah"
     ,"placement.own_surah_placeholder": "Pilih surah yang ingin dihafal"
+    ,"tadabbur.step_baca": "Baca Berulang"
+    ,"tadabbur.step_baca_desc": "Baca ayat secara berulang — idealnya sampai hafal."
+    ,"tadabbur.step_tafsir": "Baca Tafsir"
+    ,"tadabbur.step_tafsir_desc": "Baca tafsir ayat agar tadabbur tidak keluar dari konteks."
+    ,"tadabbur.step_ulama": "Pendapat Ulama"
+    ,"tadabbur.step_ulama_desc": "Baca pendapat para ulama tentang ayat tersebut."
+    ,"tadabbur.step_faktual": "Kaitkan dengan Kejadian"
+    ,"tadabbur.step_faktual_desc": "Renungi dan hubungkan dengan kejadian faktual atau aktual."
+    ,"tadabbur.step_diri": "Kaitkan dengan Diri"
+    ,"tadabbur.step_diri_desc": "Renungi dan hubungkan dengan pengalaman diri sendiri."
+    ,"tadabbur.step_simpulkan": "Simpulkan"
+    ,"tadabbur.step_simpulkan_desc": "Simpulkan satu kalimat kuat yang menjadi prinsip."
+    ,"tadabbur.step_amal": "Amalkan"
+    ,"tadabbur.step_amal_desc": "Tadabbur tanpa amal adalah tadabbur yang belum selesai. Tentukan satu tindakan nyata hari ini."
+    ,"tadabbur.corpus_missing_tafsir": "Tafsir tervalidasi untuk ayat ini belum tersedia."
+    ,"tadabbur.corpus_missing_ulama": "Pendapat ulama belum ada di korpus. Daripada menebak, langkah ini dibiarkan kosong sampai konten tervalidasi ditambahkan."
+    ,"tadabbur.corpus_missing_faktual": "Koneksi ke kejadian nyata wajib melewati review ulama sebelum tampil di sini. Tulis renunganmu sendiri di bawah."
+    ,"tadabbur.hikmah_prompt": "Satu kalimat yang menjadi prinsipmu"
+    ,"tadabbur.hikmah_placeholder": "Misalnya: sabar bukan berarti diam menunggu…"
+    ,"tadabbur.amal_prompt": "Satu amal nyata yang akan kamu lakukan hari ini"
+    ,"tadabbur.amal_placeholder": "Misalnya: menelepon orang tua malam ini"
+    ,"tadabbur.your_hikmah": "Hikmahmu"
+    ,"tadabbur.segment_q": "Siapa yang melakukan tadabbur ini?"
+    ,"tadabbur.pick_verse": "Pilih ayat"
+    ,"tadabbur.theme_pending": "Indeks belum tersedia"
+    ,"tadabbur.themes_note": "Tema terbuka setelah Indeks Quran memetakan ayatnya. Ayat tidak pernah dikaitkan ke tema berdasarkan tebakan."
+    ,"tadabbur.history_link": "Jurnal tadabburku ({count})"
+    ,"tadabbur.history_empty": "Belum ada tadabbur. Selesaikan satu sesi dan tersimpan di sini."
 };

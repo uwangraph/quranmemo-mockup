@@ -202,24 +202,6 @@ export default {
     "tadabbur.next": "متابعة",
     "tadabbur.save": "حفظ العمل",
     "tadabbur.reflect": "اكتب تدبرك هنا...",
-    "tadabbur.complete": "الحمد لله! اكتمل التدبر.",
-    "tadabbur.s1d": "اقرأ الآية مراراً — حتى تحفظها إن أمكن.",
-    "tadabbur.s2d": "اقرأ تفسير الآية ليبقى تدبرك في سياقه.",
-    "tadabbur.s3d": "اقرأ آراء العلماء حول هذه الآية.",
-    "tadabbur.s4d": "تأمل واربط مع الأحداث الواقعية الفعلية.",
-    "tadabbur.s5d": "تأمل واربط مع تجربتك الشخصية.",
-    "tadabbur.s6d": "لخص جملة مبدأ واحدة قوية.",
-    "tadabbur.s7d": "حدد إجراءً واحداً ملموساً اليوم.",
-    "tadabbur.t1": "الإيمان والتوحيد",
-    "tadabbur.t2": "العبادة",
-    "tadabbur.t3": "الأخلاق",
-    "tadabbur.t4": "الأسرة",
-    "tadabbur.t5": "الروح والعقل",
-    "tadabbur.t6": "العلم والفكر",
-    "tadabbur.a1": "تصدق اليوم",
-    "tadabbur.a2": "صل في وقتها",
-    "tadabbur.a3": "أحسن إلى الوالدين",
-    "tadabbur.verse_trans": "تبارك الذي بيده الملك",
 
     "tier.bersanad": "مجاز",
     "tier.reguler": "عادي",
@@ -725,7 +707,7 @@ export default {
     "footer.terms": "شروط الخدمة",
     "footer.privacy": "سياسة الخصوصية",
     "streak.view_details": "عرض تفاصيل السلسلة",
-    "tadabbur.unlock_hint": "يُفتح بعد 10 جلسات",
+    "tadabbur.unlock_hint": "يُفتح الوضع الحر بعد {count} جلسات موجّهة أخرى",
     "tajwid.letters": "الحروف",
     "tajwid.example": "مثال",
     "lesson.toggle_latin": "تفعيل أو إيقاف الكتابة اللاتينية فورًا",
@@ -912,4 +894,33 @@ export default {
     ,"placement.rec_note_label": "ملاحظة من المشرف"
     ,"placement.own_surah_label": "اختر سورة"
     ,"placement.own_surah_placeholder": "اختر السورة التي تريد حفظها"
+    ,"tadabbur.step_baca": "القراءة المتكررة"
+    ,"tadabbur.step_baca_desc": "اقرأ الآية مرارًا — والأمثل حتى تحفظها."
+    ,"tadabbur.step_tafsir": "قراءة التفسير"
+    ,"tadabbur.step_tafsir_desc": "اقرأ التفسير حتى لا يخرج تدبرك عن سياق الآية."
+    ,"tadabbur.step_ulama": "أقوال العلماء"
+    ,"tadabbur.step_ulama_desc": "اقرأ أقوال العلماء في هذه الآية."
+    ,"tadabbur.step_faktual": "اربطها بالواقع"
+    ,"tadabbur.step_faktual_desc": "تأمل واربط الآية بأحداث واقعية معاصرة."
+    ,"tadabbur.step_diri": "اربطها بنفسك"
+    ,"tadabbur.step_diri_desc": "تأمل واربط الآية بتجربتك الشخصية."
+    ,"tadabbur.step_simpulkan": "استخلص الحكمة"
+    ,"tadabbur.step_simpulkan_desc": "لخّصها في جملة واحدة قوية تصير مبدأً لك."
+    ,"tadabbur.step_amal": "العمل بها"
+    ,"tadabbur.step_amal_desc": "التدبر بلا عمل تدبر لم يكتمل. اختر عملًا واحدًا ملموسًا اليوم."
+    ,"tadabbur.corpus_missing_tafsir": "لا يتوفر تفسير موثّق لهذه الآية بعد."
+    ,"tadabbur.corpus_missing_ulama": "أقوال العلماء ليست في المدونة بعد. بدل التخمين، تبقى هذه الخطوة فارغة حتى تُضاف مادة موثّقة."
+    ,"tadabbur.corpus_missing_faktual": "تتطلب الروابط بالواقع مراجعة العلماء قبل ظهورها. اكتب تأملك الخاص أدناه."
+    ,"tadabbur.hikmah_prompt": "جملة واحدة تصير مبدأك"
+    ,"tadabbur.hikmah_placeholder": "مثال: الصبر ليس انتظارًا سلبيًا…"
+    ,"tadabbur.amal_prompt": "عمل واحد ملموس ستفعله اليوم"
+    ,"tadabbur.amal_placeholder": "مثال: أتصل بوالديّ الليلة"
+    ,"tadabbur.your_hikmah": "حكمتك"
+    ,"tadabbur.segment_q": "من يقوم بهذا التدبر؟"
+    ,"tadabbur.pick_verse": "اختر آية"
+    ,"tadabbur.theme_pending": "الفهرس غير متوفر"
+    ,"tadabbur.themes_note": "تُفتح المواضيع بعد أن يربط فهرس القرآن آياتها. لا تُربط آية بموضوع بالتخمين أبدًا."
+    ,"tadabbur.history_link": "دفتر تدبري ({count})"
+    ,"tadabbur.history_empty": "لا تدبر بعد. أكمل جلسة واحدة وستُحفظ هنا."
+    ,"lesson.btn_continue_memorizing": "مواصلة الحفظ"
 };

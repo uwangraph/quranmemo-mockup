@@ -202,24 +202,6 @@ export default {
     "tadabbur.next": "SUIVANT",
     "tadabbur.save": "ENREGISTRER",
     "tadabbur.reflect": "Écrivez votre réflexion ici...",
-    "tadabbur.complete": "Alhamdulillah! Méditation terminée.",
-    "tadabbur.s1d": "Lisez le verset plusieurs fois — idéalement jusqu'à le mémoriser.",
-    "tadabbur.s2d": "Lisez le tafsir pour que votre réflexion reste en contexte.",
-    "tadabbur.s3d": "Lisez les avis des savants sur ce verset.",
-    "tadabbur.s4d": "Réfléchissez et reliez aux événements du monde réel.",
-    "tadabbur.s5d": "Réfléchissez et reliez à votre expérience personnelle.",
-    "tadabbur.s6d": "Résumez une phrase de principe puissante.",
-    "tadabbur.s7d": "Décidez une action concrète aujourd'hui.",
-    "tadabbur.t1": "Foi & Tawhid",
-    "tadabbur.t2": "Adoration",
-    "tadabbur.t3": "Caractère",
-    "tadabbur.t4": "Famille",
-    "tadabbur.t5": "Âme & Mental",
-    "tadabbur.t6": "Savoir & Esprit",
-    "tadabbur.a1": "Faire l'aumône aujourd'hui",
-    "tadabbur.a2": "Prier à l'heure",
-    "tadabbur.a3": "Être gentil avec les parents",
-    "tadabbur.verse_trans": "Béni soit Celui dans la main de qui est la royauté",
 
     "tier.bersanad": "Certifié",
     "tier.reguler": "Régulier",
@@ -724,7 +706,7 @@ export default {
     "footer.terms": "CONDITIONS D'UTILISATION",
     "footer.privacy": "POLITIQUE DE CONFIDENTIALITÉ",
     "streak.view_details": "Voir le détail de la série",
-    "tadabbur.unlock_hint": "Débloqué après 10 séances",
+    "tadabbur.unlock_hint": "Le Mode Libre s'ouvre après encore {count} sessions guidées",
     "tajwid.letters": "Lettres",
     "tajwid.example": "Exemple",
     "lesson.toggle_latin": "Activer ou désactiver instantanément la translittération latine",
@@ -911,4 +893,33 @@ export default {
     ,"placement.rec_note_label": "Note du moushrif"
     ,"placement.own_surah_label": "Choisir une sourate"
     ,"placement.own_surah_placeholder": "Choisis la sourate que tu veux mémoriser"
+    ,"tadabbur.step_baca": "Lire en Répétant"
+    ,"tadabbur.step_baca_desc": "Lis le verset encore et encore — idéalement jusqu'à le mémoriser."
+    ,"tadabbur.step_tafsir": "Lire le Tafsir"
+    ,"tadabbur.step_tafsir_desc": "Lis le tafsir pour que ta réflexion reste dans le contexte."
+    ,"tadabbur.step_ulama": "Avis des Savants"
+    ,"tadabbur.step_ulama_desc": "Lis ce que les savants ont dit de ce verset."
+    ,"tadabbur.step_faktual": "Relier au Réel"
+    ,"tadabbur.step_faktual_desc": "Réfléchis et relie le verset à des faits réels et actuels."
+    ,"tadabbur.step_diri": "Relier à Toi-même"
+    ,"tadabbur.step_diri_desc": "Réfléchis et relie le verset à ta propre expérience."
+    ,"tadabbur.step_simpulkan": "Conclure"
+    ,"tadabbur.step_simpulkan_desc": "Résume en une phrase forte qui devient ton principe."
+    ,"tadabbur.step_amal": "Mettre en Pratique"
+    ,"tadabbur.step_amal_desc": "Une réflexion sans action reste inachevée. Choisis un acte concret pour aujourd'hui."
+    ,"tadabbur.corpus_missing_tafsir": "Aucun tafsir validé n'est encore disponible pour ce verset."
+    ,"tadabbur.corpus_missing_ulama": "Les avis des savants ne sont pas encore dans le corpus. Plutôt que de deviner, cette étape reste vide jusqu'à validation."
+    ,"tadabbur.corpus_missing_faktual": "Les liens avec l'actualité doivent passer la revue des savants avant d'apparaître. Écris ta propre réflexion ci-dessous."
+    ,"tadabbur.hikmah_prompt": "Une phrase qui devient ton principe"
+    ,"tadabbur.hikmah_placeholder": "Par exemple : la patience n'est pas une attente passive…"
+    ,"tadabbur.amal_prompt": "Un acte concret que tu feras aujourd'hui"
+    ,"tadabbur.amal_placeholder": "Par exemple : appeler mes parents ce soir"
+    ,"tadabbur.your_hikmah": "Ta leçon"
+    ,"tadabbur.segment_q": "Qui fait cette réflexion ?"
+    ,"tadabbur.pick_verse": "Choisir un verset"
+    ,"tadabbur.theme_pending": "Index non disponible"
+    ,"tadabbur.themes_note": "Les thèmes s'ouvrent une fois que l'Index du Coran en cartographie les versets. Aucun verset n'est relié à un thème par conjecture."
+    ,"tadabbur.history_link": "Mon journal de réflexion ({count})"
+    ,"tadabbur.history_empty": "Aucune réflexion pour l'instant. Termine une session et elle sera enregistrée ici."
+    ,"lesson.btn_continue_memorizing": "Continuer la Mémorisation"
 };

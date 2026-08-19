@@ -243,24 +243,6 @@ export default {
     "tadabbur.next": "NEXT",
     "tadabbur.save": "SAVE DEED",
     "tadabbur.reflect": "Write your reflection here...",
-    "tadabbur.complete": "Alhamdulillah! Reflection complete.",
-    "tadabbur.s1d": "Read the verse repeatedly — ideally until memorized.",
-    "tadabbur.s2d": "Read the tafsir so your reflection stays in context.",
-    "tadabbur.s3d": "Read scholars' opinions about this verse.",
-    "tadabbur.s4d": "Reflect and connect with real-world events.",
-    "tadabbur.s5d": "Reflect and connect with your personal experience.",
-    "tadabbur.s6d": "Summarize one powerful principle sentence.",
-    "tadabbur.s7d": "Decide one concrete action for today.",
-    "tadabbur.t1": "Faith & Tawhid",
-    "tadabbur.t2": "Worship",
-    "tadabbur.t3": "Character",
-    "tadabbur.t4": "Family",
-    "tadabbur.t5": "Soul & Mental",
-    "tadabbur.t6": "Knowledge & Mind",
-    "tadabbur.a1": "Give charity today",
-    "tadabbur.a2": "Pray on time",
-    "tadabbur.a3": "Be kind to parents",
-    "tadabbur.verse_trans": "Blessed is He in whose hand is dominion",
 
     "tier.bersanad": "Certified",
     "tier.reguler": "Regular",
@@ -733,7 +715,7 @@ export default {
     ,"footer.terms": "TERMS OF SERVICE"
     ,"footer.privacy": "PRIVACY POLICY"
     ,"streak.view_details": "View streak details"
-    ,"tadabbur.unlock_hint": "Unlock after 10 sessions"
+    ,"tadabbur.unlock_hint": "Free Mode unlocks after {count} more guided sessions"
     ,"tajwid.letters": "Letters"
     ,"tajwid.example": "Example"
     ,"lesson.toggle_latin": "Toggle Latin transliteration instantly"
@@ -934,4 +916,32 @@ export default {
     ,"placement.rec_note_label": "Note from musyrif"
     ,"placement.own_surah_label": "Choose a surah"
     ,"placement.own_surah_placeholder": "Choose the surah you want to memorize"
+    ,"tadabbur.step_baca": "Read Repeatedly"
+    ,"tadabbur.step_baca_desc": "Read the verse over and over — ideally until you have memorized it."
+    ,"tadabbur.step_tafsir": "Read the Tafsir"
+    ,"tadabbur.step_tafsir_desc": "Read the tafsir so your reflection stays within context."
+    ,"tadabbur.step_ulama": "Scholars' Views"
+    ,"tadabbur.step_ulama_desc": "Read what the scholars have said about this verse."
+    ,"tadabbur.step_faktual": "Connect to Reality"
+    ,"tadabbur.step_faktual_desc": "Reflect and connect the verse to real, current events."
+    ,"tadabbur.step_diri": "Connect to Yourself"
+    ,"tadabbur.step_diri_desc": "Reflect and connect the verse to your own experience."
+    ,"tadabbur.step_simpulkan": "Draw the Lesson"
+    ,"tadabbur.step_simpulkan_desc": "Sum it up in one powerful sentence that becomes your principle."
+    ,"tadabbur.step_amal": "Put It Into Practice"
+    ,"tadabbur.step_amal_desc": "Reflection without action is reflection left unfinished. Choose one concrete deed for today."
+    ,"tadabbur.corpus_missing_tafsir": "No validated tafsir is available for this verse yet."
+    ,"tadabbur.corpus_missing_ulama": "Scholars' views are not in the corpus yet. Rather than guess, this step stays empty until reviewed content is added."
+    ,"tadabbur.corpus_missing_faktual": "Curated real-world connections require scholar review before they appear here. Write your own reflection below."
+    ,"tadabbur.hikmah_prompt": "One sentence that becomes your principle"
+    ,"tadabbur.hikmah_placeholder": "For example: patience is not passive waiting…"
+    ,"tadabbur.amal_prompt": "One concrete deed you will do today"
+    ,"tadabbur.amal_placeholder": "For example: call my parents tonight"
+    ,"tadabbur.your_hikmah": "Your lesson"
+    ,"tadabbur.segment_q": "Who is doing this reflection?"
+    ,"tadabbur.pick_verse": "Choose a verse"
+    ,"tadabbur.theme_pending": "Index not available"
+    ,"tadabbur.themes_note": "Themes open once the Quran Index maps their verses. Verses are never linked to a theme by guesswork."
+    ,"tadabbur.history_link": "My reflection journal ({count})"
+    ,"tadabbur.history_empty": "No reflections yet. Finish one session and it will be saved here."
 };
