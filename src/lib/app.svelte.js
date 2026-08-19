@@ -146,6 +146,9 @@ export function createAppState() {
     let selectedVerseIndex = $state(0); 
     let selectedNodeType = $state('lesson'); // 'lesson' | 'checkpoint'
     let selectedTadabburKey = $state(null);  // node Tadabbur yang sedang dibuka
+    // Ayat yang dikirim dari layar lain untuk ditadabburi — TADABBUR.md §3.6
+    // ("tombol langsung 'Tadabburi ayat ini'"). Berisi { surahId, verseIndex }.
+    let tadabburTarget = $state(null);
     let marketplaceTab = $state('toko');
     let marketplaceSurah = $state('Al-Insyirah');
     let marketplaceAyah = $state('');
@@ -1099,6 +1102,14 @@ export function createAppState() {
         set selectedNodeType(val) { selectedNodeType = val; },
         get selectedTadabburKey() { return selectedTadabburKey; },
         set selectedTadabburKey(val) { selectedTadabburKey = val; },
+        get tadabburTarget() { return tadabburTarget; },
+        // Membuka Tadabbur untuk satu ayat tertentu, dipakai tombol di layar Mushaf.
+        openTadabburFor(surahId, verseIndex) {
+            tadabburTarget = { surahId, verseIndex };
+            selectedTadabburKey = null;   // target eksplisit mengalahkan node roadmap
+            go('tadabbur');
+        },
+        clearTadabburTarget() { tadabburTarget = null; },
         get marketplaceTab() { return marketplaceTab; },
         set marketplaceTab(val) { marketplaceTab = val; },
         get marketplaceSurah() { return marketplaceSurah; },

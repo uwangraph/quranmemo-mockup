@@ -16,15 +16,30 @@
         JOURNAL_PROMPTS, themeIsReady
     } from '$lib/data/tadabburThemes.js';
 
-    // Node Tadabbur di roadmap memakai kunci `<id-surah>_1`; kalau dibuka dari tombol
-    // bebas, dipakai surah yang sedang dihafal.
+    // Urutan penentuan surah, dari yang paling eksplisit:
+    //   1. ayat kiriman dari layar Mushaf (§3.6 "Tadabburi ayat ini")
+    //   2. node Tadabbur di roadmap, berkunci `<id-surah>_1`
+    //   3. surah yang sedang dihafal
     const surah = $derived.by(() => {
+        const target = appState.tadabburTarget;
+        if (target && SURAHS[target.surahId]) return SURAHS[target.surahId];
         const key = appState.selectedTadabburKey;
         const fromNode = key ? SURAHS[key.replace(/_\d+$/, '')] : null;
         return fromNode ?? appState.activeSurah ?? surahByName('Al-Insyirah');
     });
 
     let verseIndex = $state(0);
+
+    // Ayat kiriman dipakai sekali lalu dilepas, supaya pengguna tetap bebas
+    // berpindah ayat setelahnya tanpa terus ditarik kembali ke ayat kiriman.
+    let consumedTarget = null;
+    $effect(() => {
+        const target = appState.tadabburTarget;
+        if (!target || target === consumedTarget) return;
+        consumedTarget = target;
+        verseIndex = target.verseIndex;
+        appState.clearTadabburTarget();
+    });
     const verse = $derived(surah?.verses?.[verseIndex] ?? null);
 
     const segment = $derived(appState.user.tadabburSegment);

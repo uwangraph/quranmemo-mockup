@@ -60,6 +60,8 @@
         <Lesson />
     {:else if appState.currentScreen === 'tajwid'}
         <TajwidInfo />
+    {:else if appState.currentScreen === 'mushaf'}
+        <Murajaah />
     {:else if appState.currentScreen === 'tadabbur'}
         <!-- Tadabbur adalah sub-tab di dalam layar Murojaah, bukan layar tersendiri.
              Rute ini dipertahankan agar tautan langsung dari roadmap tetap bekerja. -->

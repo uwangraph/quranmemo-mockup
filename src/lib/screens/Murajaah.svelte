@@ -4,11 +4,21 @@
     import UserTopbar from '$lib/components/UserTopbar.svelte';
     import BottomNav from '$lib/components/BottomNav.svelte';
     import TadabburPanel from '$lib/components/TadabburPanel.svelte';
+    import MushafPanel from '$lib/components/MushafPanel.svelte';
 
     // Tab Murojaah di bottom nav memuat dua sub-tab. Tab aktif diturunkan dari
     // layar yang sedang terbuka, bukan dari state lokal, supaya tautan langsung ke
     // Tadabbur dari roadmap tetap mendarat di tab yang benar.
-    const tab = $derived(appState.currentScreen === 'tadabbur' ? 'tadabbur' : 'murojaah');
+    // Tiga sub-tab di bawah tab Murojaah. Daftarnya jadi satu-satunya sumber:
+    // dipakai untuk menentukan tab aktif sekaligus merender barisnya.
+    const SUB_TABS = [
+        { id: 'murojaah', icon: 'ti-refresh' },
+        { id: 'tadabbur', icon: 'ti-books' },
+        { id: 'mushaf', icon: 'ti-book' }
+    ];
+    const tab = $derived(
+        SUB_TABS.some((t) => t.id === appState.currentScreen) ? appState.currentScreen : 'murojaah'
+    );
 
     const due = $derived(appState.murajaahDue);
     let activeSurah = $state(null);
@@ -32,22 +42,22 @@
 </script>
 
 <div class="screen murajaah-screen">
-    <UserTopbar title={tab === 'tadabbur' ? i18n.t('nav.tadabbur') : i18n.t('nav.murojaah')} showBack={false} />
+    <UserTopbar title={i18n.t(`nav.${tab}`)} showBack={false} />
 
     <div class="sub-tabs" role="tablist">
-        <button class="sub-tab" class:active={tab === 'murojaah'} role="tab"
-            aria-selected={tab === 'murojaah'} onclick={() => appState.go('murojaah')}>
-            <i class="ti ti-refresh"></i> {i18n.t('nav.murojaah')}
-        </button>
-        <button class="sub-tab" class:active={tab === 'tadabbur'} role="tab"
-            aria-selected={tab === 'tadabbur'} onclick={() => appState.go('tadabbur')}>
-            <i class="ti ti-books"></i> {i18n.t('nav.tadabbur')}
-        </button>
+        {#each SUB_TABS as t}
+            <button class="sub-tab" class:active={tab === t.id} role="tab"
+                aria-selected={tab === t.id} onclick={() => appState.go(t.id)}>
+                <i class="ti {t.icon}"></i> {i18n.t(`nav.${t.id}`)}
+            </button>
+        {/each}
     </div>
 
 
     {#if tab === 'tadabbur'}
         <TadabburPanel />
+    {:else if tab === 'mushaf'}
+        <MushafPanel />
     {:else if activeSurah}
         <div class="review-panel">
             <div class="review-icon"><i class="ti ti-refresh"></i></div>
