@@ -1,16 +1,20 @@
 <script>
     import { appState } from '$lib/app.svelte.js';
     import { i18n } from '$lib/i18n.svelte.js';
+    import MusyrifHeader from '$lib/components/musyrif/MusyrifHeader.svelte';
     
     // Mock data for analytics
     const weeklyData = [65, 45, 80, 55, 90, 70, 85];
     const maxVal = Math.max(...weeklyData);
     
+    // Jenis, tujuan, status, dan waktu disimpan sebagai kunci/bagian yang bisa
+    // diterjemahkan. Sebelumnya semuanya kalimat Inggris tetap, sehingga daftar
+    // transaksi tidak pernah ikut bahasa yang dipilih pengguna.
     let transactions = $state([
-        { id: 1, type: 'Recitation', student: 'Ahmad Hafidz', date: 'Today, 09:30', amount: '+15', status: 'Completed' },
-        { id: 2, type: 'Recitation', student: 'Sarah Amira', date: 'Yesterday, 20:15', amount: '+15', status: 'Completed' },
-        { id: 3, type: 'Withdrawal', student: 'To Bank BCA', date: '10 May, 14:00', amount: '-1000', status: 'Processing' },
-        { id: 4, type: 'Recitation', student: 'Zaid Fawwaz', date: '10 May, 08:45', amount: '+15', status: 'Completed' },
+        { id: 1, type: 'recitation', student: 'Ahmad Hafidz', dateKey: 'earnings.time_today', time: '09:30', amount: '+15', status: 'completed' },
+        { id: 2, type: 'recitation', student: 'Sarah Amira', dateKey: 'earnings.time_yesterday', time: '20:15', amount: '+15', status: 'completed' },
+        { id: 3, type: 'withdrawal', studentKey: 'earnings.tx_to_bank', date: '10/05 14:00', amount: '-1000', status: 'processing' },
+        { id: 4, type: 'recitation', student: 'Zaid Fawwaz', date: '10/05 08:45', amount: '+15', status: 'completed' },
     ]);
     
     let showWithdrawModal = $state(false);
@@ -73,25 +77,26 @@
         
         if (amountToWithdraw > 0) {
             transactions = [
-                { 
-                    id: Date.now(), 
-                    type: 'Withdrawal', 
-                    student: 'To Bank BCA', 
-                    date: 'Today, ' + new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}), 
-                    amount: `-${amountToWithdraw}`, 
-                    status: 'Processing' 
+                {
+                    id: Date.now(),
+                    type: 'withdrawal',
+                    studentKey: 'earnings.tx_to_bank',
+                    dateKey: 'earnings.time_today',
+                    time: new Date().toLocaleTimeString(i18n.locale, { hour: '2-digit', minute: '2-digit' }),
+                    amount: `-${amountToWithdraw}`,
+                    status: 'processing'
                 },
                 ...transactions
             ];
             appState.setMusyrifBalance(0);
             
-            alertTitle = 'Pencairan Berhasil!';
-            alertMessage = `Dana sebesar Rp ${(amountToWithdraw * 672).toLocaleString('id-ID')} sedang diproses dan akan ditransfer ke rekening Bank BCA Anda dalam waktu maksimal 1x24 jam.`;
+            alertTitle = i18n.t('earnings.withdraw_ok_title');
+            alertMessage = i18n.t('earnings.withdraw_ok_body', { rupiah: (amountToWithdraw * 672).toLocaleString('id-ID') });
             alertStatus = 'success';
             playSuccessSound();
         } else {
-            alertTitle = 'Pencairan Gagal';
-            alertMessage = 'Saldo Anda kosong atau tidak mencukupi untuk melakukan pencairan pendapatan.';
+            alertTitle = i18n.t('earnings.withdraw_fail_title');
+            alertMessage = i18n.t('earnings.withdraw_fail_body');
             alertStatus = 'error';
             playErrorSound();
         }
@@ -100,13 +105,9 @@
 
 <div class="screen no-scrollbar" style="background: #fafafa;">
     <!-- Header -->
-    <div class="earnings-header">
-        <button onclick={() => appState.go('musyrif')} class="back-btn">
-            <i class="ti ti-arrow-left"></i>
-        </button>
-        <div style="font-size: 16px; font-weight: 900; color: #3c3c3c">{i18n.t('earnings.title')}</div>
-        <div style="width: 20px"></div>
-    </div>
+    <MusyrifHeader
+        title={i18n.t('earnings.title')}
+        onBack={() => appState.go('musyrif')} />
 
     <div class="scroll-content no-scrollbar" style="padding: 20px;">
         <!-- Balance Card -->
@@ -205,16 +206,16 @@
             <div class="transaction-list">
                 {#each transactions as tx}
                     <div class="transaction-item">
-                        <div class="tx-icon" style="background: {tx.type === 'Recitation' ? '#f0f0f0' : '#ffeded'};">
-                            <i class="ti ti-{tx.type === 'Recitation' ? 'book-open' : 'arrow-up-right'}" style="color: {tx.type === 'Recitation' ? '#3c3c3c' : '#ff4b4b'};"></i>
+                        <div class="tx-icon" style="background: {tx.type === 'recitation' ? '#f0f0f0' : '#ffeded'};">
+                            <i class="ti ti-{tx.type === 'recitation' ? 'book-open' : 'arrow-up-right'}" style="color: {tx.type === 'recitation' ? '#3c3c3c' : '#ff4b4b'};"></i>
                         </div>
                         <div style="flex: 1">
-                            <div style="font-size: 13px; font-weight: 800; color: #3c3c3c;">{tx.student}</div>
-                            <div style="font-size: 10px; font-weight: 700; color: #afafaf;">{tx.date}</div>
+                            <div style="font-size: 13px; font-weight: 800; color: #3c3c3c;">{tx.studentKey ? i18n.t(tx.studentKey) : tx.student}</div>
+                            <div style="font-size: 10px; font-weight: 700; color: #afafaf;">{tx.dateKey ? i18n.t(tx.dateKey, { time: tx.time }) : tx.date}</div>
                         </div>
                         <div style="text-align: right">
                             <div style="font-size: 13px; font-weight: 900; color: {tx.amount.startsWith('+') ? '#00978A' : '#ff4b4b'};">{tx.amount} <i class="ti ti-diamond"></i></div>
-                            <div style="font-size: 9px; font-weight: 800; color: #afafaf; text-transform: uppercase;">{tx.status}</div>
+                            <div style="font-size: 9px; font-weight: 800; color: #afafaf; text-transform: uppercase;">{i18n.t(`earnings.status_${tx.status}`)}</div>
                         </div>
                     </div>
                 {/each}
@@ -274,22 +275,6 @@
 {/if}
 
 <style>
-    .earnings-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 12px 16px;
-        background: #fff;
-        border-bottom: 1px solid #f0f0f0;
-    }
-    .back-btn {
-        background: none;
-        border: none;
-        font-size: 20px;
-        color: #3c3c3c;
-        cursor: pointer;
-    }
-
     /* Gradasi oranye ditulis langsung di sini, bukan lagi lewat style inline yang
        menimpa gradasi biru bawaan kelas ini pada satu-satunya tempat kelas ini
        dipakai — dua definisi warna untuk satu kartu yang sama tidak pernah perlu. */

@@ -119,7 +119,7 @@
             </div>
         {/each}
 
-        <div class="section-label">{i18n.t('musyrif.requests')} (Instan)</div>
+        <div class="section-label">{i18n.t('musyrif.requests')} ({i18n.t('market.tab_instant')})</div>
         
         {#if isAvailable}
             <div class="request-card">
@@ -140,7 +140,7 @@
             </div>
         {/if}
 
-        <div class="section-label" style="margin-top: 24px">{i18n.t('musyrif.upcoming_schedule')}</div>
+        <div class="section-label">{i18n.t('musyrif.upcoming_schedule')}</div>
         <div style="display: flex; flex-direction: column; gap: 12px;">
             <div class="booking-card">
                 <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
@@ -171,7 +171,7 @@
             </div>
         </div>
 
-        <div class="section-label" style="margin-top: 16px">{i18n.t('musyrif.stats')}</div>
+        <div class="section-label">{i18n.t('musyrif.stats')}</div>
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px">
             <div class="stat-card">
                 <div style="font-size: 20px; font-weight: 900; color: #3c3c3c">24</div>

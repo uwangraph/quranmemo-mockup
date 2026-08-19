@@ -6,6 +6,7 @@
     // itu menjatuhkan kategori. Sistem tidak pernah menentukan kategori sendiri.
     import { appState } from '$lib/app.svelte.js';
     import { i18n } from '$lib/i18n.svelte.js';
+    import MusyrifHeader from '$lib/components/musyrif/MusyrifHeader.svelte';
     import { SURAHS } from '$lib/data/surahs.js';
     import { PLACEMENT_CATEGORIES } from '$lib/data/placementCategories.js';
     import Dropdown from '$lib/components/Dropdown.svelte';
@@ -96,15 +97,7 @@
 </script>
 
 <div class="screen">
-    <div class="topbar">
-        <button class="back-btn" onclick={back} aria-label={i18n.t('common.back')}>
-            <i class="ti ti-arrow-left"></i>
-        </button>
-        <span style="font-size:16px; font-weight:900; color:#3c3c3c; flex:1; text-align:center;">
-            {i18n.t('musyrif.review_title')}
-        </span>
-        <div style="width:40px;"></div>
-    </div>
+    <MusyrifHeader title={i18n.t('musyrif.review_title')} onBack={back} />
 
     {#if !entry}
         <div class="scroll-content no-scrollbar" style="display:flex; align-items:center; justify-content:center;">
@@ -215,10 +208,6 @@
 </div>
 
 <style>
-    .back-btn {
-        background: none; border: none; color: #afafaf; cursor: pointer; font-size: 20px;
-        min-width: 40px; min-height: 40px; display: flex; align-items: center; justify-content: center;
-    }
     .not-found {
         display: flex; flex-direction: column; align-items: center; gap: 10px;
         padding: 24px; text-align: center; color: #64748b; font-size: 13px; font-weight: 700;

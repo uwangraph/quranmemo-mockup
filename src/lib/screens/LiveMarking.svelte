@@ -1,6 +1,7 @@
 <script>
     import { appState } from '$lib/app.svelte.js';
     import { i18n } from '$lib/i18n.svelte.js';
+    import MusyrifHeader from '$lib/components/musyrif/MusyrifHeader.svelte';
     import { surahByName } from '$lib/data/surahs.js';
     
     import VideoCallContainer from '$lib/components/live-marking/VideoCallContainer.svelte';
@@ -67,16 +68,17 @@
 
 <div class="screen">
     {#if !isFinished}
-        <div class="marking-header">
-            <button aria-label="Close" onclick={() => appState.go('musyrif')} class="close-btn">
-                <i class="ti ti-arrow-left"></i>
-            </button>
-            <div style="flex: 1">
-                <div style="font-size: 14px; font-weight: 900">{session.studentName}</div>
-                <div style="font-size: 10px; font-weight: 700; color: #00978A"><i class="ti ti-broadcast"></i> {i18n.t('marking.live')} — {session.surah}: {session.ayah}</div>
-            </div>
+        {#snippet liveLabel()}
+            <span style="color: #00978A;"><i class="ti ti-broadcast"></i> {i18n.t('marking.live')} — {session.surah}: {session.ayah}</span>
+        {/snippet}
+        {#snippet timer()}
             <div class="timer-bubble">{elapsedLabel}</div>
-        </div>
+        {/snippet}
+        <MusyrifHeader
+            title={session.studentName}
+            subtitle={liveLabel}
+            trailing={timer}
+            onBack={() => appState.go('musyrif')} />
 
         <div class="scroll-content no-scrollbar" style="padding-top: 0;">
             <!-- Video Call Preview Area (Top) -->
@@ -103,7 +105,7 @@
                 </div>
 
                 <div style="margin-top: 24px; width: 100%;">
-                    <div class="section-label" style="padding: 0; margin-bottom: 12px; font-size: 13px; font-weight: 800; color: #3c3c3c; text-transform: uppercase;">{i18n.t('marking.log')}</div>
+                    <div class="section-label flush">{i18n.t('marking.log')}</div>
                     <div class="log-container">
                         {#if corrections.length === 0}
                             <div class="empty-log">
@@ -147,8 +149,6 @@
 
 <style>
     .screen { position: relative; overflow: hidden; }
-    .marking-header { background: #fff; padding: 12px 20px; color: #3c3c3c; display: flex; align-items: center; gap: 12px; z-index: 10; border-bottom: 2px solid #f0f0f0; }
-    .close-btn { background: none; border: none; cursor: pointer; color: #afafaf; font-size: 20px; }
     .timer-bubble { background: #ffeded; color: #ff4b4b; padding: 4px 12px; border-radius: 100px; font-size: 13px; font-weight: 900; border: 1px solid #ff4b4b; }
 
     .workspace { padding: 30px 24px; background: rgba(255,255,255,0.9); border-radius: 40px 40px 0 0; margin-top: -40px; position: relative; z-index: 30; min-height: 500px; box-shadow: 0 -20px 60px rgba(0,0,0,0.15); backdrop-filter: blur(30px); border-top: 1px solid rgba(255,255,255,0.8); }
