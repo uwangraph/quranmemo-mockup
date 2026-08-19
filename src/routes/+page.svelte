@@ -14,7 +14,6 @@
     import AdminMusyrif from '$lib/screens/AdminMusyrif.svelte';
     import Lesson from '$lib/screens/Lesson.svelte';
     import TajwidInfo from '$lib/screens/TajwidInfo.svelte';
-    import Tadabbur from '$lib/screens/Tadabbur.svelte';
     import MusyrifEarnings from '$lib/screens/MusyrifEarnings.svelte';
     import SessionFeedback from '$lib/screens/SessionFeedback.svelte';
     import AdminDashboard from '$lib/screens/AdminDashboard.svelte';
@@ -62,7 +61,9 @@
     {:else if appState.currentScreen === 'tajwid'}
         <TajwidInfo />
     {:else if appState.currentScreen === 'tadabbur'}
-        <Tadabbur />
+        <!-- Tadabbur adalah sub-tab di dalam layar Murojaah, bukan layar tersendiri.
+             Rute ini dipertahankan agar tautan langsung dari roadmap tetap bekerja. -->
+        <Murajaah />
     {:else if appState.currentScreen === 'musyrif'}
         <MusyrifDashboard />
     {:else if appState.currentScreen === 'placement-review'}

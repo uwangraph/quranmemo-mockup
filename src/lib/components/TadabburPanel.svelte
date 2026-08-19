@@ -9,8 +9,6 @@
     // tanpa binding dan pilihan amalnya cuma menyalakan kelas CSS di DOM.
     import { appState } from '$lib/app.svelte.js';
     import { i18n } from '$lib/i18n.svelte.js';
-    import BottomNav from '../components/BottomNav.svelte';
-    import UserTopbar from '$lib/components/UserTopbar.svelte';
     import { SURAHS, surahByName } from '$lib/data/surahs.js';
     import TAFSIR from '$lib/data/tafsir.generated.js';
     import {
@@ -120,11 +118,12 @@
     const segmentName = $derived(TADABBUR_SEGMENTS.find((s) => s.id === segment)?.name ?? '');
 </script>
 
-<div class="screen tadabbur-screen">
-    <UserTopbar
-        title={i18n.t('tadabbur.title')}
-        onBack={() => (view === 'home' ? appState.go('learn') : (view = 'home'))}
-    />
+<div class="tadabbur-panel">
+    {#if view !== 'home'}
+        <button class="panel-back" onclick={() => (view = 'home')}>
+            <i class="ti ti-arrow-left"></i> {i18n.t('tadabbur.back')}
+        </button>
+    {/if}
 
     {#if view === 'guided' && verse}
         <!-- ══ TADABBUR — 7 langkah (§1.1) ══════════════════════════════ -->
@@ -232,7 +231,6 @@
                 {/each}
             {/if}
         </div>
-        <BottomNav active="learn" />
 
     {:else}
         <!-- ══ BERANDA — mengikuti Core Flow §3.1 ═══════════════════════ -->
@@ -339,13 +337,22 @@
                 <i class="ti ti-chevron-right" style="margin-left:auto;"></i>
             </button>
         </div>
-        <BottomNav active="learn" />
     {/if}
 </div>
 
 <style>
-    .tadabbur-screen { background: #f8fafc; }
-    .scroll-content { overflow-y: auto; }
+    .tadabbur-panel {
+        flex: 1; min-height: 0; display: flex; flex-direction: column;
+        background: #f8fafc;
+    }
+    .scroll-content { flex: 1; min-height: 0; overflow-y: auto; }
+    .panel-back {
+        display: flex; align-items: center; gap: 6px;
+        margin: 10px 16px 0; padding: 6px 10px; min-height: 34px;
+        background: none; border: none; cursor: pointer;
+        font-family: 'Nunito', sans-serif; font-size: 12px; font-weight: 800;
+        color: #64748b; align-self: flex-start;
+    }
 
     .section-label {
         font-size: 11px; font-weight: 900; color: #64748b;

@@ -3,6 +3,12 @@
     import { i18n } from '$lib/i18n.svelte.js';
     import UserTopbar from '$lib/components/UserTopbar.svelte';
     import BottomNav from '$lib/components/BottomNav.svelte';
+    import TadabburPanel from '$lib/components/TadabburPanel.svelte';
+
+    // Tab Murojaah di bottom nav memuat dua sub-tab. Tab aktif diturunkan dari
+    // layar yang sedang terbuka, bukan dari state lokal, supaya tautan langsung ke
+    // Tadabbur dari roadmap tetap mendarat di tab yang benar.
+    const tab = $derived(appState.currentScreen === 'tadabbur' ? 'tadabbur' : 'murojaah');
 
     const due = $derived(appState.murajaahDue);
     let activeSurah = $state(null);
@@ -26,9 +32,23 @@
 </script>
 
 <div class="screen murajaah-screen">
-    <UserTopbar title="Murojaah" showBack={false} />
+    <UserTopbar title={tab === 'tadabbur' ? i18n.t('nav.tadabbur') : i18n.t('nav.murojaah')} showBack={false} />
 
-    {#if activeSurah}
+    <div class="sub-tabs" role="tablist">
+        <button class="sub-tab" class:active={tab === 'murojaah'} role="tab"
+            aria-selected={tab === 'murojaah'} onclick={() => appState.go('murojaah')}>
+            <i class="ti ti-refresh"></i> {i18n.t('nav.murojaah')}
+        </button>
+        <button class="sub-tab" class:active={tab === 'tadabbur'} role="tab"
+            aria-selected={tab === 'tadabbur'} onclick={() => appState.go('tadabbur')}>
+            <i class="ti ti-books"></i> {i18n.t('nav.tadabbur')}
+        </button>
+    </div>
+
+
+    {#if tab === 'tadabbur'}
+        <TadabburPanel />
+    {:else if activeSurah}
         <div class="review-panel">
             <div class="review-icon"><i class="ti ti-refresh"></i></div>
             <div class="eyebrow">SESI MURAJAAH</div>
@@ -89,31 +109,28 @@
             {/if}
         </div>
     {/if}
-    <BottomNav />
+    <BottomNav active="murojaah" />
 </div>
 
 <style>
-    .murajaah-screen { background: #f8fafc; }
-    .back-btn {
-        width: 40px;
-        height: 40px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-        padding: 0;
-        border: 0;
-        border-radius: 12px;
-        background: transparent;
-        color: #64748b;
-        cursor: pointer;
-        font-size: 20px;
-        transition: transform .1s ease, background-color .1s ease;
+    /* Dua sub-tab di dalam satu tab bottom nav. Penanda aktifnya garis bawah plus
+       warna, bukan warna saja, agar tetap terbaca oleh pengguna yang kesulitan
+       membedakan warna — sejalan dengan penanda di bottom nav. */
+    .sub-tabs {
+        display: flex; gap: 4px; padding: 0 16px;
+        background: #fff; border-bottom: 2px solid #e5e5e5; flex-shrink: 0;
     }
-    .back-btn:hover { transform: translateY(1px); background: #e0f5f3; box-shadow: none; }
-    .back-btn:active { transform: translateY(3px); background: #ccfbf1; box-shadow: none; }
-    .page-title { flex: 1; text-align: center; font-size: 16px; font-weight: 900; color: #1e293b; }
-    .topbar-spacer { width: 40px; }
+    .sub-tab {
+        flex: 1; min-width: 0; min-height: 44px;
+        display: flex; align-items: center; justify-content: center; gap: 6px;
+        background: none; border: none; cursor: pointer;
+        font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 800;
+        color: #94a3b8; border-bottom: 3px solid transparent; margin-bottom: -2px;
+    }
+    .sub-tab i { font-size: 16px; }
+    .sub-tab.active { color: var(--duo-green); border-bottom-color: var(--duo-green); }
+
+    .murajaah-screen { background: #f8fafc; }
     .murajaah-content { padding: 16px; }
     .hero-card {
         display: flex; align-items: center; gap: 12px; position: relative;
