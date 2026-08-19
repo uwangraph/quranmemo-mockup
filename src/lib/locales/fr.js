@@ -945,4 +945,11 @@ export default {
     ,"mushaf.pause": "Pause"
     ,"mushaf.reflect_this": "Méditer ce verset"
     ,"mushaf.scope_note": "{count} sourates sont disponibles — celles dont le contenu est déjà dans l'application. D'autres suivront."
+    ,"murajaah.session": "Session de révision"
+    ,"murajaah.session_hint": "Lis les versets calmement jusqu'au bout, puis marque la session terminée."
+    ,"murajaah.finish": "TERMINER LA RÉVISION"
+    ,"murajaah.back_to_list": "Retour à la liste"
+    ,"murajaah.done_message": "Révision terminée. Ton suivi de mémorisation est à jour."
+    ,"murajaah.no_content": "Le contenu de cette sourate n'est pas encore dans l'application, il n'y a donc rien à lire ici. Tu peux quand même la marquer révisée."
+    ,"murajaah.no_content_short": "Pas encore de contenu"
 };

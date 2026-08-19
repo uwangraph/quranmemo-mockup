@@ -967,4 +967,11 @@ export default {
     ,"mushaf.pause": "Pause"
     ,"mushaf.reflect_this": "Reflect on this"
     ,"mushaf.scope_note": "{count} surahs are available — those whose verse content is already in the app. More will appear as content is added."
+    ,"murajaah.session": "Review session"
+    ,"murajaah.session_hint": "Read the verses through calmly, then mark the session done."
+    ,"murajaah.finish": "FINISH REVIEW"
+    ,"murajaah.back_to_list": "Back to list"
+    ,"murajaah.done_message": "Review done. Your memorization record is updated."
+    ,"murajaah.no_content": "Verse content for this surah is not in the app yet, so there is nothing to read here. You can still mark it reviewed."
+    ,"murajaah.no_content_short": "No verse content yet"
 };

@@ -943,4 +943,11 @@ export default {
     ,"mushaf.pause": "Dakata"
     ,"mushaf.reflect_this": "Yi tadabburi kan wannan"
     ,"mushaf.scope_note": "Akwai surori {count} — waɗanda abun cikinsu ya riga ya kasance a manhajar. Sauran za su biyo baya."
+    ,"murajaah.session": "Zaman murajaah"
+    ,"murajaah.session_hint": "Karanta ayoyin har ƙarshe a hankali, sannan ka nuna zaman ya ƙare."
+    ,"murajaah.finish": "KAMMALA MURAJAAH"
+    ,"murajaah.back_to_list": "Koma jerin"
+    ,"murajaah.done_message": "An kammala murajaah. An sabunta bayanan haddarka."
+    ,"murajaah.no_content": "Ayoyin wannan sura ba su kasance a manhajar ba tukuna, don haka babu abin karantawa. Za ka iya nuna an sake shi."
+    ,"murajaah.no_content_short": "Babu ayoyi tukuna"
 };

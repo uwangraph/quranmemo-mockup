@@ -5,6 +5,7 @@
     import BottomNav from '$lib/components/BottomNav.svelte';
     import TadabburPanel from '$lib/components/TadabburPanel.svelte';
     import MushafPanel from '$lib/components/MushafPanel.svelte';
+    import { surahByName } from '$lib/data/surahs.js';
 
     // Tab Murojaah di bottom nav memuat dua sub-tab. Tab aktif diturunkan dari
     // layar yang sedang terbuka, bukan dari state lokal, supaya tautan langsung ke
@@ -22,6 +23,12 @@
 
     const due = $derived(appState.murajaahDue);
     let activeSurah = $state(null);
+
+    // Sesi murajaah membuka surahnya di mushaf agar ayatnya benar-benar terbaca.
+    // murajaahLog dikunci dengan nama surah, sedangkan registry memakai id-nya,
+    // jadi keduanya dijembatani di sini. Surah yang belum punya konten tetap bisa
+    // ditandai selesai, hanya saja tanpa teks untuk dibaca.
+    const reviewSurah = $derived(activeSurah ? surahByName(activeSurah) : null);
     let completed = $state(false);
 
     function startReview(item) {
@@ -58,27 +65,31 @@
         <TadabburPanel />
     {:else if tab === 'mushaf'}
         <MushafPanel />
+    {:else if activeSurah && reviewSurah && !completed}
+        <MushafPanel
+            initialSurahId={reviewSurah.id}
+            reviewMode
+            onFinish={finishReview}
+            onExit={closeReview}
+        />
     {:else if activeSurah}
         <div class="review-panel">
-            <div class="review-icon"><i class="ti ti-refresh"></i></div>
-            <div class="eyebrow">SESI MURAJAAH</div>
+            <div class="review-icon"><i class="ti {completed ? 'ti-circle-check' : 'ti-refresh'}"></i></div>
+            <div class="eyebrow">{i18n.t('murajaah.session')}</div>
             <h1>{activeSurah}</h1>
-            <p>Ulangi hafalanmu dengan tenang dan pastikan ayatnya tetap lancar.</p>
-
-            <div class="review-card">
-                <i class="ti ti-book"></i>
-                <div>
-                    <strong>{activeSurah}</strong>
-                    <span>Target review hari ini</span>
-                </div>
-            </div>
 
             {#if completed}
-                <div class="success-message"><i class="ti ti-circle-check"></i> Murajaah selesai. Hafalanmu sudah diperbarui.</div>
-                <button class="btn-duo btn-green" onclick={closeReview}>KEMBALI KE DAFTAR</button>
+                <div class="success-message">
+                    <i class="ti ti-circle-check"></i> {i18n.t('murajaah.done_message')}
+                </div>
+                <button class="btn-duo btn-green" onclick={closeReview}>{i18n.t('murajaah.back_to_list')}</button>
             {:else}
-                <button class="btn-duo btn-green" onclick={finishReview}>SELESAI MURAJAAH</button>
-                <button class="btn-duo btn-outline" onclick={closeReview}>BATAL</button>
+                <!-- Surah ini belum punya konten ayat di registry, jadi tidak ada yang
+                     bisa dibaca. Dinyatakan terus terang, bukan disamarkan dengan
+                     layar berisi nama surah saja seolah sesi sudah berjalan. -->
+                <p>{i18n.t('murajaah.no_content')}</p>
+                <button class="btn-duo btn-green" onclick={finishReview}>{i18n.t('murajaah.finish')}</button>
+                <button class="btn-duo btn-outline" onclick={closeReview}>{i18n.t('common.cancel')}</button>
             {/if}
         </div>
     {:else}
@@ -104,7 +115,10 @@
                             <div class="surah-icon"><i class="ti ti-book"></i></div>
                             <div class="due-copy">
                                 <h2>{item.surah}</h2>
-                                <p>{i18n.t('murajaah.last_reviewed', { days: item.days })}</p>
+                                <p>
+                                    {i18n.t('murajaah.last_reviewed', { days: item.days })}
+                                    {#if !surahByName(item.surah)} · {i18n.t('murajaah.no_content_short')}{/if}
+                                </p>
                             </div>
                             <button class="btn-duo btn-green review-button" onclick={() => startReview(item)}>MURAJAAH</button>
                         </article>
@@ -172,11 +186,6 @@
     .review-panel .eyebrow { color: #00978a; }
     .review-panel h1 { color: #1e293b; }
     .review-panel p { max-width: 300px; color: #64748b; }
-    .review-card { width: 100%; box-sizing: border-box; display: flex; align-items: center; gap: 12px; padding: 16px; margin: 10px 0; text-align: left; background: #fff; border: 2px solid #e2e8f0; border-radius: 16px; }
-    .review-card > i { font-size: 26px; color: #00978a; }
-    .review-card div { display: flex; flex-direction: column; gap: 3px; }
-    .review-card strong { color: #1e293b; font-size: 15px; }
-    .review-card span { color: #64748b; font-size: 11px; font-weight: 700; }
     .review-panel .btn-duo { max-width: 360px; }
     .review-panel .btn-outline { color: #00978a; border-color: #d1d5db; }
     .success-message { width: 100%; box-sizing: border-box; padding: 12px; border-radius: 12px; background: #ecfdf5; color: #047857; font-size: 12px; font-weight: 800; }

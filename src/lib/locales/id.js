@@ -967,4 +967,11 @@ export default {
     ,"mushaf.pause": "Jeda"
     ,"mushaf.reflect_this": "Tadabburi ayat ini"
     ,"mushaf.scope_note": "Tersedia {count} surah — yang kontennya sudah ada di aplikasi. Sisanya menyusul seiring konten ditambahkan."
+    ,"murajaah.session": "Sesi murajaah"
+    ,"murajaah.session_hint": "Baca ayatnya sampai tuntas dengan tenang, lalu tandai sesi selesai."
+    ,"murajaah.finish": "SELESAI MURAJAAH"
+    ,"murajaah.back_to_list": "Kembali ke daftar"
+    ,"murajaah.done_message": "Murajaah selesai. Catatan hafalanmu sudah diperbarui."
+    ,"murajaah.no_content": "Konten ayat surah ini belum ada di aplikasi, jadi belum ada yang bisa dibaca di sini. Kamu tetap bisa menandainya sudah diulang."
+    ,"murajaah.no_content_short": "Konten ayat belum ada"
 };

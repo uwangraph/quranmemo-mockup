@@ -946,4 +946,11 @@ export default {
     ,"mushaf.pause": "إيقاف"
     ,"mushaf.reflect_this": "تدبّر هذه الآية"
     ,"mushaf.scope_note": "تتوفر {count} سورة — تلك التي أُدرج محتواها في التطبيق. وسيتبعها غيرها لاحقًا."
+    ,"murajaah.session": "جلسة مراجعة"
+    ,"murajaah.session_hint": "اقرأ الآيات إلى آخرها بهدوء، ثم علّم الجلسة كمنتهية."
+    ,"murajaah.finish": "إنهاء المراجعة"
+    ,"murajaah.back_to_list": "العودة إلى القائمة"
+    ,"murajaah.done_message": "انتهت المراجعة. تم تحديث سجل حفظك."
+    ,"murajaah.no_content": "محتوى آيات هذه السورة غير متوفر في التطبيق بعد، فلا شيء لقراءته هنا. ويمكنك مع ذلك تعليمها كمُراجَعة."
+    ,"murajaah.no_content_short": "لا يوجد محتوى بعد"
 };

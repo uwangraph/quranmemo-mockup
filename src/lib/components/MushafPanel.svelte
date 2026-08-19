@@ -11,11 +11,16 @@
     import { i18n } from '$lib/i18n.svelte.js';
     import { SURAHS } from '$lib/data/surahs.js';
 
+    // Panel yang sama melayani dua keperluan: membaca bebas dari tab Mushaf, dan
+    // menjalankan sesi murajaah dengan surah yang sudah ditentukan. Sesi murajaah
+    // memerlukan ayatnya benar-benar terbaca — itu inti mengulang hafalan.
+    let { initialSurahId = null, reviewMode = false, onFinish = null, onExit = null } = $props();
+
     // Urut menurun seperti urutan mushaf pada Juz 30 (An-Naba di depan, An-Nas di
     // belakang) supaya sejalan dengan cara orang membaca juznya.
     const surahs = $derived(Object.values(SURAHS).sort((a, b) => a.number - b.number).reverse());
 
-    let openSurahId = $state(null);
+    let openSurahId = $state(initialSurahId);
     const openSurah = $derived(openSurahId ? SURAHS[openSurahId] : null);
 
     // Ayat dianggap hafal bila progres surah sudah melewati indeksnya.
@@ -56,9 +61,23 @@
 
 <div class="mushaf-panel">
     {#if openSurah}
-        <button class="panel-back" onclick={() => { audio?.pause(); playingKey = null; openSurahId = null; }}>
-            <i class="ti ti-arrow-left"></i> {i18n.t('mushaf.all_surahs')}
+        <button class="panel-back" onclick={() => {
+            audio?.pause(); playingKey = null;
+            if (reviewMode) onExit?.(); else openSurahId = null;
+        }}>
+            <i class="ti ti-arrow-left"></i>
+            {reviewMode ? i18n.t('murajaah.back_to_list') : i18n.t('mushaf.all_surahs')}
         </button>
+
+        {#if reviewMode}
+            <div class="review-banner">
+                <i class="ti ti-refresh"></i>
+                <div style="flex:1; min-width:0;">
+                    <div class="review-eyebrow">{i18n.t('murajaah.session')}</div>
+                    <div class="review-hint">{i18n.t('murajaah.session_hint')}</div>
+                </div>
+            </div>
+        {/if}
 
         <div class="scroll-content">
             <div class="surah-head">
@@ -101,6 +120,12 @@
                     </div>
                 </article>
             {/each}
+
+            {#if reviewMode}
+                <button class="btn-duo btn-green finish-review" onclick={() => { audio?.pause(); playingKey = null; onFinish?.(); }}>
+                    {i18n.t('murajaah.finish')}
+                </button>
+            {/if}
 
             <div style="height: 20px;"></div>
         </div>
@@ -148,6 +173,18 @@
         font-family: 'Nunito', sans-serif; font-size: 12px; font-weight: 800;
         color: #64748b; align-self: flex-start;
     }
+
+    .review-banner {
+        display: flex; align-items: center; gap: 10px; margin: 0 16px 4px;
+        background: #e6faf8; border: 2px solid #99f6e4; border-radius: 14px; padding: 10px 12px;
+    }
+    .review-banner i { font-size: 20px; color: var(--duo-green); flex-shrink: 0; }
+    .review-eyebrow {
+        font-size: 10px; font-weight: 900; color: #0f766e;
+        text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .review-hint { font-size: 11px; font-weight: 700; color: #0f766e; margin-top: 2px; line-height: 1.45; }
+    .finish-review { margin-top: 6px; }
 
     .scope-note {
         display: flex; align-items: flex-start; gap: 8px; margin: 0 0 14px;
