@@ -1035,4 +1035,5 @@ export default {
     ,"tajwid.gunnah.madd_lazim_harfi_musyabba.gloss": "(haruffan buɗe Suratul Baƙara)"
     ,"tajwid.gunnah.madd_lazim_harfi_mukhafaf.desc": "Yana faruwa a haruffan fawatih waɗanda karatunsu ke ɗauke da mad amma ba su haɗu da sukun ba. Ana karanta shi harakat 2."
     ,"tajwid.gunnah.madd_lazim_harfi_mukhafaf.gloss": "(haruffan buɗe wasu surori)"
+    ,"placement.verses_per_day_unit": "ayoyi kowace rana"
 };

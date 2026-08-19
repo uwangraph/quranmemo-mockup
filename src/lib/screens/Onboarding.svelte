@@ -376,7 +376,7 @@
 
             <div class="field">
                 <span class="field-label">{i18n.t('placement.daily_target')}</span>
-                <div class="daily-target-input"><input class="own-input" type="number" min="1" max="30" bind:value={dailyTarget} /><span>ayat per hari</span></div>
+                <div class="daily-target-input"><input class="own-input" type="number" min="1" max="30" bind:value={dailyTarget} /><span>{i18n.t('placement.verses_per_day_unit')}</span></div>
             </div>
 
             <div class="field">

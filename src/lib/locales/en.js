@@ -1059,4 +1059,5 @@ export default {
     ,"tajwid.gunnah.madd_lazim_harfi_musyabba.gloss": "(the opening letters of Surah Al-Baqarah)"
     ,"tajwid.gunnah.madd_lazim_harfi_mukhafaf.desc": "Found in the fawatih letters whose recited name contains a mad but meets no sukun. It is read for 2 beats."
     ,"tajwid.gunnah.madd_lazim_harfi_mukhafaf.gloss": "(the opening letters of several surahs)"
+    ,"placement.verses_per_day_unit": "verses per day"
 };

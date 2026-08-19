@@ -1037,4 +1037,5 @@ export default {
     ,"tajwid.gunnah.madd_lazim_harfi_musyabba.gloss": "(les lettres d'ouverture de la sourate Al-Baqarah)"
     ,"tajwid.gunnah.madd_lazim_harfi_mukhafaf.desc": "Se trouve dans les lettres fawatih dont la lecture contient un mad sans rencontrer de sukun. On lit sur 2 temps."
     ,"tajwid.gunnah.madd_lazim_harfi_mukhafaf.gloss": "(les lettres d'ouverture de plusieurs sourates)"
+    ,"placement.verses_per_day_unit": "versets par jour"
 };

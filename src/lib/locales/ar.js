@@ -1038,4 +1038,5 @@ export default {
     ,"tajwid.gunnah.madd_lazim_harfi_musyabba.gloss": "(حروف فاتحة سورة البقرة)"
     ,"tajwid.gunnah.madd_lazim_harfi_mukhafaf.desc": "يقع في حروف فواتح السور التي يتضمن نطقها مدًّا دون أن يلتقي بسكون. يُقرأ بمقدار حركتين."
     ,"tajwid.gunnah.madd_lazim_harfi_mukhafaf.gloss": "(حروف فاتحة عدة سور)"
+    ,"placement.verses_per_day_unit": "آية في اليوم"
 };

@@ -1038,4 +1038,5 @@ export default {
     ,"tajwid.gunnah.madd_lazim_harfi_musyabba.gloss": "(huruf pembuka Surah Al-Baqarah)"
     ,"tajwid.gunnah.madd_lazim_harfi_mukhafaf.desc": "Terdapat pada huruf fawatih yang cara bacaannya mengandungi mad tetapi tidak bertemu sukun. Dibaca 2 harakat."
     ,"tajwid.gunnah.madd_lazim_harfi_mukhafaf.gloss": "(huruf pembuka beberapa surah)"
+    ,"placement.verses_per_day_unit": "ayat sehari"
 };
