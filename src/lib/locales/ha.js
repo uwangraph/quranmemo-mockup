@@ -1072,4 +1072,11 @@ export default {
     ,"tadabbur.prompt.diri.anak": "Wannan aya tana koya mini cewa…"
     ,"tadabbur.prompt.diri.remaja": "Wane bangare na rayuwarka wannan aya ta fi taɓawa?"
     ,"tadabbur.prompt.diri.dewasa": "Rubuta kamar wasiƙa zuwa ga kanka: me wannan aya ke so ka canza?"
+    ,"profile.plan_price_free": "Kyauta"
+    ,"profile.plan_free_desc": "Koyi da kanka; ba za ka iya gabatar da karatu ga musyrif ba tukuna."
+    ,"profile.plan_standard_desc": "Damar gabatar da karatu na asali ga musyrif."
+    ,"profile.plan_pro_desc": "Damar gabatar da karatu da fasalulluka na musamman."
+    ,"profile.plan_price": "Gems {gems} · Rp{rupiah}"
+    ,"profile.plan_not_enough_gems": "Gems bai isa ba. Kana buƙatar Gems {gems}."
+    ,"profile.plan_activated": "An kunna kunshin {name} cikin nasara."
 };

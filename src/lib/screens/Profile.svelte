@@ -23,7 +23,7 @@
 
     const bookingWhen = $derived(
         booking?.time
-            ? new Date(booking.time).toLocaleString('id-ID',
+            ? new Date(booking.time).toLocaleString(i18n.locale,
                 { weekday: 'long', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })
             : ''
     );
@@ -70,18 +70,20 @@
     // PROFILE.md: Streak, Badge, dan Certification berada di satu grup tab.
     let activeTab = $state('streak');
     let subscriptionMessage = $state('');
-    const plans = [
-        { id: 'free', name: 'Free', gems: 0, price: 'Gratis', desc: 'Belajar mandiri; belum bisa setoran ke musyrif.' },
-        { id: 'standard', name: 'Standard', gems: 100, price: '100 Gems · Rp30.000', desc: 'Akses setoran dasar ke musyrif.' },
-        { id: 'pro', name: 'Pro', gems: 300, price: '300 Gems · Rp75.000', desc: 'Akses setoran dan fitur premium.' }
-    ];
+    // Nama paket (Free/Standard/Pro) sengaja tidak diterjemahkan — itu nama produk
+    // yang sama di semua bahasa. Harganya tetap rupiah karena penagihannya rupiah.
+    const plans = $derived([
+        { id: 'free', name: 'Free', gems: 0, price: i18n.t('profile.plan_price_free'), desc: i18n.t('profile.plan_free_desc') },
+        { id: 'standard', name: 'Standard', gems: 100, price: i18n.t('profile.plan_price', { gems: 100, rupiah: '30.000' }), desc: i18n.t('profile.plan_standard_desc') },
+        { id: 'pro', name: 'Pro', gems: 300, price: i18n.t('profile.plan_price', { gems: 300, rupiah: '75.000' }), desc: i18n.t('profile.plan_pro_desc') }
+    ]);
     function choosePlan(plan) {
         if (plan.id === 'free') return;
-        if (user.gems < plan.gems) { subscriptionMessage = `Gems belum cukup. Butuh ${plan.gems} Gems.`; return; }
+        if (user.gems < plan.gems) { subscriptionMessage = i18n.t('profile.plan_not_enough_gems', { gems: plan.gems }); return; }
         user.gems -= plan.gems;
         user.subscription = { plan: plan.id, purchasedAt: new Date().toISOString() };
         appState.saveUser();
-        subscriptionMessage = `Paket ${plan.name} berhasil diaktifkan.`;
+        subscriptionMessage = i18n.t('profile.plan_activated', { name: plan.name });
     }
 
     // Hasil Placement Test (ONBOARDING.md) — kategori ditentukan musyrif.
@@ -430,7 +432,7 @@
                                     <div class="cert-title">{i18n.t(cert.title)}</div>
                                     <div class="cert-meta">
                                         <span class="cert-type-pill">{i18n.t(cert.type)}</span>
-                                        <span class="cert-date">{new Date(cert.date).toLocaleDateString('id-ID', { day:'numeric', month:'long', year:'numeric' })}</span>
+                                        <span class="cert-date">{new Date(cert.date).toLocaleDateString(i18n.locale, { day:'numeric', month:'long', year:'numeric' })}</span>
                                     </div>
                                 </div>
                                 <button class="cert-download-btn" title={i18n.t('profile.download_certificate')}>

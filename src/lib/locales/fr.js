@@ -1074,4 +1074,11 @@ export default {
     ,"tadabbur.prompt.diri.anak": "Ce verset m'apprend que…"
     ,"tadabbur.prompt.diri.remaja": "Quelle part de ta vie ce verset touche-t-il le plus ?"
     ,"tadabbur.prompt.diri.dewasa": "Écris-le comme une lettre à toi-même : que ce verset te demande-t-il de changer ?"
+    ,"profile.plan_price_free": "Gratuit"
+    ,"profile.plan_free_desc": "Apprends en autonomie ; la récitation auprès d'un musyrif n'est pas incluse."
+    ,"profile.plan_standard_desc": "Accès de base à la récitation auprès d'un musyrif."
+    ,"profile.plan_pro_desc": "Accès à la récitation et aux fonctions premium."
+    ,"profile.plan_price": "{gems} Gems · Rp{rupiah}"
+    ,"profile.plan_not_enough_gems": "Gems insuffisants. Il t'en faut {gems}."
+    ,"profile.plan_activated": "Le forfait {name} est maintenant actif."
 };

@@ -1075,4 +1075,11 @@ export default {
     ,"tadabbur.prompt.diri.anak": "هذه الآية تعلمني أن…"
     ,"tadabbur.prompt.diri.remaja": "أي جانب من حياتك تمسه هذه الآية أكثر؟"
     ,"tadabbur.prompt.diri.dewasa": "اكتبها كرسالة إلى نفسك: ما الذي تطلب منك هذه الآية تغييره؟"
+    ,"profile.plan_price_free": "مجاني"
+    ,"profile.plan_free_desc": "تعلّم بنفسك؛ التسميع أمام المشرف غير متاح."
+    ,"profile.plan_standard_desc": "وصول أساسي للتسميع أمام المشرف."
+    ,"profile.plan_pro_desc": "وصول للتسميع مع المزايا المميزة."
+    ,"profile.plan_price": "{gems} جوهرة · Rp{rupiah}"
+    ,"profile.plan_not_enough_gems": "الجواهر غير كافية. تحتاج {gems} جوهرة."
+    ,"profile.plan_activated": "تم تفعيل باقة {name} بنجاح."
 };

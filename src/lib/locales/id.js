@@ -1096,4 +1096,11 @@ export default {
     ,"tadabbur.prompt.diri.anak": "Ayat ini mengajarkan aku bahwa…"
     ,"tadabbur.prompt.diri.remaja": "Bagian hidupmu yang mana yang paling tersentuh ayat ini?"
     ,"tadabbur.prompt.diri.dewasa": "Tulis seperti surat kepada dirimu sendiri: apa yang ayat ini ingin kamu ubah?"
+    ,"profile.plan_price_free": "Gratis"
+    ,"profile.plan_free_desc": "Belajar mandiri; belum bisa setoran ke musyrif."
+    ,"profile.plan_standard_desc": "Akses setoran dasar ke musyrif."
+    ,"profile.plan_pro_desc": "Akses setoran dan fitur premium."
+    ,"profile.plan_price": "{gems} Gems · Rp{rupiah}"
+    ,"profile.plan_not_enough_gems": "Gems belum cukup. Butuh {gems} Gems."
+    ,"profile.plan_activated": "Paket {name} berhasil diaktifkan."
 };

@@ -1096,4 +1096,11 @@ export default {
     ,"tadabbur.prompt.diri.anak": "This verse teaches me that…"
     ,"tadabbur.prompt.diri.remaja": "Which part of your life does this verse touch most?"
     ,"tadabbur.prompt.diri.dewasa": "Write it as a letter to yourself: what does this verse ask you to change?"
+    ,"profile.plan_price_free": "Free"
+    ,"profile.plan_free_desc": "Learn on your own; recitation to a musyrif is not included."
+    ,"profile.plan_standard_desc": "Basic access to recitation with a musyrif."
+    ,"profile.plan_pro_desc": "Recitation access plus premium features."
+    ,"profile.plan_price": "{gems} Gems · Rp{rupiah}"
+    ,"profile.plan_not_enough_gems": "Not enough Gems. You need {gems} Gems."
+    ,"profile.plan_activated": "The {name} plan is now active."
 };
