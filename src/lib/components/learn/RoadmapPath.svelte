@@ -24,15 +24,15 @@
 
     const pathConfig = $derived.by(() => {
         if (appState.user.pathMode === 'self') {
-            return { unitTitle: 'Belajar sesuai ritmemu', unitDesc: 'Kamu memilih surah sendiri untuk mulai di sini.', badge: 'JALUR PEMULA' };
+            return { unitTitle: i18n.t('learn.unit_title_self'), unitDesc: i18n.t('learn.unit_desc_self'), badge: i18n.t('learn.badge_self') };
         }
         if (learningPath === 'pro') {
-            return { unitTitle: i18n.t('learn.unit_title_pro'), unitDesc: i18n.t('learn.unit_desc_pro'), badge: 'PRO LEVEL' };
+            return { unitTitle: i18n.t('learn.unit_title_pro'), unitDesc: i18n.t('learn.unit_desc_pro'), badge: i18n.t('learn.badge_pro') };
         }
         if (learningPath === 'mid') {
-            return { unitTitle: i18n.t('learn.unit_title_mid'), unitDesc: i18n.t('learn.unit_desc_mid'), badge: 'MID LEVEL' };
+            return { unitTitle: i18n.t('learn.unit_title_mid'), unitDesc: i18n.t('learn.unit_desc_mid'), badge: i18n.t('learn.badge_mid') };
         }
-        return { unitTitle: i18n.t('learn.unit_title_beginner'), unitDesc: i18n.t('learn.unit_desc_beginner'), badge: 'BEGINNER LEVEL' };
+        return { unitTitle: i18n.t('learn.unit_title_beginner'), unitDesc: i18n.t('learn.unit_desc_beginner'), badge: i18n.t('learn.badge_beginner') };
     });
 
     const passed = $derived(appState.user.progress.completedLadders ?? []);
@@ -154,15 +154,15 @@
 
         <div class="unit-badge" style="position: relative; z-index: 2;">{selfPaced ? 'JALUR PEMULA' : pathConfig.badge}</div>
         <div class="banner-title">{surah?.name ?? pathConfig.unitTitle}</div>
-        <div class="banner-desc">{surah ? `Surah ${surah.number} · ${surah.verses.length} ayat tersedia` : pathConfig.unitDesc}</div>
+        <div class="banner-desc">{surah ? i18n.t('roadmap.surah_available', { number: surah.number, count: surah.verses.length }) : pathConfig.unitDesc}</div>
         {#if surah}
             <div class="self-banner-icon"><i class="ti ti-book"></i></div>
             {@const bannerDone = surahDone}
             {@const bannerProgress = surah.verses.length ? Math.round((bannerDone / surah.verses.length) * 100) : 0}
             <div class="self-stats">
-                <div><strong>{bannerDone}</strong><small>Target selesai</small></div>
-                <div><strong>{Math.max(0, surah.verses.length - bannerDone)}</strong><small>Sisa target</small></div>
-                <div><strong>{bannerProgress}%</strong><small>Progress</small></div>
+                <div><strong>{bannerDone}</strong><small>{i18n.t('roadmap.stat_done')}</small></div>
+                <div><strong>{Math.max(0, surah.verses.length - bannerDone)}</strong><small>{i18n.t('roadmap.stat_left')}</small></div>
+                <div><strong>{bannerProgress}%</strong><small>{i18n.t('roadmap.stat_progress')}</small></div>
             </div>
             <div class="self-progress-track"><span style="width:{bannerProgress}%"></span></div>
         {/if}
