@@ -12,7 +12,7 @@
         aria-expanded={isOpen}
     >
         <div class="header-text">
-            <span class="color-name">{cat.colorName}</span>
+            <span class="color-name">{i18n.t(cat.colorKey)}</span>
             <span class="cat-title">{cat.title}</span>
         </div>
         <div class="header-right">
@@ -40,18 +40,18 @@
 
                     {#if openItem === itemKey}
                         <div class="item-detail" style="border-left: 3px solid {cat.bgColor};" transition:slide={{duration: 200}}>
-                            <p class="detail-description">{item.description}</p>
+                            <p class="detail-description">{i18n.t(item.descKey)}</p>
                             <div class="detail-meta">
                                 <div class="meta-row">
                                     <span class="meta-label">{i18n.t('tajwid.letters')}</span>
-                                    <span class="meta-value mixed-text">{item.huruf}</span>
+                                    <span class="meta-value mixed-text">{item.lettersKey ? i18n.t(item.lettersKey) : item.huruf}</span>
                                 </div>
                                 <div class="meta-row" style="margin-top: 4px;">
                                     <span class="meta-label">{i18n.t('tajwid.example')}</span>
                                     <div class="contoh-box" style="border-color: {cat.bgColor}20; background: {cat.bgColor}08;">
                                         <span class="contoh-arab">{@html item.contohArab}</span>
                                         <span class="contoh-latin">"{item.contohLatin}"</span>
-                                        <span class="contoh-arti">{item.contohArti}</span>
+                                        <span class="contoh-arti">{i18n.t(item.glossKey)}</span>
                                     </div>
                                 </div>
                             </div>

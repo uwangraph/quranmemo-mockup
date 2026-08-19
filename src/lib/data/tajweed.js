@@ -1,6 +1,6 @@
 export const tajweedCategories = [
         {
-            colorName: "HITAM",
+            colorKey: "tajwid.color.hitam",
             title: "Idzhar",
             arabic: "الْإِظْهَارُ",
             bgColor: "#6b7280",
@@ -8,24 +8,24 @@ export const tajweedCategories = [
             items: [
                 {
                     name: "Idzhar Halqi",
-                    description: "Nun sukun atau tanwin bertemu dengan salah satu huruf halq (tenggorokan): ء ه ع غ ح خ. Cara membacanya jelas/terang tanpa dengung.",
+                    descKey: "tajwid.idzhar.halqi.desc",
                     huruf: "ء ه ع غ ح خ",
                     contohArab: "مَ<span style='color: #555555; font-weight: 800;'>نْ</span> آمَنَ",
                     contohLatin: "Man aamana",
-                    contohArti: "(siapa yang beriman) — nun sukun bertemu ء"
+                    glossKey: "tajwid.idzhar.halqi.gloss"
                 },
                 {
                     name: "Idzhar Syafawi",
-                    description: "Mim sukun bertemu huruf selain mim (م) dan ba (ب). Cara membacanya terang tanpa dengung pada bibir.",
-                    huruf: "Semua huruf kecuali م dan ب",
+                    descKey: "tajwid.idzhar.syafawi.desc",
+                    lettersKey: "tajwid.idzhar.syafawi.letters",
                     contohArab: "هُ<span style='color: #555555; font-weight: 800;'>مْ</span> فِيهَا",
                     contohLatin: "Hum fiihaa",
-                    contohArti: "(mereka di dalamnya) — mim sukun bertemu ف"
+                    glossKey: "tajwid.idzhar.syafawi.gloss"
                 }
             ]
         },
         {
-            colorName: "MERAH",
+            colorKey: "tajwid.color.merah",
             title: "Idgam",
             arabic: "الْإِدْغَامُ",
             bgColor: "#ef4444",
@@ -33,48 +33,48 @@ export const tajweedCategories = [
             items: [
                 {
                     name: "Idgam Bilagunnah",
-                    description: "Nun sukun atau tanwin bertemu huruf ل atau ر. Dibaca lebur/masuk tanpa dengung.",
+                    descKey: "tajwid.idgam.bilagunnah.desc",
                     huruf: "ل ر",
                     contohArab: "مِ<span style='color: #ef4444; font-weight: 800;'>ن رَّ</span>بِّهِمْ",
                     contohLatin: "Mir rabbihim",
-                    contohArti: "(dari Tuhan mereka) — nun sukun bertemu ر"
+                    glossKey: "tajwid.idgam.bilagunnah.gloss"
                 },
                 {
                     name: "Idgam Bigunnah",
-                    description: "Nun sukun atau tanwin bertemu huruf ي ن م و. Dibaca lebur/masuk dengan dengung 2 harakat.",
+                    descKey: "tajwid.idgam.bigunnah.desc",
                     huruf: "ي ن م و",
                     contohArab: "مَ<span style='color: #ef4444; font-weight: 800;'>ن يَ</span>قُولُ",
                     contohLatin: "May yaquulu",
-                    contohArti: "(siapa yang berkata) — nun sukun bertemu ي"
+                    glossKey: "tajwid.idgam.bigunnah.gloss"
                 },
                 {
                     name: "Idgam Mutaqaribain",
-                    description: "Dua huruf yang berdekatan makhrajnya bertemu dan salah satunya sukun, dilebur menjadi satu dengan tasydid.",
-                    huruf: "Contoh: ق → ك",
+                    descKey: "tajwid.idgam.mutaqaribain.desc",
+                    lettersKey: "tajwid.idgam.mutaqaribain.letters",
                     contohArab: "أَلَمْ نَخْلُ<span style='color: #ef4444; font-weight: 800;'>قكُّ</span>م",
                     contohLatin: "Alam nakhlukkum",
-                    contohArti: "(bukankah Kami telah menciptakanmu) — ق sukun bertemu ك"
+                    glossKey: "tajwid.idgam.mutaqaribain.gloss"
                 },
                 {
                     name: "Idgam Mutajanisain",
-                    description: "Dua huruf yang sama makhrajnya namun berbeda sifatnya bertemu, huruf pertama sukun dilebur ke huruf kedua.",
-                    huruf: "Contoh: ت → ط ,د → ت",
+                    descKey: "tajwid.idgam.mutajanisain.desc",
+                    lettersKey: "tajwid.idgam.mutajanisain.letters",
                     contohArab: "قَالَ<span style='color: #ef4444; font-weight: 800;'>ت طَّ</span>ائِفَةٌ",
                     contohLatin: "Qaalat thaaa'ifah",
-                    contohArti: "(berkata segolongan) — ت sukun bertemu ط"
+                    glossKey: "tajwid.idgam.mutajanisain.gloss"
                 },
                 {
                     name: "Idgam Mutamasilain",
-                    description: "Dua huruf yang sama dan berdekatan bertemu, huruf pertama sukun. Dilebur sempurna menjadi satu huruf tasydid.",
-                    huruf: "Dua huruf identik berurutan",
+                    descKey: "tajwid.idgam.mutamasilain.desc",
+                    lettersKey: "tajwid.idgam.mutamasilain.letters",
                     contohArab: "اضْرِ<span style='color: #ef4444; font-weight: 800;'>ب بِّ</span>عَصَاكَ",
                     contohLatin: "Idrib bi'ashaaka",
-                    contohArti: "(pukulkan tongkatmu) — ب sukun bertemu ب"
+                    glossKey: "tajwid.idgam.mutamasilain.gloss"
                 }
             ]
         },
         {
-            colorName: "HIJAU",
+            colorKey: "tajwid.color.hijau",
             title: "Ikhfa",
             arabic: "الْإِخْفَاءُ",
             bgColor: "#10b981",
@@ -82,40 +82,40 @@ export const tajweedCategories = [
             items: [
                 {
                     name: "Ikhfa Haqiqi",
-                    description: "Nun sukun atau tanwin bertemu salah satu dari 15 huruf ikhfa. Dibaca samar-samar antara idzhar dan idgam, disertai dengung 2 harakat.",
+                    descKey: "tajwid.ikhfa.haqiqi.desc",
                     huruf: "ت ث ج د ذ ز س ش ص ض ط ظ ف ق ك",
                     contohArab: "أَ<span style='color: #10b981; font-weight: 800;'>نكَا</span>لًا",
                     contohLatin: "Angkaalan",
-                    contohArti: "(belenggu-belenggu) — nun sukun bertemu ك"
+                    glossKey: "tajwid.ikhfa.haqiqi.gloss"
                 },
                 {
                     name: "Ikhfa Syafawi",
-                    description: "Mim sukun bertemu huruf ba (ب). Dibaca samar-samar pada bibir disertai dengung 2 harakat.",
+                    descKey: "tajwid.ikhfa.syafawi.desc",
                     huruf: "ب",
                     contohArab: "تَرْمِيهِ<span style='color: #10b981; font-weight: 800;'>م بِ</span>حِجَارَةٍ",
                     contohLatin: "Tarmiihim bihijaarah",
-                    contohArti: "(melempari mereka dengan batu) — mim sukun bertemu ب"
+                    glossKey: "tajwid.ikhfa.syafawi.gloss"
                 },
                 {
                     name: "Madd Jaiz Munfasil",
-                    description: "Huruf mad (ا و ي) berada di akhir kata dan huruf hamzah berada di awal kata berikutnya. Dibaca panjang 2, 4, atau 5 harakat.",
-                    huruf: "ا و ي → ء (beda kata)",
+                    descKey: "tajwid.ikhfa.madd_jaiz_munfasil.desc",
+                    lettersKey: "tajwid.ikhfa.madd_jaiz_munfasil.letters",
                     contohArab: "يَ<span style='color: #10b981; font-weight: 800;'>ا أ</span>َيُّهَا",
                     contohLatin: "Yaa ayyuhaa",
-                    contohArti: "(wahai) — alif mad bertemu hamzah di kata berikutnya"
+                    glossKey: "tajwid.ikhfa.madd_jaiz_munfasil.gloss"
                 },
                 {
                     name: "Madd Silah Tawilah",
-                    description: "Ha dhamir (ه) yang didahului dan diikuti huruf hidup (bukan sukun/tasydid), bertemu hamzah. Dibaca panjang 4-5 harakat.",
-                    huruf: "ه (ha dhamir) + ء",
+                    descKey: "tajwid.ikhfa.madd_silah_tawilah.desc",
+                    lettersKey: "tajwid.ikhfa.madd_silah_tawilah.letters",
                     contohArab: "مَالَهُ<span style='color: #10b981; font-weight: 800;'>و أ</span>َخْلَدَهُ",
                     contohLatin: "Maalahu akhlada",
-                    contohArti: "(hartanya mengekalkannya) — ha dhamir bertemu hamzah"
+                    glossKey: "tajwid.ikhfa.madd_silah_tawilah.gloss"
                 }
             ]
         },
         {
-            colorName: "BIRU/CYAN",
+            colorKey: "tajwid.color.biru_cyan",
             title: "Iqlab",
             arabic: "الْإِقْلَابُ",
             bgColor: "#0ea5e9",
@@ -123,24 +123,24 @@ export const tajweedCategories = [
             items: [
                 {
                     name: "Iqlab",
-                    description: "Nun sukun atau tanwin bertemu huruf ba (ب). Cara bacanya: nun/tanwin diubah menjadi mim, lalu dibaca samar (ikhfa) dengan dengung 2 harakat.",
+                    descKey: "tajwid.iqlab.iqlab.desc",
                     huruf: "ب",
                     contohArab: "مِ<span style='color: #0ea5e9; font-weight: 800;'>ن بَ</span>عْدِ",
                     contohLatin: "Mim ba'di",
-                    contohArti: "(dari setelah) — nun sukun bertemu ب, dibaca seperti mim"
+                    glossKey: "tajwid.iqlab.iqlab.gloss"
                 },
                 {
                     name: "Madd Wajib Muttasil",
-                    description: "Huruf mad (ا و ي) bertemu hamzah dalam SATU kata. Hukumnya wajib dibaca panjang 4 atau 5 harakat.",
-                    huruf: "ا و ي → ء (satu kata)",
+                    descKey: "tajwid.iqlab.madd_wajib_muttasil.desc",
+                    lettersKey: "tajwid.iqlab.madd_wajib_muttasil.letters",
                     contohArab: "جَ<span style='color: #0ea5e9; font-weight: 800;'>اءَ</span>",
                     contohLatin: "Jaaa'a",
-                    contohArti: "(datang) — alif mad bertemu hamzah dalam satu kata"
+                    glossKey: "tajwid.iqlab.madd_wajib_muttasil.gloss"
                 }
             ]
         },
         {
-            colorName: "BIRU PEKAT",
+            colorKey: "tajwid.color.biru_pekat",
             title: "Qalqalah",
             arabic: "الْقَلْقَلَةُ",
             bgColor: "#312e81",
@@ -148,24 +148,24 @@ export const tajweedCategories = [
             items: [
                 {
                     name: "Qalqalah Sughra",
-                    description: "Huruf qalqalah (ق ط ب ج د) dalam keadaan sukun di TENGAH kata. Dibaca dengan pantulan/memantul ringan.",
+                    descKey: "tajwid.qalqalah.sughra.desc",
                     huruf: "ق ط ب ج د",
                     contohArab: "يَ<span style='color: #1e1b4b; font-weight: 800;'>قْ</span>طَعُونَ",
                     contohLatin: "Yaqtha'uun",
-                    contohArti: "(mereka memutuskan) — ق sukun di tengah kata"
+                    glossKey: "tajwid.qalqalah.sughra.gloss"
                 },
                 {
                     name: "Qalqalah Kubra",
-                    description: "Huruf qalqalah (ق ط ب ج د) dalam keadaan sukun di AKHIR kata (karena waqaf). Dibaca dengan pantulan lebih kuat dan jelas.",
+                    descKey: "tajwid.qalqalah.kubra.desc",
                     huruf: "ق ط ب ج د",
                     contohArab: "فَلَ<span style='color: #1e1b4b; font-weight: 800;'>قٍ</span>",
                     contohLatin: "Falaq",
-                    contohArti: "(fajar) — ق sukun di akhir karena waqaf"
+                    glossKey: "tajwid.qalqalah.kubra.gloss"
                 }
             ]
         },
         {
-            colorName: "UNGU",
+            colorKey: "tajwid.color.ungu",
             title: "Gunnah",
             arabic: "الْغُنَّةُ",
             bgColor: "#c026d3",
@@ -173,67 +173,67 @@ export const tajweedCategories = [
             items: [
                 {
                     name: "Gunnah (Asli)",
-                    description: "Setiap huruf nun (ن) atau mim (م) yang bertasydid wajib dibaca dengan dengung penuh selama 2 harakat.",
+                    descKey: "tajwid.gunnah.asli.desc",
                     huruf: "نّ  مّ",
                     contohArab: "إِ<span style='color: #d946ef; font-weight: 800;'>نَّ</span>",
                     contohLatin: "Inna",
-                    contohArti: "(sesungguhnya) — nun tasydid wajib dengung"
+                    glossKey: "tajwid.gunnah.asli.gloss"
                 },
                 {
                     name: "Idgam Bigunnah",
-                    description: "Nun sukun/tanwin bertemu ي ن م و. Dilebur dengan dengung 2 harakat.",
+                    descKey: "tajwid.gunnah.idgam_bigunnah.desc",
                     huruf: "ي ن م و",
                     contohArab: "مَ<span style='color: #d946ef; font-weight: 800;'>ن يَعْ</span>مَلْ",
                     contohLatin: "May ya'mal",
-                    contohArti: "(siapa yang beramal) — nun sukun bertemu ي"
+                    glossKey: "tajwid.gunnah.idgam_bigunnah.gloss"
                 },
                 {
                     name: "Idgam Mimi",
-                    description: "Mim sukun bertemu mim (م). Mim pertama dilebur ke mim kedua dengan dengung 2 harakat.",
+                    descKey: "tajwid.gunnah.idgam_mimi.desc",
                     huruf: "م → م",
                     contohArab: "لَهُ<span style='color: #d946ef; font-weight: 800;'>م مَّ</span>ا",
                     contohLatin: "Lahum maa",
-                    contohArti: "(bagi mereka apa) — mim sukun bertemu mim"
+                    glossKey: "tajwid.gunnah.idgam_mimi.gloss"
                 },
                 {
                     name: "Madd Farq",
-                    description: "Mad yang terjadi karena pertemuan dua hamzah — satu di akhir kata sebelumnya dan satu di awal kata sesudahnya. Dibaca 6 harakat.",
-                    huruf: "همزة + همزة",
+                    descKey: "tajwid.gunnah.madd_farq.desc",
+                    lettersKey: "tajwid.gunnah.madd_farq.letters",
                     contohArab: "ءَ<span style='color: #d946ef; font-weight: 800;'>آل</span>لَّهُ",
                     contohLatin: "Aaallaah",
-                    contohArti: "(apakah Allah...) — khas untuk membedakan kalimat tanya"
+                    glossKey: "tajwid.gunnah.madd_farq.gloss"
                 },
                 {
                     name: "Madd Lazim Mukhafaf Kilmi",
-                    description: "Huruf mad bertemu sukun asli (bukan waqaf) dalam satu kata, dan huruf setelah sukun tidak ditasydid. Dibaca 6 harakat.",
-                    huruf: "Mad + sukun asli (ringan)",
+                    descKey: "tajwid.gunnah.madd_lazim_mukhafaf_kilmi.desc",
+                    lettersKey: "tajwid.gunnah.madd_lazim_mukhafaf_kilmi.letters",
                     contohArab: "<span style='color: #d946ef; font-weight: 800;'>آلْ</span>آنَ",
                     contohLatin: "Aal-aana",
-                    contohArti: "(sekarang?) — hanya ada 2 tempat di Al-Qur'an"
+                    glossKey: "tajwid.gunnah.madd_lazim_mukhafaf_kilmi.gloss"
                 },
                 {
                     name: "Madd Lazim Musaqal Kilmi",
-                    description: "Huruf mad bertemu huruf yang ditasydid dalam satu kata. Dibaca 6 harakat.",
-                    huruf: "Mad + tasydid (satu kata)",
+                    descKey: "tajwid.gunnah.madd_lazim_musaqal_kilmi.desc",
+                    lettersKey: "tajwid.gunnah.madd_lazim_musaqal_kilmi.letters",
                     contohArab: "وَلَا ال<span style='color: #d946ef; font-weight: 800;'>ضَّالِّ</span>ينَ",
                     contohLatin: "Wa lad-daalliin",
-                    contohArti: "(dan bukan orang yang sesat) — lam mad bertemu ل tasydid"
+                    glossKey: "tajwid.gunnah.madd_lazim_musaqal_kilmi.gloss"
                 },
                 {
                     name: "Madd Lazim Harfi Musyabba",
-                    description: "Terdapat pada huruf fawatih (pembuka surat) yang cara bacanya mengandung mad dan bertemu sukun. Dibaca 6 harakat.",
+                    descKey: "tajwid.gunnah.madd_lazim_harfi_musyabba.desc",
                     huruf: "ن ق ص ع س ل ك م",
                     contohArab: "ال<span style='color: #d946ef; font-weight: 800;'>م</span>",
                     contohLatin: "Alif Laam Miim",
-                    contohArti: "(huruf pembuka Surah Al-Baqarah)"
+                    glossKey: "tajwid.gunnah.madd_lazim_harfi_musyabba.gloss"
                 },
                 {
                     name: "Madd Lazim Harfi Mukhafaf",
-                    description: "Terdapat pada huruf fawatih yang cara bacanya mengandung mad tetapi tidak bertemu sukun. Dibaca 2 harakat.",
+                    descKey: "tajwid.gunnah.madd_lazim_harfi_mukhafaf.desc",
                     huruf: "ح ي ط ه ر",
                     contohArab: "<span style='color: #d946ef; font-weight: 800;'>ح</span>م",
                     contohLatin: "Haa Miim",
-                    contohArti: "(huruf pembuka beberapa surat)"
+                    glossKey: "tajwid.gunnah.madd_lazim_harfi_mukhafaf.gloss"
                 }
             ]
         }
