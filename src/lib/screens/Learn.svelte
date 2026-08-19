@@ -26,7 +26,7 @@
         <div style="height: 100px;"></div>
     </div>
 
-    <BottomNav active="learn" />
+    <BottomNav />
 
     <!-- Streak Modal -->
     {#if showStreakModal}

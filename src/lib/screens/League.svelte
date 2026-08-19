@@ -200,7 +200,7 @@
         <div style="height: 20px;"></div>
     </div>
 
-    <BottomNav active="league" />
+    <BottomNav />
 </div>
 
 <style>

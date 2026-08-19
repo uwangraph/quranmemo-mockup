@@ -1,7 +1,13 @@
 <script>
     import { appState } from '$lib/app.svelte.js';
     import { i18n } from '$lib/i18n.svelte.js';
-    let { active = 'learn' } = $props();
+    // Tab aktif diturunkan dari layar yang sedang terbuka. Sebelumnya tiap layar
+    // mengetik sendiri nilainya, dan satu salah eja sudah cukup membuat tabnya tidak
+    // pernah menyala — layar Murojaah mengirim "murajaah" sedangkan id tabnya
+    // "murojaah". Nilai itu kini hanya perlu ditulis untuk layar yang memang bukan
+    // tab, misalnya Tadabbur yang bernaung di bawah Belajar.
+    let { active = null } = $props();
+    const current = $derived(active ?? appState.currentScreen);
 
     // Maksimal 5 tab agar label tetap terbaca di lebar ponsel.
     // Tadabbur dicapai lewat node di roadmap, Halaqah lewat tab di layar Liga.
@@ -19,8 +25,8 @@
     {#each items as item}
         <button
             class="nav-item"
-            class:active={active === item.id}
-            aria-current={active === item.id ? 'page' : undefined}
+            class:active={current === item.id}
+            aria-current={current === item.id ? 'page' : undefined}
             onclick={() => appState.go(item.id)}
         >
             <!-- Penanda tab aktif berupa batang, bukan warna saja, agar tetap terbaca

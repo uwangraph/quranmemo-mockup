@@ -391,7 +391,7 @@
         {/if}
     </div>
 
-    <BottomNav active="marketplace" />
+    <BottomNav />
 </div>
 
 {#if showCustomAlert}

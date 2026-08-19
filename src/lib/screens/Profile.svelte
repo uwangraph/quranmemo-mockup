@@ -452,7 +452,7 @@
         <div style="height: 100px;"></div>
     </div>
 
-    <BottomNav active="profile" />
+    <BottomNav />
 </div>
 
 <style>

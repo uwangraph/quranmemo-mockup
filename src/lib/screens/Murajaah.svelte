@@ -89,7 +89,7 @@
             {/if}
         </div>
     {/if}
-    <BottomNav active="murajaah" />
+    <BottomNav />
 </div>
 
 <style>
