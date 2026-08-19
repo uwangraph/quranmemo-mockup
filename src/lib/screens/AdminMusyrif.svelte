@@ -1,12 +1,14 @@
 <script>
     import { appState } from '$lib/app.svelte.js';
     import { i18n } from '$lib/i18n.svelte.js';
+    import AdminHeader from '$lib/components/admin/AdminHeader.svelte';
 </script>
 
 <div class="screen">
-    <div class="topbar">
-        <div style="font-size: 15px; font-weight: 900;">{i18n.t('admin.monitor_musyrif')}</div>
-    </div>
+    <AdminHeader
+        icon="ti-chalkboard-teacher"
+        title={i18n.t('admin.monitor_musyrif')}
+        subtitle={i18n.t('admin.subtitle_musyrif')} />
     
     <div class="scroll-content" style="padding: 16px;">
         <div class="revenue-card">
@@ -15,7 +17,7 @@
             <div class="revenue-change">+12% {i18n.t('admin.from_last_month')}</div>
         </div>
 
-        <div class="section-label">{i18n.t('admin.musyrif_ready')}</div>
+        <div class="admin-section">{i18n.t('admin.musyrif_ready')}</div>
         <div class="musyrif-list">
             <div class="musyrif-card">
                 <div class="avatar-wrap">

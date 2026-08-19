@@ -1,12 +1,14 @@
 <script>
     import { appState } from '$lib/app.svelte.js';
     import { i18n } from '$lib/i18n.svelte.js';
+    import AdminHeader from '$lib/components/admin/AdminHeader.svelte';
 </script>
 
 <div class="screen">
-    <div class="topbar">
-        <div style="font-size: 15px; font-weight: 900;">{i18n.t('admin.monitor_user')}</div>
-    </div>
+    <AdminHeader
+        icon="ti-users"
+        title={i18n.t('admin.monitor_user')}
+        subtitle={i18n.t('admin.subtitle_users')} />
     
     <div class="scroll-content" style="padding: 16px;">
         <div class="stats-overview">
@@ -24,7 +26,7 @@
             </div>
         </div>
 
-        <div class="section-label">{i18n.t('admin.user_attention')}</div>
+        <div class="admin-section">{i18n.t('admin.user_attention')}</div>
         <div class="user-list">
             <div class="user-card warning">
                 <div class="user-icon" style="background: #ede8ff;"><i class="ti ti-trending-down"></i></div>

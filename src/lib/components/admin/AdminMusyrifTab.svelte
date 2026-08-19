@@ -33,7 +33,7 @@
 </div>
 
 <!-- Live status -->
-<div class="section-label" style="font-size: 13px; font-weight: 800; color: #3c3c3c; margin-top: 16px; margin-bottom: 8px;"><i class="ti ti-broadcast"></i> {i18n.t('admin.live_status')}</div>
+<div class="admin-section"><i class="ti ti-broadcast"></i> {i18n.t('admin.live_status')}</div>
 <div class="live-grid">
     <div class="live-stat-card" style="border-color: #22c55e30; background: #f0fdf4;">
         <div style="font-size: 22px; font-weight: 900; color: #22c55e;">6</div>
@@ -49,7 +49,7 @@
     </div>
 </div>
 
-<div class="section-label" style="font-size: 13px; font-weight: 800; color: #3c3c3c; margin-top: 16px; margin-bottom: 8px;"><i class="ti ti-medal"></i> {i18n.t('admin.musyrif_performance')}</div>
+<div class="admin-section"><i class="ti ti-medal"></i> {i18n.t('admin.musyrif_performance')}</div>
 {#each topMusyrif as m, i}
     <div class="musyrif-perf-card">
         <div class="rank-badge" style="background: {i === 0 ? '#fef08a' : i === 1 ? '#e2e8f0' : '#fed7aa'}; color: {i === 0 ? '#854d0e' : i === 1 ? '#475569' : '#7c2d12'};">
@@ -58,7 +58,7 @@
         <div class="musyrif-avatar"><i class="ti ti-chalkboard-teacher"></i></div>
         <div style="flex: 1; min-width: 0;">
             <div class="user-row-name">{m.name}</div>
-            <div class="user-row-info">{m.sessions} sesi · <i class="ti ti-star"></i> {m.rating}</div>
+            <div class="user-row-info">{i18n.t('admin.sessions_rating', { sessions: m.sessions, rating: m.rating })}</div>
             <div class="perf-bar-track">
                 <div class="perf-bar-fill" style="width: {(m.sessions / 150) * 100}%; background: var(--admin-purple);"></div>
             </div>
@@ -67,7 +67,7 @@
     </div>
 {/each}
 
-<div class="section-label" style="font-size: 13px; font-weight: 800; color: #3c3c3c; margin-top: 16px; margin-bottom: 8px;"><i class="ti ti-alert-triangle"></i> {i18n.t('admin.needs_review')}</div>
+<div class="admin-section"><i class="ti ti-alert-triangle"></i> {i18n.t('admin.needs_review')}</div>
 <div class="warn-card">
     <div class="warn-icon"><i class="ti ti-trending-down"></i></div>
     <div style="flex: 1;">

@@ -7,10 +7,10 @@
 <div class="stat-banner" style="background: #ede8ff;">
     <div class="stat-banner-row">
         {#each [
-            { icon: 'users-three', label: i18n.t('admin.total_user'), val: '1.240', color: '#7c5cfc' },
-            { icon: 'circle', label: i18n.t('admin.active_now'), val: '85', color: '#22c55e' },
-            { icon: 'user-plus', label: i18n.t('admin.new_this_month'), val: '56', color: '#3b82f6' },
-            { icon: 'warning', label: i18n.t('admin.need_attention'), val: '14', color: '#ef4444' },
+            { icon: 'ti-users-group', label: i18n.t('admin.total_user'), val: '1.240', color: '#7c5cfc' },
+            { icon: 'ti-circle-dot', label: i18n.t('admin.active_now'), val: '85', color: '#22c55e' },
+            { icon: 'ti-user-plus', label: i18n.t('admin.new_this_month'), val: '56', color: '#3b82f6' },
+            { icon: 'ti-alert-triangle', label: i18n.t('admin.need_attention'), val: '14', color: '#ef4444' },
         ] as s}
             <div class="stat-cell">
                 <div style="font-size: 16px;"><i class="ti {s.icon}"></i></div>
@@ -21,7 +21,7 @@
     </div>
 </div>
 
-<div class="section-label" style="font-size: 13px; font-weight: 800; color: #3c3c3c; margin-top: 16px; margin-bottom: 8px;"><i class="ti ti-clock"></i> {i18n.t('admin.activity_7d')}</div>
+<div class="admin-section"><i class="ti ti-clock"></i> {i18n.t('admin.activity_7d')}</div>
 <div class="chart-card">
     <div style="display: flex; align-items: flex-end; gap: 2px; height: 60px; padding: 0 4px;">
         {#each activeUserData as v, i}
@@ -31,20 +31,20 @@
         {/each}
     </div>
     <div style="display: flex; justify-content: space-between; padding: 4px 4px 0; font-size: 8px; font-weight: 700; color: #afafaf; text-transform: uppercase;">
-        {#each ['Sen','Sel','Rab','Kam','Jum','Sab','Min'] as d}
-            <span>{d}</span>
+        {#each ['mon','tue','wed','thu','fri','sat','sun'] as d}
+            <span>{i18n.t(`profile.day_${d}`)}</span>
         {/each}
     </div>
 </div>
 
-<div class="section-label" style="font-size: 13px; font-weight: 800; color: #3c3c3c; margin-top: 16px; margin-bottom: 8px;"><i class="ti ti-trending-down"></i> {i18n.t('admin.need_action')}</div>
+<div class="admin-section"><i class="ti ti-trending-down"></i> {i18n.t('admin.need_action')}</div>
 {#each [
-    { name: 'Budi Santoso', info: 'Streak putus · Terakhir aktif 8 hari lalu', icon: 'ti-trending-down', tag: 'RISIKO TINGGI', tagColor: '#ef4444', tagBg: '#fef2f2' },
-    { name: 'Siti Aminah', info: 'Tidak ada submisi minggu ini', icon: 'ti-hourglass', tag: 'PERLU REMIND', tagColor: '#f59e0b', tagBg: '#fffbeb' },
-    { name: 'Andi Saputra', info: 'Akun tidak aktif 14 hari', icon: 'bell-slash', tag: 'TIDAK AKTIF', tagColor: '#64748b', tagBg: '#f1f5f9' },
+    { name: 'Budi Santoso', info: i18n.t('admin.user_streak_broken', { days: 8 }), icon: 'ti-trending-down', tag: i18n.t('admin.tag_high_risk'), tagColor: '#ef4444', tagBg: '#fef2f2' },
+    { name: 'Siti Aminah', info: i18n.t('admin.user_no_submission_week'), icon: 'ti-hourglass', tag: i18n.t('admin.tag_needs_reminder'), tagColor: '#f59e0b', tagBg: '#fffbeb' },
+    { name: 'Andi Saputra', info: i18n.t('admin.user_inactive_days', { days: 14 }), icon: 'ti-bell-off', tag: i18n.t('admin.tag_inactive'), tagColor: '#64748b', tagBg: '#f1f5f9' },
 ] as u}
     <div class="user-row-card">
-        <div class="user-avatar" style="background: #ede8ff;"><i class={u.icon}></i></div>
+        <div class="user-avatar" style="background: #ede8ff;"><i class="ti {u.icon}"></i></div>
         <div style="flex: 1; min-width: 0;">
             <div class="user-row-name">{u.name}</div>
             <div class="user-row-info">{u.info}</div>
@@ -56,7 +56,7 @@
     </div>
 {/each}
 
-<div class="section-label" style="font-size: 13px; font-weight: 800; color: #3c3c3c; margin-top: 16px; margin-bottom: 8px;"><i class="ti ti-trophy"></i> {i18n.t('admin.top_students')}</div>
+<div class="admin-section"><i class="ti ti-trophy"></i> {i18n.t('admin.top_students')}</div>
 {#each [
     { rank: 1, name: 'Ahmad Habibi', sesi: 48, ayat: 180, medal: 'medal' },
     { rank: 2, name: 'Fatimah Zahra', sesi: 41, ayat: 156, medal: 'medal' },
@@ -66,9 +66,9 @@
         <div style="font-size: 22px; width: 32px; text-align: center;"><i class="ti ti-{s.medal}"></i></div>
         <div style="flex: 1;">
             <div class="user-row-name">{s.name}</div>
-            <div class="user-row-info">{s.sesi} sesi · {s.ayat} ayat dihafal</div>
+            <div class="user-row-info">{i18n.t('admin.sessions_verses', { sessions: s.sesi, verses: s.ayat })}</div>
         </div>
-        <div class="progress-pill">{s.sesi} sesi</div>
+        <div class="progress-pill">{i18n.t('admin.sessions_count', { count: s.sesi })}</div>
     </div>
 {/each}
 

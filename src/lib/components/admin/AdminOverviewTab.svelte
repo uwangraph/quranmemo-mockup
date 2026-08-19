@@ -1,4 +1,5 @@
 <script>
+    import { i18n } from '$lib/i18n.svelte.js';
     const submissionData = [42, 67, 55, 80, 73, 91, 88];
     const revenueData = [1.2, 1.8, 1.5, 2.1, 1.9, 2.6, 2.4];
     const activeUserData = [60, 78, 65, 82, 74, 85, 91];
@@ -29,29 +30,31 @@
     const completionDonut = donutPath(72);
     const retentionDonut = donutPath(88);
 
-    const monthlyBars = [
-        { label: 'Nov', val: 62 },
-        { label: 'Des', val: 74 },
-        { label: 'Jan', val: 58 },
-        { label: 'Feb', val: 81 },
-        { label: 'Mar', val: 93 },
-        { label: 'Apr', val: 88 },
-    ];
-    const barMax = Math.max(...monthlyBars.map(b => b.val));
+    // $derived agar label bulan dan teks notifikasi ikut berubah saat bahasa diganti;
+    // sebagai konstanta biasa keduanya terkunci pada bahasa saat modul dimuat.
+    const monthlyBars = $derived([
+        { label: i18n.t('admin.month_nov'), val: 62 },
+        { label: i18n.t('admin.month_dec'), val: 74 },
+        { label: i18n.t('admin.month_jan'), val: 58 },
+        { label: i18n.t('admin.month_feb'), val: 81 },
+        { label: i18n.t('admin.month_mar'), val: 93 },
+        { label: i18n.t('admin.month_apr'), val: 88 },
+    ]);
+    const barMax = $derived(Math.max(...monthlyBars.map(b => b.val)));
 
-    const alerts = [
-        { icon: 'warning', text: '14 santri tidak ada submisi >7 hari', color: '#ef4444', bg: '#fef2f2' },
-        { icon: 'trend-down', text: '3 musyrif tingkat penerimaan rendah', color: '#f59e0b', bg: '#fffbeb' },
-        { icon: 'confetti', text: 'Rekor harian baru kemarin: 342 sesi', color: '#22c55e', bg: '#f0fdf4' },
-    ];
+    const alerts = $derived([
+        { icon: 'ti-alert-triangle', text: i18n.t('admin.alert_no_submission', { count: 14 }), color: '#ef4444', bg: '#fef2f2' },
+        { icon: 'ti-trending-down', text: i18n.t('admin.alert_low_acceptance', { count: 3 }), color: '#f59e0b', bg: '#fffbeb' },
+        { icon: 'ti-confetti', text: i18n.t('admin.alert_new_record', { count: 342 }), color: '#22c55e', bg: '#f0fdf4' },
+    ]);
 </script>
 
 <!-- KPI Row -->
 <div class="kpi-row">
     {#each [
-        { label: 'Total Santri', val: '1.240', change: '+34', up: true, data: activeUserData, color: '#7c5cfc' },
-        { label: 'Sesi Hari Ini', val: '342', change: '+18%', up: true, data: submissionData, color: '#00978A' },
-        { label: 'Revenue/Bln', val: '12.4jt', change: '+12%', up: true, data: revenueData, color: '#ff9600' },
+        { label: i18n.t('admin.kpi_total_students'), val: '1.240', change: '+34', up: true, data: activeUserData, color: '#7c5cfc' },
+        { label: i18n.t('admin.kpi_sessions_today'), val: '342', change: '+18%', up: true, data: submissionData, color: '#00978A' },
+        { label: i18n.t('admin.kpi_revenue_month'), val: '12.4jt', change: '+12%', up: true, data: revenueData, color: '#ff9600' },
     ] as kpi}
         <div class="kpi-card">
             <div class="kpi-label">{kpi.label}</div>
@@ -68,14 +71,14 @@
             </svg>
             <div class="kpi-change" style="color: {kpi.up ? '#22c55e' : '#ef4444'}">
                 <i class="ti ti-trend-{kpi.up ? 'up' : 'down'}" style="font-size: 9px;"></i>
-                {kpi.change} vs kemarin
+                {kpi.change} {i18n.t('admin.vs_yesterday')}
             </div>
         </div>
     {/each}
 </div>
 
 <!-- Alerts -->
-<div class="section-label" style="font-size: 13px; font-weight: 800; color: #3c3c3c; margin-top: 8px; margin-bottom: 8px;"><i class="ti ti-bell"></i> Notifikasi Penting</div>
+<div class="admin-section"><i class="ti ti-bell"></i> {i18n.t('admin.alerts')}</div>
 <div style="display: flex; flex-direction: column; gap: 6px;">
     {#each alerts as a}
         <div class="alert-row" style="background: {a.bg}; border-color: {a.color}20;">
@@ -87,7 +90,7 @@
 </div>
 
 <!-- Monthly Bar Chart -->
-<div class="section-label" style="font-size: 13px; font-weight: 800; color: #3c3c3c; margin-top: 16px; margin-bottom: 8px;"><i class="ti ti-chart-line"></i> Submisi per Bulan</div>
+<div class="admin-section"><i class="ti ti-chart-line"></i> {i18n.t('admin.submissions_monthly')}</div>
 <div class="chart-card">
     <div class="bar-chart">
         {#each monthlyBars as bar}
@@ -106,11 +109,11 @@
 </div>
 
 <!-- Donut Section -->
-<div class="section-label" style="font-size: 13px; font-weight: 800; color: #3c3c3c; margin-top: 16px; margin-bottom: 8px;"><i class="ti ti-target"></i> Tingkat Keberhasilan</div>
+<div class="admin-section"><i class="ti ti-target"></i> {i18n.t('admin.success_rate')}</div>
 <div class="donut-row">
     {#each [
-        { label: 'Penyelesaian Program', pct: 72, color: '#7c5cfc', donut: completionDonut },
-        { label: 'Retensi 30 Hari', pct: 88, color: '#00978A', donut: retentionDonut },
+        { label: i18n.t('admin.program_completion'), pct: 72, color: '#7c5cfc', donut: completionDonut },
+        { label: i18n.t('admin.retention_30d'), pct: 88, color: '#00978A', donut: retentionDonut },
     ] as d}
         <div class="donut-card">
             <svg width="56" height="56" viewBox="0 0 48 48">

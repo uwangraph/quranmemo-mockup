@@ -413,3 +413,18 @@ button:not(:disabled):not(.btn-disabled):not(.btn-duo):not(.sidebar-item):not(.s
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
 }
+
+/* ── Layar admin ──────────────────────────────────────────────────────────
+   Label bagian di panel admin sebelumnya ditulis ulang sebagai gaya sebaris di
+   delapan tempat, dengan ukuran dan warna yang mulai berbeda-beda. Disatukan di
+   sini agar seluruh panel admin tetap seragam. */
+.admin-section {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 16px 0 8px;
+    font-size: 13px;
+    font-weight: 800;
+    color: #3c3c3c;
+}
+.admin-section:first-child { margin-top: 8px; }
