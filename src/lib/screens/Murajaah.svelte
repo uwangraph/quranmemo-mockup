@@ -97,17 +97,17 @@
             <section class="hero-card">
                 <div class="hero-icon"><i class="ti ti-refresh"></i></div>
                 <div>
-                    <div class="eyebrow">JAGA HAFALANMU</div>
-                    <h1>Prioritas Murajaah</h1>
-                    <p>{#if due.length > 0}{due.length} surah perlu diulang hari ini{:else}Semua hafalanmu sedang terjaga{/if}</p>
+                    <div class="eyebrow">{i18n.t('murajaah.hero_eyebrow')}</div>
+                    <h1>{i18n.t('murajaah.title')}</h1>
+                    <p>{due.length > 0 ? i18n.t('murajaah.due_count', { count: due.length }) : i18n.t('murajaah.all_clear')}</p>
                 </div>
                 <div class="hero-count">{due.length}</div>
             </section>
 
             {#if due.length > 0}
                 <div class="section-heading">
-                    <span>PERLU DIULANG</span>
-                    <small>Lebih dari {MURAJAAH_DUE_DAYS} hari</small>
+                    <span>{i18n.t('murajaah.section_due')}</span>
+                    <small>{i18n.t('murajaah.older_than', { days: MURAJAAH_DUE_DAYS })}</small>
                 </div>
                 <div class="due-list">
                     {#each due as item}
@@ -120,15 +120,15 @@
                                     {#if !surahByName(item.surah)} · {i18n.t('murajaah.no_content_short')}{/if}
                                 </p>
                             </div>
-                            <button class="btn-duo btn-green review-button" onclick={() => startReview(item)}>MURAJAAH</button>
+                            <button class="btn-duo btn-green review-button" onclick={() => startReview(item)}>{i18n.t('murajaah.review_now')}</button>
                         </article>
                     {/each}
                 </div>
             {:else}
                 <div class="empty-card">
                     <div><i class="ti ti-confetti"></i></div>
-                    <h2>Belum ada yang perlu dimurajaah</h2>
-                    <p>Terus jaga ritme hafalanmu. Daftar ini akan terisi saat ada surah yang belum diulang.</p>
+                    <h2>{i18n.t('murajaah.empty_title')}</h2>
+                    <p>{i18n.t('murajaah.empty_desc')}</p>
                 </div>
             {/if}
         </div>

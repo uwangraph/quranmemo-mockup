@@ -177,8 +177,8 @@
     {#if showTopup}
         <div class="topup-overlay" role="presentation" onclick={() => showTopup = false}>
             <section class="topup-modal" role="dialog" aria-label="Top up Gems" onclick={(event) => event.stopPropagation()}>
-                <div class="topup-modal-head"><strong>Top Up Gems</strong><button onclick={() => showTopup = false} aria-label="Tutup"><i class="ti ti-x"></i></button></div>
-                <p>Pilih paket Gems yang ingin kamu beli.</p>
+                <div class="topup-modal-head"><strong>{i18n.t('market.topup_title')}</strong><button onclick={() => showTopup = false} aria-label={i18n.t('common.close')}><i class="ti ti-x"></i></button></div>
+                <p>{i18n.t('market.topup_desc')}</p>
                 <div class="topup-options">
                     {#each topupOptions as option}
                         <button class="topup-option" onclick={() => buyTopup(option)}>
@@ -240,11 +240,11 @@
                         </div>
                     </div>
                     <div class="ayah-range-field">
-                        <label>Ayat</label>
+                        <label>{i18n.t('market.ayah_label')}</label>
                         <div class="ayah-range-controls">
                             <div class="custom-select-wrapper ayah-custom-select">
                                 <div class="custom-select-box" role="button" tabindex="0" onclick={() => { showAyahFromDropdown = !showAyahFromDropdown; showAyahToDropdown = false; }} onkeydown={(event) => event.key === 'Enter' && (showAyahFromDropdown = !showAyahFromDropdown)}>
-                                    <span>Dari {selectedAyahFrom}</span><i class="ti ti-caret-down"></i>
+                                    <span>{i18n.t('market.ayah_from', { n: selectedAyahFrom })}</span><i class="ti ti-caret-down"></i>
                                 </div>
                                 {#if showAyahFromDropdown}
                                     <div class="dropdown-menu-overlay" onclick={() => showAyahFromDropdown = false}></div>
@@ -259,7 +259,7 @@
                             </div>
                             <div class="custom-select-wrapper ayah-custom-select">
                                 <div class="custom-select-box" role="button" tabindex="0" onclick={() => { showAyahToDropdown = !showAyahToDropdown; showAyahFromDropdown = false; }} onkeydown={(event) => event.key === 'Enter' && (showAyahToDropdown = !showAyahToDropdown)}>
-                                    <span>Sampai {selectedAyahTo}</span><i class="ti ti-caret-down"></i>
+                                    <span>{i18n.t('market.ayah_to', { n: selectedAyahTo })}</span><i class="ti ti-caret-down"></i>
                                 </div>
                                 {#if showAyahToDropdown}
                                     <div class="dropdown-menu-overlay" onclick={() => showAyahToDropdown = false}></div>
