@@ -85,7 +85,10 @@
     });
 
     const step = $derived(TADABBUR_STEPS[currentStep]);
-    const promptFor = (id) => JOURNAL_PROMPTS[id]?.[segment ?? 'dewasa'] ?? '';
+    const promptFor = (id) => {
+        const key = JOURNAL_PROMPTS[id]?.[segment ?? 'dewasa'];
+        return key ? i18n.t(key) : '';
+    };
 
     // Hikmah dan amal wajib terisi: keduanya inti §3.1 poin 5-6, dan §1.1 menutup
     // framework dengan "tadabbur tanpa amal adalah tadabbur yang belum selesai".
@@ -130,7 +133,7 @@
     }
 
     function surahOf(id) { return SURAHS[id] ?? null; }
-    const segmentName = $derived(TADABBUR_SEGMENTS.find((s) => s.id === segment)?.name ?? '');
+    const segmentName = $derived((() => { const s = TADABBUR_SEGMENTS.find((x) => x.id === segment); return s ? i18n.t(s.nameKey) : ''; })());
 </script>
 
 <div class="tadabbur-panel">
@@ -240,7 +243,7 @@
                         {#if h.hikmah}<p class="history-hikmah">"{h.hikmah}"</p>{/if}
                         {#if h.amal}<div class="history-amal"><i class="ti ti-check"></i> {h.amal}</div>{/if}
                         <div class="history-date">
-                            {new Date(h.completedAt).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}
+                            {new Date(h.completedAt).toLocaleDateString(i18n.locale, { day: 'numeric', month: 'long', year: 'numeric' })}
                         </div>
                     </div>
                 {/each}
@@ -268,8 +271,8 @@
                             <button class="segment-btn" class:selected={segment === s.id}
                                 onclick={() => { appState.setTadabburSegment(s.id); editingSegment = false; }}>
                                 <i class="ti {s.icon}"></i>
-                                <strong>{s.name}</strong>
-                                <small>{s.age}</small>
+                                <strong>{i18n.t(s.nameKey)}</strong>
+                                <small>{i18n.t(s.ageKey)}</small>
                             </button>
                         {/each}
                     </div>
@@ -340,7 +343,7 @@
                 </div>
                 <div class="themes-grid">
                     {#each TADABBUR_THEMES as theme}
-                        <span class="theme-chip" class:ready={themeIsReady(theme)} title={theme.index}>{theme.name}</span>
+                        <span class="theme-chip" class:ready={themeIsReady(theme)} title={i18n.t(theme.indexKey)}>{i18n.t(theme.nameKey)}</span>
                     {/each}
                 </div>
                 <p class="themes-note"><i class="ti ti-info-circle"></i> {i18n.t('tadabbur.themes_note')}</p>

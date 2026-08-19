@@ -4,7 +4,8 @@
 // jadi aturan jurnalnya diuji lewat replika murni — pola yang sama seperti
 // streak.test.js. Kalau aturan di app.svelte.js berubah, samakan replika di bawah.
 import assert from 'node:assert/strict';
-import { TADABBUR_STEPS, TADABBUR_THEMES, themeIsReady, JOURNAL_PROMPTS } from './data/tadabburThemes.js';
+import { TADABBUR_STEPS, TADABBUR_THEMES, TADABBUR_SEGMENTS, themeIsReady, JOURNAL_PROMPTS } from './data/tadabburThemes.js';
+import en from './locales/en.js';
 import TAFSIR from './data/tafsir.generated.js';
 import { SURAHS } from './data/surahs.js';
 
@@ -99,11 +100,28 @@ const blank = () => ({ tadabburJournal: {} });
 }
 
 // ── §2.3: prompt jurnal tersedia untuk ketiga segmen usia ─────────────────
+// Datanya kini menyimpan kunci terjemahan, bukan kalimat. Memastikan kuncinya ada
+// saja tidak cukup — kunci yang salah ketik tetap lolos dan muncul mentah di layar,
+// jadi setiap kunci diperiksa sampai ke kamusnya.
 {
     for (const field of ['faktual', 'diri']) {
         for (const seg of ['anak', 'remaja', 'dewasa']) {
-            assert.ok(JOURNAL_PROMPTS[field][seg], `prompt ${field} untuk segmen ${seg} hilang`);
+            const key = JOURNAL_PROMPTS[field][seg];
+            assert.ok(key, `prompt ${field} untuk segmen ${seg} hilang`);
+            assert.ok(en[key], `kunci prompt ${key} tidak ada di kamus`);
         }
+    }
+}
+
+// ── Tema dan segmen memakai kunci yang benar-benar ada di kamus ───────────
+{
+    for (const theme of TADABBUR_THEMES) {
+        assert.ok(en[theme.nameKey], `kunci nama tema ${theme.id} tidak ada di kamus`);
+        assert.ok(en[theme.indexKey], `kunci indeks tema ${theme.id} tidak ada di kamus`);
+    }
+    for (const seg of TADABBUR_SEGMENTS) {
+        assert.ok(en[seg.nameKey], `kunci nama segmen ${seg.id} tidak ada di kamus`);
+        assert.ok(en[seg.ageKey], `kunci usia segmen ${seg.id} tidak ada di kamus`);
     }
 }
 

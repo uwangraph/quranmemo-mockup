@@ -11,25 +11,25 @@
 // tidak ada perubahan kode yang diperlukan.
 
 export const TADABBUR_THEMES = [
-    { id: 'iman', name: 'Iman & Tauhid', index: 'Bab 1 (Pasal I-II), Bab 2 (Pasal I-III)', segments: ['anak', 'remaja', 'dewasa'], verses: [] },
-    { id: 'ibadah', name: 'Ibadah', index: 'Bab 1 (Pasal IV-VIII)', segments: ['anak', 'remaja', 'dewasa'], verses: [] },
-    { id: 'akhlak', name: 'Akhlak & Karakter', index: 'Bab IX (Akhlak Terpuji & Tercela)', segments: ['anak', 'remaja', 'dewasa'], verses: [] },
-    { id: 'keluarga', name: 'Keluarga', index: 'Bab VIII (Pasal V — Keluarga)', segments: ['remaja', 'dewasa'], verses: [] },
-    { id: 'sosial', name: 'Masyarakat & Sosial', index: 'Bab VIII (Pasal IX), Bab XII', segments: ['remaja', 'dewasa'], mvp: true, verses: [] },
-    { id: 'jiwa', name: 'Jiwa & Kesehatan Mental', index: 'Bab IX (Sabar, Ketenangan, Harapan), Bab II (Tawakal)', segments: ['remaja', 'dewasa'], mvp: true, verses: [] },
-    { id: 'ilmu', name: 'Ilmu & Akal', index: 'Bab IV (Keutamaan Ilmu, Sains & Teknologi)', segments: ['remaja', 'dewasa'], verses: [] },
-    { id: 'kisah', name: 'Kisah Para Nabi', index: 'Bab XIV (Sejarah & Kisah-kisah)', segments: ['anak', 'remaja'], verses: [] },
-    { id: 'alam', name: 'Alam & Tanda Kekuasaan Allah', index: 'Bab IV §15 (Bukti Ilmiah)', segments: ['anak', 'remaja'], verses: [] },
-    { id: 'kepemimpinan', name: 'Kepemimpinan & Peran', index: 'Bab XII (Negara), Bab VIII (Pasal III-IV)', segments: ['dewasa'], verses: [] },
-    { id: 'harta', name: 'Ekonomi & Harta', index: 'Bab X (Harta & Ekonomi)', segments: ['dewasa'], mvp: true, verses: [] },
-    { id: 'jihad', name: 'Jihad & Perjuangan', index: 'Bab VII (Jihad dalam Islam)', segments: ['dewasa'], verses: [] }
+    { id: 'iman', nameKey: 'tadabbur.theme.iman', indexKey: 'tadabbur.theme.iman.index', segments: ['anak', 'remaja', 'dewasa'], verses: [] },
+    { id: 'ibadah', nameKey: 'tadabbur.theme.ibadah', indexKey: 'tadabbur.theme.ibadah.index', segments: ['anak', 'remaja', 'dewasa'], verses: [] },
+    { id: 'akhlak', nameKey: 'tadabbur.theme.akhlak', indexKey: 'tadabbur.theme.akhlak.index', segments: ['anak', 'remaja', 'dewasa'], verses: [] },
+    { id: 'keluarga', nameKey: 'tadabbur.theme.keluarga', indexKey: 'tadabbur.theme.keluarga.index', segments: ['remaja', 'dewasa'], verses: [] },
+    { id: 'sosial', nameKey: 'tadabbur.theme.sosial', indexKey: 'tadabbur.theme.sosial.index', segments: ['remaja', 'dewasa'], mvp: true, verses: [] },
+    { id: 'jiwa', nameKey: 'tadabbur.theme.jiwa', indexKey: 'tadabbur.theme.jiwa.index', segments: ['remaja', 'dewasa'], mvp: true, verses: [] },
+    { id: 'ilmu', nameKey: 'tadabbur.theme.ilmu', indexKey: 'tadabbur.theme.ilmu.index', segments: ['remaja', 'dewasa'], verses: [] },
+    { id: 'kisah', nameKey: 'tadabbur.theme.kisah', indexKey: 'tadabbur.theme.kisah.index', segments: ['anak', 'remaja'], verses: [] },
+    { id: 'alam', nameKey: 'tadabbur.theme.alam', indexKey: 'tadabbur.theme.alam.index', segments: ['anak', 'remaja'], verses: [] },
+    { id: 'kepemimpinan', nameKey: 'tadabbur.theme.kepemimpinan', indexKey: 'tadabbur.theme.kepemimpinan.index', segments: ['dewasa'], verses: [] },
+    { id: 'harta', nameKey: 'tadabbur.theme.harta', indexKey: 'tadabbur.theme.harta.index', segments: ['dewasa'], mvp: true, verses: [] },
+    { id: 'jihad', nameKey: 'tadabbur.theme.jihad', indexKey: 'tadabbur.theme.jihad.index', segments: ['dewasa'], verses: [] }
 ];
 
 // Segmentasi usia (§2.3). Pendekatan dan format jurnalnya berbeda per segmen.
 export const TADABBUR_SEGMENTS = [
-    { id: 'anak', name: 'Anak', age: '7–12 tahun', icon: 'ti-mood-kid' },
-    { id: 'remaja', name: 'Remaja', age: '13–18 tahun', icon: 'ti-user' },
-    { id: 'dewasa', name: 'Dewasa', age: '19+ tahun', icon: 'ti-user-check' }
+    { id: 'anak', nameKey: 'tadabbur.segment.anak', ageKey: 'tadabbur.segment.anak.age', icon: 'ti-mood-kid' },
+    { id: 'remaja', nameKey: 'tadabbur.segment.remaja', ageKey: 'tadabbur.segment.remaja.age', icon: 'ti-user' },
+    { id: 'dewasa', nameKey: 'tadabbur.segment.dewasa', ageKey: 'tadabbur.segment.dewasa.age', icon: 'ti-user-check' }
 ];
 
 // Tujuh langkah tadabbur (§1.1 — materi Ust. Pur). Urutan dan maknanya mengikuti
@@ -45,18 +45,18 @@ export const TADABBUR_STEPS = [
     { id: 'amal', icon: 'ti-check', input: 'amal' }
 ];
 
-// Prompt jurnal per segmen (§3.3). Ini teks antarmuka, bukan konten keagamaan,
-// jadi boleh disusun di sini — berbeda dengan tafsir yang wajib dari korpus.
+// Prompt jurnal per segmen (§3.3). Yang disimpan di sini kunci terjemahannya,
+// bukan kalimatnya, agar promptnya ikut bahasa yang sedang dipakai pengguna.
 export const JOURNAL_PROMPTS = {
     faktual: {
-        anak: 'Ayat ini mengingatkan aku pada kejadian…',
-        remaja: 'Kejadian apa di sekitarmu belakangan ini yang nyambung dengan ayat ini?',
-        dewasa: 'Peristiwa atau fenomena apa yang kamu lihat belakangan ini yang tercermin dalam ayat ini?'
+        anak: 'tadabbur.prompt.faktual.anak',
+        remaja: 'tadabbur.prompt.faktual.remaja',
+        dewasa: 'tadabbur.prompt.faktual.dewasa'
     },
     diri: {
-        anak: 'Ayat ini mengajarkan aku bahwa…',
-        remaja: 'Bagian hidupmu yang mana yang paling tersentuh ayat ini?',
-        dewasa: 'Tulis seperti surat kepada dirimu sendiri: apa yang ayat ini ingin kamu ubah?'
+        anak: 'tadabbur.prompt.diri.anak',
+        remaja: 'tadabbur.prompt.diri.remaja',
+        dewasa: 'tadabbur.prompt.diri.dewasa'
     }
 };
 
